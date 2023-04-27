@@ -77,14 +77,3 @@ jobs:
         with:
           sarif_file: 'trivy-results.sarif'
 
-      - name: Release ${{ matrix.chart }}
-        uses: helm/chart-releaser-action@v1.5.0
-        env:
-          CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-
-      - name: Publish Helm charts
-        uses: stefanprodan/helm-gh-pages@v1.7.0
-        with:
-          charts_dir: charts
-          token: ${{ secrets.GITHUB_TOKEN }}
-
