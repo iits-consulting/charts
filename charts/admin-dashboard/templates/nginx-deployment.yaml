@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: {{ .Chart.Name }}
+spec:
+    selector:
+        matchLabels:
+            app: {{ .Chart.Name }}
+            release: {{ .Chart.Name }}
+    replicas: {{default 2 .Values.nginx.replicaCount }}
+    template:
+        metadata:
+            annotations:
+                htmlChecksum: {{ include (print $.Template.BasePath "/nginx-index-html.yaml") . | sha256sum }}
+            labels:
+                app: {{ .Chart.Name }}
+                release: {{ .Chart.Name }}
+        spec:
+            containers:
+                - name: {{  .Chart.Name }}
+                  image: {{ .Values.nginx.image.repository }}:{{ .Values.nginx.image.tag }}
+                  imagePullPolicy: {{ default "IfNotPresent" .Values.nginx.image.pullPolicy }}
+                  ports:
+                      - name: app-internal
+                        containerPort: {{ .Values.nginx.service.port }}
+                  livenessProbe:
+                      httpGet:
+                          path:  "/"
+                          port: {{ .Values.nginx.service.port }}
+                      initialDelaySeconds: 60
+                      periodSeconds: 60
+                  readinessProbe:
+                      httpGet:
+                          path:  "/"
+                          port: {{ .Values.nginx.service.port }}
+                  volumeMounts:
+                      - name: {{ .Chart.Name }}-pages
+                        mountPath: /usr/share/nginx/html
+            volumes:
+                - name: {{ .Chart.Name }}-pages
+                  configMap:
+                      name: {{ .Chart.Name }}-pages

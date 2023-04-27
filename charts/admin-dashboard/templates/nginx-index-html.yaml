@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name:  {{ .Chart.Name }}-pages
+data:
+    index.html: |
+{{.Values.nginx.mainPage | indent 12}}
