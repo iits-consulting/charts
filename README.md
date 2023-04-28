@@ -1,13 +1,6 @@
-## Usage
 
-see main branch of this project
+How to install:
 
-export CHART_NAME="Chart name under charts folder"
-
-export CHART_REPO_NAME="GITHUB PROJECT NAME"
-
-helm repo add $CHART_REPO_NAME https://iits-consulting.github.io/$CHART_REPO_NAME/
-
-helm search repo $CHART_NAME
-
-helm install $CHART_NAME $CHART_REPO_NAME/$CHART_NAME
+    helm repo add iits-charts https://charts.iits.tech
+    helm search repo YOUR_CHART_NAME
+    helm install YOUR_CHART_NAME iits-charts/YOUR_CHART_NAME
