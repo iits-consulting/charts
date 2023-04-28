@@ -88,20 +88,20 @@ jobs:
 #        with:
 #          sarif_file: 'trivy-results.sarif'
 
-      - name: Publish the Helm chart
-        id: publish-chart
-#        if: github.ref == 'refs/heads/main'
-        uses: moikot/chart-publish-action@v1
-        with:
-          charts_dir: "charts/${{ matrix.chart }}"
-          charts_url: "https://charts.iits.tech/"
+      - name: Move to publish folder
+        run: |
+         mkdir publish-charts
+         mv charts/${{ matrix.chart }} publish-charts/${{ matrix.chart }}
 
-      - name: Commit and push helm-charts
-        uses: EndBug/add-and-commit@v6
-#        if: github.ref == 'refs/heads/main'
+      - name: Publish ${{ matrix.chart }}
+        uses: helm/chart-releaser-action@v1.5.0
+        env:
+          charts_dir: publish-charts
+          CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: Helm Chart Docs Github Pages
+        uses: omegion/helm-charts-docs@v0.15
         with:
-          author_name: iits
-          author_email: cloudOps@iits-consulting.de
-          branch: gh-pages
-          cwd: "charts/${{ matrix.chart }}"
-          message: "Commit chart ${{ steps.publish-chart.outputs.chart }}"
+          helmRepository: iits-charts
+          helmRepositoryUrl: https://charts.iits.tech
+          token: ${{ secrets.GITHUB_TOKEN }}
