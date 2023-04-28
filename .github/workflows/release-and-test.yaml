@@ -11,6 +11,7 @@ env:
   HELM_VERSION: v3.4.0
 
 jobs:
+
   find-charts:
     name: Find Charts
     runs-on: ubuntu-latest
@@ -22,17 +23,18 @@ jobs:
         id: get_changed_charts
         uses: tj-actions/changed-files@v35.9.1
         with:
-            json: true
-            path: "./charts/"
-            diff_relative: true
-            dir_names_max_depth: 1
-            dir_names: true
-            dir_names_exclude_root: true
-            write_output_files: true
+          json: true
+          path: "./charts/"
+          diff_relative: true
+          dir_names_max_depth: 1
+          dir_names: true
+          dir_names_exclude_root: true
+          write_output_files: true
       - name: Echo changed files
         id: get_changed_charts_folders
         run: echo matrix=${{ steps.get_changed_charts.outputs.all_changed_files }} >> $GITHUB_OUTPUT
-  release-charts:
+
+  check-charts:
     name: Check
     needs: find-charts
     if: ${{ needs.find-charts.outputs.matrix != '' && toJson(fromJson(needs.find-charts.outputs.matrix)) != '[]' }}
@@ -75,20 +77,39 @@ jobs:
       - name: Lint ${{ matrix.chart }}
         run: |
           helm dependency update charts/${{ matrix.chart }}
-          helm lint charts/${{ matrix.chart }} --strict     
+          helm lint charts/${{ matrix.chart }} --strict
 
       - name: KubeVal ${{ matrix.chart }}
         run: |
           helm plugin install https://github.com/instrumenta/helm-kubeval
-          helm kubeval --ignore-missing-schemas charts/${{ matrix.chart }}          
+          helm kubeval --ignore-missing-schemas charts/${{ matrix.chart }}
 
       - name: Upload Trivy scan results for ${{ matrix.chart }}
         uses: github/codeql-action/upload-sarif@v2
         if: always()
         with:
           sarif_file: 'trivy-results.sarif'
-      - name: Release ${{ matrix.chart }}
-        if: github.ref == 'refs/heads/main'
+
+  release-charts:
+    name: Release
+    if: github.ref == 'refs/heads/main'
+    needs: check-charts
+    permissions:
+      contents: write
+      security-events: write
+      actions: read
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Configure Git
+        run: |
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+      - name: Publish ${{ matrix.chart }}
         uses: helm/chart-releaser-action@v1.5.0
         env:
+          charts_dir: publish-charts
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
