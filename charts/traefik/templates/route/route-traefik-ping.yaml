@@ -1,0 +1,14 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: traefik-ping
+spec:
+  entryPoints:
+    - web
+    - afterOIDCProxy
+  routes:
+    - match: Host(`{{ .Values.ingressRoute.adminDomain }}`) && PathPrefix(`/ping`)
+      kind: Rule
+      services:
+        - name: ping@internal
+          kind: TraefikService

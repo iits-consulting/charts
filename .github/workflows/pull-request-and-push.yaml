@@ -21,7 +21,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - id: determine-chart-names
-        run: echo "matrix=[$(ls -Q --format=commas ./charts)]" >> $GITHUB_OUTPUT
+        run: echo matrix=[$(ls -Q --format=commas ./charts)] >> $GITHUB_OUTPUT
   release-charts:
     name: Release
     needs: find-charts

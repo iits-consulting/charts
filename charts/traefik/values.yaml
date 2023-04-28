@@ -1,0 +1,41 @@
+traefik:
+  globalArguments:
+    - "--global.checknewversion"
+  additionalArguments:
+    - "--ping"
+  api:
+    dashboard: true
+    insecure: true
+  ping:
+    manualRouting: true
+  logs:
+    general:
+      format: json
+      level: INFO
+    access:
+      format: json
+      enabled: false
+  deployment:
+    replicas: 2
+  service:
+    type: LoadBalancer
+    spec:
+      externalTrafficPolicy: Cluster
+    annotations:
+      "traefik.service.annotations.kubernetes.io/elb.id": "SET_BY_ARGOCD_STAGE_VALUES"
+  ports:
+    afterOIDCProxy:
+      exposedPort: 8444
+      port: 8444
+      expose: false
+      protocol: TCP
+      tls:
+        enabled: false
+  providers:
+    kubernetesCRD:
+      enabled: true
+    kubernetesIngress:
+      enabled: true
+
+ingressRoute:
+  adminDomain: "SET BY ARGOCD STAGE VALUES"

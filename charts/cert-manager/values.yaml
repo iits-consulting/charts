@@ -1,0 +1,5 @@
+ingressClass: traefik
+clusterIssuer:
+  http:
+    name: letsencrypt
+    email: "REPLACE_ME@some.de"

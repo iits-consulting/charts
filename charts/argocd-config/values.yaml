@@ -1,0 +1,45 @@
+ingressRoute:
+  adminDomain: "SET BY ARGOCD STAGE VALUES"
+  pathPrefix: "/argocd"
+  entryPointName: "afterOIDCProxy"
+configs:
+  secret:
+    # -- Annotations to be added to argocd-secret
+    annotations: { }
+
+    # -- Shared secret for authenticating GitHub webhook events
+    githubSecret: ""
+    # -- Shared secret for authenticating GitLab webhook events
+    gitlabSecret: ""
+    # -- Shared secret for authenticating BitbucketServer webhook events
+    bitbucketServerSecret: ""
+    # -- UUID for authenticating Bitbucket webhook events
+    bitbucketUUID: ""
+    # -- Shared secret for authenticating Gogs webhook events
+    gogsSecret: ""
+
+    # -- add additional secrets to be added to argocd-secret
+    ## Custom secrets. Useful for injecting SSO secrets into environment variables.
+    ## Ref: https://argoproj.github.io/argo-cd/operator-manual/sso/
+    ## Note that all values must be non-empty.
+    extra:
+
+    # -- Argo TLS Data
+    argocdServerTlsConfig:
+      { }
+      # key:
+      # crt: |
+      #   -----BEGIN CERTIFICATE-----
+      #   <cert data>
+    #   -----END CERTIFICATE-----
+    #   -----BEGIN CERTIFICATE-----
+    #   <ca cert data>
+    #   -----END CERTIFICATE-----
+
+    # -- Bcrypt hashed admin password
+    ## Argo expects the password in the secret to be bcrypt hashed. You can create this hash with
+    ## `htpasswd -nbBC 10 "" $ARGO_PWD | tr -d ':\n' | sed 's/$2y/$2a/'`
+    argocdServerAdminPassword: ""
+    # -- Admin password modification time. Eg. `"2006-01-02T15:04:05Z"`
+    # @default -- `""` (defaults to current time)
+    argocdServerAdminPasswordMtime: ""

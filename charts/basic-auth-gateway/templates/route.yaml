@@ -1,0 +1,19 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: {{ .Release.Name }}
+spec:
+  entryPoints:
+    - {{.Values.ingressRoute.entryPointName}}
+  routes:
+    - kind: Rule
+      match: Host(`{{ .Values.ingressRoute.adminDomain }}`)
+      middlewares:
+        - name: basic-auth-gateway
+      services:
+        - name: {{ .Values.upstream.service.name }}
+          port: {{ .Values.upstream.service.port }}
+  tls:
+    secretName: {{.Values.ingressRoute.certificate.name}}
+    domains:
+      - main: {{ .Values.ingressRoute.adminDomain}}

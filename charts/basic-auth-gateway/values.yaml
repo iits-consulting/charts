@@ -1,0 +1,11 @@
+upstream:
+  service:
+    name: traefik-websecure-internal
+    port: 8444
+
+ingressRoute:
+  adminDomain: "SET BY ARGOCD STAGE VALUES"
+  entryPointName: "websecure"
+  certificate:
+    name: admin
+    clusterIssuer: letsencrypt

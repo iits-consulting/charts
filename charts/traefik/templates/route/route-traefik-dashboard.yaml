@@ -1,0 +1,13 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: traefik-admin-dashboard
+spec:
+  entryPoints:
+    - afterOIDCProxy
+  routes:
+    - match: Host(`{{ .Values.ingressRoute.adminDomain }}`) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))
+      kind: Rule
+      services:
+        - name: api@internal
+          kind: TraefikService

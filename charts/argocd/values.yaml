@@ -1,0 +1,56 @@
+argo-cd:
+  controller:
+    env:
+      - name: "TZ"
+        value: "Europe/Berlin"
+      - name: "ARGOCD_GPG_ENABLED"
+        value: "false"
+    logFormat: "json"
+  crds:
+    install: "false"
+  dex:
+    env:
+      - name: "TZ"
+        value: "Europe/Berlin"
+      - name: "ARGOCD_GPG_ENABLED"
+        value: "false"
+    logFormat: "json"
+  notifications:
+    enabled: "false"
+  repoServer:
+    env:
+      - name: "TZ"
+        value: "Europe/Berlin"
+      - name: "ARGOCD_GPG_ENABLED"
+        value: "false"
+    logFormat: "json"
+  server:
+    env:
+      - name: "TZ"
+        value: "Europe/Berlin"
+      - name: "ARGOCD_GPG_ENABLED"
+        value: "false"
+    extraArgs:
+      - "--insecure"
+      - "--rootpath=/argocd"
+      - "--basehref=/argocd"
+    logFormat: json
+projects:
+#  infrastructure-charts:
+#    projectValues:
+#      # Set this to enable stage values.yaml
+#      stage:
+#    # defaults to false
+#    serverSideApply:
+#    git:
+#      # defaults to ARGOCD_GIT_ACCESS_TOKEN
+#      username:
+#      password: "SET_BY_TERRAFORM"
+#      repoUrl: "SET_BY_TERRAFORM"
+#      # defaults to main
+#      branch:
+#      # defaults to project name
+#      path:
+#      repoPrivateKeyBase64Encoded:
+#    # defaults to *
+#    allowedUrls:

@@ -1,7 +1,7 @@
 ingressRoute:
   adminDomain: "SET BY ARGOCD STAGE VALUES"
   pathPrefix: "/"
-  entryPointName: "internalhttps"
+  entryPointName: "afterOIDCProxy"
 nginx:
   replicaCount: 1
   image:
