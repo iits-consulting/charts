@@ -4,7 +4,7 @@ upstream:
     port: 8444
 
 ingressRoute:
-  adminDomain: "SET BY ARGOCD STAGE VALUES"
+  adminDomain: "admin.my-domain.com"
   entryPointName: "websecure"
   certificate:
     name: admin

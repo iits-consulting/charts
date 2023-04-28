@@ -1,0 +1,58 @@
+name: Release Charts
+
+on:
+  pull_request:
+    branches:
+      - '*'
+  push:
+    branches:
+      - "*"
+      - '!main'
+env:
+  HELM_VERSION: v3.4.0
+
+jobs:
+  find-charts:
+    name: Find Charts
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: "${{ steps.get_changed_charts_folders.outputs.matrix }}"
+    steps:
+      - uses: actions/checkout@v1
+      - name: Get changed charts
+        id: get_changed_charts
+        uses: tj-actions/changed-files@v35.9.1
+        with:
+            json: true
+            path: "./charts/"
+            diff_relative: true
+            dir_names_max_depth: 1
+            dir_names: true
+            dir_names_exclude_root: true
+            write_output_files: true
+      - name: Echo changed files
+        id: get_changed_charts_folders
+        run: echo matrix=${{ steps.get_changed_charts.outputs.all_changed_files }} >> $GITHUB_OUTPUT
+  release-charts:
+    name: Check
+    needs: find-charts
+    if: ${{ needs.find-charts.outputs.matrix != '' && toJson(fromJson(needs.find-charts.outputs.matrix)) != '[]' }}
+    strategy:
+      matrix:
+        chart: ${{fromJSON(needs.find-charts.outputs.matrix)}}
+    permissions:
+      contents: write
+      security-events: write
+      actions: read
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: ./.github/workflows/lint-and-validate
+      - name: Release ${{ matrix.chart }}
+        if: github.ref == 'refs/heads/main'
+        uses: helm/chart-releaser-action@v1.5.0
+        env:
+          CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"

@@ -1,5 +1,5 @@
 ingressRoute:
-  adminDomain: "SET BY ARGOCD STAGE VALUES"
+  adminDomain: "admin.my-domain.com"
   pathPrefix: "/"
   entryPointName: "afterOIDCProxy"
 nginx:
