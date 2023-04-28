@@ -1,0 +1,46 @@
+name: "check-charts"
+description: "Lints, Trivy scans and KubeVal charts"
+runs:
+  using: "composite"
+  strategy:
+    matrix:
+      chart: ${{fromJSON(needs.find-charts.outputs.matrix)}}
+  steps:
+    - name: Configure Git
+      run: |
+        git config user.name "$GITHUB_ACTOR"
+        git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+
+    - name: Setup Helm
+      uses: azure/setup-helm@v3
+      with:
+        version: ${{ env.HELM_VERSION }}
+
+    - name: Trivy Scan ${{ matrix.chart }}
+      uses: aquasecurity/trivy-action@0.10.0
+      with:
+        scan-type: 'config'
+        hide-progress: false
+        format: 'sarif'
+        scan-ref: 'charts/${{matrix.chart}}'
+        output: 'trivy-results.sarif'
+        exit-code: '1'
+        ignore-unfixed: false
+        severity: 'MEDIUM,HIGH,CRITICAL'
+        limit-severities-for-sarif: true
+
+    - name: Lint ${{ matrix.chart }}
+      run: |
+        helm dependency update charts/${{ matrix.chart }}
+        helm lint charts/${{ matrix.chart }} --strict     
+
+    - name: KubeVal ${{ matrix.chart }}
+      run: |
+        helm plugin install https://github.com/instrumenta/helm-kubeval
+        helm kubeval --ignore-missing-schemas charts/${{ matrix.chart }}          
+
+    - name: Upload Trivy scan results for ${{ matrix.chart }}
+      uses: github/codeql-action/upload-sarif@v2
+      if: always()
+      with:
+        sarif_file: 'trivy-results.sarif'
