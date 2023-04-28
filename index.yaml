@@ -2,11 +2,11 @@ apiVersion: v1
 entries:
   admin-dashboard:
   - apiVersion: v2
-    created: "2023-04-28T10:35:25.8471462Z"
+    created: "2023-04-28T10:35:28.881536326Z"
     description: admin dashboard with urls
-    digest: 5d479b8e5194608a0790aab84c2b6a3749b67d89b5c0d89e7e7cc755f0383717
+    digest: e4c36dfcaf27b8b6e3e1c7e9750fad166958068db021515f337e7ea586b287fb
     name: admin-dashboard
     urls:
-    - https://github.com/iits-consulting/charts/releases/download/admin-dashboard-0.1.0/admin-dashboard-0.1.0.tgz
+    - https://iits-consulting.github.io/charts/admin-dashboard-0.1.0.tgz
     version: 0.1.0
-generated: "2023-04-28T10:35:25.8471603Z"
+generated: "2023-04-28T10:35:28.880672821Z"
