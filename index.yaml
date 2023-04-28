@@ -3,6 +3,15 @@ entries:
   admin-dashboard:
   - apiVersion: v2
     appVersion: nginx-1.13.6-alpine
+    created: "2023-04-28T16:33:24.108175924Z"
+    description: admin dashboard with urls
+    digest: 3eb84c1c5d477e67e3258cf0b3b50a548bdd2a87155af0ed554b6b6dde093f5e
+    name: admin-dashboard
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/admin-dashboard-0.1.3/admin-dashboard-0.1.3.tgz
+    version: 0.1.3
+  - apiVersion: v2
+    appVersion: nginx-1.13.6-alpine
     created: "2023-04-28T10:56:27.213593924Z"
     description: admin dashboard with urls
     digest: cffc04f6dbf3dfa598255d02a8c6758fae52155c6596ca20d4b115018d3828c5
@@ -18,4 +27,78 @@ entries:
     urls:
     - https://iits-consulting.github.io/charts/admin-dashboard-0.1.0.tgz
     version: 0.1.0
-generated: "2023-04-28T10:56:27.213600924Z"
+  argocd:
+  - apiVersion: v2
+    created: "2023-04-28T16:33:24.262253457Z"
+    dependencies:
+    - name: argo-cd
+      repository: https://argoproj.github.io/argo-helm
+      version: 5.22.1
+    description: argo
+    digest: 08870c2d2112fe0d8a2f5201bf7cf47ea8835fde3cdf852d73c879a5a0495b61
+    name: argocd
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/argocd-5.22.1/argocd-5.22.1.tgz
+    version: 5.22.1
+  argocd-config:
+  - apiVersion: v2
+    created: "2023-04-28T16:33:24.391114839Z"
+    description: argocd-dns with traefik, external-dns and cert-manager
+    digest: 153d5dee43bb42429036c62e731a45a71a45248a67032f2ff4cc4c194ec9cf58
+    name: argocd-config
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/argocd-config-0.2.4/argocd-config-0.2.4.tgz
+    version: 0.2.4
+  basic-auth-gateway:
+  - apiVersion: v2
+    created: "2023-04-28T16:33:24.531593737Z"
+    description: basic auth gateway chart for traefik
+    digest: e45ccae82ac8d082dd28ef2968509a939125633d06309b53e3ac292ffc392087
+    name: basic-auth-gateway
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/basic-auth-gateway-0.2.4/basic-auth-gateway-0.2.4.tgz
+    version: 0.2.4
+  cert-manager:
+  - apiVersion: v2
+    created: "2023-04-28T16:33:24.694360757Z"
+    dependencies:
+    - name: cert-manager
+      repository: https://charts.jetstack.io
+      version: v1.6.1
+    description: Cert Manager
+    digest: 1b29b851ac2de2a68d58d1fd2d179eb3ba4799f2d4b1721c11ab619a05bd6845
+    name: cert-manager
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/cert-manager-0.2.3/cert-manager-0.2.3.tgz
+    version: 0.2.3
+  kafka:
+  - apiVersion: v2
+    created: "2023-04-28T16:33:24.871505819Z"
+    dependencies:
+    - name: kafka
+      repository: https://charts.bitnami.com/bitnami
+      version: 17.2.6
+    - name: akhq
+      repository: https://akhq.io/
+      version: 0.2.2
+    description: Kafka
+    digest: 615db313f92f3e78cc249171eddbf89500295b8b31fc753d29b15e739bc6a510
+    name: kafka
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/kafka-0.2.5/kafka-0.2.5.tgz
+    version: 0.2.5
+  traefik:
+  - apiVersion: v2
+    appVersion: 9.11.0
+    created: "2023-04-28T16:33:25.035285849Z"
+    dependencies:
+    - name: traefik
+      repository: https://helm.traefik.io/traefik
+      version: 10.22.0
+    description: traefik
+    digest: dbb2fe4fc82e376ec829f3c9d0be2f74a7c29d20d59d94932975ec7b70fb00c1
+    name: traefik
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4/traefik-0.2.4.tgz
+    version: 0.2.4
+generated: "2023-04-28T16:33:25.035314049Z"
