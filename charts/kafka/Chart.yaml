@@ -8,4 +8,4 @@ dependencies:
   version: 0.2.2
 description: Kafka
 name: kafka
-version: 0.2.4
+version: 0.2.5

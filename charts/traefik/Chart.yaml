@@ -6,4 +6,4 @@ dependencies:
   version: 10.22.0
 description: traefik
 name: traefik
-version: 0.2.3
+version: 0.2.4

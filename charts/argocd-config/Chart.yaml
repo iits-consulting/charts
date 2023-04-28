@@ -1,4 +1,4 @@
 apiVersion: v2
 description: argocd-dns with traefik, external-dns and cert-manager
 name: argocd-config
-version: 0.2.3
+version: 0.2.4
