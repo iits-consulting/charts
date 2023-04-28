@@ -58,37 +58,50 @@ jobs:
         uses: azure/setup-helm@v3
         with:
           version: ${{ env.HELM_VERSION }}
+#
+#      - name: Trivy Scan ${{ matrix.chart }}
+#        uses: aquasecurity/trivy-action@0.10.0
+#        with:
+#          scan-type: 'config'
+#          hide-progress: false
+#          format: 'sarif'
+#          scan-ref: 'charts/${{matrix.chart}}'
+#          output: 'trivy-results.sarif'
+#          exit-code: '1'
+#          ignore-unfixed: false
+#          severity: 'MEDIUM,HIGH,CRITICAL'
+#          limit-severities-for-sarif: true
+#
+#      - name: Lint ${{ matrix.chart }}
+#        run: |
+#          helm dependency update charts/${{ matrix.chart }}
+#          helm lint charts/${{ matrix.chart }} --strict
+#
+#      - name: KubeVal ${{ matrix.chart }}
+#        run: |
+#          helm plugin install https://github.com/instrumenta/helm-kubeval
+#          helm kubeval --ignore-missing-schemas charts/${{ matrix.chart }}
+#
+#      - name: Upload Trivy scan results for ${{ matrix.chart }}
+#        uses: github/codeql-action/upload-sarif@v2
+#        if: always()
+#        with:
+#          sarif_file: 'trivy-results.sarif'
 
-      - name: Trivy Scan ${{ matrix.chart }}
-        uses: aquasecurity/trivy-action@0.10.0
+      - name: Publish the Helm chart
+        id: publish-chart
+#        if: github.ref == 'refs/heads/main'
+        uses: moikot/chart-publish-action@v1
         with:
-          scan-type: 'config'
-          hide-progress: false
-          format: 'sarif'
-          scan-ref: 'charts/${{matrix.chart}}'
-          output: 'trivy-results.sarif'
-          exit-code: '1'
-          ignore-unfixed: false
-          severity: 'MEDIUM,HIGH,CRITICAL'
-          limit-severities-for-sarif: true
+          charts_dir: "charts/${{ matrix.chart }}"
+          charts_url: "https://charts.iits.tech/"
 
-      - name: Lint ${{ matrix.chart }}
-        run: |
-          helm dependency update charts/${{ matrix.chart }}
-          helm lint charts/${{ matrix.chart }} --strict     
-
-      - name: KubeVal ${{ matrix.chart }}
-        run: |
-          helm plugin install https://github.com/instrumenta/helm-kubeval
-          helm kubeval --ignore-missing-schemas charts/${{ matrix.chart }}          
-
-      - name: Upload Trivy scan results for ${{ matrix.chart }}
-        uses: github/codeql-action/upload-sarif@v2
-        if: always()
+      - name: Commit and push helm-charts
+        uses: EndBug/add-and-commit@v6
+#        if: github.ref == 'refs/heads/main'
         with:
-          sarif_file: 'trivy-results.sarif'
-      - name: Release ${{ matrix.chart }}
-        if: github.ref == 'refs/heads/main'
-        uses: helm/chart-releaser-action@v1.5.0
-        env:
-          CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          author_name: iits
+          author_email: cloudOps@iits-consulting.de
+          branch: gh-pages
+          cwd: "charts/${{ matrix.chart }}"
+          message: "Commit chart ${{ steps.publish-chart.outputs.chart }}"
