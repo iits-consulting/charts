@@ -101,4 +101,17 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4/traefik-0.2.4.tgz
     version: 0.2.4
-generated: "2023-04-28T16:33:25.035314049Z"
+  - apiVersion: v2
+    appVersion: 9.11.0
+    created: "2023-04-28T20:01:05.240713673Z"
+    dependencies:
+    - name: traefik
+      repository: https://helm.traefik.io/traefik
+      version: 10.22.0
+    description: traefik
+    digest: fa250b849251e5c43cf503b7185d0536d5f134790233f00ef00fe514c17b8e4e
+    name: traefik
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-test-pipeline/traefik-0.2.4-test-pipeline.tgz
+    version: 0.2.4-test-pipeline
+generated: "2023-04-28T20:01:05.240731453Z"
