@@ -49,6 +49,14 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/argocd-config-0.2.4/argocd-config-0.2.4.tgz
     version: 0.2.4
+  - apiVersion: v2
+    created: "2023-04-28T20:08:19.990427126Z"
+    description: argocd-dns with traefik, external-dns and cert-manager
+    digest: 0e4c06e7c2b40f6844e1f29e372642b6f35bc34b56d8b37d2ea0d467e492a4f0
+    name: argocd-config
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/argocd-config-0.2.4-multiple-upload/argocd-config-0.2.4-multiple-upload.tgz
+    version: 0.2.4-multiple-upload
   basic-auth-gateway:
   - apiVersion: v2
     created: "2023-04-28T16:33:24.531593737Z"
@@ -114,4 +122,17 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-test-pipeline/traefik-0.2.4-test-pipeline.tgz
     version: 0.2.4-test-pipeline
-generated: "2023-04-28T20:01:05.240731453Z"
+  - apiVersion: v2
+    appVersion: 9.11.0
+    created: "2023-04-28T20:08:20.147704917Z"
+    dependencies:
+    - name: traefik
+      repository: https://helm.traefik.io/traefik
+      version: 10.22.0
+    description: traefik
+    digest: 27fbf53509c5f48adada5453657f853d2401096e131389e9d289ab402efef523
+    name: traefik
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
+    version: 0.2.4-multiple-upload
+generated: "2023-04-28T20:08:20.147724017Z"
