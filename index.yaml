@@ -98,6 +98,19 @@ entries:
   traefik:
   - apiVersion: v2
     appVersion: 9.11.0
+    created: "2023-05-02T11:00:08.684787721Z"
+    dependencies:
+    - name: traefik
+      repository: https://helm.traefik.io/traefik
+      version: 10.22.0
+    description: traefik
+    digest: 9b412c1ecbffab1742429786ce5608d67fa24418f0ab8ee52c972bc914fdc577
+    name: traefik
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/traefik-10.22.0/traefik-10.22.0.tgz
+    version: 10.22.0
+  - apiVersion: v2
+    appVersion: 9.11.0
     created: "2023-04-28T16:33:25.035285849Z"
     dependencies:
     - name: traefik
@@ -135,4 +148,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2023-04-28T20:08:20.147724017Z"
+generated: "2023-05-02T11:00:08.684816721Z"
