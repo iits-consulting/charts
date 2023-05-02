@@ -35,8 +35,11 @@ argo-cd:
       - "--rootpath=/argocd"
       - "--basehref=/argocd"
     logFormat: json
+# List of projects which you want to bootstrap
 projects:
+## bootstraps infrastructure related charts like traefik, elastic-stack...
 #  infrastructure-charts:
+## values which are handed over to the infrastructure-charts project like this you can for example give over information from terraform to argocd
 #    projectValues:
 #      # Set this to enable stage values.yaml
 #      stage:
