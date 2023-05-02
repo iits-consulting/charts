@@ -1,0 +1,10 @@
+Thank you for installing argocd bootstrap by iits-consulting.
+
+The following projects will be bootstrapped:
+
+{{ range $projectName,$project := .Values.projects }}
+
+RepoUrl: {{ $project.git.repoUrl }}
+Path: {{ $project.git.path }}
+
+{{- end }}
