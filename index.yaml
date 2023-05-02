@@ -52,6 +52,18 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/argocd-5.22.1-install-notes/argocd-5.22.1-install-notes.tgz
     version: 5.22.1-install-notes
+  - apiVersion: v2
+    created: "2023-05-02T13:24:46.430047756Z"
+    dependencies:
+    - name: argo-cd
+      repository: https://argoproj.github.io/argo-helm
+      version: 5.22.1
+    description: argo
+    digest: a1c1c4f0070c9d9346bde1cb754674e0a6f501bddaf76209db9d03ee20236a69
+    name: argocd
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/argocd-5.22.1-install-notes/argocd-5.22.1-install-notes.tgz
+    version: 5.22.1-install-notes
   argocd-config:
   - apiVersion: v2
     created: "2023-04-28T16:33:24.391114839Z"
@@ -141,6 +153,19 @@ entries:
     version: 10.22.0
   - apiVersion: v2
     appVersion: 9.11.0
+    created: "2023-05-02T13:24:47.79861898Z"
+    dependencies:
+    - name: traefik
+      repository: https://helm.traefik.io/traefik
+      version: 10.22.0
+    description: traefik
+    digest: c78582246c89d1c55069ce9abe2e1283056d725aab61e51ba6f273673e36a5e1
+    name: traefik
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/traefik-10.22.0-bugfix-port-naming/traefik-10.22.0-bugfix-port-naming.tgz
+    version: 10.22.0-bugfix-port-naming
+  - apiVersion: v2
+    appVersion: 9.11.0
     created: "2023-04-28T16:33:25.035285849Z"
     dependencies:
     - name: traefik
@@ -178,4 +203,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2023-05-02T12:52:54.707869623Z"
+generated: "2023-05-02T13:24:47.798669583Z"
