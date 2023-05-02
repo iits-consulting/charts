@@ -1,0 +1,16 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: prometheus
+spec:
+  entryPoints:
+    - {{.Values.ingressRoute.entryPointName}}
+  routes:
+    - kind: Rule
+      match: Host(`{{.Values.ingressRoute.adminDomain}}`) && PathPrefix(`/prometheus`)
+      services:
+        - kind: Service
+          name: prometheus-stack-prometheus
+          namespace: {{.Release.Namespace}}
+          passHostHeader: true
+          port: 9090

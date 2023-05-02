@@ -1,0 +1,113 @@
+ingressRoute:
+  adminDomain: "admin.my-domain.com"
+  entryPointName: "after-proxy"
+
+prometheusStack:
+  kubeProxy:
+    enabled: false
+  kubeScheduler:
+    enabled: false
+  kubelet:
+    enabled: true
+  nameOverride: prometheus-stack
+  kubeControllerManager:
+    enabled: false
+
+  defaultRules:
+    create: true
+    disabled:
+      NodeClockNotSynchronising: true #CCE does not give access to that
+      KubeletDown: true  #CCE does not give access to that
+      InfoInhibitor: true #It is spamming
+    rules:
+      alertmanager: true
+      etcd: true
+      general: true
+      k8s: true
+      kubeApiserver: true
+      kubeApiserverAvailability: true
+      kubeApiserverError: true
+      kubeApiserverSlos: true
+      kubePrometheusGeneral: true
+      kubePrometheusNodeAlerting: true
+      kubePrometheusNodeRecording: true
+      kubernetesAbsent: true
+      kubernetesApps: true
+      kubernetesResources: false #We need to customize the CPUThrottlingHigh Alert and increase the CPU to X; see also kubernetes-resources.yaml line 151
+      kubernetesStorage: true
+      kubernetesSystem: true
+      kubeStateMetrics: true
+      network: true
+      node: true
+      prometheus: true
+      prometheusOperator: true
+      time: true
+  prometheus:
+    prometheusSpec:
+      podMonitorSelector:
+        matchLabels:
+          argocd.argoproj.io/instance: my-app
+      routePrefix: "/prometheus"
+      resources:
+        requests:
+          memory: "2255Mi"
+          cpu: "60m"
+      storageSpec:
+        volumeClaimTemplate:
+          spec:
+            storageClassName: csi-disk-default-encrypted
+            accessModes: ["ReadWriteOnce"]
+            resources:
+              requests:
+                storage: 30G
+  prometheusOperator:
+    enabled: true
+    tls:
+      enabled: false
+    admissionWebhooks:
+      enabled: false
+      patch:
+        enabled: false
+  grafana:
+    grafana.ini:
+      server:
+        serve_from_sub_path: true
+  alertmanager:
+    config:
+      global:
+        resolve_timeout: 5m
+      route:
+        group_by: [ 'job' ]
+        group_wait: 30s
+        group_interval: 5m
+        repeat_interval: 12h
+        routes:
+          - receiver: 'null'
+            match:
+              alertname: Watchdog
+          - receiver: 'slack'
+            continue: true
+      receivers:
+        - name: 'null'
+        - name: 'slack'
+          slack_configs:
+            - channel: 'infrastructure'
+              link_names: true
+              send_resolved: true
+              title_link: '{{ (index .Alerts 0).GeneratorURL }}'
+              title: '{{ (index .Alerts 0).GeneratorURL | reReplaceAll "(.*)prometheus(.*)" "$1"}}  {{ (index .Alerts 0).Annotations.summary}}'
+              text: >-
+                {{ range .Alerts }}
+                  *Description:* {{ .Annotations.description }}
+                  *Details:*
+                  {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
+                  {{ end }}
+                {{ end }}
+      templates:
+        - /etc/alertmanager/config/*.tmpl
+    alertmanagerSpec:
+      routePrefix: "/alertmanager"
+      resources:
+        requests:
+          memory: "100Mi"
+          cpu: "5m"
