@@ -1,0 +1,70 @@
+ingressRoute:
+  entryPointName: "after-proxy"
+  certificate:
+    # Defaults to .Release.Name
+    name:
+    clusterIssuer: letsencrypt
+
+nextcloudStorage:
+  s3:
+    S3_BUCKET_NAME: "REPLACE_ME"
+    S3_PUBLIC_KEY: "REPLACE_ME"
+    S3_SECRET_KEY: "REPLACE_ME"
+    S3_BUCKET_URL: "REPLACE_ME"
+
+nextcloud:
+  phpClientHttpsFix:
+    enabled: true
+
+  internalDatabase:
+    enabled: false
+
+  externalDatabase:
+    enabled: true
+    type: postgresql
+    host: "REPLACE_ME"
+    user: "REPLACE_ME"
+    port: "REPLACE_ME"
+    password: "REPLACE_ME"
+
+  nextcloud:
+    host: "REPLACE_ME"
+    extraEnv:
+      - name: S3_BUCKET_NAME
+        valueFrom:
+          secretKeyRef:
+            name: "nextcloud-storage-secrets"
+            key: S3_BUCKET_NAME
+      - name: S3_PUBLIC_KEY
+        valueFrom:
+          secretKeyRef:
+            name: "nextcloud-storage-secrets"
+            key: S3_PUBLIC_KEY
+      - name: S3_SECRET_KEY
+        valueFrom:
+          secretKeyRef:
+            name: "nextcloud-storage-secrets"
+            key: S3_SECRET_KEY
+      - name: S3_BUCKET_URL
+        valueFrom:
+          secretKeyRef:
+            name: "nextcloud-storage-secrets"
+            key: S3_BUCKET_URL
+
+    configs:
+      s3.config.php: |-
+        <?php
+        $CONFIG = array (
+          'objectstore' => array(
+            'class' => '\\OC\\Files\\ObjectStore\\S3',
+            'arguments' => array(
+              'bucket'         => getenv('S3_BUCKET_NAME'),
+              'autocreate'     => true,
+              'key'            => getenv('S3_PUBLIC_KEY'),
+              'secret'         => getenv('S3_SECRET_KEY'),
+              'hostname'       => getenv('S3_BUCKET_URL'),
+              'use_ssl'        => true,
+              'use_path_style' => true,
+            )
+          )
+        );

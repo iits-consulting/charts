@@ -1,0 +1,9 @@
+apiVersion: v2
+appVersion: 25.0.2
+dependencies:
+  - name: nextcloud
+    repository: https://nextcloud.github.io/helm/
+    version: 3.4.0
+description: nextcloud for OTC
+name: otc-nextcloud
+version: 0.1.0
