@@ -1,0 +1,19 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: {{.Release.Name}}
+spec:
+  entryPoints:
+    - {{.Values.ingressRoute.entryPointName}}
+  routes:
+    - kind: Rule
+      match: Host(`{{.Values.nextcloud.nextcloud.host}}`)
+      services:
+        - kind: Service
+          name: {{ .Release.Name }}
+          passHostHeader: true
+          port: {{.Values.nextcloud.service.port}}
+  tls:
+    secretName: {{.Values.ingressRoute.certificate.name}}
+    domains:
+      - main: {{.Values.nextcloud.nextcloud.host}}
