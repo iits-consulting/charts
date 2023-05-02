@@ -1,0 +1,19 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: kibana
+spec:
+  entryPoints:
+    - {{.Values.ingressRoute.entryPointName}}
+  routes:
+    - kind: Rule
+      match: {{.Values.ingressRoute.adminDomain}} && PathPrefix(`/kibana`)
+      middlewares:
+        - name: strip-prefix-{{ .Release.Name }}
+          namespace: {{ .Release.Namespace }}
+      services:
+        - kind: Service
+          name: elastic-stack-kibana
+          namespace: {{.Release.Namespace}}
+          passHostHeader: true
+          port: 5601

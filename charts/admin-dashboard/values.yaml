@@ -1,7 +1,7 @@
 ingressRoute:
   adminDomain: "admin.my-domain.com"
   pathPrefix: "/"
-  entryPointName: "afterOIDCProxy"
+  entryPointName: "after-proxy"
 nginx:
   replicaCount: 1
   image:

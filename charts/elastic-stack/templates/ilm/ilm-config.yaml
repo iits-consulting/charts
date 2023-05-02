@@ -1,0 +1,77 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{.Release.Name}}-ilm-config
+data:
+  configure-ilm.sh: |
+    #!/bin/sh
+    set -eu
+
+    endpoint="elasticsearch-master:9200"
+
+    {{ range $policyName, $policyConfig  := .Values.ilm.policies }}
+
+    echo -e "\nINFO: Start create ilm policy for {{$policyName}}"
+    curl -s -X PUT --header 'Content-Type: application/json' ${endpoint}/_ilm/policy/{{$policyName}} --data-binary @- << EOF
+
+        {
+          "policy": {
+            "phases": {
+              "hot": {
+                "actions": {
+                  "set_priority": {
+                    "priority": 100
+                  }
+                },
+                "min_age": "0ms"
+              },
+              "cold": {
+                "min_age": "{{$policyConfig.coldAfter}}",
+                "actions": {
+                  "set_priority": {
+                    "priority": 0
+                  },
+                  "freeze": {}
+                }
+              },
+              "delete": {
+                "min_age": "{{$policyConfig.deleteAfter}}",
+                "actions": {
+                  "delete": {}
+                }
+              }
+            }
+          }
+        }
+    EOF
+
+    echo -e "\nINFO: Create ilm policy for {{$policyName}} finished"
+
+    echo -e "\nINFO: Start create ilm index template for {{$policyName}}"
+    curl -s -X PUT --header 'Content-Type: application/json' ${endpoint}/_index_template/{{$policyName}} --data-binary @- << EOF
+
+        {
+          "index_patterns" : {{$policyConfig.indexPatterns | toJson }},
+          "template": {
+            "settings" : {
+                "index.lifecycle.name": "{{$policyName}}"
+            }
+          }
+        }
+    EOF
+
+    echo -e "\nINFO: Create ilm index template for {{$policyName}} finished"
+
+    {{ range $indexPattern  := $policyConfig.indexPatterns }}
+    echo -e "\nINFO: Start apply {{$policyName}} to {{$indexPattern}}"
+    curl -s -X PUT --header 'Content-Type: application/json' ${endpoint}/{{$indexPattern}}/_settings --data-binary @- << EOF
+    {
+      "index.lifecycle.name": "{{$policyName}}"
+    }
+    EOF
+
+    echo -e "\nINFO: Apply {{$policyName}} to {{$indexPattern}} finished"
+    {{ end }}
+    {{ end }}
+
+    exit 0

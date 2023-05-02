@@ -1,0 +1,31 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{.Release.Name}}-ilm-init
+  annotations:
+    helm.sh/hook: post-install,post-upgrade
+    helm.sh/hook-weight: "-5"
+    checksum/config: {{ include (print $.Template.BasePath "/ilm/ilm-config.yaml") . | sha256sum | substr 0 50 }}
+spec:
+  backoffLimit: 0
+  parallelism: 1
+  completions: 1
+  template:
+    metadata:
+      name: {{.Release.Name}}-jobcommand
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: {{.Release.Name}}-ilm-init
+          image: {{ .Values.ilm.image.repository }}:{{ .Values.ilm.image.tag }}
+          imagePullPolicy: IfNotPresent
+          command: ['/bin/sh', '-c']
+          args: ["/ilm-config/configure-ilm.sh"]
+          volumeMounts:
+            - name: ilm-config
+              mountPath: /ilm-config
+      volumes:
+        - name: ilm-config
+          configMap:
+            name: {{.Release.Name}}-ilm-config
+            defaultMode: 0755
