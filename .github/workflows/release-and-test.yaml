@@ -92,7 +92,7 @@ jobs:
 
   release-charts:
     name: Release
-    if: github.ref == 'refs/heads/main'
+#    if: github.ref == 'refs/heads/main'
     needs: check-charts
     permissions:
       contents: write
