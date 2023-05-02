@@ -112,6 +112,28 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/crds-1.4.1/crds-1.4.1.tgz
     version: 1.4.1
+  elastic-stack:
+  - apiVersion: v2
+    created: "2023-05-02T15:27:51.938876111Z"
+    dependencies:
+    - condition: elasticsearch.enabled
+      name: elasticsearch
+      repository: https://helm.elastic.co
+      version: 7.17.3
+    - condition: kibana.enabled
+      name: kibana
+      repository: https://helm.elastic.co
+      version: 7.17.3
+    - condition: filebeat.enabled
+      name: filebeat
+      repository: https://helm.elastic.co
+      version: 7.17.3
+    description: Awesome Logs
+    digest: a901ffa27b839decf31f5b82fa2d864f1ba6c05f9f629247fe8eb38025f57033
+    name: elastic-stack
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/elastic-stack-7.17.3/elastic-stack-7.17.3.tgz
+    version: 7.17.3
   kafka:
   - apiVersion: v2
     created: "2023-04-28T16:33:24.871505819Z"
@@ -128,6 +150,20 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/kafka-0.2.5/kafka-0.2.5.tgz
     version: 0.2.5
+  prometheus-stack:
+  - apiVersion: v2
+    created: "2023-05-02T15:27:52.38712139Z"
+    dependencies:
+    - alias: prometheusStack
+      name: kube-prometheus-stack
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 43.1.3
+    description: Grafana Prometheus Alertmanager
+    digest: 79120e550ff3723c307ed2069a0a2d717c1f3f8876cf1a4ceb7f1035f6debd14
+    name: prometheus-stack
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/prometheus-stack-43.1.3/prometheus-stack-43.1.3.tgz
+    version: 43.1.3
   registry-creds:
   - apiVersion: v2
     created: "2023-05-02T12:52:54.707825222Z"
@@ -187,6 +223,19 @@ entries:
     version: 10.22.0-after-proxy
   - apiVersion: v2
     appVersion: 9.11.0
+    created: "2023-05-02T15:27:52.620109569Z"
+    dependencies:
+    - name: traefik
+      repository: https://helm.traefik.io/traefik
+      version: 10.22.0
+    description: traefik
+    digest: 911dbd31780545a921ee4f7ca99f1858552c4e1ccdfeb667cc64eabfa6ea9b6a
+    name: traefik
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/traefik-10.22.0-after-proxy/traefik-10.22.0-after-proxy.tgz
+    version: 10.22.0-after-proxy
+  - apiVersion: v2
+    appVersion: 9.11.0
     created: "2023-04-28T16:33:25.035285849Z"
     dependencies:
     - name: traefik
@@ -224,4 +273,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2023-05-02T14:04:42.889579395Z"
+generated: "2023-05-02T15:27:52.620162168Z"
