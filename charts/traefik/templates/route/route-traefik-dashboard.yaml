@@ -4,7 +4,7 @@ metadata:
   name: traefik-admin-dashboard
 spec:
   entryPoints:
-    - afterOIDCProxy
+    - after-proxy
   routes:
     - match: Host(`{{ .Values.ingressRoute.adminDomain }}`) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))
       kind: Rule

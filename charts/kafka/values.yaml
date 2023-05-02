@@ -1,7 +1,7 @@
 ingressRoute:
   adminDomain: "admin.my-domain.com"
   pathPrefix: "/akhq"
-  entryPointName: "afterOIDCProxy"
+  entryPointName: "after-proxy"
 
 kafka:
   replicaCount: 3

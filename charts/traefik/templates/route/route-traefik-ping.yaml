@@ -5,7 +5,7 @@ metadata:
 spec:
   entryPoints:
     - web
-    - afterOIDCProxy
+    - after-proxy
   routes:
     - match: Host(`{{ .Values.ingressRoute.adminDomain }}`) && PathPrefix(`/ping`)
       kind: Rule

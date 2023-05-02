@@ -1,7 +1,7 @@
 ingressRoute:
   adminDomain: "admin.my-domain.com"
   pathPrefix: "/argocd"
-  entryPointName: "afterOIDCProxy"
+  entryPointName: "after-proxy"
 configs:
   secret:
     # -- Annotations to be added to argocd-secret

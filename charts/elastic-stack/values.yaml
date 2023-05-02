@@ -1,0 +1,159 @@
+ingressRoute:
+  adminDomain: "admin.my-domain.com"
+  entryPointName: "after-proxy"
+filebeat:
+  enabled: true
+  readinessProbe:
+    failureThreshold: 50
+    initialDelaySeconds: 20
+    periodSeconds: 30
+    timeoutSeconds: 10
+  filebeatConfig:
+    filebeat.yml: |
+      setup:
+        ilm:
+          enabled: false
+      filebeat.autodiscover:
+        providers:
+          - type: kubernetes
+            hints.enabled: true
+            node: ${NODE_NAME}
+            templates:
+              - condition.or:
+                - contains.kubernetes.namespace: kafka
+                - contains.kubernetes.namespace: vault
+                config:
+                  - type: container
+                    paths:
+                      - /var/log/containers/*${data.kubernetes.container.id}.log
+                    multiline.pattern: '\n'
+                    multiline.negate: false
+                    multiline.match: after
+      processors:
+        - decode_json_fields:
+            when:
+               has_fields: ["message"]
+            fields: ["message"]
+            target: ""
+            overwrite_keys: true
+        - drop_event.when.or:
+           - equals.kubernetes.labels.app: "zookeeper"
+           - equals.kubernetes.labels.app: "kibana"
+           - equals.kubernetes.labels.app: "grafana"
+           - equals.kubernetes.labels.app: "prometheus-stack-operator"
+           - equals.kubernetes.labels.app: "elasticsearch-master"
+           - equals.kubernetes.labels.app: "botkube"
+           - equals.kubernetes.labels.app: "prometheus"
+           - equals.msg: "no session found in request, redirecting for authorization"
+           - equals.kubernetes.container.name: "kube-state-metrics"
+           - equals.kubernetes.container.name: "filebeat"
+           - equals.kubernetes.container.name: "traefik-admin-dashboard"
+           - equals.kubernetes.container.name: repo-server
+           - equals.kubernetes.container.name: argocd-notifications-controller
+           - equals.kubernetes.container.name: application-controller
+           - equals.kubernetes.namespace: kruise-system
+           - equals.kubernetes.namespace: kube-system
+           - equals.kubernetes.labels.component: registry
+           - equals.RequestPath: "/ping"
+           - equals.RouterName: "kibana@file"
+           - equals.message: "200 OK: GET - /public/api/health"
+           - contains.message: "vault-sealed-check\" does not have associated TTL"
+           - contains.message: "Error while renaming Node ID"
+           - contains.message: "pkg/mod/k8s.io/client-go@v0.17.0/tools/cache/reflector.go:108"
+           # Harbor
+           - contains.container.image.name: "goharbor/nginx-photon"      
+           # Vault logs
+           - equals.auth.metadata.role_name: gitlab
+           - equals.auth.metadata.role_name: banzai-webhook-role
+           - equals.app: vault-secrets-webhook
+           - contains.message: "agent.server: member joined, marking health alive:"
+      output.elasticsearch:
+        hosts: '${ELASTICSEARCH_HOSTS:elasticsearch-master:9200}'
+        indices:
+            - index: "traefik-and-keycloak-proxy_%{[agent.version]}-%{+yyyy.MM}"
+              when:
+                or:
+                 - equals:
+                    kubernetes.labels.app: "keycloak-proxy"
+                 - equals:
+                    kubernetes.labels.app: "keycloak-proxy-admin"
+                 - equals:
+                    kubernetes.container.name: "traefik"
+            - index: "kafka-%{[agent.version]}-%{+yyyy.MM}"
+              when:
+                and:
+                 - equals:
+                    kubernetes.namespace: "kafka"
+            - index: "vault-%{[agent.version]}-%{+yyyy.MM}"
+              when:
+                and:
+                - equals:
+                   kubernetes.namespace: "vault"
+            - index: "geoserver-%{[agent.version]}-%{+yyyy.MM}"
+              when:
+                and:
+                - equals:
+                   kubernetes.namespace: "geoserver"
+            - index: "argocd_%{[agent.version]}-%{+yyyy.MM}"
+              when:
+                or:
+                 - equals:
+                    app.kubernetes.io/instance: "argocd"
+            - index: "elastalert_%{[agent.version]}-%{+yyyy.MM}"
+              when:
+                or:
+                 - equals:
+                    kubernetes.container.name: "elastalert"      
+            - index: "not-defined-%{[agent.version]}-%{+yyyy.MM}"
+      setup.kibana:
+        host: "elastic-stack-kibana:5601"
+        protocol: "http"
+
+elasticsearch:
+  updateStrategy: RollingUpdate
+  enabled: true
+  volumeClaimTemplate:
+    accessModes: [ "ReadWriteOnce" ]
+    resources:
+      requests:
+        storage: 100G
+  replicas: 1
+  esConfig:
+    elasticsearch.yml: |
+      cluster.name: "docker-cluster"
+      network.host: 0.0.0.0
+      http.max_header_size: 16kb
+      cluster.max_shards_per_node: 30000
+kibana:
+  enabled: true
+  replicas: 1
+  kibanaConfig:
+    kibana.yml: |
+      server.name: kibana
+      server.host: "0"
+      server.basePath: "/kibana"
+      elasticsearch.hosts: [ "http://elasticsearch:9200" ]
+      xpack.monitoring.ui.container.elasticsearch.enabled: true
+      xpack.monitoring.enabled: true
+  service:
+    type: ClusterIP
+    port: 5601
+    annotations: {}
+ilm:
+  image:
+    repository: curlimages/curl
+    tag: 7.82.0
+  policies:
+    long:
+      #business apps and security relevant logs
+      indexPatterns: ["vault*","traefik-and-keycloak-proxy*" ]
+      coldAfter: 32d
+      deleteAfter: 365d
+    medium:
+      indexPatterns: [ "kafka*","not-defined*" ]
+      coldAfter: 32d
+      deleteAfter: 90d
+    short:
+      indexPatterns: [ "argocd*"]
+      coldAfter: 2d
+      deleteAfter: 14d
