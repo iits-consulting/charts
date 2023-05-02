@@ -210,6 +210,15 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/kafka-0.2.5/kafka-0.2.5.tgz
     version: 0.2.5
+  otc-storage-classes:
+  - apiVersion: v2
+    created: "2023-05-02T18:40:06.139560369Z"
+    description: custom storage classes for otc
+    digest: 8586addaa4df04ff218822ff882a60f8b4d2540faa7b7a3e0c8ea019c8788491
+    name: otc-storage-classes
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/otc-storage-classes-1.0.0/otc-storage-classes-1.0.0.tgz
+    version: 1.0.0
   prometheus-stack:
   - apiVersion: v2
     created: "2023-05-02T15:27:52.38712139Z"
@@ -346,4 +355,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2023-05-02T18:36:28.222047354Z"
+generated: "2023-05-02T18:40:06.139639075Z"
