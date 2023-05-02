@@ -24,7 +24,7 @@ traefik:
     annotations:
       "traefik.service.annotations.kubernetes.io/elb.id": "SET_BY_ARGOCD_STAGE_VALUES"
   ports:
-    afterOIDCProxy:
+    after-oidc-proxy:
       exposedPort: 8444
       port: 8444
       expose: false

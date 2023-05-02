@@ -6,4 +6,4 @@ dependencies:
   version: 10.22.0
 description: traefik
 name: traefik
-version: 10.22.0
+version: 10.22.0-bugfix-port-naming
