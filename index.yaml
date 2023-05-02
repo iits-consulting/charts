@@ -64,6 +64,18 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/argocd-5.22.1-install-notes/argocd-5.22.1-install-notes.tgz
     version: 5.22.1-install-notes
+  - apiVersion: v2
+    created: "2023-05-02T18:06:05.174095084Z"
+    dependencies:
+    - name: argo-cd
+      repository: https://argoproj.github.io/argo-helm
+      version: 5.22.1
+    description: argo
+    digest: 97244d0f1b2a4fbd0b6e4eb0f8883e6de872e61d90c31613070a6a4e37914eb2
+    name: argocd
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/argocd-5.22.1-enable-crds/argocd-5.22.1-enable-crds.tgz
+    version: 5.22.1-enable-crds
   argocd-config:
   - apiVersion: v2
     created: "2023-04-28T16:33:24.391114839Z"
@@ -281,4 +293,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2023-05-02T15:54:38.038856022Z"
+generated: "2023-05-02T18:06:05.174322387Z"
