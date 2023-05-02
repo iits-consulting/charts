@@ -1,0 +1,18 @@
+allowVolumeExpansion: true
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: ssd-encrypted
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "true"
+parameters:
+  csi.storage.k8s.io/csi-driver-name: disk.csi.everest.io
+  csi.storage.k8s.io/fstype: ext4
+  {{- if .Values.kmsId }}
+  everest.io/crypt-key-id: {{ $.Values.kmsId }}
+  {{- end }}
+  everest.io/disk-volume-type: SSD
+  everest.io/passthrough: "true"
+provisioner: everest-csi-provisioner
+reclaimPolicy: Retain
+volumeBindingMode: Immediate

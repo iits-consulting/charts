@@ -1,0 +1,22 @@
+allowVolumeExpansion: true
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  {{- if .Values.kmsId }}
+  name: csi-disk-default-encrypted
+  {{- else }}
+  name: csi-disk-default
+  {{- end }}
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "false"
+parameters:
+  csi.storage.k8s.io/csi-driver-name: disk.csi.everest.io
+  csi.storage.k8s.io/fstype: ext4
+  everest.io/disk-volume-type: SATA
+  everest.io/passthrough: "true"
+  {{- if .Values.kmsId }}
+  everest.io/crypt-key-id: {{ $.Values.kmsId }}
+  {{- end }}
+provisioner: everest-csi-provisioner
+reclaimPolicy: Retain
+volumeBindingMode: Immediate
