@@ -33,7 +33,7 @@ jobs:
       - name: Echo changed files
         id: get_changed_charts_folders
         env:
-          ALL_CHARTS: true
+          ALL_CHARTS: false
         run: |
           if $ALL_CHARTS
           then
@@ -101,7 +101,7 @@ jobs:
 
   release-charts:
     name: Release
-    #    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main'
     needs: check-charts
     permissions:
       contents: write
