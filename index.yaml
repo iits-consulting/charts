@@ -270,6 +270,19 @@ entries:
     version: 10.22.0-bugfix-port-naming
   - apiVersion: v2
     appVersion: 9.11.0
+    created: "2023-05-02T18:36:28.221981455Z"
+    dependencies:
+    - name: traefik
+      repository: https://helm.traefik.io/traefik
+      version: 10.22.0
+    description: traefik
+    digest: b0e02e724088233e5aa9a59e1aeb069c34dfa32b4ffc5560a7ec0390c8a05be0
+    name: traefik
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/traefik-10.22.0-after-proxy-v2/traefik-10.22.0-after-proxy-v2.tgz
+    version: 10.22.0-after-proxy-v2
+  - apiVersion: v2
+    appVersion: 9.11.0
     created: "2023-05-02T14:04:42.889108694Z"
     dependencies:
     - name: traefik
@@ -333,4 +346,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2023-05-02T18:32:43.31735161Z"
+generated: "2023-05-02T18:36:28.222047354Z"
