@@ -7,7 +7,7 @@ argo-cd:
         value: "false"
     logFormat: "json"
   crds:
-    install: "false"
+    install: "true"
   dex:
     env:
       - name: "TZ"
