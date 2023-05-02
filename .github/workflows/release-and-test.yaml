@@ -32,7 +32,16 @@ jobs:
           write_output_files: true
       - name: Echo changed files
         id: get_changed_charts_folders
-        run: echo matrix=${{ steps.get_changed_charts.outputs.all_changed_files }} >> $GITHUB_OUTPUT
+        env:
+          ALL_CHARTS: false
+        run: |
+          if $ALL_CHARTS
+          then
+            echo "Release all charts"
+            cd charts && echo matrix="[$(ls -d -Q -m -w 0 *)]" >> $GITHUB_OUTPUT 
+          else
+            echo matrix=${{ steps.get_changed_charts.outputs.all_changed_files }} >> $GITHUB_OUTPUT
+          fi 
 
   check-charts:
     name: Check
@@ -92,8 +101,8 @@ jobs:
 
   release-charts:
     name: Release
-#    if: github.ref == 'refs/heads/main'
-    needs: get_changed_charts
+    #    if: github.ref == 'refs/heads/main'
+    needs: check-charts
     permissions:
       contents: write
       security-events: write
