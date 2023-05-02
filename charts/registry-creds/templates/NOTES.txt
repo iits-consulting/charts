@@ -1,0 +1,5 @@
+Thank you for installing {{ .Chart.Name }}.
+
+Your release is named {{ .Release.Name }}.
+
+This chart is based on https://github.com/alexellis/registry-creds
