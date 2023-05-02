@@ -33,7 +33,7 @@ jobs:
       - name: Echo changed files
         id: get_changed_charts_folders
         env:
-          ALL_CHARTS: false
+          ALL_CHARTS: true
         run: |
           if $ALL_CHARTS
           then
