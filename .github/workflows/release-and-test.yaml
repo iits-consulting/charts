@@ -93,7 +93,7 @@ jobs:
   release-charts:
     name: Release
 #    if: github.ref == 'refs/heads/main'
-    needs: check-charts
+    needs: get_changed_charts
     permissions:
       contents: write
       security-events: write
