@@ -3,6 +3,15 @@ entries:
   admin-dashboard:
   - apiVersion: v2
     appVersion: nginx-1.13.6-alpine
+    created: "2023-05-02T18:32:42.824131173Z"
+    description: admin dashboard with urls
+    digest: 7b3c608022c59eb6b9121370f66ee48b920b569e8820acd32ec1aa35cf265e8a
+    name: admin-dashboard
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/admin-dashboard-0.1.4/admin-dashboard-0.1.4.tgz
+    version: 0.1.4
+  - apiVersion: v2
+    appVersion: nginx-1.13.6-alpine
     created: "2023-04-28T16:33:24.108175924Z"
     description: admin dashboard with urls
     digest: 3eb84c1c5d477e67e3258cf0b3b50a548bdd2a87155af0ed554b6b6dde093f5e
@@ -78,6 +87,14 @@ entries:
     version: 5.22.1-enable-crds
   argocd-config:
   - apiVersion: v2
+    created: "2023-05-02T18:32:42.974126181Z"
+    description: argocd-dns with traefik, external-dns and cert-manager
+    digest: f7d2a10015fbaf93f9ed63797c4755dc44d8a2b73487788b95e854ea4fe2f805
+    name: argocd-config
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/argocd-config-0.2.5/argocd-config-0.2.5.tgz
+    version: 0.2.5
+  - apiVersion: v2
     created: "2023-04-28T16:33:24.391114839Z"
     description: argocd-dns with traefik, external-dns and cert-manager
     digest: 153d5dee43bb42429036c62e731a45a71a45248a67032f2ff4cc4c194ec9cf58
@@ -94,6 +111,14 @@ entries:
     - https://github.com/iits-consulting/charts/releases/download/argocd-config-0.2.4-multiple-upload/argocd-config-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
   basic-auth-gateway:
+  - apiVersion: v2
+    created: "2023-05-02T18:32:43.145795797Z"
+    description: basic auth gateway chart for traefik
+    digest: 681a0f23a984c871ce7cce9aa1a6fea83afef97f611f7ffcf39bcdf512c4edd3
+    name: basic-auth-gateway
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/basic-auth-gateway-0.2.5/basic-auth-gateway-0.2.5.tgz
+    version: 0.2.5
   - apiVersion: v2
     created: "2023-04-28T16:33:24.531593737Z"
     description: basic auth gateway chart for traefik
@@ -155,6 +180,21 @@ entries:
     - https://github.com/iits-consulting/charts/releases/download/elastic-stack-7.17.3/elastic-stack-7.17.3.tgz
     version: 7.17.3
   kafka:
+  - apiVersion: v2
+    created: "2023-05-02T18:32:43.317292209Z"
+    dependencies:
+    - name: kafka
+      repository: https://charts.bitnami.com/bitnami
+      version: 17.2.6
+    - name: akhq
+      repository: https://akhq.io/
+      version: 0.2.2
+    description: Kafka
+    digest: 333a4b5a6e9b90fa1817721dfbb99c2cde663b2b2ab343757fec337fe79bc3e7
+    name: kafka
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/kafka-0.2.6/kafka-0.2.6.tgz
+    version: 0.2.6
   - apiVersion: v2
     created: "2023-04-28T16:33:24.871505819Z"
     dependencies:
@@ -293,4 +333,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2023-05-02T18:06:05.174322387Z"
+generated: "2023-05-02T18:32:43.31735161Z"
