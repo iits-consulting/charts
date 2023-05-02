@@ -40,6 +40,18 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/argocd-5.22.1/argocd-5.22.1.tgz
     version: 5.22.1
+  - apiVersion: v2
+    created: "2023-05-02T11:57:34.238242604Z"
+    dependencies:
+    - name: argo-cd
+      repository: https://argoproj.github.io/argo-helm
+      version: 5.22.1
+    description: argo
+    digest: afd663b55cfecbb0c2666431a718a42220909696912f0c34cea9a46b88da5351
+    name: argocd
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/argocd-5.22.1-install-notes/argocd-5.22.1-install-notes.tgz
+    version: 5.22.1-install-notes
   argocd-config:
   - apiVersion: v2
     created: "2023-04-28T16:33:24.391114839Z"
@@ -79,6 +91,15 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/cert-manager-0.2.3/cert-manager-0.2.3.tgz
     version: 0.2.3
+  crds:
+  - apiVersion: v2
+    created: "2023-05-02T11:57:34.422088294Z"
+    description: default crds for common iits helm charts
+    digest: 148771633144314d460aa4ccfeb3f38e1b759deefd4e92d60346a2208bc3b4d5
+    name: crds
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/crds-1.4.1/crds-1.4.1.tgz
+    version: 1.4.1
   kafka:
   - apiVersion: v2
     created: "2023-04-28T16:33:24.871505819Z"
@@ -148,4 +169,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2023-05-02T11:00:08.684816721Z"
+generated: "2023-05-02T11:57:34.422117895Z"
