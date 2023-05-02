@@ -105,6 +105,14 @@ entries:
     version: 0.2.3
   crds:
   - apiVersion: v2
+    created: "2023-05-02T15:54:38.038813522Z"
+    description: default crds for common iits helm charts
+    digest: b843f4ba57787826853c979aa5b9968d701f76daba9bb380d1450666340f79e6
+    name: crds
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/crds-1.5.0/crds-1.5.0.tgz
+    version: 1.5.0
+  - apiVersion: v2
     created: "2023-05-02T11:57:34.422088294Z"
     description: default crds for common iits helm charts
     digest: 148771633144314d460aa4ccfeb3f38e1b759deefd4e92d60346a2208bc3b4d5
@@ -273,4 +281,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2023-05-02T15:27:52.620162168Z"
+generated: "2023-05-02T15:54:38.038856022Z"
