@@ -50,6 +50,18 @@ entries:
     - https://github.com/iits-consulting/charts/releases/download/argocd-5.30.1/argocd-5.30.1.tgz
     version: 5.30.1
   - apiVersion: v2
+    created: "2023-05-03T09:32:03.054290311Z"
+    dependencies:
+    - name: argo-cd
+      repository: https://argoproj.github.io/argo-helm
+      version: 5.30.1
+    description: argocd bootstrap
+    digest: 8fdd3b06d19420d8a747b665a3d6d4c5faa735d1c1bdb6318bdfc34b8e52e1e4
+    name: argocd
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/argocd-5.30.1-seccompprofile-fix/argocd-5.30.1-seccompprofile-fix.tgz
+    version: 5.30.1-seccompprofile-fix
+  - apiVersion: v2
     created: "2023-04-28T16:33:24.262253457Z"
     dependencies:
     - name: argo-cd
@@ -367,4 +379,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2023-05-03T09:22:45.458655695Z"
+generated: "2023-05-03T09:32:03.054385511Z"
