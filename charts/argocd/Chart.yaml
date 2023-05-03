@@ -1,8 +1,8 @@
 apiVersion: v2
 description: argo
 name: argocd
-version: 5.22.1-enable-crds
+version: 5.30.1
 dependencies:
   - name: argo-cd
     repository: https://argoproj.github.io/argo-helm
-    version: 5.22.1
+    version: 5.30.1
