@@ -25,10 +25,10 @@ argo-cd:
       - name: "ARGOCD_GPG_ENABLED"
         value: "false"
     logFormat: "json"
-  server:
     containerSecurityContext:
       seccompProfile:
         type: Unconfined
+  server:
     env:
       - name: "TZ"
         value: "Europe/Berlin"

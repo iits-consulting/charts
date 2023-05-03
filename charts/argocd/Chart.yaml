@@ -1,7 +1,7 @@
 apiVersion: v2
 description: argocd bootstrap
 name: argocd
-version: 5.30.1-seccompprofile-fix
+version: 5.30.1-repo-server-fix
 dependencies:
   - name: argo-cd
     repository: https://argoproj.github.io/argo-helm
