@@ -1,4 +1,5 @@
 argo-cd:
+
   controller:
     env:
       - name: "TZ"
@@ -25,6 +26,9 @@ argo-cd:
         value: "false"
     logFormat: "json"
   server:
+    containerSecurityContext:
+      seccompProfile:
+        type: Unconfined
     env:
       - name: "TZ"
         value: "Europe/Berlin"
