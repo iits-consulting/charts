@@ -30,5 +30,7 @@ akhq:
           max-header-size: 32768
         context-path: "/akhq"
   secrets: ""
+  livenessProbe:
+    prefix: "/akhq"
   readinessProbe:
-    prefix: "/akhq/ui"
+    prefix: "/akhq"

@@ -5,4 +5,4 @@ dependencies:
     version: 0.3.1
 description: Kafka GUI
 name: akhq
-version: 0.3.1
+version: 0.3.1-fix-probes
