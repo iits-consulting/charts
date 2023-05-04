@@ -36,6 +36,19 @@ entries:
     urls:
     - https://iits-consulting.github.io/charts/admin-dashboard-0.1.0.tgz
     version: 0.1.0
+  akhq:
+  - apiVersion: v2
+    created: "2023-05-04T07:44:11.846994463Z"
+    dependencies:
+    - name: akhq
+      repository: https://akhq.io/
+      version: 0.24.0
+    description: Kafka GUI
+    digest: 1cd6fff8ac47d218e529154734fbdb11f518d2e709197fca5aba9aece4bdee81
+    name: akhq
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/akhq-0.24.0/akhq-0.24.0.tgz
+    version: 0.24.0
   argocd:
   - apiVersion: v2
     created: "2023-05-03T09:22:45.257103991Z"
@@ -217,6 +230,18 @@ entries:
     version: 7.17.3
   kafka:
   - apiVersion: v2
+    created: "2023-05-04T07:44:12.028328843Z"
+    dependencies:
+    - name: kafka
+      repository: https://charts.bitnami.com/bitnami
+      version: 17.2.6
+    description: Kafka
+    digest: 0c9b8600bdc6ccddfe8fd97e254deed365185fecc46b606946bcac89466e74ac
+    name: kafka
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/kafka-17.2.6/kafka-17.2.6.tgz
+    version: 17.2.6
+  - apiVersion: v2
     created: "2023-05-02T18:32:43.317292209Z"
     dependencies:
     - name: kafka
@@ -290,6 +315,14 @@ entries:
     created: "2023-05-03T10:01:19.426415525Z"
     description: registry-creds
     digest: a960f8b3063b4f06d96b9e54cade0192cce162a6ef43cf9b9553b11d4ad0222f
+    name: registry-creds
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/registry-creds-1.1.3-bugfix-user/registry-creds-1.1.3-bugfix-user.tgz
+    version: 1.1.3-bugfix-user
+  - apiVersion: v2
+    created: "2023-05-04T07:44:12.186935575Z"
+    description: registry-creds
+    digest: de9ec18c5c4bc170998c99e488c37cecd0bc5663b6cdc05842924b7e1614ee36
     name: registry-creds
     urls:
     - https://github.com/iits-consulting/charts/releases/download/registry-creds-1.1.3-bugfix-user/registry-creds-1.1.3-bugfix-user.tgz
@@ -399,4 +432,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2023-05-03T10:01:19.426488529Z"
+generated: "2023-05-04T07:44:12.187182878Z"
