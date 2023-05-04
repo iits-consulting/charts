@@ -18,6 +18,7 @@ spec:
     spec:
       securityContext:
         runAsNonRoot: true
+        runAsUser: 999
       containers:
         - name: {{  .Chart.Name }}
           image: {{ .Values.nginx.image.repository }}:{{ .Values.nginx.image.tag }}
