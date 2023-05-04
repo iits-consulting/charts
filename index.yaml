@@ -3,6 +3,15 @@ entries:
   admin-dashboard:
   - apiVersion: v2
     appVersion: nginx-1.13.6-alpine
+    created: "2023-05-04T08:50:59.87189585Z"
+    description: admin dashboard with urls
+    digest: e8a735d8d7260e2b537680e1df72447c3a9b94693a3dd9e89bbf5e94439a6d2e
+    name: admin-dashboard
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/admin-dashboard-0.1.5/admin-dashboard-0.1.5.tgz
+    version: 0.1.5
+  - apiVersion: v2
+    appVersion: nginx-1.13.6-alpine
     created: "2023-05-02T18:32:42.824131173Z"
     description: admin dashboard with urls
     digest: 7b3c608022c59eb6b9121370f66ee48b920b569e8820acd32ec1aa35cf265e8a
@@ -432,4 +441,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2023-05-04T07:44:12.187182878Z"
+generated: "2023-05-04T08:50:59.872061757Z"
