@@ -258,6 +258,27 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/elastic-stack-7.17.3/elastic-stack-7.17.3.tgz
     version: 7.17.3
+  - apiVersion: v2
+    created: "2023-05-04T12:01:08.624725744Z"
+    dependencies:
+    - condition: elasticsearch.enabled
+      name: elasticsearch
+      repository: https://helm.elastic.co
+      version: 7.17.3
+    - condition: kibana.enabled
+      name: kibana
+      repository: https://helm.elastic.co
+      version: 7.17.3
+    - condition: filebeat.enabled
+      name: filebeat
+      repository: https://helm.elastic.co
+      version: 7.17.3
+    description: Awesome Logs
+    digest: 2f118d8d746a52fe07924a7dd98e8b3b51c3ecaf07f50c410cc74a8e4eeea87a
+    name: elastic-stack
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/elastic-stack-7.17.3-route-bugfix/elastic-stack-7.17.3-route-bugfix.tgz
+    version: 7.17.3-route-bugfix
   kafka:
   - apiVersion: v2
     created: "2023-05-04T07:44:12.028328843Z"
@@ -462,4 +483,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2023-05-04T09:42:10.754152711Z"
+generated: "2023-05-04T12:01:08.624931346Z"
