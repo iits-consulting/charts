@@ -4,12 +4,16 @@ ingressRoute:
   entryPointName: "after-proxy"
 
 akhq:
+  networkPolicy:
+    enabled: false
+  image:
+    tag: 0.21.0
   resources:
     requests:
       memory: "400Mi"
       cpu: "1m"
   replicaCount: 1
-  configuration: |
+  configuration:
     akhq:
       connections:
         kafka:
@@ -26,7 +30,5 @@ akhq:
           max-header-size: 32768
         context-path: "/akhq"
   secrets: ""
-  livenessProbe:
-    prefix: "/akhq"
   readinessProbe:
-    prefix: "/akhq"
+    prefix: "/akhq/ui"

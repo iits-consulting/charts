@@ -9,6 +9,6 @@ spec:
     - kind: Rule
       match: Host(`{{.Values.ingressRoute.adminDomain}}`) && PathPrefix(`{{.Values.ingressRoute.pathPrefix}}`)
       services:
-        - name: {{ .Release.Name }}-akhq
+        - name: {{ .Release.Name }}
           passHostHeader: true
-          port: 80
+          port: {{.Values.akhq.service.port}}
