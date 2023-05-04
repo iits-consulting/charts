@@ -7,7 +7,7 @@ spec:
     - {{.Values.ingressRoute.entryPointName}}
   routes:
     - kind: Rule
-      match: {{.Values.ingressRoute.adminDomain}} && PathPrefix(`/elasticsearch`)
+      match: Host(`{{.Values.ingressRoute.adminDomain}}`)  && PathPrefix(`/elasticsearch`)
       middlewares:
         - name: strip-prefix-{{ .Release.Name }}
           namespace: {{ .Release.Namespace }}

@@ -7,7 +7,7 @@ spec:
     - {{.Values.ingressRoute.entryPointName}}
   routes:
     - kind: Rule
-      match: {{.Values.ingressRoute.adminDomain}} && PathPrefix(`/kibana`)
+      match: Host(`{{.Values.ingressRoute.adminDomain}}`)  && PathPrefix(`/kibana`)
       middlewares:
         - name: strip-prefix-{{ .Release.Name }}
           namespace: {{ .Release.Namespace }}
