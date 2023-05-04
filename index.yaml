@@ -67,6 +67,18 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/akhq-0.24.0/akhq-0.24.0.tgz
     version: 0.24.0
+  - apiVersion: v2
+    created: "2023-05-04T09:42:10.753549495Z"
+    dependencies:
+    - name: akhq
+      repository: https://akhq.io/
+      version: 0.3.1
+    description: Kafka GUI
+    digest: 3a36fbc5c6bc4961e99805fe07f0ad060677f0d4a21cbd9bf92296066ae431f1
+    name: akhq
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/akhq-0.3.1-fix-probes/akhq-0.3.1-fix-probes.tgz
+    version: 0.3.1-fix-probes
   argocd:
   - apiVersion: v2
     created: "2023-05-03T09:22:45.257103991Z"
@@ -450,4 +462,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2023-05-04T09:07:34.346901299Z"
+generated: "2023-05-04T09:42:10.754152711Z"
