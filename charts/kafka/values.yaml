@@ -1,8 +1,3 @@
-ingressRoute:
-  adminDomain: "admin.my-domain.com"
-  pathPrefix: "/akhq"
-  entryPointName: "after-proxy"
-
 kafka:
   replicaCount: 3
   maxMessageBytes: _52428800
@@ -15,30 +10,3 @@ kafka:
       enabled: true
   persistence:
     size: 30G
-akhq:
-  image:
-    tag: 0.17.0
-  resources:
-    requests:
-      memory: "400Mi"
-      cpu: "1m"
-  replicaCount: 1
-  configuration: |
-    akhq:
-      connections:
-        kafka:
-          properties:
-            bootstrap.servers: "kafka:9092"
-      server:
-        access-log:
-          enabled: true
-          name: org.akhq.log.access
-    micronaut:
-      server:
-        netty:
-          max-initial-line-length: 16384
-          max-header-size: 32768
-        context-path: "/akhq"
-  secrets: ""
-  readinessProbe:
-    prefix: "/akhq"

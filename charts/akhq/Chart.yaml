@@ -1,0 +1,8 @@
+apiVersion: v2
+dependencies:
+- name: akhq
+  repository: https://akhq.io/
+  version: 0.24.0
+description: Kafka GUI
+name: akhq
+version: 0.24.0
