@@ -1,0 +1,32 @@
+ingressRoute:
+  adminDomain: "admin.my-domain.com"
+  pathPrefix: "/akhq"
+  entryPointName: "after-proxy"
+
+akhq:
+  resources:
+    requests:
+      memory: "400Mi"
+      cpu: "1m"
+  replicaCount: 1
+  configuration: |
+    akhq:
+      connections:
+        kafka:
+          properties:
+            bootstrap.servers: "kafka:9092"
+      server:
+        access-log:
+          enabled: true
+          name: org.akhq.log.access
+    micronaut:
+      server:
+        netty:
+          max-initial-line-length: 16384
+          max-header-size: 32768
+        context-path: "/akhq"
+  secrets: ""
+  livenessProbe:
+    prefix: "/akhq"
+  readinessProbe:
+    prefix: "/akhq"
