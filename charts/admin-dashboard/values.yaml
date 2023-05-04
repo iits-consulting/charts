@@ -5,13 +5,13 @@ ingressRoute:
 nginx:
   replicaCount: 1
   image:
-    repository: nginx
-    tag: 1.13.6-alpine
+    repository: nginxinc/nginx-unprivileged
+    tag: 1.24-bullseye-perl
   service:
-    port: 80
+    port: 8080
     type: ClusterIP
   health:
-    port: 80
+    port: 8080
   resources:
     requests:
       memory: "4Mi"
@@ -29,8 +29,6 @@ nginx:
     <body>
       <p>Tech Admin Board</p>
       <ul>
-        <li><a href="argocd">ArgoCD</a></li>
-        <li><a href="akhq/ui/kafka/topic">akhq (kafka headquarter)</a></li>
         <li><a href="dashboard/#/">Traefik Dashboard</a></li>
       </ul>
     </body>

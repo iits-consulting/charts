@@ -13,4 +13,4 @@ spec:
           name: {{ .Release.Name }}
           namespace: {{ .Release.Namespace }}
           passHostHeader: true
-          port: 80
+          port: {{.Values.nginx.service.port}}
