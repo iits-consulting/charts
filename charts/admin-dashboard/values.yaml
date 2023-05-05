@@ -2,34 +2,17 @@ ingressRoute:
   adminDomain: "admin.my-domain.com"
   pathPrefix: "/"
   entryPointName: "after-proxy"
-nginx:
-  replicaCount: 1
-  image:
-    repository: nginxinc/nginx-unprivileged
-    tag: 1.24-bullseye-perl
-  service:
-    port: 8080
-    type: ClusterIP
-  health:
-    port: 8080
-  resources:
-    requests:
-      memory: "4Mi"
-      cpu: "1m"
-    limits:
-      memory: "32Mi"
-      cpu: "10m"
-  mainPage: |
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <meta charset="UTF-8">
-      <title>Tech Admin Board</title>
-    </head>
-    <body>
-      <p>Tech Admin Board</p>
-      <ul>
-        <li><a href="dashboard/#/">Traefik Dashboard</a></li>
-      </ul>
-    </body>
-    </html>
+image:
+  repository: lipanski/docker-static-website
+  tag: 2.1.0
+service:
+  port: 3000
+  type: ClusterIP
+resources:
+  requests:
+    memory: "4Mi"
+    cpu: "1m"
+  limits:
+    memory: "8Mi"
+    cpu: "10m"
+website: ""
