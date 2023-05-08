@@ -33,7 +33,7 @@ resource "helm_release" "argocd" {
 
           git = {
             password = var.git_token
-            repoUrl  = "https://github.com/victorgetz/infrastructure-charts.git"
+            repoUrl  = "https://github.com/iits-consulting/otc-infrastructure-charts-template"
           }
         }
       }
@@ -43,5 +43,5 @@ resource "helm_release" "argocd" {
 }
 ```
 
-In the project https://github.com/victorgetz/infrastructure-charts.git it expects a helm chart
+In the project https://github.com/iits-consulting/otc-infrastructure-charts-template it expects a helm chart
 named infrastructure-charts and will install everything from there.
