@@ -129,6 +129,18 @@ entries:
     - https://github.com/iits-consulting/charts/releases/download/argocd-5.30.1-repo-server-fix/argocd-5.30.1-repo-server-fix.tgz
     version: 5.30.1-repo-server-fix
   - apiVersion: v2
+    created: "2023-05-08T10:17:33.058029407Z"
+    dependencies:
+    - name: argo-cd
+      repository: https://argoproj.github.io/argo-helm
+      version: 5.30.1
+    description: argocd bootstrap
+    digest: e426cc22a0dec5af09d488fbe9487c956332275b9912cb02351f7960ac9d7689
+    name: argocd
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/argocd-5.30.1-repo-server-fix/argocd-5.30.1-repo-server-fix.tgz
+    version: 5.30.1-repo-server-fix
+  - apiVersion: v2
     created: "2023-04-28T16:33:24.262253457Z"
     dependencies:
     - name: argo-cd
@@ -419,6 +431,19 @@ entries:
     version: 10.22.0-bugfix-port-naming
   - apiVersion: v2
     appVersion: 9.11.0
+    created: "2023-05-08T10:17:33.394064846Z"
+    dependencies:
+    - name: traefik
+      repository: https://helm.traefik.io/traefik
+      version: 10.22.0
+    description: traefik
+    digest: 0d883c80733d3e7620b217fae382366f9ff1db1de1d5172621e26919e3ad7b76
+    name: traefik
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/traefik-10.22.0-after-proxy-v3/traefik-10.22.0-after-proxy-v3.tgz
+    version: 10.22.0-after-proxy-v3
+  - apiVersion: v2
+    appVersion: 9.11.0
     created: "2023-05-02T18:36:28.221981455Z"
     dependencies:
     - name: traefik
@@ -495,4 +520,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2023-05-08T09:06:14.006724034Z"
+generated: "2023-05-08T10:17:33.394411354Z"
