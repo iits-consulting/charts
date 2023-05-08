@@ -1,9 +1,11 @@
-upstream:
-  service:
-    name: traefik-websecure-internal
-    port: 8444
-
+#https://doc.traefik.io/traefik/middlewares/http/basicauth/
+credentials: |-
+  admin:$2y$05$4F7SwJRC6SL.uu0DUr1cjO.IOnY3uVb12MWTi/YG/TVsFulTRk4qe
 ingressRoute:
+  upstream:
+    service:
+      name: traefik-websecure-internal
+      port: 8444
   adminDomain: "admin.my-domain.com"
   entryPointName: "websecure"
   certificate:
