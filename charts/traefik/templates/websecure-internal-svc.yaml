@@ -1,3 +1,5 @@
+{{- $afterProxyPort := index .Values.traefik.ports "after-proxy"}}
+
 apiVersion: v1
 kind: Service
 metadata:
@@ -5,10 +7,10 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-    - port: 8444
-      targetPort: 8444
+    - port: {{$afterProxyPort.port}}
+      targetPort: {{$afterProxyPort.port}}
       protocol: TCP
-      name: secure-internal
+      name: after-proxy
   selector:
     app.kubernetes.io/name: traefik
     app.kubernetes.io/instance: {{ .Release.Name }}
