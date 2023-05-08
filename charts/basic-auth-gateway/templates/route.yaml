@@ -11,8 +11,8 @@ spec:
       middlewares:
         - name: basic-auth-gateway
       services:
-        - name: {{ .Values.upstream.service.name }}
-          port: {{ .Values.upstream.service.port }}
+        - name: {{ .Values.ingressRoute.upstream.service.name }}
+          port: {{ .Values.ingressRoute.upstream.service.port }}
   tls:
     secretName: {{.Values.ingressRoute.certificate.name}}
     domains:
