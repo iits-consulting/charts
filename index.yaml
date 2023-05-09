@@ -311,6 +311,15 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/elastic-stack-7.17.3-route-bugfix/elastic-stack-7.17.3-route-bugfix.tgz
     version: 7.17.3-route-bugfix
+  iits-admin-dashboard:
+  - apiVersion: v2
+    created: "2023-05-09T15:57:20.152729278Z"
+    description: admin dashboard with urls
+    digest: ad7cd7d5c2a786423271f22cf015456372f74a952176d70dcb7369d5122957bc
+    name: iits-admin-dashboard
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/iits-admin-dashboard-1.0.0/iits-admin-dashboard-1.0.0.tgz
+    version: 1.0.0
   kafka:
   - apiVersion: v2
     created: "2023-05-04T07:44:12.028328843Z"
@@ -528,4 +537,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2023-05-08T11:15:28.49148325Z"
+generated: "2023-05-09T15:57:20.153364331Z"
