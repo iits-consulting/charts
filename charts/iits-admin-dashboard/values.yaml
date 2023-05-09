@@ -1,0 +1,47 @@
+ingressRoute:
+  adminDomain: "admin.my-domain.com"
+  pathPrefix: "/"
+  entryPointName: "after-proxy"
+image:
+  repository: lipanski/docker-static-website
+  tag: 2.1.0
+service:
+  port: 3000
+  type: ClusterIP
+resources:
+  requests:
+    memory: "4Mi"
+    cpu: "1m"
+  limits:
+    memory: "8Mi"
+    cpu: "10m"
+# You can add here a custom HTML website
+#website: |-
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
