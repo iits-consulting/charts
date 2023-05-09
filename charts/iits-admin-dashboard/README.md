@@ -1,0 +1,5 @@
+# admin-dashboard
+
+This chart deploys a super simple webserver that provides a simple website containing links to a set
+of dashboards that are usually deployed in our infrastructure setup as well as some nifty external
+tools.

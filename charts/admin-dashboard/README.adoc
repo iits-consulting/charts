@@ -1,3 +1,0 @@
-= Description
-
-Nginx which serves simple html page
