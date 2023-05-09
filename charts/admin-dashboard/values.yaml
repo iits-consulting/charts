@@ -22,14 +22,91 @@ nginx:
   mainPage: |
     <!DOCTYPE html>
     <html lang="en">
+    
     <head>
-      <meta charset="UTF-8">
-      <title>Tech Admin Board</title>
+        <meta charset="UTF-8">
+        <title>Tech Admin Board</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                margin: 0;
+                background-color: #f5f5f5;
+            }
+    
+            .container {
+                text-align: center;
+                width: 80%;
+                max-width: 704px; /* Adjust the container width to accommodate the increased tile size */
+            }
+    
+            h1 {
+                font-size: 2rem;
+                margin-bottom: 2rem; /* Increase the space between h1 and tiles */
+            }
+    
+            .logo {
+                display: block;
+                margin: 0 auto;
+                width: 150px;
+                height: auto;
+                margin-bottom: 1rem;
+            }
+    
+            .tiles {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 1rem;
+            }
+    
+            .tile {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.2rem;
+                width: 165px; /* Increase width by 10% */
+                height: 165px; /* Increase height by 10% */
+                text-decoration: none;
+                border-radius: 5px;
+                transition: all 0.3s;
+                background-size: contain;
+                background-repeat: no-repeat;
+                background-position: center;
+                opacity: 0.8;
+            }
+    
+            .tile img {
+                max-width: 100%;
+                max-height: 100%;
+            }
+    
+            .tile:hover {
+                opacity: 1;
+                transform: scale(1.05);
+            }
+    
+        </style>
     </head>
+    
     <body>
-      <p>Tech Admin Board</p>
-      <ul>
-        <li><a href="dashboard/#/">Traefik Dashboard</a></li>
-      </ul>
+    <div class="container">
+        <img class="logo" src="https://iits-consulting.de/wp-content/uploads/2021/08/iits-logo-2021-red-square-xl.png" alt="IITS Consulting Logo" />
+        <h1>Tech Admin Board</h1>
+        <div class="tiles">
+            <a href="argocd" class="tile">
+                <img src="https://cncf-branding.netlify.app/img/projects/argo/stacked/color/argo-stacked-color.png" alt="ArgoCD">
+            </a>
+            <a href="akhq/ui/kafka/topic" class="tile">
+                <img src="https://kafka.apache.org/images/apache-kafka.png" alt="akhq (kafka headquarter)">
+            </a>
+            <a href="dashboard/#/" class="tile">
+                <img src="https://raw.githubusercontent.com/docker-library/docs/a6cc2c5f4bc6658168f2a0abbb0307acaefff80e/traefik/logo.png" alt="Traefik Dashboard">
+            </a>
+        </div>
+    </div>
     </body>
     </html>
