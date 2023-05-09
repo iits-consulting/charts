@@ -1,0 +1,25 @@
+{{ if .Values.route.enabled }}
+{{ if .Values.route.template }}
+{{ tpl .Values.route.template $ }}
+{{ else }}
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: {{.Release.Name}}-ui
+spec:
+  entryPoints:
+    - {{ .Values.route.entrypoint }}
+  routes:
+    - kind: Rule
+      match: {{.Values.route.hostPrefixRegex}} && PathPrefix(`/policies`,`/_nuxt`)
+      middlewares:
+        - name: strip-prefix-{{ .Release.Name }}
+          namespace: {{.Release.Namespace}}
+      services:
+        - kind: Service
+          name: {{ .Release.Name }}-ui
+          namespace: {{.Release.Namespace}}
+          passHostHeader: true
+          port: 8080
+{{ end }}
+{{ end }}

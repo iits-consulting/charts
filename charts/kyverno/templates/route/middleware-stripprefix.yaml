@@ -1,0 +1,10 @@
+{{ if .Values.route.enabled }}
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: strip-prefix-{{ .Release.Name }}
+spec:
+  stripPrefix:
+    prefixes:
+      - "/policies"
+  {{ end }}

@@ -1,0 +1,161 @@
+
+---
+# Source: common-kubernetes-policies/templates/disallow-unsigned-images.yaml
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: disallow-unsigned-images
+  annotations:
+    policies.kyverno.io/severity: high
+    policies.kyverno.io/subject: Pod
+    pod-policies.kyverno.io/autogen-controllers: none
+    policies.kyverno.io/category: DockerImage
+    policies.kyverno.io/title: Disallow Unsigned Images
+    policies.kyverno.io/description: >-
+      Images needs to be signed with a specific private cosign key
+spec:
+  validationFailureAction: enforce
+  background: true
+  rules:
+    - name: "disallow-unsigned-images-rule"
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+      exclude:
+        any:
+          - resources:
+              namespaces:
+                - kube-system
+      verifyImages:
+        - imageReferences:
+            - "iits/*"
+          attestors:
+            - count: 1
+              entries:
+                - keys:
+                    publicKeys: |-
+                      -----BEGIN PUBLIC KEY-----
+                      MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEXzV8f2YUEmXF176k//uSmgEEZoKb
+                      g2b7+PuoKjfaYVw3HTAE2Z4ak5ZNNq5HF8G1cRt3P713MyuIXiNKP6v2Nw==
+                      -----END PUBLIC KEY-----
+        - imageReferences:
+            - "docker.io/iits/*"
+          attestors:
+            - count: 1
+              entries:
+                - keys:
+                    publicKeys: |-
+                      -----BEGIN PUBLIC KEY-----
+                      MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEXzV8f2YUEmXF176k//uSmgEEZoKb
+                      g2b7+PuoKjfaYVw3HTAE2Z4ak5ZNNq5HF8G1cRt3P713MyuIXiNKP6v2Nw==
+                      -----END PUBLIC KEY-----
+---
+# Source: common-kubernetes-policies/templates/disallow-unspecified-docker-registries.yaml
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: disallow-unspecified-docker-registries
+  annotations:
+    policies.kyverno.io/severity: high
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/category: DockerImage
+    pod-policies.kyverno.io/autogen-controllers: none
+    policies.kyverno.io/title: Disallow unspecified Docker Registries
+    policies.kyverno.io/description: >-
+      Docker Images are only allowed from specific Registries
+spec:
+  validationFailureAction: enforce
+  background: true
+  rules:
+    - name: "disallow-unspecified-docker-registries-rule"
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+      validate:
+        message: "Unknown image registries. image={{ request.object.spec.containers[*].image }},podName={{ request.object.spec.containers[*].name }}"
+        pattern:
+          spec:
+            containers:
+              - image: "iits/* | docker.io/iits/*"
+      exclude:
+        any:
+          - resources:
+              namespaces:
+                - kube-system
+                - kyverno
+---
+# Source: common-kubernetes-policies/templates/replace-image-registry.yaml
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: replace-image-registry
+  annotations:
+    policies.kyverno.io/title: Replace Image Registry
+    pod-policies.kyverno.io/autogen-controllers: none
+    policies.kyverno.io/category: DockerImage
+    policies.kyverno.io/severity: high
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/minversion: 1.6.0
+    policies.kyverno.io/description: >-
+      We rewrite every third party docker registry to `docker.io/iits/`.
+      If the image does not exist there it can not be deployed.
+
+      Since we have also business apps you can also exclude registries from the replacement.
+
+      The pulls are directed to a approved registry. In some cases, those registries may function as
+      pull-through proxies and can fetch the image if not cached.
+      This policy mutates all images either in the form 'image:tag' or
+      'registry.corp.com/image:tag' to be `docker.io/iits/image:tag`.
+      Note that this mutates Pods directly and not their controllers. It can be changed if desired but
+      if so may need to not match on Pods.
+spec:
+  background: true
+  validationFailureAction: audit
+  rules:
+    - name: replace-image-registry
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+      mutate:
+        foreach:
+          - list: "request.object.spec.containers"
+            preconditions:
+              all:
+                - key: "{{element.image}}"
+                  operator: NotEquals
+                  value: "docker.io/something/*"
+            patchStrategicMerge:
+              spec:
+                containers:
+                  - name: "{{ element.name }}"
+                    image: "{{ regex_replace_all_literal('.*(.*)/', '{{element.image}}', 'docker.io/iits/' )}}"
+    - name: replace-image-registry-initcontainers
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+      preconditions:
+        all:
+          - key: "{{ request.object.spec.initContainers[] || `[]` | length(@) }}"
+            operator: GreaterThanOrEquals
+            value: 1
+      mutate:
+        foreach:
+          - list: "request.object.spec.initContainers"
+            preconditions:
+              all:
+                - key: "{{element.image}}"
+                  operator: NotEquals
+                  value: "docker.io/something/*"
+            patchStrategicMerge:
+              spec:
+                initContainers:
+                  - name: "{{ element.name }}"
+                    image: "{{ regex_replace_all_literal('.*(.*)/', '{{element.image}}', 'docker.io/iits/' )}}"

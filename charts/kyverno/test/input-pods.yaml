@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: alpine
+spec:
+  containers:
+    - image: docker.io/alpine:3.16.0
+      name: alpine
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: alpine-iits
+spec:
+  containers:
+    - image: iits/alpine:3.16.0
+      name: iits-alpine
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: gitjq-iits-unsigned
+spec:
+  containers:
+    - image: iits/git-jq:1.0.0
+      name: git-jq
+

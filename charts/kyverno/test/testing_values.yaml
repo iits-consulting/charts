@@ -1,0 +1,50 @@
+kyverno-policies:
+  install: false
+
+kyverno:
+  install: false
+
+route:
+  enabled: false
+
+policy-reporter:
+  install: false
+  kyvernoPlugin:
+    enabled: false
+  ui:
+    enabled: false
+    plugins:
+      kyverno: false
+
+customPolicies:
+  replaceImageRegistry:
+    enabled: true
+    target: "docker.io/iits/"
+
+  disallowUnsignedImages:
+    enabled: true
+    validationFailureAction: "enforce"
+    imagesAndPublicKeyPairs:
+      - image: "iits/*"
+        key: |-
+          -----BEGIN PUBLIC KEY-----
+          MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEXzV8f2YUEmXF176k//uSmgEEZoKb
+          g2b7+PuoKjfaYVw3HTAE2Z4ak5ZNNq5HF8G1cRt3P713MyuIXiNKP6v2Nw==
+          -----END PUBLIC KEY-----
+      - image: "docker.io/iits/*"
+        key: |-
+          -----BEGIN PUBLIC KEY-----
+          MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEXzV8f2YUEmXF176k//uSmgEEZoKb
+          g2b7+PuoKjfaYVw3HTAE2Z4ak5ZNNq5HF8G1cRt3P713MyuIXiNKP6v2Nw==
+          -----END PUBLIC KEY-----
+
+
+
+  disallowUnspecifiedDockerRegistries:
+    enabled: true
+    registryUrls:
+      - "iits/*"
+      - "docker.io/iits/*"
+    excludeNamespaces:
+      - "kube-system"
+      - "kyverno"

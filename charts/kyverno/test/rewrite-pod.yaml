@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: rewrite
+  name: rewrite
+spec:
+  containers:
+  - image: k8s.gcr.io/kube-state-metrics/kube-state-metrics:v1.9.8
+    name: rewrite
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
