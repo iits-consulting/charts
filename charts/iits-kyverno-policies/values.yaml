@@ -1,0 +1,121 @@
+#replace all registries and force to go through a specific one. Often functions as a pull through cache proxy
+replaceImageRegistry:
+  enabled: true
+
+  #Check also already existing containers see also https://kyverno.io/docs/writing-policies/background/
+  background: true
+
+  autogenControllers: none
+
+  # The name of the policy
+  name: replace-image-registry
+
+  # source regex for matching it need to be golang compatible
+  sourceRegex: "'.*(.*)/'"
+
+  # the target repository
+  target: "mysecure-registry/common-signed-docker-images"
+
+  validationFailureAction: "audit"
+
+  #excludes images from the replacement wildcard * is supported
+  excludeRegistries:
+    - "docker.io/something/*"
+
+# settings for the policy which verifies if images from specific sources are signed.
+disallowUnsignedImages:
+
+  # Enables or disables this policy
+  # Only accepts true or false as values
+  enabled: true
+
+  #Check also already existing containers see also https://kyverno.io/docs/writing-policies/background/
+  background: true
+
+  autogenControllers: none
+
+  # The name of the policy
+  name: disallow-unsigned-images
+
+  # This parameter handles how a policy violation is handled.
+  #
+  # Allowed values are:
+  # - enforce
+  # - audit
+  #
+  # If a policy is violated and the action is "enforce", then the ressource will not be allowed
+  # to be created. On the other  the "audit" action allows the ressource but reports this incident.
+  #
+  # For more information check out the documentation of Kyverno:
+  # https://kyverno.io/docs/writing-policies/validate/
+  validationAction: "enforce"
+
+  # A list of images and public key pairs.
+  #
+  # The image has to be a fully qualified path to the image(s).
+  # You need to prepend always the registry.
+  #
+  # GOOD: This will work docker.io/iits/*
+  # BAD: This will not work iits/*
+  #
+  # The same needs to be done for a gitlab registry, for the GitHub container registry etc.
+  #
+  # The image(s) will be verified with the given public key.
+  #
+  # Wildcards are supported.
+  # For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards
+  imagesAndPublicKeyPairs:
+    - image: "*"
+      key: |-
+        -----BEGIN PUBLIC KEY-----
+        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEXzV8f2YUEmXF176k//uSmgEEZoKb
+        g2b7+PuoKjfaYVw3HTAE2Z4ak5ZNNq5HF8G1cRt3P713MyuIXiNKP6v2Nw==
+        -----END PUBLIC KEY-----
+
+  # A list of namespaces which are going to be excluded
+  #
+  # Wildcards are supported.
+  # For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards
+  excludeNamespaces:
+    - "kube-system"
+
+disallowUnspecifiedDockerRegistries:
+
+  # Enables or disables this policy
+  # Only accepts true or false as values
+  enabled: true
+
+  #Check also already existing containers see also https://kyverno.io/docs/writing-policies/background/
+  background: true
+
+  autogenControllers: none
+
+  # The name of the policy
+  name: disallow-unspecified-docker-registries
+
+  # List of allowed registries
+  #
+  # Wildcards are supported.
+  # For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards
+  registryUrls:
+    - "mysecure-registry/common-signed-docker-images/*"
+
+  # This parameter handles how a policy violation is handled.
+  #
+  # Allowed values are:
+  # - enforce
+  # - audit
+  #
+  # If a policy is violated and the action is "enforce", then the ressource will not be allowed
+  # to be created. On the other  the "audit" action allows the ressource but reports this incident.
+  #
+  # For more information check out the documentation of Kyverno:
+  # https://kyverno.io/docs/writing-policies/validate/
+  validationAction: "enforce"
+
+  # A list of namespaces which are going to be excluded
+  #
+  # Wildcards are supported.
+  # For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards
+  excludeNamespaces:
+    - "kube-system"

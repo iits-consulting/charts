@@ -1,0 +1,40 @@
+{{ with .Values.disallowUnspecifiedDockerRegistries }}
+{{ if .enabled }}
+
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: {{ .name }}
+  annotations:
+    policies.kyverno.io/severity: high
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/category: DockerImage
+    pod-policies.kyverno.io/autogen-controllers: {{ .autogenControllers }}
+    policies.kyverno.io/title: Disallow unspecified Docker Registries
+    policies.kyverno.io/description: >-
+      Docker Images are only allowed from specific Registries
+spec:
+  validationFailureAction: {{ .validationAction }}
+  background: {{.background}}
+  rules:
+    - name: "{{ .name }}-rule"
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+      validate:
+        message: "Unknown image registries. image={{`{{ request.object.spec.containers[*].image }}`}},podName={{`{{ request.object.spec.containers[*].name }}`}}"
+        pattern:
+          spec:
+            containers:
+              - image: {{ join " | " .registryUrls | quote}}
+      exclude:
+        any:
+          - resources:
+              namespaces:
+              {{- range .excludeNamespaces }}
+                - {{ . }}
+              {{- end }}
+{{ end }}
+{{ end }}
