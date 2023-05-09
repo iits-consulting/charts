@@ -1,6 +1,6 @@
 apiVersion: v2
 name: kyverno
-description: Deploy kyverno and friends. Optionally deploy a set of policies to provide a security baseline for a Kubernetes cluster
+description: Deploy kyverno, some basic policies and configure the UI as well as implement the policy reporter
 
 dependencies:
   - name: "kyverno"
@@ -31,4 +31,3 @@ type: application
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
 version: 0.4.0
-

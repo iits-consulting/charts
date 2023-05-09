@@ -1,17 +1,8 @@
 # kyverno
 
-This chart wraps the upstream kyverno chart and adds a few useful policies:
-
-- Verify all images are signed with cosign
-- Verify all images come from allowed image repositories
-
-## Running tests
-
-To quickly check if it works as intended run the tests. This requires the kyverno binary.
-
-```shell
-kyverno test test
-```
+This chart wraps kyverno and some additional components such as the policy reporter as well as
+IngressRoutes/Middlewares to allow usage of the Kyverno UI. It also deploys the defualt policies as
+provided by the Kyverno project.
 
 ## Acceptance criteria
 
