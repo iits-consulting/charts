@@ -22,4 +22,5 @@ spec:
   clusterResourceWhitelist:
     - group: '*'
       kind: '*'
+---
 {{- end }}
