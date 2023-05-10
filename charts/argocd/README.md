@@ -10,7 +10,7 @@ resource "helm_release" "argocd" {
   name                  = "argocd"
   repository            = "https://charts.iits.tech"
   chart                 = "argocd"
-  version               = "5.22.1"
+  version               = "5.30.1-fix-proj-generation"
   namespace             = "argocd"
   create_namespace      = true
   wait                  = true
