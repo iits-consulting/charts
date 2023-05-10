@@ -1,21 +1,15 @@
 apiVersion: v2
 name: kyverno
-description: Deploy kyverno, some basic policies and configure the UI as well as implement the policy reporter
+description: Deploy kyverno and configure the UI as well as implement the policy reporter
 
 dependencies:
   - name: "kyverno"
     repository: "https://kyverno.github.io/kyverno/"
     version: v2.7.2
-    condition: kyverno.install
-
-  - name: "kyverno-policies"
-    repository: "https://kyverno.github.io/kyverno/"
-    version: v2.7.2
-    condition: kyverno-policies.install
-
   - name: "policy-reporter"
     repository: "https://kyverno.github.io/policy-reporter"
     version: 2.19.0
+    condition: policy-reporter.install
 
 # A chart can be either an 'application' or a 'library' chart.
 #

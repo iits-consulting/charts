@@ -4,10 +4,6 @@ route:
   hostPrefixRegex: "HostRegexp(`{host:admin.+}`)"
 
 kyverno:
-  # This parameter controls if kyverno (dependency) should be installed or not.
-  # This option is by default on false but can be set to true.
-  # This makes it easier to use the chart in an umbrella chart.
-  install: true
   installCRDs: true
   existingImagePullSecrets: []
 
@@ -19,7 +15,3 @@ policy-reporter:
     enabled: true
     plugins:
       kyverno: true
-
-kyverno-policies:
-  install: true
-  podSecurityStandard: "baseline"

@@ -1,6 +1,10 @@
+kyverno-policies:
+  install: true
+  podSecurityStandard: "baseline"
+
 #replace all registries and force to go through a specific one. Often functions as a pull through cache proxy
 replaceImageRegistry:
-  enabled: true
+  enabled: false
 
   #Check also already existing containers see also https://kyverno.io/docs/writing-policies/background/
   background: true
@@ -27,7 +31,7 @@ disallowUnsignedImages:
 
   # Enables or disables this policy
   # Only accepts true or false as values
-  enabled: true
+  enabled: false
 
   #Check also already existing containers see also https://kyverno.io/docs/writing-policies/background/
   background: true
@@ -83,7 +87,7 @@ disallowUnspecifiedDockerRegistries:
 
   # Enables or disables this policy
   # Only accepts true or false as values
-  enabled: true
+  enabled: false
 
   #Check also already existing containers see also https://kyverno.io/docs/writing-policies/background/
   background: true
