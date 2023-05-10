@@ -21,4 +21,5 @@ data:
   sshPrivateKey: {{ printf $project.git.repoPrivateKeyBase64Encoded }}
   {{- end }}
   {{- end }}
+---
 {{- end }}

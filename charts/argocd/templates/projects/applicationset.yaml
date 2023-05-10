@@ -44,4 +44,5 @@ spec:
             {{- if ($project.projectValues).stage }}
             - values-{{ $project.projectValues.stage }}.yaml
             {{- end}}
+---
 {{- end }}
