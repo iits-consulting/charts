@@ -1,0 +1,24 @@
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+.terraform
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+/out/
+*/out
+
+### VS Code ###
+.vscode/
+
+### Helm ###
+**/requirements.lock
+**/Chart.lock
