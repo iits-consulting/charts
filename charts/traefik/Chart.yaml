@@ -1,9 +1,9 @@
 apiVersion: v2
-appVersion: 9.11.0
+appVersion: 10.22.0
 dependencies:
 - name: traefik
   repository: https://helm.traefik.io/traefik
   version: 10.22.0
 description: traefik
 name: traefik
-version: 10.22.0-after-proxy-v3
+version: 10.22.0-bugfix-traefik-annotations

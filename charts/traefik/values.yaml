@@ -21,8 +21,6 @@ traefik:
     type: LoadBalancer
     spec:
       externalTrafficPolicy: Cluster
-    annotations:
-      "traefik.service.annotations.kubernetes.io/elb.id": "SET_BY_ARGOCD_STAGE_VALUES"
   ports:
     after-proxy:
       exposedPort: 8444
