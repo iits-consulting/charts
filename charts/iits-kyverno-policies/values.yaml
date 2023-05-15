@@ -4,54 +4,47 @@ kyverno-policies:
 
 #replace all registries and force to go through a specific one. Often functions as a pull through cache proxy
 replaceImageRegistry:
+  # -- Enable or disable the policy globally
   enabled: false
 
-  #Check also already existing containers see also https://kyverno.io/docs/writing-policies/background/
+  # -- Check already existing as well containers. See also https://kyverno.io/docs/writing-policies/background/
   background: true
 
+  # -- Auto gen rules for pod controllers. See https://kyverno.io/docs/writing-policies/autogen/
   autogenControllers: none
 
-  # The name of the policy
+  # -- The name of the policy
   name: replace-image-registry
 
-  # source regex for matching it need to be golang compatible
+  # -- source regex for matching it. Needs to be golang compatible
   sourceRegex: "'.*(.*)/'"
 
-  # the target repository
+  # -- the target image repository
   target: "mysecure-registry/common-signed-docker-images"
 
   validationFailureAction: "audit"
 
-  #excludes images from the replacement wildcard * is supported
+  # -- Excludes images from the replacement. Wildcard * is supported
   excludeRegistries:
     - "docker.io/something/*"
 
-# settings for the policy which verifies if images from specific sources are signed.
+# -- Settings for the policy which verifies if images from specific sources are signed.
 disallowUnsignedImages:
-
-  # Enables or disables this policy
-  # Only accepts true or false as values
+  # -- Enable or disable the policy globally
   enabled: false
 
-  #Check also already existing containers see also https://kyverno.io/docs/writing-policies/background/
+  # -- Also check already existing containers. See https://kyverno.io/docs/writing-policies/background/
   background: true
 
+  # -- Auto gen rules for pod controllers. See https://kyverno.io/docs/writing-policies/autogen/
   autogenControllers: none
 
-  # The name of the policy
+  # -- The name of the policy
   name: disallow-unsigned-images
 
-  # This parameter handles how a policy violation is handled.
-  #
-  # Allowed values are:
-  # - enforce
-  # - audit
-  #
+  # -- How policy violation should be handled. Use either `enforce` or `audit`. See https://kyverno.io/docs/writing-policies/validate/ for details
   # If a policy is violated and the action is "enforce", then the ressource will not be allowed
-  # to be created. On the other  the "audit" action allows the ressource but reports this incident.
-  #
-  # For more information check out the documentation of Kyverno:
-  # https://kyverno.io/docs/writing-policies/validate/
+  # to be created. On the other the `audit` action allows the ressource but reports this incident.
   validationAction: "enforce"
 
   # A list of images and public key pairs.
@@ -68,6 +61,7 @@ disallowUnsignedImages:
   #
   # Wildcards are supported.
   # For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards
+  # -- List of image definitions and the associated public key used for signing.
   imagesAndPublicKeyPairs:
     - image: "*"
       key: |-
@@ -76,49 +70,36 @@ disallowUnsignedImages:
         g2b7+PuoKjfaYVw3HTAE2Z4ak5ZNNq5HF8G1cRt3P713MyuIXiNKP6v2Nw==
         -----END PUBLIC KEY-----
 
-  # A list of namespaces which are going to be excluded
-  #
+  # -- Exclude the policy on the given list of namespaces
   # Wildcards are supported.
   # For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards
   excludeNamespaces:
     - "kube-system"
 
 disallowUnspecifiedDockerRegistries:
-
-  # Enables or disables this policy
-  # Only accepts true or false as values
+  # -- Enable or disable the policy globally
   enabled: false
 
-  #Check also already existing containers see also https://kyverno.io/docs/writing-policies/background/
+  # -- Also check already existing containers. See https://kyverno.io/docs/writing-policies/background/
   background: true
 
+  # -- Auto gen rules for pod controllers. See https://kyverno.io/docs/writing-policies/autogen/
   autogenControllers: none
 
-  # The name of the policy
+  # -- The name of the policy
   name: disallow-unspecified-docker-registries
 
-  # List of allowed registries
-  #
-  # Wildcards are supported.
+  # -- List of allowed registries. Wildcards are supported.
   # For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards
   registryUrls:
     - "mysecure-registry/common-signed-docker-images/*"
 
-  # This parameter handles how a policy violation is handled.
-  #
-  # Allowed values are:
-  # - enforce
-  # - audit
-  #
+  # -- How policy violation should be handled. Use either `enforce` or `audit`. See https://kyverno.io/docs/writing-policies/validate/ for details
   # If a policy is violated and the action is "enforce", then the ressource will not be allowed
-  # to be created. On the other  the "audit" action allows the ressource but reports this incident.
-  #
-  # For more information check out the documentation of Kyverno:
-  # https://kyverno.io/docs/writing-policies/validate/
+  # to be created. On the other the `audit` action allows the ressource but reports this incident.
   validationAction: "enforce"
 
-  # A list of namespaces which are going to be excluded
-  #
+  # -- Exclude the policy on the given list of namespaces
   # Wildcards are supported.
   # For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards
   excludeNamespaces:
