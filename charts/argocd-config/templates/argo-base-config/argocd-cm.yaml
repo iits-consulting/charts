@@ -11,7 +11,7 @@ data:
     argoproj.io/Application:
      ignoreDifferences: |
         jqPathExpressions:
-          - '. | select(.metadata.annotations.helmParametersChecksum) | .spec.source.helm'
+          - '. | select(.metadata.annotations.parametersChecksum) | .spec.source.helm'
     # Ignores caBundle and template changes of the following resources
     admissionregistration.k8s.io/MutatingWebhookConfiguration:
       ignoreDifferences: |
