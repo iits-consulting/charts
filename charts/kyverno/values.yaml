@@ -1,6 +1,6 @@
 route:
   enabled: false
-  entrypoint: internalhttps
+  entrypoint: after-proxy
   hostPrefixRegex: "HostRegexp(`{host:admin.+}`)"
 
 kyverno:
