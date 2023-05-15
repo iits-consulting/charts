@@ -1,0 +1,17 @@
+route:
+  enabled: false
+  entrypoint: after-proxy
+  hostPrefixRegex: "HostRegexp(`{host:admin.+}`)"
+
+kyverno:
+  installCRDs: true
+  existingImagePullSecrets: []
+
+policy-reporter:
+  install: true
+  kyvernoPlugin:
+    enabled: true
+  ui:
+    enabled: true
+    plugins:
+      kyverno: true

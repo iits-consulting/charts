@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: not-rewrite
+  name: not-rewrite
+spec:
+  containers:
+  - image: registry.gitlab.com/impresssol/test:123
+    name: not-rewrite
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always

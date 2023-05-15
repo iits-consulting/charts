@@ -1,0 +1,106 @@
+kyverno-policies:
+  install: true
+  podSecurityStandard: "baseline"
+
+#replace all registries and force to go through a specific one. Often functions as a pull through cache proxy
+replaceImageRegistry:
+  # -- Enable or disable the policy globally
+  enabled: false
+
+  # -- Check already existing as well containers. See also https://kyverno.io/docs/writing-policies/background/
+  background: true
+
+  # -- Auto gen rules for pod controllers. See https://kyverno.io/docs/writing-policies/autogen/
+  autogenControllers: none
+
+  # -- The name of the policy
+  name: replace-image-registry
+
+  # -- source regex for matching it. Needs to be golang compatible
+  sourceRegex: "'.*(.*)/'"
+
+  # -- the target image repository
+  target: "mysecure-registry/common-signed-docker-images"
+
+  validationFailureAction: "audit"
+
+  # -- Excludes images from the replacement. Wildcard * is supported
+  excludeRegistries:
+    - "docker.io/something/*"
+
+# -- Settings for the policy which verifies if images from specific sources are signed.
+disallowUnsignedImages:
+  # -- Enable or disable the policy globally
+  enabled: false
+
+  # -- Also check already existing containers. See https://kyverno.io/docs/writing-policies/background/
+  background: true
+
+  # -- Auto gen rules for pod controllers. See https://kyverno.io/docs/writing-policies/autogen/
+  autogenControllers: none
+
+  # -- The name of the policy
+  name: disallow-unsigned-images
+
+  # -- How policy violation should be handled. Use either `enforce` or `audit`. See https://kyverno.io/docs/writing-policies/validate/ for details
+  # If a policy is violated and the action is "enforce", then the ressource will not be allowed
+  # to be created. On the other the `audit` action allows the ressource but reports this incident.
+  validationAction: "enforce"
+
+  # A list of images and public key pairs.
+  #
+  # The image has to be a fully qualified path to the image(s).
+  # You need to prepend always the registry.
+  #
+  # GOOD: This will work docker.io/iits/*
+  # BAD: This will not work iits/*
+  #
+  # The same needs to be done for a gitlab registry, for the GitHub container registry etc.
+  #
+  # The image(s) will be verified with the given public key.
+  #
+  # Wildcards are supported.
+  # For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards
+  # -- List of image definitions and the associated public key used for signing.
+  imagesAndPublicKeyPairs:
+    - image: "*"
+      key: |-
+        -----BEGIN PUBLIC KEY-----
+        MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEXzV8f2YUEmXF176k//uSmgEEZoKb
+        g2b7+PuoKjfaYVw3HTAE2Z4ak5ZNNq5HF8G1cRt3P713MyuIXiNKP6v2Nw==
+        -----END PUBLIC KEY-----
+
+  # -- Exclude the policy on the given list of namespaces
+  # Wildcards are supported.
+  # For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards
+  excludeNamespaces:
+    - "kube-system"
+
+disallowUnspecifiedDockerRegistries:
+  # -- Enable or disable the policy globally
+  enabled: false
+
+  # -- Also check already existing containers. See https://kyverno.io/docs/writing-policies/background/
+  background: true
+
+  # -- Auto gen rules for pod controllers. See https://kyverno.io/docs/writing-policies/autogen/
+  autogenControllers: none
+
+  # -- The name of the policy
+  name: disallow-unspecified-docker-registries
+
+  # -- List of allowed registries. Wildcards are supported.
+  # For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards
+  registryUrls:
+    - "mysecure-registry/common-signed-docker-images/*"
+
+  # -- How policy violation should be handled. Use either `enforce` or `audit`. See https://kyverno.io/docs/writing-policies/validate/ for details
+  # If a policy is violated and the action is "enforce", then the ressource will not be allowed
+  # to be created. On the other the `audit` action allows the ressource but reports this incident.
+  validationAction: "enforce"
+
+  # -- Exclude the policy on the given list of namespaces
+  # Wildcards are supported.
+  # For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards
+  excludeNamespaces:
+    - "kube-system"

@@ -1,0 +1,27 @@
+apiVersion: v2
+name: kyverno
+description: Deploy kyverno and configure the UI as well as implement the policy reporter
+
+dependencies:
+  - name: "kyverno"
+    repository: "https://kyverno.github.io/kyverno/"
+    version: v2.7.2
+  - name: "policy-reporter"
+    repository: "https://kyverno.github.io/policy-reporter"
+    version: 2.19.0
+    condition: policy-reporter.install
+
+# A chart can be either an 'application' or a 'library' chart.
+#
+# Application charts are a collection of templates that can be packaged into versioned archives
+# to be deployed.
+#
+# Library charts provide useful utilities or functions for the chart developer. They're included as
+# a dependency of application charts to inject those utilities and functions into the rendering
+# pipeline. Library charts do not define any templates and therefore cannot be deployed.
+type: application
+
+# This is the chart version. This version number should be incremented each time you make changes
+# to the chart and its templates, including the app version.
+# Versions are expected to follow Semantic Versioning (https://semver.org/)
+version: 1.0.0
