@@ -1,0 +1,77 @@
+{{- with .Values.prependCustomImageRegistry }}
+{{- if .enabled }}
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: {{.name}}
+  annotations:
+    policies.kyverno.io/title: Prepend custom image registry
+    pod-policies.kyverno.io/autogen-controllers: {{ .autogenControllers }}
+    policies.kyverno.io/category: DockerImage
+    policies.kyverno.io/severity: high
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/minversion: 1.6.0
+    policies.kyverno.io/description: >-
+      We prepend every image reference with `{{.registry}}`.
+      If the image does not exist there it can not be deployed.
+
+      Since we have also business apps you can also exclude registries from the replacement.
+
+      The pulls are directed to a approved registry. In some cases, those registries may function as
+      pull-through proxies and can fetch the image if not cached.
+      This policy mutates all images either in the form 'image:tag' or
+      'registry.corp.com/image:tag' to be `{{ .registry | trimSuffix "/" }}/image:tag` or `{{ .registry | trimSuffix "/" }}/registry.corp.com/image:tag`.
+      Note that this mutates Pods directly and not their controllers. It can be changed if desired but
+      if so may need to not match on Pods.
+spec:
+  background: false
+  rules:
+  - name: prepend-registry-containers
+    match:
+      any:
+      - resources:
+          kinds:
+          - Pod
+    preconditions:
+      all:
+      - key: "{{ `{{request.operation || 'BACKGROUND'}}` }}"
+        operator: AnyIn
+        value:
+        - CREATE
+        - UPDATE
+    mutate:
+      foreach:
+      - list: "request.object.spec.containers"
+        patchStrategicMerge:
+          spec:
+            containers:
+            - name: "{{ `{{ element.name }}` }}"
+              image: "{{ .registry | trimSuffix "/" }}/{{ `{{ images.containers.\"{{element.name}}\".registry}}/{{ images.containers.\"{{element.name}}\".path}}:{{images.containers.\"{{element.name}}\".tag}}`}}"
+  - name: prepend-registry-initcontainers
+    match:
+      any:
+      - resources:
+          kinds:
+          - Pod
+    preconditions:
+      all:
+      - key: "{{ `{{request.operation || 'BACKGROUND'}}` }}"
+        operator: AnyIn
+        value:
+        - CREATE
+        - UPDATE
+      - key: "{{ `{{ request.object.spec.initContainers[] || '' | length(@) }} `}}"
+        operator: GreaterThanOrEquals
+        value: 1
+    mutate:
+      foreach:
+      - list: "request.object.spec.initContainers"
+        patchStrategicMerge:
+          spec:
+            initContainers:
+            - name: "{{ `{{ element.name }}` }}"
+              image: "{{ .registry | trimSuffix "/" }}/{{ `{{ images.containers.\"{{element.name}}\".registry}}/{{ images.containers.\"{{element.name}}\".path}}:{{images.containers.\"{{element.name}}\".tag}}`}}"
+---
+{{- end }}
+{{- end }}
+

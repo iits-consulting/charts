@@ -2,6 +2,19 @@ kyverno-policies:
   install: true
   podSecurityStandard: "baseline"
 
+prependCustomImageRegistry:
+  # -- Enable or disable the policy globally
+  enabled: false
+
+  # -- Auto gen rules for pod controllers. See https://kyverno.io/docs/writing-policies/autogen/
+  autogenControllers: none
+
+  # -- The name of the policy
+  name: prepend-image-registry
+
+  # -- the target image repository that should be prepended
+  registry: "mysecure-registry.example.com"
+
 #replace all registries and force to go through a specific one. Often functions as a pull through cache proxy
 replaceImageRegistry:
   # -- Enable or disable the policy globally
