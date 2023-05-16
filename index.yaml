@@ -79,6 +79,18 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/akhq-0.3.1-fix-probes/akhq-0.3.1-fix-probes.tgz
     version: 0.3.1-fix-probes
+  - apiVersion: v2
+    created: "2023-05-16T07:01:58.831714271Z"
+    dependencies:
+    - name: akhq
+      repository: https://akhq.io/
+      version: 0.3.1
+    description: Kafka GUI
+    digest: 25f14ff901342a5d4291cdaa647e257c9d153dedc0526220ef73f8437f38e70d
+    name: akhq
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/akhq-0.3.1-fix-probes/akhq-0.3.1-fix-probes.tgz
+    version: 0.3.1-fix-probes
   argocd:
   - apiVersion: v2
     created: "2023-05-03T09:22:45.257103991Z"
@@ -153,6 +165,18 @@ entries:
     - https://github.com/iits-consulting/charts/releases/download/argocd-5.30.1-fix-proj-generation/argocd-5.30.1-fix-proj-generation.tgz
     version: 5.30.1-fix-proj-generation
   - apiVersion: v2
+    created: "2023-05-16T07:01:59.004319496Z"
+    dependencies:
+    - name: argo-cd
+      repository: https://argoproj.github.io/argo-helm
+      version: 5.30.1
+    description: argocd bootstrap
+    digest: 2cd6a536ab62fa1c89a756e5bf225e9403db9fbb1b6d6c10e7e796c646c61eb6
+    name: argocd
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/argocd-5.30.1-fix-proj-generation/argocd-5.30.1-fix-proj-generation.tgz
+    version: 5.30.1-fix-proj-generation
+  - apiVersion: v2
     created: "2023-04-28T16:33:24.262253457Z"
     dependencies:
     - name: argo-cd
@@ -201,6 +225,14 @@ entries:
     - https://github.com/iits-consulting/charts/releases/download/argocd-5.22.1-enable-crds/argocd-5.22.1-enable-crds.tgz
     version: 5.22.1-enable-crds
   argocd-config:
+  - apiVersion: v2
+    created: "2023-05-16T07:01:59.142849751Z"
+    description: argocd-dns with traefik, external-dns and cert-manager
+    digest: 8f30071957f9751bf5566f638900a66b79d70d69713a30b0de36b3cbda1702ee
+    name: argocd-config
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/argocd-config-0.3.0/argocd-config-0.3.0.tgz
+    version: 0.3.0
   - apiVersion: v2
     created: "2023-05-02T18:32:42.974126181Z"
     description: argocd-dns with traefik, external-dns and cert-manager
@@ -323,6 +355,27 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/elastic-stack-7.17.3-route-bugfix/elastic-stack-7.17.3-route-bugfix.tgz
     version: 7.17.3-route-bugfix
+  - apiVersion: v2
+    created: "2023-05-16T07:01:59.427298966Z"
+    dependencies:
+    - condition: elasticsearch.enabled
+      name: elasticsearch
+      repository: https://helm.elastic.co
+      version: 7.17.3
+    - condition: kibana.enabled
+      name: kibana
+      repository: https://helm.elastic.co
+      version: 7.17.3
+    - condition: filebeat.enabled
+      name: filebeat
+      repository: https://helm.elastic.co
+      version: 7.17.3
+    description: Awesome Logs
+    digest: de9850e0eeb7315688a9dcf778a59fe11089f35c6b570dd68d3446a2d8ba9ca2
+    name: elastic-stack
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/elastic-stack-7.17.3-route-bugfix/elastic-stack-7.17.3-route-bugfix.tgz
+    version: 7.17.3-route-bugfix
   iits-admin-dashboard:
   - apiVersion: v2
     created: "2023-05-09T16:54:19.113335167Z"
@@ -348,6 +401,22 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/iits-admin-dashboard-1.0.0/iits-admin-dashboard-1.0.0.tgz
     version: 1.0.0
+  iits-kyverno-policies:
+  - apiVersion: v2
+    created: "2023-05-16T07:01:59.575216103Z"
+    dependencies:
+    - name: kyverno-policies
+      repository: https://kyverno.github.io/kyverno/
+      version: v2.7.2
+    description: Deploy a basic set of policies to provide a useful security baseline
+      for a Kubernetes cluster. Optionally define some IITS custom policies to further
+      enhance the securitry level of the cluster.
+    digest: 1c4cd99b6c52513285e11470ae4c81b6bbe042a2b14683d1eb20ef10199e8e19
+    name: iits-kyverno-policies
+    type: application
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/iits-kyverno-policies-1.1.0/iits-kyverno-policies-1.1.0.tgz
+    version: 1.1.0
   kafka:
   - apiVersion: v2
     created: "2023-05-04T07:44:12.028328843Z"
@@ -391,6 +460,25 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/kafka-0.2.5/kafka-0.2.5.tgz
     version: 0.2.5
+  kyverno:
+  - apiVersion: v2
+    created: "2023-05-16T07:01:59.893605791Z"
+    dependencies:
+    - name: kyverno
+      repository: https://kyverno.github.io/kyverno/
+      version: v2.7.2
+    - condition: policy-reporter.install
+      name: policy-reporter
+      repository: https://kyverno.github.io/policy-reporter
+      version: 2.19.0
+    description: Deploy kyverno and configure the UI as well as implement the policy
+      reporter
+    digest: ea1e10f64bcb5a9b0294debac13f8dde7c33347a3a869e192fa9b4d8551f961b
+    name: kyverno
+    type: application
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/kyverno-1.0.0/kyverno-1.0.0.tgz
+    version: 1.0.0
   otc-storage-classes:
   - apiVersion: v2
     created: "2023-05-02T18:40:06.139560369Z"
@@ -461,6 +549,19 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-10.22.0/traefik-10.22.0.tgz
     version: 10.22.0
+  - apiVersion: v2
+    appVersion: 10.22.0
+    created: "2023-05-16T07:02:00.234042801Z"
+    dependencies:
+    - name: traefik
+      repository: https://helm.traefik.io/traefik
+      version: 10.22.0
+    description: traefik
+    digest: fa45beb4dac4dfe7599ce4bf0c718aca0116411999eb4aabd8f17a3907ccaa79
+    name: traefik
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/traefik-10.22.0-bugfix-traefik-annotations/traefik-10.22.0-bugfix-traefik-annotations.tgz
+    version: 10.22.0-bugfix-traefik-annotations
   - apiVersion: v2
     appVersion: 9.11.0
     created: "2023-05-02T13:24:47.79861898Z"
@@ -565,4 +666,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2023-05-10T10:46:05.529703878Z"
+generated: "2023-05-16T07:02:00.234226099Z"
