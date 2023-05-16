@@ -1,0 +1,6 @@
+dependencies:
+- name: kyverno-policies
+  repository: https://kyverno.github.io/kyverno/
+  version: 2.7.2
+digest: sha256:648579f87b88843b0dd50ad7b4c1046ecccca73b6820a60c161bd5b0a14a61bc
+generated: "2023-05-10T15:52:03.919828042+02:00"

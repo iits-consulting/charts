@@ -10,3 +10,4 @@ kafka:
       enabled: true
   persistence:
     size: 30G
+
