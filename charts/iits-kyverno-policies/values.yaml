@@ -15,6 +15,9 @@ prependCustomImageRegistry:
   # -- the target image repository that should be prepended
   registry: "mysecure-registry.example.com"
 
+  # -- a list of registries that should be skipped when mangling the image reference
+  excludeRegistries: []
+
 #replace all registries and force to go through a specific one. Often functions as a pull through cache proxy
 replaceImageRegistry:
   # -- Enable or disable the policy globally
