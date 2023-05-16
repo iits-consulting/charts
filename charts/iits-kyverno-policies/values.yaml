@@ -1,6 +1,50 @@
 kyverno-policies:
   install: true
   podSecurityStandard: "baseline"
+  policyExclude:
+    # Exclude kube-system deployments/replicasets since we can not change them
+    disallow-host-path:
+      any:
+        - resources:
+            kinds:
+              - Deployment
+              - ReplicaSet
+              - Pod
+            namespaces:
+              - kube-system
+    disallow-capabilities:
+      any:
+        - resources:
+            kinds:
+              - Deployment
+              - ReplicaSet
+              - Pod
+          namespaces:
+            - kube-system
+    disallow-host-namespaces:
+      any:
+        - resources:
+            kinds:
+              - DaemonSet
+              - Pod
+          namespaces:
+            - kube-system
+    disallow-privileged-containers:
+      any:
+        - resources:
+            kinds:
+              - DaemonSet
+              - Pod
+          namespaces:
+            - kube-system
+    disallow-host-ports:
+      any:
+        - resources:
+            kinds:
+              - DaemonSet
+              - Pod
+          namespaces:
+            - kube-system
 
 prependCustomImageRegistry:
   # -- Enable or disable the policy globally

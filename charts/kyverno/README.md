@@ -22,6 +22,7 @@ resource "helm_release" "kyverno" {
   name                  = "kyverno"
   repository            = "https://charts.iits.tech"
   version               = "1.0.0"
+  chart                 = "kyverno"
   namespace             = "kyverno"
   create_namespace      = true
   wait                  = true
@@ -31,12 +32,11 @@ resource "helm_release" "kyverno" {
   dependency_update     = true
   wait_for_jobs         = true
   skip_crds             = false
-# The entrypoint to your cluster highly depends on your local setup
+  # The entrypoint to your cluster highly depends on your local setup
   values                = [
     yamlencode({
       route = {
-        enabled    = true
-        entrypoint = "after-proxy"
+        enabled = true
       }
     })
   ]
@@ -47,7 +47,7 @@ resource "helm_release" "iits_kyverno_policies" {
   depends_on            = [helm_release.kyverno]
   name                  = "iits-kyverno-policies"
   repository            = "https://charts.iits.tech"
-  version               = "1.0.0"
+  version               = "1.2.0"
   chart                 = "iits-kyverno-policies"
   namespace             = "kyverno"
   create_namespace      = true
