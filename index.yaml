@@ -403,6 +403,21 @@ entries:
     version: 1.0.0
   iits-kyverno-policies:
   - apiVersion: v2
+    created: "2023-05-16T10:13:39.189899858Z"
+    dependencies:
+    - name: kyverno-policies
+      repository: https://kyverno.github.io/kyverno/
+      version: v2.7.2
+    description: Deploy a basic set of policies to provide a useful security baseline
+      for a Kubernetes cluster. Optionally define some IITS custom policies to further
+      enhance the securitry level of the cluster.
+    digest: 0ea1cddfcb1ceb78ce7551ec563808d3ee55f58ad07435ac2762316735f02f02
+    name: iits-kyverno-policies
+    type: application
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/iits-kyverno-policies-1.2.0/iits-kyverno-policies-1.2.0.tgz
+    version: 1.2.0
+  - apiVersion: v2
     created: "2023-05-16T07:01:59.575216103Z"
     dependencies:
     - name: kyverno-policies
@@ -666,4 +681,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2023-05-16T07:02:00.234226099Z"
+generated: "2023-05-16T10:13:39.190057455Z"
