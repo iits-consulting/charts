@@ -1,5 +1,7 @@
 kyverno-policies:
+  # -- Whether to install the default policies for kyverno
   install: true
+  # -- The pod security standard as defined in https://kyverno.io/policies/pod-security.
   podSecurityStandard: "baseline"
   policyExclude:
     # Exclude kube-system deployments/replicasets since we can not change them
@@ -72,7 +74,7 @@ prependCustomImageRegistry:
   # -- a list of registries that should be skipped when mangling the image reference
   excludeRegistries: []
 
-#replace all registries and force to go through a specific one. Often functions as a pull through cache proxy
+# Replace all registries and force to go through a specific one. Often functions as a pull through cache proxy
 replaceImageRegistry:
   # -- Enable or disable the policy globally
   enabled: false
@@ -98,7 +100,7 @@ replaceImageRegistry:
   excludeRegistries:
     - "docker.io/something/*"
 
-# -- Settings for the policy which verifies if images from specific sources are signed.
+# Settings for the policy which verifies if images from specific sources are signed.
 disallowUnsignedImages:
   # -- Enable or disable the policy globally
   enabled: false
@@ -146,6 +148,7 @@ disallowUnsignedImages:
   excludeNamespaces:
     - "kube-system"
 
+# Only allow images coming from a specific list of registries
 disallowUnspecifiedDockerRegistries:
   # -- Enable or disable the policy globally
   enabled: false
