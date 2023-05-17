@@ -1,6 +1,6 @@
 # kyverno
 
-![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 1.0.1](https://img.shields.io/badge/Version-1.0.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 This chart wraps kyverno and some additional components such as the policy reporter as well as
 IngressRoutes/Middlewares to allow usage of the Kyverno UI.
@@ -16,7 +16,6 @@ resource "helm_release" "kyverno" {
   name                  = "kyverno"
   repository            = "https://charts.iits.tech"
   version               = "1.0.0"
-  chart                 = "kyverno"
   namespace             = "kyverno"
   create_namespace      = true
   wait                  = true
@@ -26,11 +25,12 @@ resource "helm_release" "kyverno" {
   dependency_update     = true
   wait_for_jobs         = true
   skip_crds             = false
-  # The entrypoint to your cluster highly depends on your local setup
+# The entrypoint to your cluster highly depends on your local setup
   values                = [
     yamlencode({
       route = {
-        enabled = true
+        enabled    = true
+        entrypoint = "after-proxy"
       }
     })
   ]
@@ -41,7 +41,7 @@ resource "helm_release" "iits_kyverno_policies" {
   depends_on            = [helm_release.kyverno]
   name                  = "iits-kyverno-policies"
   repository            = "https://charts.iits.tech"
-  version               = "1.2.0"
+  version               = "1.0.0"
   chart                 = "iits-kyverno-policies"
   namespace             = "kyverno"
   create_namespace      = true
