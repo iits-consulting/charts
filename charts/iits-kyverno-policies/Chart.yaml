@@ -1,22 +1,14 @@
 apiVersion: v2
 name: iits-kyverno-policies
-description: Deploy a basic set of policies to provide a useful security baseline for a Kubernetes cluster. Optionally define some IITS custom policies to further enhance the securitry level of the cluster.
+description: |
+  This chart wraps the upstream `kyverno-policies` chart and adds a few useful policies:
+    - Verify all images are signed with cosign
+    - Verify all images come from allowed image repositories
+    - Replace the complete registry reference with a custom one
+    - Prepend the image reference with a custom prefix, useful for e.g. pull-through caches
 dependencies:
   - name: "kyverno-policies"
     repository: "https://kyverno.github.io/kyverno/"
     version: v2.7.2
-
-# A chart can be either an 'application' or a 'library' chart.
-#
-# Application charts are a collection of templates that can be packaged into versioned archives
-# to be deployed.
-#
-# Library charts provide useful utilities or functions for the chart developer. They're included as
-# a dependency of application charts to inject those utilities and functions into the rendering
-# pipeline. Library charts do not define any templates and therefore cannot be deployed.
 type: application
-
-# This is the chart version. This version number should be incremented each time you make changes
-# to the chart and its templates, including the app version.
-# Versions are expected to follow Semantic Versioning (https://semver.org/)
 version: 1.2.0

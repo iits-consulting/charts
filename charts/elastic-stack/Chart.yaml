@@ -12,6 +12,6 @@ dependencies:
     name: filebeat
     repository: https://helm.elastic.co
     version: 7.17.3
-description: Awesome Logs
+description: Deploy a complete ELK stack or parts of it
 name: elastic-stack
 version: 7.17.3-route-bugfix

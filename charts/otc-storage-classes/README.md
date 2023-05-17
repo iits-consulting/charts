@@ -1,12 +1,8 @@
-# crds
+# otc-storage-classes
 
-![Version: 1.5.0](https://img.shields.io/badge/Version-1.5.0-informational?style=flat-square)
+![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square)
 
-This chart deploys common `CustomResourceDefinitions` for iits-consulting only projects.
-With this we avoid a typical catch-22, e.g. where you can not use `traefik`
-`IngressRoute` before you deploy `traefik` and such.
-You could also use sync-waves and other mechanism, but it creates a lot of complexity
-and a huge dependency graph.
+Custom storage classes for Open Telekom Cloud. Often used in IITS projects
 
 <img src="https://iits-consulting.de/wp-content/uploads/2021/08/iits-logo-2021-red-square-xl.png"
 alt="iits consulting" id="logo" width="200" height="200">
