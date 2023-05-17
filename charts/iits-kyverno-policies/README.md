@@ -1,6 +1,6 @@
 # iits-kyverno-policies
 
-![Version: 1.2.0](https://img.shields.io/badge/Version-1.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 1.3.0](https://img.shields.io/badge/Version-1.3.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 This chart wraps the upstream `kyverno-policies` chart and adds a few useful policies:
   - Verify all images are signed with cosign
@@ -18,7 +18,6 @@ This chart wraps the upstream `kyverno-policies` chart and adds a few useful pol
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| disallowUnsignedImages | object | `{"autogenControllers":"none","background":true,"enabled":false,"excludeNamespaces":["kube-system"],"imagesAndPublicKeyPairs":[{"image":"*","key":"-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEXzV8f2YUEmXF176k//uSmgEEZoKb\ng2b7+PuoKjfaYVw3HTAE2Z4ak5ZNNq5HF8G1cRt3P713MyuIXiNKP6v2Nw==\n-----END PUBLIC KEY-----"}],"name":"disallow-unsigned-images","validationAction":"enforce"}` | Settings for the policy which verifies if images from specific sources are signed. |
 | disallowUnsignedImages.autogenControllers | string | `"none"` | Auto gen rules for pod controllers. See https://kyverno.io/docs/writing-policies/autogen/ |
 | disallowUnsignedImages.background | bool | `true` | Also check already existing containers. See https://kyverno.io/docs/writing-policies/background/ |
 | disallowUnsignedImages.enabled | bool | `false` | Enable or disable the policy globally |
@@ -33,10 +32,32 @@ This chart wraps the upstream `kyverno-policies` chart and adds a few useful pol
 | disallowUnspecifiedDockerRegistries.name | string | `"disallow-unspecified-docker-registries"` | The name of the policy |
 | disallowUnspecifiedDockerRegistries.registryUrls | list | `["mysecure-registry/common-signed-docker-images/*"]` | List of allowed registries. Wildcards are supported. For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards |
 | disallowUnspecifiedDockerRegistries.validationAction | string | `"enforce"` | How policy violation should be handled. Use either `enforce` or `audit`. See https://kyverno.io/docs/writing-policies/validate/ for details If a policy is violated and the action is "enforce", then the ressource will not be allowed to be created. On the other the `audit` action allows the ressource but reports this incident. |
-| kyverno-policies.install | bool | `true` |  |
-| kyverno-policies.podSecurityStandard | string | `"baseline"` |  |
+| kyverno-policies.install | bool | `true` | Whether to install the default policies for kyverno |
+| kyverno-policies.podSecurityStandard | string | `"baseline"` | The pod security standard as defined in https://kyverno.io/policies/pod-security. |
+| kyverno-policies.policyExclude.disallow-capabilities.any[0].namespaces[0] | string | `"kube-system"` |  |
+| kyverno-policies.policyExclude.disallow-capabilities.any[0].resources.kinds[0] | string | `"Deployment"` |  |
+| kyverno-policies.policyExclude.disallow-capabilities.any[0].resources.kinds[1] | string | `"ReplicaSet"` |  |
+| kyverno-policies.policyExclude.disallow-capabilities.any[0].resources.kinds[2] | string | `"Pod"` |  |
+| kyverno-policies.policyExclude.disallow-host-namespaces.any[0].namespaces[0] | string | `"kube-system"` |  |
+| kyverno-policies.policyExclude.disallow-host-namespaces.any[0].resources.kinds[0] | string | `"DaemonSet"` |  |
+| kyverno-policies.policyExclude.disallow-host-namespaces.any[0].resources.kinds[1] | string | `"Pod"` |  |
+| kyverno-policies.policyExclude.disallow-host-path.any[0].resources.kinds[0] | string | `"Deployment"` |  |
+| kyverno-policies.policyExclude.disallow-host-path.any[0].resources.kinds[1] | string | `"ReplicaSet"` |  |
+| kyverno-policies.policyExclude.disallow-host-path.any[0].resources.kinds[2] | string | `"Pod"` |  |
+| kyverno-policies.policyExclude.disallow-host-path.any[0].resources.namespaces[0] | string | `"kube-system"` |  |
+| kyverno-policies.policyExclude.disallow-host-ports.any[0].namespaces[0] | string | `"kube-system"` |  |
+| kyverno-policies.policyExclude.disallow-host-ports.any[0].resources.kinds[0] | string | `"DaemonSet"` |  |
+| kyverno-policies.policyExclude.disallow-host-ports.any[0].resources.kinds[1] | string | `"Pod"` |  |
+| kyverno-policies.policyExclude.disallow-privileged-containers.any[0].namespaces[0] | string | `"kube-system"` |  |
+| kyverno-policies.policyExclude.disallow-privileged-containers.any[0].resources.kinds[0] | string | `"DaemonSet"` |  |
+| kyverno-policies.policyExclude.disallow-privileged-containers.any[0].resources.kinds[1] | string | `"Pod"` |  |
+| kyverno-policies.policyExclude.restrict-seccomp.any[0].namespaces[0] | string | `"argocd"` |  |
+| kyverno-policies.policyExclude.restrict-seccomp.any[0].resources.kinds[0] | string | `"Deployment"` |  |
+| kyverno-policies.policyExclude.restrict-seccomp.any[0].resources.kinds[1] | string | `"ReplicaSet"` |  |
+| kyverno-policies.policyExclude.restrict-seccomp.any[0].resources.kinds[2] | string | `"Pod"` |  |
 | prependCustomImageRegistry.autogenControllers | string | `"none"` | Auto gen rules for pod controllers. See https://kyverno.io/docs/writing-policies/autogen/ |
 | prependCustomImageRegistry.enabled | bool | `false` | Enable or disable the policy globally |
+| prependCustomImageRegistry.excludeNamespaces | list | `[]` | Exclude the policy on the given list of namespaces Wildcards are supported. For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards |
 | prependCustomImageRegistry.excludeRegistries | list | `[]` | a list of registries that should be skipped when mangling the image reference |
 | prependCustomImageRegistry.name | string | `"prepend-image-registry"` | The name of the policy |
 | prependCustomImageRegistry.registry | string | `"mysecure-registry.example.com"` | the target image repository that should be prepended |

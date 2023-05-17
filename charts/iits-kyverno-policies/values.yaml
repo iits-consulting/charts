@@ -1,6 +1,62 @@
 kyverno-policies:
+  # -- Whether to install the default policies for kyverno
   install: true
+  # -- The pod security standard as defined in https://kyverno.io/policies/pod-security.
   podSecurityStandard: "baseline"
+  policyExclude:
+    # Exclude kube-system deployments/replicasets since we can not change them
+    disallow-host-path:
+      any:
+        - resources:
+            kinds:
+              - Deployment
+              - ReplicaSet
+              - Pod
+            namespaces:
+              - kube-system
+    disallow-capabilities:
+      any:
+        - resources:
+            kinds:
+              - Deployment
+              - ReplicaSet
+              - Pod
+          namespaces:
+            - kube-system
+    disallow-host-namespaces:
+      any:
+        - resources:
+            kinds:
+              - DaemonSet
+              - Pod
+          namespaces:
+            - kube-system
+    disallow-privileged-containers:
+      any:
+        - resources:
+            kinds:
+              - DaemonSet
+              - Pod
+          namespaces:
+            - kube-system
+    disallow-host-ports:
+      any:
+        - resources:
+            kinds:
+              - DaemonSet
+              - Pod
+          namespaces:
+            - kube-system
+    # Exclude argocd-repo-server otherwise this error occurs:  getaddrinfo() thread failed to start
+    restrict-seccomp:
+      any:
+        - resources:
+            kinds:
+              - Deployment
+              - ReplicaSet
+              - Pod
+          namespaces:
+            - argocd
 
 prependCustomImageRegistry:
   # -- Enable or disable the policy globally
@@ -18,7 +74,12 @@ prependCustomImageRegistry:
   # -- a list of registries that should be skipped when mangling the image reference
   excludeRegistries: []
 
-#replace all registries and force to go through a specific one. Often functions as a pull through cache proxy
+  # -- Exclude the policy on the given list of namespaces
+  # Wildcards are supported.
+  # For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards
+  excludeNamespaces: []
+
+# Replace all registries and force to go through a specific one. Often functions as a pull through cache proxy
 replaceImageRegistry:
   # -- Enable or disable the policy globally
   enabled: false
@@ -44,7 +105,7 @@ replaceImageRegistry:
   excludeRegistries:
     - "docker.io/something/*"
 
-# -- Settings for the policy which verifies if images from specific sources are signed.
+# Settings for the policy which verifies if images from specific sources are signed.
 disallowUnsignedImages:
   # -- Enable or disable the policy globally
   enabled: false
@@ -92,6 +153,7 @@ disallowUnsignedImages:
   excludeNamespaces:
     - "kube-system"
 
+# Only allow images coming from a specific list of registries
 disallowUnspecifiedDockerRegistries:
   # -- Enable or disable the policy globally
   enabled: false
