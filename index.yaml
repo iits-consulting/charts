@@ -91,6 +91,19 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/akhq-0.3.1-fix-probes/akhq-0.3.1-fix-probes.tgz
     version: 0.3.1-fix-probes
+  - apiVersion: v2
+    created: "2023-05-17T07:20:06.639763177Z"
+    dependencies:
+    - name: akhq
+      repository: https://akhq.io/
+      version: 0.3.1
+    description: Kafka GUI for Apache Kafka® to manage topics, topics data, consumers
+      group, schema registry, connect and more...
+    digest: 5fcd7e287f447bd63a86e90d0fd9a7c44073c3515c711ed4f358ee59376510de
+    name: akhq
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/akhq-0.3.1-fix-probes/akhq-0.3.1-fix-probes.tgz
+    version: 0.3.1-fix-probes
   argocd:
   - apiVersion: v2
     created: "2023-05-03T09:22:45.257103991Z"
@@ -172,6 +185,34 @@ entries:
       version: 5.30.1
     description: argocd bootstrap
     digest: 2cd6a536ab62fa1c89a756e5bf225e9403db9fbb1b6d6c10e7e796c646c61eb6
+    name: argocd
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/argocd-5.30.1-fix-proj-generation/argocd-5.30.1-fix-proj-generation.tgz
+    version: 5.30.1-fix-proj-generation
+  - apiVersion: v2
+    created: "2023-05-17T07:20:06.803582276Z"
+    dependencies:
+    - name: argo-cd
+      repository: https://argoproj.github.io/argo-helm
+      version: 5.30.1
+    description: 'This chart is used to bootstrap a Kubernetes cluster with `argocd`.
+      You can use this chart to deploy `argocd` through tools like `terraform`.  Usage
+      example:  ```hcl resource "helm_release" "argocd" {   name                  =
+      "argocd"   repository            = "https://charts.iits.tech"   chart                 =
+      "argocd"   version               = "5.30.1-fix-proj-generation"   namespace             =
+      "argocd"   create_namespace      = true   wait                  = true   atomic                =
+      true   timeout               = 900 // 15 Minutes   render_subchart_notes = true   dependency_update     =
+      true   wait_for_jobs         = true   values                = [     yamlencode({       projects
+      = {         infrastructure-charts = {           projectValues = {             #
+      Set this to enable stage $STAGE-values.yaml             stage        = var.stage             #
+      Example values which are handed down to the project. Like this you can give
+      over informations from terraform to argocd             traefikElbId = module.terraform_secrets_from_encrypted_s3_bucket.secrets["elb_id"]             adminDomain  =
+      "admin.${var.domain_name}"           }            git = {             password
+      = var.git_token             repoUrl  = "https://github.com/iits-consulting/otc-infrastructure-charts-template"           }         }       }     }     )   ]
+      } ```  In the project https://github.com/iits-consulting/otc-infrastructure-charts-template
+      it expects a helm chart named infrastructure-charts and will install everything
+      from there. '
+    digest: c699204889460d0a8b50ed00f780a83112aaf38bec5d5b2e8bf9950b4e610f66
     name: argocd
     urls:
     - https://github.com/iits-consulting/charts/releases/download/argocd-5.30.1-fix-proj-generation/argocd-5.30.1-fix-proj-generation.tgz
@@ -376,6 +417,27 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/elastic-stack-7.17.3-route-bugfix/elastic-stack-7.17.3-route-bugfix.tgz
     version: 7.17.3-route-bugfix
+  - apiVersion: v2
+    created: "2023-05-17T07:20:07.54977528Z"
+    dependencies:
+    - condition: elasticsearch.enabled
+      name: elasticsearch
+      repository: https://helm.elastic.co
+      version: 7.17.3
+    - condition: kibana.enabled
+      name: kibana
+      repository: https://helm.elastic.co
+      version: 7.17.3
+    - condition: filebeat.enabled
+      name: filebeat
+      repository: https://helm.elastic.co
+      version: 7.17.3
+    description: Deploy a complete ELK stack or parts of it
+    digest: 9a2373533562d372caf6ebf7809c6bc52c057f633aa4b13fb592cd8f757841f9
+    name: elastic-stack
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/elastic-stack-7.17.3-route-bugfix/elastic-stack-7.17.3-route-bugfix.tgz
+    version: 7.17.3-route-bugfix
   iits-admin-dashboard:
   - apiVersion: v2
     created: "2023-05-09T16:54:19.113335167Z"
@@ -550,6 +612,24 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/registry-creds-1.1.3-bugfix-user/registry-creds-1.1.3-bugfix-user.tgz
     version: 1.1.3-bugfix-user
+  - apiVersion: v2
+    created: "2023-05-17T07:20:08.528239894Z"
+    description: 'This project is based on https://github.com/alexellis/registry-creds  ##
+      Usage  Create `dockerconfigjson`  ```shell kubectl create secret docker-registry
+      regcred --docker-server=https://index.docker.io/v1/ --docker-username=victor.getz@iits-consulting.de
+      --docker-password=my-password --docker-email=victor.getz@iits-consulting.de
+      --dry-run=client -o yaml ```  Output will looks like this:  ```yaml apiVersion:
+      v1 data:   .dockerconfigjson: eyJhdXRocyI6eyJodHRwczovL2luZGV4LmRvY2tlci5pby92MS8iOnsidXNlcm5hbWUiOiJ2aWN0b3IuZ2V0ekBpaXRzLWNvbnN1bHRpbmcuZGUiLCJwYXNzd29yZCI6Im15LXBhc3N3b3JkIiwiZW1haWwiOiJ2aWN0b3IuZ2V0ekBpaXRzLWNvbnN1bHRpbmcuZGUiLCJhdXRoIjoiZG1samRHOXlMbWRsZEhwQWFXbDBjeTFqYjI1emRXeDBhVzVuTG1SbE9tMTVMWEJoYzNOM2IzSmsifX19
+      kind: Secret metadata:   creationTimestamp: null   name: regcred type: kubernetes.io/dockerconfigjson
+      ``` Copy `dockerconfigjson` and perform these commands  ```shell helm repo add
+      iits-charts https://charts.iits.tech helm search repo registry-creds helm install
+      registry-creds iits-charts/registry-creds --set defaultClusterPullSecret.dockerConfigJsonBase64Encoded="eyJhdXRocyI6eyJodHRwczovL2luZGV4LmRvY2tlci5pby92MS8iOnsidXNlcm5hbWUiOiJ2aWN0b3IuZ2V0ekBpaXRzLWNvbnN1bHRpbmcuZGUiLCJwYXNzd29yZCI6Im15LXBhc3N3b3JkIiwiZW1haWwiOiJ2aWN0b3IuZ2V0ekBpaXRzLWNvbnN1bHRpbmcuZGUiLCJhdXRoIjoiZG1samRHOXlMbWRsZEhwQWFXbDBjeTFqYjI1emRXeDBhVzVuTG1SbE9tMTVMWEJoYzNOM2IzSmsifX19"
+      ``` '
+    digest: d6dd83b3549d5487dd6638171327fc6a0bd028a4f2e2dd0802a24fc935059da3
+    name: registry-creds
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/registry-creds-1.1.3-bugfix-user/registry-creds-1.1.3-bugfix-user.tgz
+    version: 1.1.3-bugfix-user
   traefik:
   - apiVersion: v2
     appVersion: 9.11.0
@@ -573,6 +653,20 @@ entries:
       version: 10.22.0
     description: traefik
     digest: fa45beb4dac4dfe7599ce4bf0c718aca0116411999eb4aabd8f17a3907ccaa79
+    name: traefik
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/traefik-10.22.0-bugfix-traefik-annotations/traefik-10.22.0-bugfix-traefik-annotations.tgz
+    version: 10.22.0-bugfix-traefik-annotations
+  - apiVersion: v2
+    appVersion: 10.22.0
+    created: "2023-05-17T07:20:08.667946366Z"
+    dependencies:
+    - name: traefik
+      repository: https://helm.traefik.io/traefik
+      version: 10.22.0
+    description: The traefik ingress controller with some additional resources and
+      sane default values for IITS projects
+    digest: e1927b34e4b313cf8e94bb9439c5fa83cb0ad3709478d6f4025b9b0bc85262d0
     name: traefik
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-10.22.0-bugfix-traefik-annotations/traefik-10.22.0-bugfix-traefik-annotations.tgz
@@ -681,4 +775,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2023-05-16T10:13:39.190057455Z"
+generated: "2023-05-17T07:20:08.668239171Z"
