@@ -74,6 +74,11 @@ prependCustomImageRegistry:
   # -- a list of registries that should be skipped when mangling the image reference
   excludeRegistries: []
 
+  # -- Exclude the policy on the given list of namespaces
+  # Wildcards are supported.
+  # For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards
+  excludeNamespaces: []
+
 # Replace all registries and force to go through a specific one. Often functions as a pull through cache proxy
 replaceImageRegistry:
   # -- Enable or disable the policy globally
