@@ -1,4 +1,8 @@
-How to install:
+# IITS helm charts
+
+This project contains several public charts as used by the folks at [IITS](https://iits-consulting.de/).
+
+## Installation
 
 ```shell
     helm repo add iits-charts https://charts.iits.tech
@@ -6,12 +10,14 @@ How to install:
     helm install YOUR_CHART_NAME iits-charts/YOUR_CHART_NAME
 ```
 
-## acceptance criteria
+## Acceptance criteria
 
 Any helm chart provided by iits-consulting needs to adhere to the following acceptance criteria:
 
-* The README.md has to contain a description about the chart
-* Enable custom annotations in values.yaml
+* The `Chart.yaml` contains all required attributes as defined in https://helm.sh/docs/topics/charts/#the-chartyaml-file
+* Document values in such a way that [helm-docs](https://github.com/norwoodj/helm-docs) may generate
+  a nice `README.md`
+* Enable custom annotations in `values.yaml`
 * Define common labels for better separation of concerns
 * Configuration changes have to cause a pod restart
 * Whenever possible, sensitive information should be injected by something like
@@ -22,4 +28,4 @@ Any helm chart provided by iits-consulting needs to adhere to the following acce
 * Specify a license
 * Provide a default .helmignore
 * HorizontalPodAutoscaler should be present
-* Have a NOTES.txt that provides information about the deployment
+* Have a `NOTES.txt` that provides information about the deployment

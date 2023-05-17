@@ -3,6 +3,7 @@ dependencies:
   - name: akhq
     repository: https://akhq.io/
     version: 0.3.1
-description: Kafka GUI
+description: Kafka GUI for Apache Kafka® to manage topics, topics data, consumers group, schema registry, connect and more...
 name: akhq
 version: 0.3.1-fix-probes
+

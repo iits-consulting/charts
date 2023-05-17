@@ -1,4 +1,4 @@
 apiVersion: v2
-description: custom storage classes for otc
+description: Custom storage classes for Open Telekom Cloud. Often used in IITS projects
 name: otc-storage-classes
 version: 1.0.0
