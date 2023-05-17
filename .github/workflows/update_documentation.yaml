@@ -23,7 +23,7 @@ jobs:
         run: |
           helm-docs -c charts -l debug -t charts/README.md.gotmpl
       - name: Commit files
-        shell: "bash -c {0}"
+        shell: "bash {0}"
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
