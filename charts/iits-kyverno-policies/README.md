@@ -57,6 +57,7 @@ This chart wraps the upstream `kyverno-policies` chart and adds a few useful pol
 | kyverno-policies.policyExclude.restrict-seccomp.any[0].resources.kinds[2] | string | `"Pod"` |  |
 | prependCustomImageRegistry.autogenControllers | string | `"none"` | Auto gen rules for pod controllers. See https://kyverno.io/docs/writing-policies/autogen/ |
 | prependCustomImageRegistry.enabled | bool | `false` | Enable or disable the policy globally |
+| prependCustomImageRegistry.excludeNamespaces | list | `[]` | Exclude the policy on the given list of namespaces Wildcards are supported. For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards |
 | prependCustomImageRegistry.excludeRegistries | list | `[]` | a list of registries that should be skipped when mangling the image reference |
 | prependCustomImageRegistry.name | string | `"prepend-image-registry"` | The name of the policy |
 | prependCustomImageRegistry.registry | string | `"mysecure-registry.example.com"` | the target image repository that should be prepended |
