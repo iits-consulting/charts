@@ -104,6 +104,19 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/akhq-0.3.1-fix-probes/akhq-0.3.1-fix-probes.tgz
     version: 0.3.1-fix-probes
+  - apiVersion: v2
+    created: "2023-05-17T13:59:13.497499152Z"
+    dependencies:
+    - name: akhq
+      repository: https://akhq.io/
+      version: 0.3.1
+    description: Kafka GUI for Apache Kafka® to manage topics, topics data, consumers
+      group, schema registry, connect and more...
+    digest: ef2241078dd44d8fae3869ee49d0de15587198980402921eb0db6143568e9de4
+    name: akhq
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/akhq-0.3.1-fix-probes/akhq-0.3.1-fix-probes.tgz
+    version: 0.3.1-fix-probes
   argocd:
   - apiVersion: v2
     created: "2023-05-03T09:22:45.257103991Z"
@@ -166,18 +179,6 @@ entries:
     - https://github.com/iits-consulting/charts/releases/download/argocd-5.30.1-repo-server-fix/argocd-5.30.1-repo-server-fix.tgz
     version: 5.30.1-repo-server-fix
   - apiVersion: v2
-    created: "2023-05-10T10:46:05.529433176Z"
-    dependencies:
-    - name: argo-cd
-      repository: https://argoproj.github.io/argo-helm
-      version: 5.30.1
-    description: argocd bootstrap
-    digest: ef94350e24afccbb2792834c09d953c61c0b1c4112058b12e64bc202631cfbf6
-    name: argocd
-    urls:
-    - https://github.com/iits-consulting/charts/releases/download/argocd-5.30.1-fix-proj-generation/argocd-5.30.1-fix-proj-generation.tgz
-    version: 5.30.1-fix-proj-generation
-  - apiVersion: v2
     created: "2023-05-16T07:01:59.004319496Z"
     dependencies:
     - name: argo-cd
@@ -185,6 +186,18 @@ entries:
       version: 5.30.1
     description: argocd bootstrap
     digest: 2cd6a536ab62fa1c89a756e5bf225e9403db9fbb1b6d6c10e7e796c646c61eb6
+    name: argocd
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/argocd-5.30.1-fix-proj-generation/argocd-5.30.1-fix-proj-generation.tgz
+    version: 5.30.1-fix-proj-generation
+  - apiVersion: v2
+    created: "2023-05-10T10:46:05.529433176Z"
+    dependencies:
+    - name: argo-cd
+      repository: https://argoproj.github.io/argo-helm
+      version: 5.30.1
+    description: argocd bootstrap
+    digest: ef94350e24afccbb2792834c09d953c61c0b1c4112058b12e64bc202631cfbf6
     name: argocd
     urls:
     - https://github.com/iits-consulting/charts/releases/download/argocd-5.30.1-fix-proj-generation/argocd-5.30.1-fix-proj-generation.tgz
@@ -213,6 +226,34 @@ entries:
       it expects a helm chart named infrastructure-charts and will install everything
       from there. '
     digest: c699204889460d0a8b50ed00f780a83112aaf38bec5d5b2e8bf9950b4e610f66
+    name: argocd
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/argocd-5.30.1-fix-proj-generation/argocd-5.30.1-fix-proj-generation.tgz
+    version: 5.30.1-fix-proj-generation
+  - apiVersion: v2
+    created: "2023-05-17T13:59:13.743559383Z"
+    dependencies:
+    - name: argo-cd
+      repository: https://argoproj.github.io/argo-helm
+      version: 5.30.1
+    description: 'This chart is used to bootstrap a Kubernetes cluster with `argocd`.
+      You can use this chart to deploy `argocd` through tools like `terraform`.  Usage
+      example:  ```hcl resource "helm_release" "argocd" {   name                  =
+      "argocd"   repository            = "https://charts.iits.tech"   chart                 =
+      "argocd"   version               = "5.30.1-fix-proj-generation"   namespace             =
+      "argocd"   create_namespace      = true   wait                  = true   atomic                =
+      true   timeout               = 900 // 15 Minutes   render_subchart_notes = true   dependency_update     =
+      true   wait_for_jobs         = true   values                = [     yamlencode({       projects
+      = {         infrastructure-charts = {           projectValues = {             #
+      Set this to enable stage $STAGE-values.yaml             stage        = var.stage             #
+      Example values which are handed down to the project. Like this you can give
+      over informations from terraform to argocd             traefikElbId = module.terraform_secrets_from_encrypted_s3_bucket.secrets["elb_id"]             adminDomain  =
+      "admin.${var.domain_name}"           }            git = {             password
+      = var.git_token             repoUrl  = "https://github.com/iits-consulting/otc-infrastructure-charts-template"           }         }       }     }     )   ]
+      } ```  In the project https://github.com/iits-consulting/otc-infrastructure-charts-template
+      it expects a helm chart named infrastructure-charts and will install everything
+      from there. '
+    digest: 12d6a4a3828929a71f243e72aed3d9f4008af38a5d1f9a195f87445061b4b77c
     name: argocd
     urls:
     - https://github.com/iits-consulting/charts/releases/download/argocd-5.30.1-fix-proj-generation/argocd-5.30.1-fix-proj-generation.tgz
@@ -438,7 +479,38 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/elastic-stack-7.17.3-route-bugfix/elastic-stack-7.17.3-route-bugfix.tgz
     version: 7.17.3-route-bugfix
+  - apiVersion: v2
+    created: "2023-05-17T13:59:14.862995103Z"
+    dependencies:
+    - condition: elasticsearch.enabled
+      name: elasticsearch
+      repository: https://helm.elastic.co
+      version: 7.17.3
+    - condition: kibana.enabled
+      name: kibana
+      repository: https://helm.elastic.co
+      version: 7.17.3
+    - condition: filebeat.enabled
+      name: filebeat
+      repository: https://helm.elastic.co
+      version: 7.17.3
+    description: Deploy a complete ELK stack or parts of it
+    digest: 3676f8c0679e0bad66c316e2d062b726658ba9274f685a55aaef5dd33da71e9e
+    name: elastic-stack
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/elastic-stack-7.17.3-route-bugfix/elastic-stack-7.17.3-route-bugfix.tgz
+    version: 7.17.3-route-bugfix
   iits-admin-dashboard:
+  - apiVersion: v2
+    created: "2023-05-17T13:59:15.002463604Z"
+    description: 'This chart deploys a super simple webserver that provides a simple
+      website containing links to a set of dashboards that are usually deployed in
+      our infrastructure setup as well as some nifty external tools. '
+    digest: e0ac97b0a1e58b2066c0dd083e60e88387140b1c2a822c1e9a37bf2b906108bf
+    name: iits-admin-dashboard
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/iits-admin-dashboard-1.1.0/iits-admin-dashboard-1.1.0.tgz
+    version: 1.1.0
   - apiVersion: v2
     created: "2023-05-09T16:54:19.113335167Z"
     description: admin dashboard with urls
@@ -464,6 +536,23 @@ entries:
     - https://github.com/iits-consulting/charts/releases/download/iits-admin-dashboard-1.0.0/iits-admin-dashboard-1.0.0.tgz
     version: 1.0.0
   iits-kyverno-policies:
+  - apiVersion: v2
+    created: "2023-05-17T13:59:15.184042996Z"
+    dependencies:
+    - name: kyverno-policies
+      repository: https://kyverno.github.io/kyverno/
+      version: v2.7.2
+    description: 'This chart wraps the upstream `kyverno-policies` chart and adds
+      a few useful policies:   - Verify all images are signed with cosign   - Verify
+      all images come from allowed image repositories   - Replace the complete registry
+      reference with a custom one   - Prepend the image reference with a custom prefix,
+      useful for e.g. pull-through caches '
+    digest: eaae3a4c1321c1a4903dc4f4d895d4bdb698efe4408f202a9f225f05bf5d12cf
+    name: iits-kyverno-policies
+    type: application
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/iits-kyverno-policies-1.3.0/iits-kyverno-policies-1.3.0.tgz
+    version: 1.3.0
   - apiVersion: v2
     created: "2023-05-16T10:13:39.189899858Z"
     dependencies:
@@ -538,6 +627,41 @@ entries:
     - https://github.com/iits-consulting/charts/releases/download/kafka-0.2.5/kafka-0.2.5.tgz
     version: 0.2.5
   kyverno:
+  - apiVersion: v2
+    created: "2023-05-17T13:59:15.576573945Z"
+    dependencies:
+    - name: kyverno
+      repository: https://kyverno.github.io/kyverno/
+      version: v2.7.2
+    - condition: policy-reporter.install
+      name: policy-reporter
+      repository: https://kyverno.github.io/policy-reporter
+      version: 2.19.0
+    description: 'This chart wraps kyverno and some additional components such as
+      the policy reporter as well as IngressRoutes/Middlewares to allow usage of the
+      Kyverno UI.  ## Usage  As kyverno enforces policies in the Kubernetes cluster
+      it makes sense to deploy it at the very beginning when setting up new infrastructure.
+      We usually deploy essential cluster resources up to ArgoCD via Terraform. An
+      example of how to deploy a complete Kyverno setup would be:  ``` resource "helm_release"
+      "kyverno" {   name                  = "kyverno"   repository            = "https://charts.iits.tech"   version               =
+      "1.0.0"   namespace             = "kyverno"   create_namespace      = true   wait                  =
+      true   atomic                = true   timeout               = 900 // 15 Minutes   render_subchart_notes
+      = true   dependency_update     = true   wait_for_jobs         = true   skip_crds             =
+      false # The entrypoint to your cluster highly depends on your local setup   values                =
+      [     yamlencode({       route = {         enabled    = true         entrypoint
+      = "after-proxy"       }     })   ] }  resource "helm_release" "iits_kyverno_policies"
+      {   wait_for_jobs         = true   depends_on            = [helm_release.kyverno]   name                  =
+      "iits-kyverno-policies"   repository            = "https://charts.iits.tech"   version               =
+      "1.0.0"   chart                 = "iits-kyverno-policies"   namespace             =
+      "kyverno"   create_namespace      = true   wait                  = true   atomic                =
+      true   timeout               = 900 // 15 Minutes   render_subchart_notes = true   dependency_update     =
+      true } ``` '
+    digest: 80a69107f7e555e649458585ceda4792c5348afb205b2ab33e620aa44046e77b
+    name: kyverno
+    type: application
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/kyverno-1.0.1/kyverno-1.0.1.tgz
+    version: 1.0.1
   - apiVersion: v2
     created: "2023-05-16T07:01:59.893605791Z"
     dependencies:
@@ -630,6 +754,24 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/registry-creds-1.1.3-bugfix-user/registry-creds-1.1.3-bugfix-user.tgz
     version: 1.1.3-bugfix-user
+  - apiVersion: v2
+    created: "2023-05-17T13:59:16.064425131Z"
+    description: 'This project is based on https://github.com/alexellis/registry-creds  ##
+      Usage  Create `dockerconfigjson`  ```shell kubectl create secret docker-registry
+      regcred --docker-server=https://index.docker.io/v1/ --docker-username=victor.getz@iits-consulting.de
+      --docker-password=my-password --docker-email=victor.getz@iits-consulting.de
+      --dry-run=client -o yaml ```  Output will looks like this:  ```yaml apiVersion:
+      v1 data:   .dockerconfigjson: eyJhdXRocyI6eyJodHRwczovL2luZGV4LmRvY2tlci5pby92MS8iOnsidXNlcm5hbWUiOiJ2aWN0b3IuZ2V0ekBpaXRzLWNvbnN1bHRpbmcuZGUiLCJwYXNzd29yZCI6Im15LXBhc3N3b3JkIiwiZW1haWwiOiJ2aWN0b3IuZ2V0ekBpaXRzLWNvbnN1bHRpbmcuZGUiLCJhdXRoIjoiZG1samRHOXlMbWRsZEhwQWFXbDBjeTFqYjI1emRXeDBhVzVuTG1SbE9tMTVMWEJoYzNOM2IzSmsifX19
+      kind: Secret metadata:   creationTimestamp: null   name: regcred type: kubernetes.io/dockerconfigjson
+      ``` Copy `dockerconfigjson` and perform these commands  ```shell helm repo add
+      iits-charts https://charts.iits.tech helm search repo registry-creds helm install
+      registry-creds iits-charts/registry-creds --set defaultClusterPullSecret.dockerConfigJsonBase64Encoded="eyJhdXRocyI6eyJodHRwczovL2luZGV4LmRvY2tlci5pby92MS8iOnsidXNlcm5hbWUiOiJ2aWN0b3IuZ2V0ekBpaXRzLWNvbnN1bHRpbmcuZGUiLCJwYXNzd29yZCI6Im15LXBhc3N3b3JkIiwiZW1haWwiOiJ2aWN0b3IuZ2V0ekBpaXRzLWNvbnN1bHRpbmcuZGUiLCJhdXRoIjoiZG1samRHOXlMbWRsZEhwQWFXbDBjeTFqYjI1emRXeDBhVzVuTG1SbE9tMTVMWEJoYzNOM2IzSmsifX19"
+      ``` '
+    digest: 61160fe5ce0c4a7dc3dfb9fb8f30c4c4468a3d09d31b80001c5e19905f87e371
+    name: registry-creds
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/registry-creds-1.1.3-bugfix-user/registry-creds-1.1.3-bugfix-user.tgz
+    version: 1.1.3-bugfix-user
   traefik:
   - apiVersion: v2
     appVersion: 9.11.0
@@ -667,6 +809,20 @@ entries:
     description: The traefik ingress controller with some additional resources and
       sane default values for IITS projects
     digest: e1927b34e4b313cf8e94bb9439c5fa83cb0ad3709478d6f4025b9b0bc85262d0
+    name: traefik
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/traefik-10.22.0-bugfix-traefik-annotations/traefik-10.22.0-bugfix-traefik-annotations.tgz
+    version: 10.22.0-bugfix-traefik-annotations
+  - apiVersion: v2
+    appVersion: 10.22.0
+    created: "2023-05-17T13:59:16.238558987Z"
+    dependencies:
+    - name: traefik
+      repository: https://helm.traefik.io/traefik
+      version: 10.22.0
+    description: The traefik ingress controller with some additional resources and
+      sane default values for IITS projects
+    digest: 14438fa4d4f98e41c3b1a82323c6e2a0e321798b0061a4c61386d810da64f146
     name: traefik
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-10.22.0-bugfix-traefik-annotations/traefik-10.22.0-bugfix-traefik-annotations.tgz
@@ -775,4 +931,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2023-05-17T07:20:08.668239171Z"
+generated: "2023-05-17T13:59:16.23886989Z"
