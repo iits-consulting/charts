@@ -2,6 +2,10 @@
 
 This project contains several public charts as used by the folks at [IITS](https://iits-consulting.de/).
 
+## Requirements
+
+These charts are running only with a OIDC Proxy upfront and traefik as a Ingress Controller
+
 ## Installation
 
 ```shell
