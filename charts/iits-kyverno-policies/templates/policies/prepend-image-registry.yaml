@@ -46,11 +46,6 @@ spec:
         value:
         - CREATE
         - UPDATE
-      {{- range $excludeRegistry := .excludeRegistries}}
-      - key: "{{`{{element.image}}`}}"
-        operator: NotEquals
-        value: "{{$excludeRegistry}}"
-      {{- end }}
     mutate:
       foreach:
       - list: "request.object.spec.containers"
@@ -59,6 +54,13 @@ spec:
             containers:
             - name: "{{ `{{ element.name }}` }}"
               image: "{{ .registry | trimSuffix "/" }}/{{ `{{ images.containers.\"{{element.name}}\".registry}}/{{ images.containers.\"{{element.name}}\".path}}:{{images.containers.\"{{element.name}}\".tag}}`}}"
+        preconditions:
+          all:
+          {{- range $excludeRegistry := .excludeRegistries}}
+          - key: "{{`{{element.image}}`}}"
+            operator: NotEquals
+            value: "{{$excludeRegistry}}"
+          {{- end }}
   - name: prepend-registry-initcontainers
     match:
       any:
@@ -75,11 +77,6 @@ spec:
       - key: "{{ `{{ request.object.spec.initContainers[] || '' | length(@) }} `}}"
         operator: GreaterThanOrEquals
         value: 1
-      {{- range $excludeRegistry := .excludeRegistries}}
-      - key: "{{`{{element.image}}`}}"
-        operator: NotEquals
-        value: "{{$excludeRegistry}}"
-      {{- end }}
     mutate:
       foreach:
       - list: "request.object.spec.initContainers"
@@ -88,6 +85,13 @@ spec:
             initContainers:
             - name: "{{ `{{ element.name }}` }}"
               image: "{{ .registry | trimSuffix "/" }}/{{ `{{ images.containers.\"{{element.name}}\".registry}}/{{ images.containers.\"{{element.name}}\".path}}:{{images.containers.\"{{element.name}}\".tag}}`}}"
+        preconditions:
+          all:
+          {{- range $excludeRegistry := .excludeRegistries}}
+          - key: "{{`{{element.image}}`}}"
+            operator: NotEquals
+            value: "{{$excludeRegistry}}"
+          {{- end }}
 ---
 {{- end }}
 {{- end }}
