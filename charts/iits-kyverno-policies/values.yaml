@@ -79,6 +79,25 @@ prependCustomImageRegistry:
   # For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards
   excludeNamespaces: []
 
+# Add a imagePullSecret to a pod if a given image registry is used
+addImagePullSecrets:
+  # -- Enable or disable the policy globally
+  enabled: false
+
+  # -- Auto gen rules for pod controllers. See https://kyverno.io/docs/writing-policies/autogen/
+  autogenControllers: none
+
+  # -- The base name of the policy
+  name: add-image-pull-secret
+
+  # -- What to do when this action fails. Either `audit` or `enforce`
+  validationFailureAction: "audit"
+
+  imagePullSecrets:
+    # -- Array of registries where a custom pull secret should be added to a pod
+    - registryWildcard: "registry.example.com/*"
+      imagePullSecretName: "my-test-secret"
+
 # Replace all registries and force to go through a specific one. Often functions as a pull through cache proxy
 replaceImageRegistry:
   # -- Enable or disable the policy globally

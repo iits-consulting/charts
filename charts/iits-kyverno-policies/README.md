@@ -18,6 +18,11 @@ This chart wraps the upstream `kyverno-policies` chart and adds a few useful pol
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| addImagePullSecrets.autogenControllers | string | `"none"` | Auto gen rules for pod controllers. See https://kyverno.io/docs/writing-policies/autogen/ |
+| addImagePullSecrets.enabled | bool | `false` | Enable or disable the policy globally |
+| addImagePullSecrets.imagePullSecrets[0] | object | `{"imagePullSecretName":"my-test-secret","registryWildcard":"registry.example.com/*"}` | Array of registries where a custom pull secret should be added to a pod |
+| addImagePullSecrets.name | string | `"add-image-pull-secret"` | The base name of the policy |
+| addImagePullSecrets.validationFailureAction | string | `"audit"` | What to do when this action fails. Either `audit` or `enforce` |
 | disallowUnsignedImages.autogenControllers | string | `"none"` | Auto gen rules for pod controllers. See https://kyverno.io/docs/writing-policies/autogen/ |
 | disallowUnsignedImages.background | bool | `true` | Also check already existing containers. See https://kyverno.io/docs/writing-policies/background/ |
 | disallowUnsignedImages.enabled | bool | `false` | Enable or disable the policy globally |
