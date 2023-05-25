@@ -7,9 +7,9 @@ spec:
   issuerRef:
     name: {{.Values.ingressRoute.certificate.clusterIssuer}}
     kind: ClusterIssuer
-  commonName: {{.Values.ingressRoute.adminDomain}}
+  commonName: {{.Values.ingressRoute.domain}}
   privateKey:
     algorithm: "RSA"
     size: 4096
   dnsNames:
-    - {{.Values.ingressRoute.adminDomain}}
+    - {{.Values.ingressRoute.domain}}
