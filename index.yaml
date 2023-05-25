@@ -530,6 +530,16 @@ entries:
     version: 7.17.3-route-bugfix
   iits-admin-dashboard:
   - apiVersion: v2
+    created: "2023-05-25T10:46:18.826210848Z"
+    description: 'This chart deploys a super simple webserver that provides a simple
+      website containing links to a set of dashboards that are usually deployed in
+      our infrastructure setup as well as some nifty external tools. '
+    digest: 4e4d190fbbfa9c47de718992360c79fc026575b4506186028f5f08d68d0c5739
+    name: iits-admin-dashboard
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/iits-admin-dashboard-1.2.0/iits-admin-dashboard-1.2.0.tgz
+    version: 1.2.0
+  - apiVersion: v2
     created: "2023-05-17T13:59:15.002463604Z"
     description: 'This chart deploys a super simple webserver that provides a simple
       website containing links to a set of dashboards that are usually deployed in
@@ -833,6 +843,20 @@ entries:
     version: 10.22.0
   - apiVersion: v2
     appVersion: 10.22.0
+    created: "2023-05-25T10:46:19.001980409Z"
+    dependencies:
+    - name: traefik
+      repository: https://helm.traefik.io/traefik
+      version: 10.22.0
+    description: The traefik ingress controller with some additional resources and
+      sane default values for IITS projects
+    digest: 544b7cd570ed0934c435dfe1e91dd845a1a4e9752ae73ac07b6e0b81736d3e3d
+    name: traefik
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/traefik-10.22.0-https-redirect/traefik-10.22.0-https-redirect.tgz
+    version: 10.22.0-https-redirect
+  - apiVersion: v2
+    appVersion: 10.22.0
     created: "2023-05-16T07:02:00.234042801Z"
     dependencies:
     - name: traefik
@@ -913,19 +937,6 @@ entries:
     version: 10.22.0-after-proxy-v2
   - apiVersion: v2
     appVersion: 9.11.0
-    created: "2023-05-02T14:04:42.889108694Z"
-    dependencies:
-    - name: traefik
-      repository: https://helm.traefik.io/traefik
-      version: 10.22.0
-    description: traefik
-    digest: c7fe177d7ca92ae8f13d47978f81f220062bde2abe4c2329cd540261eab2d9e8
-    name: traefik
-    urls:
-    - https://github.com/iits-consulting/charts/releases/download/traefik-10.22.0-after-proxy/traefik-10.22.0-after-proxy.tgz
-    version: 10.22.0-after-proxy
-  - apiVersion: v2
-    appVersion: 9.11.0
     created: "2023-05-02T15:27:52.620109569Z"
     dependencies:
     - name: traefik
@@ -933,6 +944,19 @@ entries:
       version: 10.22.0
     description: traefik
     digest: 911dbd31780545a921ee4f7ca99f1858552c4e1ccdfeb667cc64eabfa6ea9b6a
+    name: traefik
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/traefik-10.22.0-after-proxy/traefik-10.22.0-after-proxy.tgz
+    version: 10.22.0-after-proxy
+  - apiVersion: v2
+    appVersion: 9.11.0
+    created: "2023-05-02T14:04:42.889108694Z"
+    dependencies:
+    - name: traefik
+      repository: https://helm.traefik.io/traefik
+      version: 10.22.0
+    description: traefik
+    digest: c7fe177d7ca92ae8f13d47978f81f220062bde2abe4c2329cd540261eab2d9e8
     name: traefik
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-10.22.0-after-proxy/traefik-10.22.0-after-proxy.tgz
@@ -976,4 +1000,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2023-05-25T10:45:53.601043907Z"
+generated: "2023-05-25T10:46:19.00227791Z"
