@@ -48,6 +48,7 @@ h1 {
   background-repeat: no-repeat;
   background-position: center;
   opacity: 0.8;
+  border:2px solid white;
 }
 
 .tile img {
