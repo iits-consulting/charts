@@ -1,0 +1,23 @@
+{{- range $projectName,$project := .Values.projects }}
+{{- range $registryName,$registry := $project.helmRegistries }}
+{{-  $registryName := ($registry.name | default ($registryName | snakecase | replace "_" "-")) }}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ $registryName }}-helm
+  labels:
+    argocd.argoproj.io/secret-type: repository
+    app.kubernetes.io/part-of: argocd
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-weight": "-5"
+data:
+  name: {{ printf $registryName| b64enc }}
+  password: {{ printf $registry.password | b64enc }}
+  project: {{ $projectName }}
+  type: {{ printf "helm" | b64enc }}
+  url: {{ $registry.url | b64enc }}
+  username: {{ printf ($registry.username | default "ARGOCD_GIT_ACCESS_TOKEN") | b64enc }}
+---
+{{- end }}
+{{- end }}

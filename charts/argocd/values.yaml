@@ -49,6 +49,7 @@ projects:
 #      stage:
 #    # defaults to false
 #    serverSideApply:
+#    # information about the git repo which should be bootstrapped
 #    git:
 #      # defaults to ARGOCD_GIT_ACCESS_TOKEN
 #      username:
@@ -59,5 +60,16 @@ projects:
 #      # defaults to project name
 #      path:
 #      repoPrivateKeyBase64Encoded:
+#
+#    # helm registries credentials
+#    helmRegistries:
+#      infraRegistry:
+#        # defaults to map key
+#        name: ""
+#        password: "SET_BY_TERRAFORM"
+#        url: "SET_BY_TERRAFORM"
+#        # defaults to ARGOCD_GIT_ACCESS_TOKEN
+#        username:
+#
 #    # defaults to *
 #    allowedUrls:

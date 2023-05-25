@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: argocd-repo-{{ $projectName }}
+  name: {{ $projectName }}-git
   labels:
     argocd.argoproj.io/secret-type: repository
     app.kubernetes.io/part-of: argocd
@@ -17,9 +17,9 @@ data:
   password: {{ printf $project.git.password | b64enc }}
   username: {{ printf ($project.git.username | default "ARGOCD_GIT_ACCESS_TOKEN") | b64enc }}
   {{else}}
-  {{- if ne $project.git.repoPrivateKeyBase64Encoded "" }}
+    {{- if ne $project.git.repoPrivateKeyBase64Encoded "" }}
   sshPrivateKey: {{ printf $project.git.repoPrivateKeyBase64Encoded }}
-  {{- end }}
+    {{- end }}
   {{- end }}
 ---
 {{- end }}
