@@ -15,7 +15,7 @@ ArgoCD via Terraform. An example of how to deploy a complete Kyverno setup would
 resource "helm_release" "kyverno" {
   name                  = "kyverno"
   repository            = "https://charts.iits.tech"
-  version               = "1.0.0"
+  version               = "1.1.0"
   namespace             = "kyverno"
   create_namespace      = true
   wait                  = true

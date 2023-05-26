@@ -14,7 +14,7 @@ description: |
   resource "helm_release" "kyverno" {
     name                  = "kyverno"
     repository            = "https://charts.iits.tech"
-    version               = "1.0.0"
+    version               = "1.1.0"
     namespace             = "kyverno"
     create_namespace      = true
     wait                  = true
@@ -61,4 +61,4 @@ dependencies:
     version: 2.19.0
     condition: policy-reporter.install
 type: application
-version: 1.0.1
+version: 1.1.0
