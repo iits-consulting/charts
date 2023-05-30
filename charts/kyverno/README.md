@@ -1,6 +1,6 @@
 # kyverno
 
-![Version: 1.0.1](https://img.shields.io/badge/Version-1.0.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 1.1.0](https://img.shields.io/badge/Version-1.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 This chart wraps kyverno and some additional components such as the policy reporter as well as
 IngressRoutes/Middlewares to allow usage of the Kyverno UI.
@@ -64,15 +64,16 @@ resource "helm_release" "iits_kyverno_policies" {
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| ingressRoute.adminDomain | string | `"admin.my-domain.com"` |  |
+| ingressRoute.enabled | bool | `false` |  |
+| ingressRoute.entryPointName | string | `"after-proxy"` |  |
+| ingressRoute.pathPrefix | string | `"/policies`,`/_nuxt"` |  |
 | kyverno.existingImagePullSecrets | list | `[]` |  |
 | kyverno.installCRDs | bool | `true` |  |
 | policy-reporter.install | bool | `true` |  |
 | policy-reporter.kyvernoPlugin.enabled | bool | `true` |  |
 | policy-reporter.ui.enabled | bool | `true` |  |
 | policy-reporter.ui.plugins.kyverno | bool | `true` |  |
-| route.enabled | bool | `false` |  |
-| route.entrypoint | string | `"after-proxy"` |  |
-| route.hostPrefixRegex | string | `"HostRegexp(`{host:admin.+}`)"` |  |
 
 <img src="https://iits-consulting.de/wp-content/uploads/2021/08/iits-logo-2021-red-square-xl.png"
 alt="iits consulting" id="logo" width="200" height="200">
