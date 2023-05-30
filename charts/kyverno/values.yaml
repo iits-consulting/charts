@@ -1,7 +1,8 @@
-route:
+ingressRoute:
   enabled: false
-  entrypoint: after-proxy
-  hostPrefixRegex: "HostRegexp(`{host:admin.+}`)"
+  adminDomain: "admin.my-domain.com"
+  pathPrefix: "/policies`,`/_nuxt"
+  entryPointName: "after-proxy"
 
 kyverno:
   installCRDs: true
