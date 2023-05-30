@@ -369,6 +369,14 @@ entries:
     version: 0.2.4-multiple-upload
   basic-auth-gateway:
   - apiVersion: v2
+    created: "2023-05-30T09:25:34.418010917Z"
+    description: Basic auth gateway chart for traefik
+    digest: 146268090f759e416856b7f243800e18dec3d8c4a60dc5d29d887ac2dc115df8
+    name: basic-auth-gateway
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/basic-auth-gateway-0.3.1/basic-auth-gateway-0.3.1.tgz
+    version: 0.3.1
+  - apiVersion: v2
     created: "2023-05-08T11:15:28.491386549Z"
     description: basic auth gateway chart for traefik
     digest: d62a12cbd315eafe36a20ed56479db185b73818d3d9de017e1db6112b0d7182d
@@ -681,6 +689,19 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/kafka-0.2.5/kafka-0.2.5.tgz
     version: 0.2.5
+  keycloak-gatekeeper:
+  - apiVersion: v2
+    created: "2023-05-30T09:25:34.628327244Z"
+    dependencies:
+    - name: gatekeeper
+      repository: https://gogatekeeper.github.io/helm-gogatekeeper
+      version: 0.1.16
+    description: keycloak-gatekeeper
+    digest: 7bb87bd31a964785998cd28d224b788d8f7b589d79ff0b4985ff3591fc1d16f2
+    name: keycloak-gatekeeper
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/keycloak-gatekeeper-1.0.0/keycloak-gatekeeper-1.0.0.tgz
+    version: 1.0.0
   kyverno:
   - apiVersion: v2
     created: "2023-05-30T09:19:00.475025187Z"
@@ -878,6 +899,20 @@ entries:
     version: 10.22.0
   - apiVersion: v2
     appVersion: 10.22.0
+    created: "2023-05-30T09:25:34.845433906Z"
+    dependencies:
+    - name: traefik
+      repository: https://helm.traefik.io/traefik
+      version: 10.22.0
+    description: The traefik ingress controller with some additional resources and
+      sane default values for IITS projects
+    digest: 4e92e92c42807fcf86e14ba7862f76eb97f27c4b86d2859ec1b8f73aecb2f146
+    name: traefik
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/traefik-10.22.0-https-redirect/traefik-10.22.0-https-redirect.tgz
+    version: 10.22.0-https-redirect
+  - apiVersion: v2
+    appVersion: 10.22.0
     created: "2023-05-25T10:46:19.001980409Z"
     dependencies:
     - name: traefik
@@ -1035,4 +1070,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2023-05-30T09:19:00.47522289Z"
+generated: "2023-05-30T09:25:34.84605361Z"
