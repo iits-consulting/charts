@@ -1,0 +1,8 @@
+apiVersion: v2
+description: keycloak-gatekeeper
+name: keycloak-gatekeeper
+version: 1.0.0
+dependencies:
+  - name: gatekeeper
+    repository: https://gogatekeeper.github.io/helm-gogatekeeper
+    version: 0.1.16
