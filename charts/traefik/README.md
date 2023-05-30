@@ -1,6 +1,6 @@
 # traefik
 
-![Version: 10.22.0-bugfix-traefik-annotations](https://img.shields.io/badge/Version-10.22.0--bugfix--traefik--annotations-informational?style=flat-square) ![AppVersion: 10.22.0](https://img.shields.io/badge/AppVersion-10.22.0-informational?style=flat-square)
+![Version: 10.22.0-https-redirect](https://img.shields.io/badge/Version-10.22.0--https--redirect-informational?style=flat-square) ![AppVersion: 10.22.0](https://img.shields.io/badge/AppVersion-10.22.0-informational?style=flat-square)
 
 The traefik ingress controller with some additional resources and sane default values for IITS projects
 
