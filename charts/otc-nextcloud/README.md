@@ -14,13 +14,15 @@ nextcloud for OTC
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| dns.certificate.clusterIssuer | string | `"letsencrypt"` |  |
+| ingressRoute.certificate.clusterIssuer | string | `"letsencrypt"` |  |
+| ingressRoute.certificate.name | string | `nil` |  |
+| ingressRoute.entryPointName | string | `"after-proxy"` |  |
 | nextcloud.externalDatabase.enabled | bool | `true` |  |
-| nextcloud.externalDatabase.host | string | `"SET_BY_ARGOCD"` |  |
-| nextcloud.externalDatabase.password | string | `"SET_BY_ARGOCD"` |  |
-| nextcloud.externalDatabase.port | string | `"SET_BY_ARGOCD"` |  |
+| nextcloud.externalDatabase.host | string | `"REPLACE_ME"` |  |
+| nextcloud.externalDatabase.password | string | `"REPLACE_ME"` |  |
+| nextcloud.externalDatabase.port | string | `"REPLACE_ME"` |  |
 | nextcloud.externalDatabase.type | string | `"postgresql"` |  |
-| nextcloud.externalDatabase.user | string | `"SET_BY_ARGOCCD"` |  |
+| nextcloud.externalDatabase.user | string | `"REPLACE_ME"` |  |
 | nextcloud.internalDatabase.enabled | bool | `false` |  |
 | nextcloud.nextcloud.configs."s3.config.php" | string | `"<?php\n$CONFIG = array (\n  'objectstore' => array(\n    'class' => '\\\\OC\\\\Files\\\\ObjectStore\\\\S3',\n    'arguments' => array(\n      'bucket'         => getenv('S3_BUCKET_NAME'),\n      'autocreate'     => true,\n      'key'            => getenv('S3_PUBLIC_KEY'),\n      'secret'         => getenv('S3_SECRET_KEY'),\n      'hostname'       => getenv('S3_BUCKET_URL'),\n      'use_ssl'        => true,\n      'use_path_style' => true,\n    )\n  )\n);"` |  |
 | nextcloud.nextcloud.extraEnv[0].name | string | `"S3_BUCKET_NAME"` |  |
@@ -35,12 +37,12 @@ nextcloud for OTC
 | nextcloud.nextcloud.extraEnv[3].name | string | `"S3_BUCKET_URL"` |  |
 | nextcloud.nextcloud.extraEnv[3].valueFrom.secretKeyRef.key | string | `"S3_BUCKET_URL"` |  |
 | nextcloud.nextcloud.extraEnv[3].valueFrom.secretKeyRef.name | string | `"nextcloud-storage-secrets"` |  |
-| nextcloud.nextcloud.host | string | `"SET_BY_ARGOCD"` |  |
+| nextcloud.nextcloud.host | string | `"REPLACE_ME"` |  |
 | nextcloud.phpClientHttpsFix.enabled | bool | `true` |  |
-| nextcloudStorage.s3.S3_BUCKET_NAME | string | `"SET_BY_ARGOCD"` |  |
-| nextcloudStorage.s3.S3_BUCKET_URL | string | `"SET_BY_ARGOCD"` |  |
-| nextcloudStorage.s3.S3_PUBLIC_KEY | string | `"SET_BY_ARGOCD"` |  |
-| nextcloudStorage.s3.S3_SECRET_KEY | string | `"SET_BY_ARGOCD"` |  |
+| nextcloudStorage.s3.S3_BUCKET_NAME | string | `"REPLACE_ME"` |  |
+| nextcloudStorage.s3.S3_BUCKET_URL | string | `"REPLACE_ME"` |  |
+| nextcloudStorage.s3.S3_PUBLIC_KEY | string | `"REPLACE_ME"` |  |
+| nextcloudStorage.s3.S3_SECRET_KEY | string | `"REPLACE_ME"` |  |
 
 <img src="https://iits-consulting.de/wp-content/uploads/2021/08/iits-logo-2021-red-square-xl.png"
 alt="iits consulting" id="logo" width="200" height="200">
