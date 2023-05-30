@@ -3,11 +3,6 @@ traefik:
     - "--global.checknewversion"
   additionalArguments:
     - "--ping"
-  api:
-    dashboard: true
-    insecure: true
-  ping:
-    manualRouting: true
   logs:
     general:
       format: json
@@ -32,8 +27,12 @@ traefik:
   providers:
     kubernetesCRD:
       enabled: true
+      allowCrossNamespace: true
     kubernetesIngress:
       enabled: true
+  ingressClass:
+    enabled: true
+    isDefaultClass: true
 
 ingressRoute:
   adminDomain: "admin.my-domain.com"

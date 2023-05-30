@@ -1,11 +1,11 @@
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: traefik-ping
+  name: {{.Release.Name}}-ping
 spec:
   entryPoints:
     - web
-    - after-proxy
+    - websecure
   routes:
     - match: Host(`{{ .Values.ingressRoute.adminDomain }}`) && PathPrefix(`/ping`)
       kind: Rule

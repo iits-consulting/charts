@@ -1,16 +1,18 @@
-{{- $afterProxyPort := index .Values.traefik.ports "after-proxy"}}
-
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Chart.Name }}-websecure-internal
+  name: {{ .Chart.Name }}-internal
 spec:
   type: ClusterIP
   ports:
-    - port: {{$afterProxyPort.port}}
-      targetPort: {{$afterProxyPort.port}}
-      protocol: TCP
-      name: after-proxy
+{{- range $name,$spec := .Values.traefik.ports }}
+{{- if ne $spec.expose true }}
+    - port: {{ $spec.exposedPort }}
+      targetPort: {{ $spec.port }}
+      protocol: {{ $spec.protocol }}
+      name: {{ $name }}
+{{- end }}
+{{- end }}
   selector:
     app.kubernetes.io/name: traefik
     app.kubernetes.io/instance: {{ .Release.Name }}
