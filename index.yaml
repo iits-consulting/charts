@@ -927,6 +927,20 @@ entries:
     version: 10.22.0-https-redirect
   - apiVersion: v2
     appVersion: 10.22.0
+    created: "2023-05-31T13:56:00.718854811Z"
+    dependencies:
+    - name: traefik
+      repository: https://helm.traefik.io/traefik
+      version: 10.22.0
+    description: The traefik ingress controller with some additional resources and
+      sane default values for IITS projects
+    digest: 0c348bab7e7ad8f4496c9bcbe7914aaf69b444e54b980796557a47929aba4760
+    name: traefik
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/traefik-10.22.0-cleanup/traefik-10.22.0-cleanup.tgz
+    version: 10.22.0-cleanup
+  - apiVersion: v2
+    appVersion: 10.22.0
     created: "2023-05-16T07:02:00.234042801Z"
     dependencies:
     - name: traefik
@@ -1070,4 +1084,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2023-05-30T09:25:34.84605361Z"
+generated: "2023-05-31T13:56:00.71937675Z"
