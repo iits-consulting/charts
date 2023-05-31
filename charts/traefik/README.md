@@ -1,6 +1,6 @@
 # traefik
 
-![Version: 10.22.0-https-redirect](https://img.shields.io/badge/Version-10.22.0--https--redirect-informational?style=flat-square) ![AppVersion: 10.22.0](https://img.shields.io/badge/AppVersion-10.22.0-informational?style=flat-square)
+![Version: 10.22.0-cleanup](https://img.shields.io/badge/Version-10.22.0--cleanup-informational?style=flat-square) ![AppVersion: 10.22.0](https://img.shields.io/badge/AppVersion-10.22.0-informational?style=flat-square)
 
 The traefik ingress controller with some additional resources and sane default values for IITS projects
 
@@ -16,20 +16,20 @@ The traefik ingress controller with some additional resources and sane default v
 |-----|------|---------|-------------|
 | ingressRoute.adminDomain | string | `"admin.my-domain.com"` |  |
 | traefik.additionalArguments[0] | string | `"--ping"` |  |
-| traefik.api.dashboard | bool | `true` |  |
-| traefik.api.insecure | bool | `true` |  |
 | traefik.deployment.replicas | int | `2` |  |
 | traefik.globalArguments[0] | string | `"--global.checknewversion"` |  |
+| traefik.ingressClass.enabled | bool | `true` |  |
+| traefik.ingressClass.isDefaultClass | bool | `true` |  |
 | traefik.logs.access.enabled | bool | `false` |  |
 | traefik.logs.access.format | string | `"json"` |  |
 | traefik.logs.general.format | string | `"json"` |  |
 | traefik.logs.general.level | string | `"INFO"` |  |
-| traefik.ping.manualRouting | bool | `true` |  |
 | traefik.ports.after-proxy.expose | bool | `false` |  |
 | traefik.ports.after-proxy.exposedPort | int | `8444` |  |
 | traefik.ports.after-proxy.port | int | `8444` |  |
 | traefik.ports.after-proxy.protocol | string | `"TCP"` |  |
 | traefik.ports.after-proxy.tls.enabled | bool | `false` |  |
+| traefik.providers.kubernetesCRD.allowCrossNamespace | bool | `true` |  |
 | traefik.providers.kubernetesCRD.enabled | bool | `true` |  |
 | traefik.providers.kubernetesIngress.enabled | bool | `true` |  |
 | traefik.service.spec.externalTrafficPolicy | string | `"Cluster"` |  |
