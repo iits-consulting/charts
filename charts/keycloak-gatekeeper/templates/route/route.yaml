@@ -12,6 +12,6 @@ spec:
         - name: {{ .Release.Name }}
           port: {{ .Values.gatekeeper.service.proxy.port }}
   tls:
-    secretName: {{.Values.ingressRoute.certificate.name}}
+    secretName: {{.Values.ingressRoute.certificate.name | default .Release.Name}}
     domains:
       - main: {{ .Values.ingressRoute.domain}}
