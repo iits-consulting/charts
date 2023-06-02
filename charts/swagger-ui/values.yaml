@@ -9,31 +9,23 @@ image:
 imagePullSecrets: []
 
 ## Used to provide the location of the openapi.json file.
-## If jsonPath is empty the chart try to get a json file at the jsonUrl address.
-## The server fields have to use to add a custom server.
-## remote: section that allows to download external json file and replace server and url on the fly
-## source.remote.json.skipTLS: do not check ceritificate while downloading your json file
-## external: json outside of the chart file, that should be passed as variable by: '--set source.external=$(cat openapi.json | base64 -w 0 -)'
+## external: json file outside of the chart, that should be passed to helm by: '--set source.external=$(cat openapi.json | base64 -w 0 -)'
 ## internal: json file as a part of the helm chart files
 source:
-  remote:
-    json:
-      url : http://petstore.swagger.io/v2/swagger.json
-      ignoreTLS: false
-    server:
-      url: http://www.google.be
-      description: "helm-online"
   external: ""
   internal:
-    path: ""
+    path: "spec/openapi-petstore.json"
 
 ## Configure the deployment resource
 ##
 deployment:
+  annotations: {}
   replicas: 1
   extraEnv:
   # - name: BASE_URL
   #   value: /swagger
+
+podAnnotations: {}
 
 ## Expose the swagger-ui service and
 ## Provides options for the service so chart users have the full choice
@@ -109,4 +101,3 @@ resources: {}
   # requests:
   #  cpu: 100m
   #  memory: 128Mi
-
