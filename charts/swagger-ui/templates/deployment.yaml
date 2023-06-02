@@ -3,6 +3,11 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ template "swagger-ui.fullname" . }}
+{{- with .Values.deployment.annotations }}
+  annotations:
+{{ toYaml . | indent 4 }}
+{{- end }}
+
   labels:
     app: {{ template "swagger-ui.name" . }}
     chart: {{ template "swagger-ui.chart" . }}
@@ -19,6 +24,12 @@ spec:
       labels:
         app: {{ template "swagger-ui.name" . }}
         release: {{ .Release.Name }}
+      annotations:
+        checksum/config: {{ include (print $.Chart.Name "/templates/configmap.yaml") . | sha256sum }}
+{{- with .Values.podAnnotations }}
+{{ toYaml . | indent 8 }}
+{{- end }}
+
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
@@ -28,18 +39,9 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          {{- if .Values.swaggerui.jsonPath }}
           volumeMounts:
           - mountPath: /api-doc
             name: swagger-config
-          {{ else }}
-          command: ["/bin/sh","-c"]
-          {{- if .Values.deployment.jsonNoCheckCertificate }}
-          args : {{ (printf "[\"mkdir /api-doc && wget --no-check-certificate %s -O /api-doc/openapi.json && apk update && apk add jq && jq '.servers += [{\\\"url\\\":\\\"%s\\\",\\\"description\\\":\\\"%s\\\"}]' /api-doc/openapi.json > json.tmp && mv json.tmp /api-doc/openapi.json && /usr/share/nginx/run.sh\"]" .Values.swaggerui.jsonUrl .Values.swaggerui.server.url .Values.swaggerui.server.description ) }} 
-          {{- else }}
-          args : {{ (printf "[\"mkdir /api-doc && wget %s -O /api-doc/openapi.json && apk update && apk add jq && jq '.servers += [{\\\"url\\\":\\\"%s\\\",\\\"description\\\":\\\"%s\\\"}]' /api-doc/openapi.json > json.tmp && mv json.tmp /api-doc/openapi.json && /usr/share/nginx/run.sh\"]" .Values.swaggerui.jsonUrl .Values.swaggerui.server.url .Values.swaggerui.server.description ) }}
-          {{- end }}
-          {{- end }}
           env:
           {{- with .Values.deployment.extraEnv }}
           {{- toYaml . | nindent 10 }}
@@ -55,7 +57,6 @@ spec:
             protocol: TCP
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-      {{- if .Values.swaggerui.jsonPath }}
       volumes:
         - name: swagger-config
           configMap:
@@ -63,4 +64,3 @@ spec:
             items:
             - key: conf.json
               path: openapi.json
-      {{ end }}
