@@ -82,7 +82,7 @@ jobs:
           ignore-unfixed: false
           severity: 'MEDIUM,HIGH,CRITICAL'
           trivyignores: 'charts/${{matrix.chart}}/.trivyignore'
-          limit-severities-for-sarif: true
+          limit-severities-for-sarif: false
 
       - name: Lint ${{ matrix.chart }}
         run: |
