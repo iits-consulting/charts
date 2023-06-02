@@ -24,7 +24,6 @@ deployment:
   extraEnv:
   # - name: BASE_URL
   #   value: /swagger
-
 podAnnotations: {}
 
 ## Expose the swagger-ui service and

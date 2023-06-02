@@ -29,7 +29,6 @@ spec:
 {{- with .Values.podAnnotations }}
 {{ toYaml . | indent 8 }}
 {{- end }}
-
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
