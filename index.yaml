@@ -937,6 +937,20 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/otc-botkube-0.1.0/otc-botkube-0.1.0.tgz
     version: 0.1.0
+  otc-nextcloud:
+  - apiVersion: v2
+    appVersion: 25.0.2
+    created: "2023-06-05T18:49:28.035457482Z"
+    dependencies:
+    - name: nextcloud
+      repository: https://nextcloud.github.io/helm/
+      version: 3.4.0
+    description: nextcloud with S3 storage
+    digest: 32a76d0f0772e4e55b476b0504b38f26b16a140e43a98d6554418c9b5989c10d
+    name: otc-nextcloud
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/otc-nextcloud-0.1.0/otc-nextcloud-0.1.0.tgz
+    version: 0.1.0
   otc-storage-classes:
   - apiVersion: v2
     created: "2023-05-02T18:40:06.139560369Z"
@@ -1318,4 +1332,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2023-06-05T18:15:43.193251308Z"
+generated: "2023-06-05T18:49:28.03580238Z"
