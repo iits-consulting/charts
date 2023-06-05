@@ -10,7 +10,7 @@ spec:
       match: Host(`{{ .Values.ingressRoute.domain }}`)
       services:
         - name: {{ .Release.Name }}
-          port: {{ .Values.keycloak.service.ports.https }}
+          port: {{ .Values.keycloak.service.ports.http }}
   tls:
     secretName: {{.Values.ingressRoute.certificate.name }}
     domains:
