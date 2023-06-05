@@ -1,17 +1,17 @@
 apiVersion: v2
 dependencies:
-  - condition: elasticsearch.enabled
-    name: elasticsearch
-    repository: https://helm.elastic.co
-    version: 7.17.3
-  - condition: kibana.enabled
-    name: kibana
-    repository: https://helm.elastic.co
-    version: 7.17.3
-  - condition: filebeat.enabled
-    name: filebeat
-    repository: https://helm.elastic.co
-    version: 7.17.3
-description: Deploy a complete ELK stack or parts of it
+- condition: elasticsearch.enabled
+  name: elasticsearch
+  repository: https://helm.elastic.co
+  version: 7.17.3
+- condition: kibana.enabled
+  name: kibana
+  repository: https://helm.elastic.co
+  version: 7.17.3
+- condition: filebeat.enabled
+  name: filebeat
+  repository: https://helm.elastic.co
+  version: 7.17.3
+description: Awesome Logs
 name: elastic-stack
-version: 7.17.3-route-bugfix
+version: 7.17.3-otc-volumes

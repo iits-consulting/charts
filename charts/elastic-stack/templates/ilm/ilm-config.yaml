@@ -54,7 +54,8 @@ data:
           "index_patterns" : {{$policyConfig.indexPatterns | toJson }},
           "template": {
             "settings" : {
-                "index.lifecycle.name": "{{$policyName}}"
+                "index.lifecycle.name": "{{$policyName}}",
+                "index.mapping.total_fields.limit": "10000"
             }
           }
         }

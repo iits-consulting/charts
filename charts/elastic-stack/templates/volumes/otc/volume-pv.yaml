@@ -1,0 +1,28 @@
+{{- if .Values.otc }}
+{{- range $i, $volume  :=  .Values.otc.elasticsearch.volumes }}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  labels:
+    failure-domain.beta.kubernetes.io/region: {{ $.Values.otc.elasticsearch.region }}
+    failure-domain.beta.kubernetes.io/zone: {{ $volume.az }}
+  name: elasticsearch-{{ $i }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: {{ $.Values.elasticsearch.volumeClaimTemplate.resources.requests.storage }}
+  csi:
+    driver: disk.csi.everest.io
+    fsType: ext4
+    volumeAttributes:
+      everest.io/disk-mode: SCSI
+      everest.io/disk-volume-type: {{ $.Values.otc.elasticsearch.volumeType }}
+      storage.kubernetes.io/csiProvisionerIdentity: everest-csi-provisioner
+      everest.io/crypt-key-id: {{ $volume.kmsId }}
+    volumeHandle: {{ $volume.id }}
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: {{ $.Values.otc.elasticsearch.storageClassName }}
+---
+{{- end }}
+{{- end }}
