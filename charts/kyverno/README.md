@@ -29,7 +29,7 @@ resource "helm_release" "kyverno" {
   values                = [
     yamlencode({
       ingressRoute = {
-        enabled    = true
+        enabled    = "true"
         adminDomain = "admin.${var.domain_name}"
       }
     })
