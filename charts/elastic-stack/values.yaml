@@ -1,8 +1,24 @@
 ingressRoute:
   adminDomain: "admin.my-domain.com"
   entryPointName: "after-proxy"
+#otc:
+#  elasticsearch:
+#    region: "eu-de"
+#    storageClassName: "ssd-encrypted"
+#    volumeType: "SSD"
+#    volumes:
+#      - id: "REPLACE_ME"
+#        az: "REPLACE_ME"
+#        kmsId: "REPLACE_ME"
+#      - id: "REPLACE_ME"
+#        az: "REPLACE_ME"
+#        kmsId: "REPLACE_ME"
+
 filebeat:
   enabled: true
+  extraEnvs:
+    - name: STAGE
+      value: "REPLACE_ME"
   daemonset:
     extraVolumes:
       - name: varlibcontainerdcontainerlogs
@@ -158,7 +174,7 @@ elasticsearch:
     accessModes: [ "ReadWriteOnce" ]
     resources:
       requests:
-        storage: 100G
+        storage: 200G
   esJavaOpts: "-Xmx6g -Xms6g -Dlog4j2.formatMsgNoLookups=true"
   resources:
     requests:
@@ -192,7 +208,7 @@ kibana:
   service:
     type: ClusterIP
     port: 5601
-    annotations: {}
+    annotations: { }
 
 indexPatternInit:
   image:
@@ -231,11 +247,11 @@ ilm:
   policies:
     long:
       #business apps and security relevant logs
-      indexPatterns: [ "vault*"]
+      indexPatterns: [ "vault*" ]
       coldAfter: 32d
       deleteAfter: 365d
     medium:
-      indexPatterns: [ "not-defined*", "traefik-and-keycloak-proxy*", "auth*"  ]
+      indexPatterns: [ "not-defined*", "traefik-and-keycloak-proxy*", "auth*" ]
       coldAfter: 32d
       deleteAfter: 90d
     short:
