@@ -1,0 +1,4 @@
+apiVersion: v2
+name: otc-elastic-stack-backup
+version: 0.1.0
+description: backup for otc elastic-stack
