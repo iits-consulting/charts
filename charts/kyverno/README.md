@@ -28,9 +28,9 @@ resource "helm_release" "kyverno" {
 # The entrypoint to your cluster highly depends on your local setup
   values                = [
     yamlencode({
-      ingressRoute = {
-        enabled    = "true"
-        adminDomain = "admin.${var.domain_name}"
+      route = {
+        enabled    = true
+        entrypoint = "after-proxy"
       }
     })
   ]
