@@ -12,6 +12,6 @@ spec:
         - name: {{ .Release.Name }}
           port: {{ .Values.keycloak.service.ports.https }}
   tls:
-    secretName: {{.Values.ingressRoute.certificate.name | default .Release.Name}}
+    secretName: {{.Values.ingressRoute.certificate.name }}
     domains:
       - main: {{ .Values.ingressRoute.domain}}
