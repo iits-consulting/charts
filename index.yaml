@@ -430,6 +430,21 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/crds-1.4.1/crds-1.4.1.tgz
     version: 1.4.1
+  elastalert:
+  - apiVersion: v2
+    created: "2023-06-05T15:27:50.854954147Z"
+    dependencies:
+    - name: elastalert2
+      repository: https://jertel.github.io/elastalert2
+      version: 2.11.0
+    description: Wrapper chart for elastalert2 with custom rules to kickstart IITS
+      projects
+    digest: 31cd128be35f8e3d560157c062d864ed2a742cf208b8ac5e2d14445404ce1ef9
+    name: elastalert
+    type: application
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/elastalert-0.1.1/elastalert-0.1.1.tgz
+    version: 0.1.1
   elastic-stack:
   - apiVersion: v2
     created: "2023-05-02T15:27:51.938876111Z"
@@ -995,6 +1010,20 @@ entries:
     version: 10.22.0-internal-svc
   - apiVersion: v2
     appVersion: 10.22.0
+    created: "2023-06-05T15:27:51.211737249Z"
+    dependencies:
+    - name: traefik
+      repository: https://helm.traefik.io/traefik
+      version: 10.22.0
+    description: The traefik ingress controller with some additional resources and
+      sane default values for IITS projects
+    digest: 6906b2281c86c06d5bf83a4798618cea9cc664629b4a38257e1a960e1defe9d1
+    name: traefik
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/traefik-10.22.0-internal-svc/traefik-10.22.0-internal-svc.tgz
+    version: 10.22.0-internal-svc
+  - apiVersion: v2
+    appVersion: 10.22.0
     created: "2023-05-30T09:25:34.845433906Z"
     dependencies:
     - name: traefik
@@ -1037,13 +1066,14 @@ entries:
     version: 10.22.0-cleanup
   - apiVersion: v2
     appVersion: 10.22.0
-    created: "2023-05-16T07:02:00.234042801Z"
+    created: "2023-05-17T13:59:16.238558987Z"
     dependencies:
     - name: traefik
       repository: https://helm.traefik.io/traefik
       version: 10.22.0
-    description: traefik
-    digest: fa45beb4dac4dfe7599ce4bf0c718aca0116411999eb4aabd8f17a3907ccaa79
+    description: The traefik ingress controller with some additional resources and
+      sane default values for IITS projects
+    digest: 14438fa4d4f98e41c3b1a82323c6e2a0e321798b0061a4c61386d810da64f146
     name: traefik
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-10.22.0-bugfix-traefik-annotations/traefik-10.22.0-bugfix-traefik-annotations.tgz
@@ -1064,14 +1094,13 @@ entries:
     version: 10.22.0-bugfix-traefik-annotations
   - apiVersion: v2
     appVersion: 10.22.0
-    created: "2023-05-17T13:59:16.238558987Z"
+    created: "2023-05-16T07:02:00.234042801Z"
     dependencies:
     - name: traefik
       repository: https://helm.traefik.io/traefik
       version: 10.22.0
-    description: The traefik ingress controller with some additional resources and
-      sane default values for IITS projects
-    digest: 14438fa4d4f98e41c3b1a82323c6e2a0e321798b0061a4c61386d810da64f146
+    description: traefik
+    digest: fa45beb4dac4dfe7599ce4bf0c718aca0116411999eb4aabd8f17a3907ccaa79
     name: traefik
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-10.22.0-bugfix-traefik-annotations/traefik-10.22.0-bugfix-traefik-annotations.tgz
@@ -1180,4 +1209,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2023-06-05T15:23:39.341881442Z"
+generated: "2023-06-05T15:27:51.212109456Z"
