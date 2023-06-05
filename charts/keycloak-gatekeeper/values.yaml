@@ -25,7 +25,7 @@ gatekeeper:
     listen: 0.0.0.0:8080
     enable-refresh-tokens: false
     #internal https endpoint
-    upstream-url: http://traefik-websecure-internal.routing.svc.cluster.local:8444
+    upstream-url: http://traefik-internal.routing.svc.cluster.local:8444
     upstream-timeout: 300s
     server-read-timeout: 300s
     server-write-timeout: 300s
