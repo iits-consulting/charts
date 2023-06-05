@@ -55,7 +55,7 @@ prometheusStack:
       storageSpec:
         volumeClaimTemplate:
           spec:
-            storageClassName: csi-disk-default-encrypted
+            storageClassName: ssd-encrypted
             accessModes: ["ReadWriteOnce"]
             resources:
               requests:
