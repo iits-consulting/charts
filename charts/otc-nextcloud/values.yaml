@@ -1,8 +1,8 @@
 ingressRoute:
-  entryPointName: "after-proxy"
+  domain: "my-domain.com"
+  entryPointName: "websecure"
   certificate:
-    # Defaults to .Release.Name
-    name:
+    name: "nextcloud-cert"
     clusterIssuer: letsencrypt
 
 nextcloudStorage:
