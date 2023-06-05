@@ -1,0 +1,27 @@
+ingressRoute:
+  domain: "my-domain.com"
+  entryPointName: "websecure"
+  certificate:
+    # Defaults to .Release.Name
+    name:
+    clusterIssuer: letsencrypt
+keycloak:
+  image:
+    # As we won't necessarily update the version when changing the container
+    # we enforce pulling the image
+    pullPolicy: Always
+  proxyAddressForwarding: true
+  replicaCount: 2
+  service:
+    type: ClusterIP
+  postgresql:
+    enabled: false
+  auth:
+    adminUser: "REPLACE_ME"
+    adminPassword: "REPLACE_ME"
+  externalDatabase:
+    user: "REPLACE_ME"
+    host: "REPLACE_ME"
+    database: "REPLACE_ME"
+    port: "REPLACE_ME"
+
