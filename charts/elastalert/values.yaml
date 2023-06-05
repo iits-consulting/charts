@@ -1,0 +1,194 @@
+elastalert2:
+  elasticsearch:
+    # needs to be in the same namespaces as elastic stack if used like this
+    host: elasticsearch-master
+  secretRulesName: elastalert-custom-rules
+  secretRulesList:
+    - argoCD
+    - botKube
+    - vaultInjection
+    - kyverno
+    - kafkaTopicCreatedNotification
+customRules:
+  slack:
+    webhookUrl: "REPLACE_ME"
+  alerting:
+    argoCD:
+      name: ArgoCD Error
+      index: argocd*
+      alert_text_args: [ "@timestamp" ]
+      type: any
+      query_key: message
+      alert_text_type: aggregation_summary_only
+      realert:
+        minutes: 30
+      exponential_realert:
+        days: 3
+      fields:
+        - "message"
+      alert:
+        - "slack"
+      filter:
+        - query_string:
+            query: "level: \"*error*\" OR message: \"*level=error*\""
+      slack_title: ArgoCD Error
+      slack_webhook_url: "{{ $.Values.customRules.slack.webhookUrl }}"
+      slack_alert_fields:
+        - title: Stage
+          value: labels.stage
+        - title: App
+          value: kubernetes.labels.app
+        - title: Pod
+          value: kubernetes.pod.name
+        - title: Message
+          value: message
+        - title: upstream_addr
+          value: upstream_addr
+        - title: Request Id
+          value: requestId
+          short: true
+        - title: Stacktrace
+          value: stacktrace
+        - title: User
+          value: user
+    botKube:
+      name: Botkube Error
+      index: botkube*
+      timestamp_field: TimeStamp
+      type: any
+      query_key: message
+      alert_text_type: aggregation_summary_only
+      realert:
+        minutes: 30
+      exponential_realert:
+        days: 3
+      fields:
+        - "message"
+      alert:
+        - "slack"
+      filter:
+        - query_string:
+            query: "Type:\"error\""
+      slack_title: Botkube Error
+      slack_webhook_url: "{{ $.Values.customRules.slack.webhookUrl }}"
+      slack_alert_fields:
+        - title: Cluster
+          value: Cluster
+        - title: Title
+          value: Title
+        - title: Messages
+          value: Messages[0]
+        - title: TimeStamp
+          value: TimeStamp
+        - title: Kind
+          value: Kind
+        - title: Name
+          value: Name
+        - title: Reason
+          value: Reason
+    vaultInjection:
+      name: Vault Injection Error
+      index: vault*
+      alert_text_args: ["@time"]
+      type: any
+      query_key: msg
+      alert_text_type: aggregation_summary_only
+      realert:
+        minutes: 30
+      exponential_realert:
+        days: 3
+      fields:
+        - "msg"
+      alert:
+        - "slack"
+      filter:
+        - query_string:
+            query: "level: error"
+      slack_title: Vault Injection Error
+      slack_webhook_url: "{{ $.Values.customRules.slack.webhookUrl }}"
+      slack_alert_fields:
+        - title: Stage
+          value: labels.stage
+        - title: Msg
+          value: msg
+        - title: Name
+          value: name
+        - title: Error
+          value: error
+    kyverno:
+      name: Kyverno Error
+      index: kyverno*
+      alert_text_args: ["@timestamp"]
+      type: any
+      query_key: message
+      alert_text_type: aggregation_summary_only
+      realert:
+        minutes: 30
+      exponential_realert:
+        days: 3
+      fields:
+        - "message"
+      alert:
+        - "slack"
+      filter:
+        - query_string:
+            query: "message: \"validation failed\" OR  message: \"error\""
+      slack_title: Kyverno Error
+      slack_webhook_url: "{{ $.Values.customRules.slack.webhookUrl }}"
+      slack_alert_fields:
+        - title: Stage
+          value: labels.stage
+        - title: App
+          value: kubernetes.labels.app
+        - title: Pod
+          value: kubernetes.pod.name
+        - title: Message
+          value: message
+        - title: upstream_addr
+          value: upstream_addr
+        - title: Request Id
+          value: requestId
+          short: true
+        - title: Stacktrace
+          value: stacktrace
+        - title: User
+          value: user
+    kafkaTopicCreatedNotification:
+        name: Kafka Topic Notification
+        index: kafka*
+        alert_text_args: ["@timestamp"]
+        type: any
+        query_key: message
+        alert_text_type: aggregation_summary_only
+        realert:
+          minutes: 30
+        exponential_realert:
+          days: 3
+        fields:
+          - "message"
+        alert:
+          - "slack"
+        filter:
+        - query_string:
+              query: "message: \"Creating topic\" AND \"with configuration\" AND \"and initial partition assignment\""
+        slack:
+        slack_title: Kafka Topic Notification
+        slack_webhook_url: "{{ $.Values.customRules.slack.webhookUrl }}"
+        slack_alert_fields:
+        - title: Stage
+          value: labels.stage
+        - title: App
+          value: kubernetes.labels.app
+        - title: Pod
+          value: kubernetes.pod.name
+        - title: Message
+          value: message
+        - title: upstream_addr
+          value: upstream_addr
+        - title: Request Id
+          value: requestId
+          short: true
+        - title: Stacktrace
+          value: stacktrace
+        - title: User
+          value: user

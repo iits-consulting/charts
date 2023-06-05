@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Secret
+type: Opaque
+metadata:
+  name: {{ .Release.Name }}-custom-rules
+stringData:
+  {{- range $key,$rule := .Values.customRules.alerting }}
+  {{ $key | indent 4 }}: |- {{ tpl (toYaml $rule) $ | toString | nindent 10}}
+  {{- end }}

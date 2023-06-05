@@ -1,0 +1,6 @@
+dependencies:
+- name: elastalert2
+  repository: https://jertel.github.io/elastalert2
+  version: 2.11.0
+digest: sha256:876eb922c2a484a2ad73382d2cfff6defeff0c364c941d53497429eecb96fa30
+generated: "2023-05-19T09:31:23.03756738+02:00"

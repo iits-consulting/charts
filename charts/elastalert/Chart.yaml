@@ -1,0 +1,9 @@
+apiVersion: v2
+description: Wrapper chart for elastalert2 with custom rules to kickstart IITS projects
+name: elastalert
+version: 0.1.1
+dependencies:
+  - name: "elastalert2"
+    repository: "https://jertel.github.io/elastalert2"
+    version: 2.11.0
+type: application
