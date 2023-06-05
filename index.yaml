@@ -854,6 +854,19 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/kyverno-1.0.0/kyverno-1.0.0.tgz
     version: 1.0.0
+  otc-botkube:
+  - apiVersion: v2
+    created: "2023-06-05T15:44:09.684135102Z"
+    dependencies:
+    - name: botkube
+      repository: https://infracloudio.github.io/charts
+      version: v0.12.4
+    description: botkube for Open Telekom Cloud work together with elasticsearch
+    digest: ea4830b3ec35146d0e238351f361e0485081bd02e525bbeba84c5e74dffd85a7
+    name: otc-botkube
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/otc-botkube-0.1.0/otc-botkube-0.1.0.tgz
+    version: 0.1.0
   otc-storage-classes:
   - apiVersion: v2
     created: "2023-05-02T18:40:06.139560369Z"
@@ -1209,4 +1222,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2023-06-05T15:27:51.212109456Z"
+generated: "2023-06-05T15:44:09.68470371Z"
