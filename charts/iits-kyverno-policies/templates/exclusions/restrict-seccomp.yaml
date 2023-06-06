@@ -2,12 +2,12 @@ apiVersion: kyverno.io/v2alpha1
 kind: PolicyException
 metadata:
   name: restrict-seccomp-exclusions
-  namespace: kyverno
 spec:
   exceptions:
     - policyName: restrict-seccomp
       ruleNames:
         - check-seccomp
+        - autogen-check-seccomp
   match:
     any:
       # Exclude argocd-repo-server otherwise this error occurs:  getaddrinfo() thread failed to start
