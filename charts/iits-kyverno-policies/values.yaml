@@ -47,16 +47,6 @@ kyverno-policies:
               - Pod
           namespaces:
             - kube-system
-    # Exclude argocd-repo-server otherwise this error occurs:  getaddrinfo() thread failed to start
-    restrict-seccomp:
-      any:
-        - resources:
-            kinds:
-              - Deployment
-              - ReplicaSet
-              - Pod
-          namespaces:
-            - argocd
 
 prependCustomImageRegistry:
   # -- Enable or disable the policy globally
