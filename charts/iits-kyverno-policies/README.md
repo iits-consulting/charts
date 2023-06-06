@@ -1,6 +1,6 @@
 # iits-kyverno-policies
 
-![Version: 1.3.1](https://img.shields.io/badge/Version-1.3.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 1.4.1](https://img.shields.io/badge/Version-1.4.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 This chart wraps the upstream `kyverno-policies` chart and adds a few useful policies:
   - Verify all images are signed with cosign
@@ -56,10 +56,6 @@ This chart wraps the upstream `kyverno-policies` chart and adds a few useful pol
 | kyverno-policies.policyExclude.disallow-privileged-containers.any[0].namespaces[0] | string | `"kube-system"` |  |
 | kyverno-policies.policyExclude.disallow-privileged-containers.any[0].resources.kinds[0] | string | `"DaemonSet"` |  |
 | kyverno-policies.policyExclude.disallow-privileged-containers.any[0].resources.kinds[1] | string | `"Pod"` |  |
-| kyverno-policies.policyExclude.restrict-seccomp.any[0].namespaces[0] | string | `"argocd"` |  |
-| kyverno-policies.policyExclude.restrict-seccomp.any[0].resources.kinds[0] | string | `"Deployment"` |  |
-| kyverno-policies.policyExclude.restrict-seccomp.any[0].resources.kinds[1] | string | `"ReplicaSet"` |  |
-| kyverno-policies.policyExclude.restrict-seccomp.any[0].resources.kinds[2] | string | `"Pod"` |  |
 | prependCustomImageRegistry.autogenControllers | string | `"none"` | Auto gen rules for pod controllers. See https://kyverno.io/docs/writing-policies/autogen/ |
 | prependCustomImageRegistry.enabled | bool | `false` | Enable or disable the policy globally |
 | prependCustomImageRegistry.excludeNamespaces | list | `[]` | Exclude the policy on the given list of namespaces Wildcards are supported. For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards |

@@ -7,6 +7,10 @@ ingressRoute:
 kyverno:
   installCRDs: true
   existingImagePullSecrets: []
+  extraArgs:
+    - --loggingFormat=text
+    - --exceptionNamespace={{ include "kyverno.namespace" . }}
+    - --enablePolicyException=true
 
 policy-reporter:
   install: true
