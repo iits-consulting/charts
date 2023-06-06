@@ -619,6 +619,23 @@ entries:
     version: 1.0.0
   iits-kyverno-policies:
   - apiVersion: v2
+    created: "2023-06-06T13:49:33.863605721Z"
+    dependencies:
+    - name: kyverno-policies
+      repository: https://kyverno.github.io/kyverno/
+      version: v2.7.2
+    description: 'This chart wraps the upstream `kyverno-policies` chart and adds
+      a few useful policies:   - Verify all images are signed with cosign   - Verify
+      all images come from allowed image repositories   - Replace the complete registry
+      reference with a custom one   - Prepend the image reference with a custom prefix,
+      useful for e.g. pull-through caches '
+    digest: 36edef30e4d7117bab121d02f77839f848cf1249fbd6a1350bfd722e80eed0fe
+    name: iits-kyverno-policies
+    type: application
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/iits-kyverno-policies-1.4.1/iits-kyverno-policies-1.4.1.tgz
+    version: 1.4.1
+  - apiVersion: v2
     created: "2023-05-22T07:31:04.021473784Z"
     dependencies:
     - name: kyverno-policies
@@ -836,6 +853,41 @@ entries:
     - https://github.com/iits-consulting/charts/releases/download/keycloak-gatekeeper-1.0.0/keycloak-gatekeeper-1.0.0.tgz
     version: 1.0.0
   kyverno:
+  - apiVersion: v2
+    created: "2023-06-06T13:49:35.079868958Z"
+    dependencies:
+    - name: kyverno
+      repository: https://kyverno.github.io/kyverno/
+      version: v2.7.2
+    - condition: policy-reporter.install
+      name: policy-reporter
+      repository: https://kyverno.github.io/policy-reporter
+      version: 2.19.0
+    description: 'This chart wraps kyverno and some additional components such as
+      the policy reporter as well as IngressRoutes/Middlewares to allow usage of the
+      Kyverno UI.  ## Usage  As kyverno enforces policies in the Kubernetes cluster
+      it makes sense to deploy it at the very beginning when setting up new infrastructure.
+      We usually deploy essential cluster resources up to ArgoCD via Terraform. An
+      example of how to deploy a complete Kyverno setup would be:  ``` resource "helm_release"
+      "kyverno" {   name                  = "kyverno"   repository            = "https://charts.iits.tech"   version               =
+      "1.1.0"   namespace             = "kyverno"   create_namespace      = true   wait                  =
+      true   atomic                = true   timeout               = 900 // 15 Minutes   render_subchart_notes
+      = true   dependency_update     = true   wait_for_jobs         = true   skip_crds             =
+      false # The entrypoint to your cluster highly depends on your local setup   values                =
+      [     yamlencode({       route = {         enabled    = true         entrypoint
+      = "after-proxy"       }     })   ] }  resource "helm_release" "iits_kyverno_policies"
+      {   wait_for_jobs         = true   depends_on            = [helm_release.kyverno]   name                  =
+      "iits-kyverno-policies"   repository            = "https://charts.iits.tech"   version               =
+      "1.0.0"   chart                 = "iits-kyverno-policies"   namespace             =
+      "kyverno"   create_namespace      = true   wait                  = true   atomic                =
+      true   timeout               = 900 // 15 Minutes   render_subchart_notes = true   dependency_update     =
+      true } ``` '
+    digest: d656d76b02b702c417239e19c2fb71f109492325a59b599515e82852e7655416
+    name: kyverno
+    type: application
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/kyverno-1.2.0/kyverno-1.2.0.tgz
+    version: 1.2.0
   - apiVersion: v2
     created: "2023-05-30T09:19:00.475025187Z"
     dependencies:
@@ -1332,4 +1384,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2023-06-05T18:49:28.03580238Z"
+generated: "2023-06-06T13:49:35.080195469Z"
