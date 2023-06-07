@@ -33,12 +33,11 @@ spec:
           kinds:
           - Pod
     exclude:
-      any:
-        - resources:
-            namespaces:
-            {{- range .excludeNamespaces }}
-              - {{ . }}
-            {{- end }}
+      resources:
+        namespaces:
+          {{- range .excludeNamespaces }}
+            - {{ . }}
+          {{- end }}
     preconditions:
       all:
       - key: "{{ `{{request.operation || 'BACKGROUND'}}` }}"

@@ -1,8 +1,9 @@
 kyverno-policies:
+  autogenControllers: none
   # -- Whether to install the default policies for kyverno
   install: true
   # -- The pod security standard as defined in https://kyverno.io/policies/pod-security.
-  podSecurityStandard: "baseline"
+  podSecurityStandard: "restricted"
   policyExclude:
     # Exclude kube-system deployments/replicasets since we can not change them
     disallow-host-path:
@@ -48,6 +49,62 @@ kyverno-policies:
           namespaces:
             - kube-system
 
+    disallow-capabilities-strict:
+      any:
+        - resources:
+            kinds:
+              - Deployment
+              - ReplicaSet
+              - Pod
+          namespaces:
+            - kube-system
+    disallow-privilege-escalation:
+      any:
+        - resources:
+            kinds:
+              - Deployment
+              - ReplicaSet
+              - Pod
+          namespaces:
+            - kube-system
+    require-run-as-non-root-user:
+      any:
+        - resources:
+            kinds:
+              - Deployment
+              - ReplicaSet
+              - Pod
+          namespaces:
+            - kube-system
+    require-run-as-nonroot:
+      any:
+        - resources:
+            kinds:
+              - Deployment
+              - ReplicaSet
+              - Pod
+          namespaces:
+            - kube-system
+    restrict-seccomp-strict:
+      any:
+        - resources:
+            kinds:
+              - Deployment
+              - ReplicaSet
+              - Pod
+          namespaces:
+            - kube-system
+    restrict-volume-types:
+      any:
+        - resources:
+            kinds:
+              - Deployment
+              - ReplicaSet
+              - Pod
+          namespaces:
+            - kube-system
+
+
 prependCustomImageRegistry:
   # -- Enable or disable the policy globally
   enabled: false
@@ -62,12 +119,12 @@ prependCustomImageRegistry:
   registry: "mysecure-registry.example.com"
 
   # -- a list of registries that should be skipped when mangling the image reference
-  excludeRegistries: []
+  excludeRegistries: [ ]
 
   # -- Exclude the policy on the given list of namespaces
   # Wildcards are supported.
   # For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards
-  excludeNamespaces: []
+  excludeNamespaces: [ ]
 
 # Add a imagePullSecret to a pod if a given image registry is used
 addImagePullSecrets:
@@ -185,6 +242,23 @@ disallowUnspecifiedDockerRegistries:
   # If a policy is violated and the action is "enforce", then the ressource will not be allowed
   # to be created. On the other the `audit` action allows the ressource but reports this incident.
   validationAction: "enforce"
+
+  # -- Exclude the policy on the given list of namespaces
+  # Wildcards are supported.
+  # For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards
+  excludeNamespaces:
+    - "kube-system"
+
+enforceSecurityContext:
+
+  # -- Enable or disable the policy globally
+  enabled: true
+
+  # -- The name of the policy
+  name: enforce-security-context
+
+  # -- Auto gen rules for pod controllers. See https://kyverno.io/docs/writing-policies/autogen/
+  autogenControllers: none
 
   # -- Exclude the policy on the given list of namespaces
   # Wildcards are supported.
