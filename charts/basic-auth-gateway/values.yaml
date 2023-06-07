@@ -4,7 +4,7 @@ credentials: |-
 ingressRoute:
   upstream:
     service:
-      name: traefik-websecure-internal
+      name: traefik-internal
       port: 8444
   adminDomain: "admin.my-domain.com"
   entryPointName: "websecure"
