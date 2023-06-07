@@ -619,6 +619,23 @@ entries:
     version: 1.0.0
   iits-kyverno-policies:
   - apiVersion: v2
+    created: "2023-06-07T12:35:30.829967082Z"
+    dependencies:
+    - name: kyverno-policies
+      repository: https://kyverno.github.io/kyverno/
+      version: v2.7.2
+    description: 'This chart wraps the upstream `kyverno-policies` chart and adds
+      a few useful policies:   - Verify all images are signed with cosign   - Verify
+      all images come from allowed image repositories   - Replace the complete registry
+      reference with a custom one   - Prepend the image reference with a custom prefix,
+      useful for e.g. pull-through caches '
+    digest: 4f2804cd83c45aaa7c540c75d53ece8289d2a788ecdeaa7483e42a48f38d272b
+    name: iits-kyverno-policies
+    type: application
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/iits-kyverno-policies-1.4.3/iits-kyverno-policies-1.4.3.tgz
+    version: 1.4.3
+  - apiVersion: v2
     created: "2023-06-06T14:14:53.835368938Z"
     dependencies:
     - name: kyverno-policies
@@ -1401,4 +1418,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2023-06-06T14:14:53.835631742Z"
+generated: "2023-06-07T12:35:30.830583482Z"
