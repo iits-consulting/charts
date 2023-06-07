@@ -2,7 +2,7 @@ kyverno-policies:
   autogenControllers: none
   # -- Whether to install the default policies for kyverno
   install: true
-  # -- The pod security standard as defined in https://kyverno.io/policies/pod-security.
+  # -- The pod security standarcd as defined in https://kyverno.io/policies/pod-security.
   podSecurityStandard: "restricted"
   policyExclude:
     # Exclude kube-system deployments/replicasets since we can not change them
