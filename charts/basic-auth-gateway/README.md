@@ -11,7 +11,7 @@ Basic auth gateway chart for traefik
 | credentials | string | `"admin:$2y$05$4F7SwJRC6SL.uu0DUr1cjO.IOnY3uVb12MWTi/YG/TVsFulTRk4qe"` |  |
 | ingressRoute.adminDomain | string | `"admin.my-domain.com"` |  |
 | ingressRoute.certificate.clusterIssuer | string | `"letsencrypt"` |  |
-| ingressRoute.certificate.name | string | `nil` |  |
+| ingressRoute.certificate.name | string | `"basic-auth-gateway-cert"` |  |
 | ingressRoute.entryPointName | string | `"websecure"` |  |
 | ingressRoute.upstream.service.name | string | `"traefik-internal"` |  |
 | ingressRoute.upstream.service.port | int | `8444` |  |
