@@ -1,28 +1,27 @@
 apiVersion: kyverno.io/v2alpha1
 kind: PolicyException
 metadata:
-  name: host-path-exclusions
+  name: enforce-security-context-exclusions
   annotations:
     "helm.sh/hook": pre-install,pre-upgrade
     "helm.sh/hook-weight": "-5"
 spec:
   exceptions:
-    - policyName: disallow-host-path
+    - policyName: enforce-security-context
       ruleNames:
-        - host-path
+        - add-pod-security-context
   match:
     any:
+      # Exclude argocd-repo-server otherwise this error occurs:  getaddrinfo() thread failed to start
       - resources:
           kinds:
             - Pod
           namespaces:
-            - monitoring
+            - argocd
           names:
-            - elastic-stack-filebeat*
+            - argocd-repo-server*
       - resources:
           kinds:
             - Pod
           namespaces:
-            - monitoring
-          names:
-            - prometheus-stack-prometheus-node-exporter*
+            - kube-system
