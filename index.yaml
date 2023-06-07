@@ -369,6 +369,14 @@ entries:
     version: 0.2.4-multiple-upload
   basic-auth-gateway:
   - apiVersion: v2
+    created: "2023-06-07T13:50:02.898076662Z"
+    description: Basic auth gateway chart for traefik
+    digest: c95078a4bed519e9f54367adce8ac1b61a7a8ce873b11a0dcc40487d5ddeb8bc
+    name: basic-auth-gateway
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/basic-auth-gateway-0.4.1/basic-auth-gateway-0.4.1.tgz
+    version: 0.4.1
+  - apiVersion: v2
     created: "2023-06-07T13:39:52.776550618Z"
     description: Basic auth gateway chart for traefik
     digest: 60c64e32d8c4d29a3c31bf0d98b0599e5de58cff38c31373fc0ed05cd331be14
@@ -1443,4 +1451,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2023-06-07T13:40:32.966441012Z"
+generated: "2023-06-07T13:50:03.130706081Z"
