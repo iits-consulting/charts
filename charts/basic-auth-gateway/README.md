@@ -1,6 +1,6 @@
 # basic-auth-gateway
 
-![Version: 0.3.1](https://img.shields.io/badge/Version-0.3.1-informational?style=flat-square)
+![Version: 0.4.0](https://img.shields.io/badge/Version-0.4.0-informational?style=flat-square)
 
 Basic auth gateway chart for traefik
 
@@ -13,7 +13,7 @@ Basic auth gateway chart for traefik
 | ingressRoute.certificate.clusterIssuer | string | `"letsencrypt"` |  |
 | ingressRoute.certificate.name | string | `nil` |  |
 | ingressRoute.entryPointName | string | `"websecure"` |  |
-| ingressRoute.upstream.service.name | string | `"traefik-websecure-internal"` |  |
+| ingressRoute.upstream.service.name | string | `"traefik-internal"` |  |
 | ingressRoute.upstream.service.port | int | `8444` |  |
 
 <img src="https://iits-consulting.de/wp-content/uploads/2021/08/iits-logo-2021-red-square-xl.png"
