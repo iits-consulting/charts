@@ -9,6 +9,5 @@ ingressRoute:
   adminDomain: "admin.my-domain.com"
   entryPointName: "websecure"
   certificate:
-    # Defaults to .Release.Name
-    name:
+    name: basic-auth-gateway-cert
     clusterIssuer: letsencrypt
