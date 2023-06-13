@@ -6,8 +6,9 @@ ingressRoute:
     service:
       name: traefik-internal
       port: 8444
-  adminDomain: "admin.my-domain.com"
+  domain: "admin.my-domain.com"
   entryPointName: "websecure"
   certificate:
-    name: basic-auth-gateway-cert
+    # Defaults to .Release.Name -cert
+    name:
     clusterIssuer: letsencrypt
