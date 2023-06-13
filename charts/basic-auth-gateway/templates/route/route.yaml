@@ -1,4 +1,4 @@
-{{- if ne .Values.ingressRoute.enabled false }}
+{{- if ne (.Values.ingressRoute.enabled | toString ) "false" }}
 {{- $certSecretName := .Values.ingressRoute.certificate.name | default (printf "%s-%s" .Release.Name "cert")}}
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
@@ -15,7 +15,7 @@ spec:
       services:
         - name: {{ .Values.ingressRoute.upstream.service.name }}
           port: {{ .Values.ingressRoute.upstream.service.port }}
-  {{- if ne .Values.ingressRoute.certificate.enabled false }}
+  {{- if ne (.Values.ingressRoute.certificate.enabled | toString) "false" }}
   tls:
     secretName: {{ $certSecretName }}
     domains:

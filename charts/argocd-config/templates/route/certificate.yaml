@@ -1,4 +1,4 @@
-{{- if ne .Values.ingressRoute.certificate.enabled false }}
+{{- if ne (.Values.ingressRoute.certificate.enabled | toString) "false" }}
 {{- $certSecretName := .Values.ingressRoute.certificate.name | default (printf "%s-%s" .Release.Name "cert")}}
 apiVersion: cert-manager.io/v1
 kind: Certificate
