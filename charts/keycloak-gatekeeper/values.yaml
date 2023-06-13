@@ -1,8 +1,13 @@
 ingressRoute:
+  upstream:
+    service:
+      name: keycloak-gatekeeper
+      port: 3000
   domain: "my-domain.com"
   entryPointName: "websecure"
   certificate:
-    name: "keycloak-gatekeeper-cert"
+    # Defaults to .Release.Name -cert
+    name:
     clusterIssuer: letsencrypt
 gatekeeper:
   replicaCount: 2
