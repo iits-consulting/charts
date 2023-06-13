@@ -68,6 +68,19 @@ entries:
     - https://github.com/iits-consulting/charts/releases/download/akhq-0.24.0/akhq-0.24.0.tgz
     version: 0.24.0
   - apiVersion: v2
+    created: "2023-06-13T08:18:27.657931343Z"
+    dependencies:
+    - name: akhq
+      repository: https://akhq.io/
+      version: 0.3.1
+    description: Kafka GUI for Apache Kafka® to manage topics, topics data, consumers
+      group, schema registry, connect and more...
+    digest: 86c6406526a4108ed963c93155aecf6cbc3ae0f7bcf907c7a84e8ac9b4381323
+    name: akhq
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/akhq-0.3.3/akhq-0.3.3.tgz
+    version: 0.3.3
+  - apiVersion: v2
     created: "2023-06-13T08:05:53.26269239Z"
     dependencies:
     - name: akhq
@@ -349,6 +362,15 @@ entries:
     version: 5.22.1-enable-crds
   argocd-config:
   - apiVersion: v2
+    created: "2023-06-13T08:18:27.788422506Z"
+    description: Basic argocd related configuration for bootstrapping the IITS project
+      infra
+    digest: a176ec43db805d6854d5f40ea9140ccf6623abea5a634d01070290bf02fa3658
+    name: argocd-config
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/argocd-config-0.4.1/argocd-config-0.4.1.tgz
+    version: 0.4.1
+  - apiVersion: v2
     created: "2023-06-13T08:05:53.477199304Z"
     description: Basic argocd related configuration for bootstrapping the IITS project
       infra
@@ -390,6 +412,14 @@ entries:
     - https://github.com/iits-consulting/charts/releases/download/argocd-config-0.2.4-multiple-upload/argocd-config-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
   basic-auth-gateway:
+  - apiVersion: v2
+    created: "2023-06-13T08:18:27.944604075Z"
+    description: Basic auth gateway chart for traefik
+    digest: 48017103afcfa96e7faf7f0edb91077ff3cd47e54413e84a2e56d470f6b1ace7
+    name: basic-auth-gateway
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/basic-auth-gateway-0.5.1/basic-auth-gateway-0.5.1.tgz
+    version: 0.5.1
   - apiVersion: v2
     created: "2023-06-13T08:05:53.732058822Z"
     description: Basic auth gateway chart for traefik
@@ -877,6 +907,18 @@ entries:
     - https://github.com/iits-consulting/charts/releases/download/keycloak-0.1.1/keycloak-0.1.1.tgz
     version: 0.1.1
   keycloak-gatekeeper:
+  - apiVersion: v2
+    created: "2023-06-13T08:18:28.110932104Z"
+    dependencies:
+    - name: gatekeeper
+      repository: https://gogatekeeper.github.io/helm-gogatekeeper
+      version: 0.1.33
+    description: keycloak-gatekeeper
+    digest: 274d0c75b2ff85ce82b30657215e008947a1558ca18e460b863b3efca6d136d8
+    name: keycloak-gatekeeper
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/keycloak-gatekeeper-1.1.6/keycloak-gatekeeper-1.1.6.tgz
+    version: 1.1.6
   - apiVersion: v2
     created: "2023-06-13T08:05:53.924062566Z"
     dependencies:
@@ -1493,4 +1535,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2023-06-13T08:05:53.92451097Z"
+generated: "2023-06-13T08:18:28.111574214Z"
