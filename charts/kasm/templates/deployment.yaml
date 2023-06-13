@@ -1,0 +1,58 @@
+{{- $configChecksum := include (print $.Template.BasePath "/config.yaml") . | sha256sum }}
+{{ range $serviceName,$serviceValues := .Values.services }}
+{{- $certSecretName := $serviceValues.ingressRoute.certificate.name | default (printf "%s-%s" $serviceName "cert")}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ default $serviceName $serviceValues.nameOverride }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ default $serviceName $serviceValues.nameOverride }}
+      release: {{ default $serviceName $serviceValues.nameOverride }}
+  replicas: {{ $serviceValues.replicaCount }}
+  template:
+    metadata:
+      annotations:
+        configChecksum: {{ $configChecksum }}
+      labels:
+        app: {{ default $serviceName $serviceValues.nameOverride }}
+        release: {{ default $serviceName $serviceValues.nameOverride }}
+    spec:
+      securityContext:
+        {{- toYaml $serviceValues.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ default $serviceName $serviceValues.nameOverride }}
+          image: {{ $serviceValues.image.repository }}:{{ $serviceValues.image.tag }}
+          imagePullPolicy: {{ default "IfNotPresent" $serviceValues.image.pullPolicy }}
+          securityContext:
+            {{- toYaml $serviceValues.securityContext | nindent 12 }}
+          resources:
+            {{- toYaml $serviceValues.resources | nindent 12 }}
+          ports:
+            - name: app-internal
+              containerPort: {{ $serviceValues.service.port }}
+          livenessProbe:
+            {{- toYaml $serviceValues.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml $serviceValues.readinessProbe | nindent 12 }}
+          env:
+            {{- range $key, $value := $serviceValues.extraEnv }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+            {{- end }}
+          volumeMounts:
+            - name: {{ $.Release.Name }}-config
+              mountPath: /etc/kasmvnc
+            - name: {{ $certSecretName }}-cert
+              mountPath: /opt/kasm/current/certs
+              readOnly: true
+      volumes:
+        - name: {{ $.Release.Name }}-config
+          configMap:
+            name: {{ $.Release.Name }}-config
+        - name: {{ $.Release.Name }}-cert
+          secret:
+            secretName: {{$certSecretName}}
+---
+{{- end }}

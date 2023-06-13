@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-config
+data:
+  kasmvnc.yaml: |
+    {{- tpl (.Values.config | toYaml) $ | nindent 4 }}
