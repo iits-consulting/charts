@@ -1,6 +1,6 @@
 # akhq
 
-![Version: 0.3.1-fix-probes](https://img.shields.io/badge/Version-0.3.1--fix--probes-informational?style=flat-square)
+![Version: 0.3.2](https://img.shields.io/badge/Version-0.3.2-informational?style=flat-square)
 
 Kafka GUI for Apache Kafka® to manage topics, topics data, consumers group, schema registry, connect and more...
 
@@ -29,8 +29,13 @@ Kafka GUI for Apache Kafka® to manage topics, topics data, consumers group, sch
 | akhq.resources.requests.memory | string | `"400Mi"` |  |
 | akhq.secrets | string | `""` |  |
 | ingressRoute.adminDomain | string | `"admin.my-domain.com"` |  |
+| ingressRoute.certificate.clusterIssuer | string | `"letsencrypt"` |  |
+| ingressRoute.certificate.enabled | bool | `false` |  |
+| ingressRoute.certificate.name | string | `nil` |  |
 | ingressRoute.entryPointName | string | `"after-proxy"` |  |
 | ingressRoute.pathPrefix | string | `"/akhq"` |  |
+| ingressRoute.upstream.service.name | string | `"akhq"` |  |
+| ingressRoute.upstream.service.port | int | `80` |  |
 
 <img src="https://iits-consulting.de/wp-content/uploads/2021/08/iits-logo-2021-red-square-xl.png"
 alt="iits consulting" id="logo" width="200" height="200">

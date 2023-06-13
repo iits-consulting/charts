@@ -1,6 +1,6 @@
 # basic-auth-gateway
 
-![Version: 0.4.0](https://img.shields.io/badge/Version-0.4.0-informational?style=flat-square)
+![Version: 0.5.0](https://img.shields.io/badge/Version-0.5.0-informational?style=flat-square)
 
 Basic auth gateway chart for traefik
 
@@ -9,9 +9,9 @@ Basic auth gateway chart for traefik
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | credentials | string | `"admin:$2y$05$4F7SwJRC6SL.uu0DUr1cjO.IOnY3uVb12MWTi/YG/TVsFulTRk4qe"` |  |
-| ingressRoute.adminDomain | string | `"admin.my-domain.com"` |  |
 | ingressRoute.certificate.clusterIssuer | string | `"letsencrypt"` |  |
-| ingressRoute.certificate.name | string | `"basic-auth-gateway-cert"` |  |
+| ingressRoute.certificate.name | string | `nil` |  |
+| ingressRoute.domain | string | `"admin.my-domain.com"` |  |
 | ingressRoute.entryPointName | string | `"websecure"` |  |
 | ingressRoute.upstream.service.name | string | `"traefik-internal"` |  |
 | ingressRoute.upstream.service.port | int | `8444` |  |

@@ -1,6 +1,6 @@
 # argocd-config
 
-![Version: 0.3.0](https://img.shields.io/badge/Version-0.3.0-informational?style=flat-square)
+![Version: 0.4.0](https://img.shields.io/badge/Version-0.4.0-informational?style=flat-square)
 
 Basic argocd related configuration for bootstrapping the IITS project infra
 
@@ -19,8 +19,13 @@ Basic argocd related configuration for bootstrapping the IITS project infra
 | configs.secret.gitlabSecret | string | `""` | Shared secret for authenticating GitLab webhook events |
 | configs.secret.gogsSecret | string | `""` | Shared secret for authenticating Gogs webhook events |
 | ingressRoute.adminDomain | string | `"admin.my-domain.com"` |  |
+| ingressRoute.certificate.clusterIssuer | string | `"letsencrypt"` |  |
+| ingressRoute.certificate.enabled | bool | `false` |  |
+| ingressRoute.certificate.name | string | `nil` |  |
 | ingressRoute.entryPointName | string | `"after-proxy"` |  |
 | ingressRoute.pathPrefix | string | `"/argocd"` |  |
+| ingressRoute.upstream.service.name | string | `"argocd-server"` |  |
+| ingressRoute.upstream.service.port | int | `80` |  |
 
 <img src="https://iits-consulting.de/wp-content/uploads/2021/08/iits-logo-2021-red-square-xl.png"
 alt="iits consulting" id="logo" width="200" height="200">
