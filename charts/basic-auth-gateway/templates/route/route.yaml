@@ -10,6 +10,8 @@ spec:
   routes:
     - kind: Rule
       match: Host(`{{ .Values.ingressRoute.domain }}`)
+      middlewares:
+        - name: basic-auth-gateway
       services:
         - name: {{ .Values.ingressRoute.upstream.service.name }}
           port: {{ .Values.ingressRoute.upstream.service.port }}

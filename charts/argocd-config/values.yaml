@@ -1,7 +1,16 @@
 ingressRoute:
+  upstream:
+    service:
+      name: argocd-server
+      port: 80
   adminDomain: "admin.my-domain.com"
-  pathPrefix: "/argocd"
   entryPointName: "after-proxy"
+  pathPrefix: "/argocd"
+  certificate:
+    enabled: false
+    # Defaults to .Release.Name -cert
+    name:
+    clusterIssuer: letsencrypt
 configs:
   secret:
     # -- Annotations to be added to argocd-secret

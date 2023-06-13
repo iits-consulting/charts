@@ -9,7 +9,7 @@ spec:
     - {{.Values.ingressRoute.entryPointName}}
   routes:
     - kind: Rule
-      match: Host(`{{ .Values.ingressRoute.domain }}`)
+      match: Host(`{{ .Values.ingressRoute.adminDomain }}`) && PathPrefix(`{{.Values.ingressRoute.pathPrefix}}`)
       services:
         - name: {{ .Values.ingressRoute.upstream.service.name }}
           port: {{ .Values.ingressRoute.upstream.service.port }}
@@ -17,6 +17,6 @@ spec:
   tls:
     secretName: {{ $certSecretName }}
     domains:
-      - main: {{ .Values.ingressRoute.domain}}
+      - main: {{ .Values.ingressRoute.adminDomain}}
   {{- end }}
 {{- end }}
