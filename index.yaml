@@ -478,6 +478,19 @@ entries:
     version: 0.2.4
   cert-manager:
   - apiVersion: v2
+    created: "2023-06-18T17:05:03.461267833Z"
+    dependencies:
+    - name: cert-manager
+      repository: https://charts.jetstack.io
+      version: v1.11.3
+    description: Wrapper chart for cert-manager. Deploys a ClusterIssuer resource
+      to bootstrap Let's encrypt cert generation
+    digest: faf7e528a40853e7552248bc4069514ea289677572f378a82e58d57f99dc9bd6
+    name: cert-manager
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/cert-manager-0.3.0/cert-manager-0.3.0.tgz
+    version: 0.3.0
+  - apiVersion: v2
     created: "2023-04-28T16:33:24.694360757Z"
     dependencies:
     - name: cert-manager
@@ -828,6 +841,21 @@ entries:
     version: 1.1.0
   kafka:
   - apiVersion: v2
+    created: "2023-06-18T17:05:03.8037039Z"
+    dependencies:
+    - name: kafka
+      repository: https://charts.bitnami.com/bitnami
+      version: 22.1.5
+    description: 'Apache Kafka is an open-source distributed event streaming platform
+      used by thousands of companies for high-performance data pipelines, streaming
+      analytics, data integration, and mission-critical applications. This chart wraps
+      the `kafka` chart from bitnami and defines a few sensible defaults. '
+    digest: 29b0dbb935787bfab7f6a19fdc50a5077eda7470277cfc65905f6efeb6d6597a
+    name: kafka
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/kafka-22.1.5/kafka-22.1.5.tgz
+    version: 22.1.5
+  - apiVersion: v2
     created: "2023-05-04T07:44:12.028328843Z"
     dependencies:
     - name: kafka
@@ -869,6 +897,16 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/kafka-0.2.5/kafka-0.2.5.tgz
     version: 0.2.5
+  kasm:
+  - apiVersion: v2
+    created: "2023-06-18T17:05:03.932818321Z"
+    description: Helm chart for Kasm
+    digest: e4296140165a82be3aa24eee03ee57ef360bdcc241710c203d9320d7e5468a99
+    name: kasm
+    type: application
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/kasm-0.1.0/kasm-0.1.0.tgz
+    version: 0.1.0
   keycloak:
   - apiVersion: v2
     created: "2023-06-05T18:15:43.192986803Z"
@@ -1535,4 +1573,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2023-06-13T08:18:28.111574214Z"
+generated: "2023-06-18T17:05:03.933063619Z"
