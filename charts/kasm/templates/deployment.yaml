@@ -11,6 +11,8 @@ spec:
       app: {{ default $serviceName $serviceValues.nameOverride }}
       release: {{ default $serviceName $serviceValues.nameOverride }}
   replicas: {{ $serviceValues.replicaCount }}
+  strategy:
+    type: Recreate
   template:
     metadata:
       annotations:
@@ -44,13 +46,14 @@ spec:
           volumeMounts:
             - name: {{ $.Release.Name }}-config
               mountPath: /etc/kasmvnc
-            - name: {{ $certSecretName }}-cert
+            - name: {{ $.Release.Name }}-cert
               mountPath: /opt/kasm/current/certs
               readOnly: true
       volumes:
         - name: {{ $.Release.Name }}-config
-          configMap:
-            name: {{ $.Release.Name }}-config
+          secret:
+            secretName: {{ $.Release.Name }}-config
+            defaultMode: 0777
         - name: {{ $.Release.Name }}-cert
           secret:
             secretName: {{$certSecretName}}

@@ -24,6 +24,8 @@ services:
       repository: "kasmweb/ubuntu-focal-desktop"
       tag: "1.13.0"
       pullPolicy: "IfNotPresent"
+    podSecurityContext:
+      runAsUser: 1000
     replicaCount: 1
     service:
       port: 6901
