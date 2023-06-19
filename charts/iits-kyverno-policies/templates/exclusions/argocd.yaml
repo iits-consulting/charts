@@ -15,6 +15,9 @@ spec:
       ruleNames:
         - check-seccomp
         - autogen-check-seccomp
+    - policyName: enforce-security-context
+      ruleNames:
+        - add-pod-security-context
   match:
     any:
       # Exclude argocd-repo-server otherwise this error occurs:  getaddrinfo() thread failed to start

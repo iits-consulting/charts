@@ -11,4 +11,4 @@ dependencies:
     repository: "https://kyverno.github.io/kyverno/"
     version: v2.7.2
 type: application
-version: 1.4.4
+version: 1.4.5
