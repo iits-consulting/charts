@@ -899,6 +899,15 @@ entries:
     version: 0.2.5
   kasm:
   - apiVersion: v2
+    created: "2023-06-19T09:03:08.396228823Z"
+    description: Helm chart for Kasm
+    digest: c902f3898dc4a4b6699de4a2cd977bab4763fc4ba5607b71a9e707b1e410fab9
+    name: kasm
+    type: application
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/kasm-0.1.1/kasm-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
     created: "2023-06-18T17:05:03.932818321Z"
     description: Helm chart for Kasm
     digest: e4296140165a82be3aa24eee03ee57ef360bdcc241710c203d9320d7e5468a99
@@ -1573,4 +1582,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2023-06-18T17:05:03.933063619Z"
+generated: "2023-06-19T09:03:08.396528841Z"
