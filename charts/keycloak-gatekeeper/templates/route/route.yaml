@@ -11,8 +11,8 @@ spec:
     - kind: Rule
       match: Host(`{{ .Values.ingressRoute.domain }}`)
       services:
-        - name: {{ .Values.ingressRoute.upstream.service.name }}
-          port: {{ .Values.ingressRoute.upstream.service.port }}
+        - name: {{ default (include "gatekeeper.fullname" .) .Values.ingressRoute.upstream.service.name }}
+          port: {{ default .Values.gatekeeper.service.proxy.port .Values.ingressRoute.upstream.service.port }}
   {{- if ne (.Values.ingressRoute.certificate.enabled | toString) "false" }}
   tls:
     secretName: {{ $certSecretName }}

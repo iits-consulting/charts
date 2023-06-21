@@ -1,8 +1,9 @@
 ingressRoute:
   upstream:
     service:
-      name: keycloak-gatekeeper
-      port: 3000
+      # If unset like this, defaults to the service of this gatekeeper
+      name:
+      port:
   domain: "my-domain.com"
   entryPointName: "websecure"
   certificate:
