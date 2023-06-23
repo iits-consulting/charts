@@ -14,15 +14,16 @@ spec:
       labels:
         control-plane: {{.Values.name}}-controller
     spec:
+      {{- with .Values.securityContext }}
       securityContext:
-        runAsNonRoot: true
-        runAsUser: 999
-      imagePullSecrets:
-        - name: dockerhub-config-json
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
         - name: controller
+          {{- with .Values.containerSecurityContext }}
           securityContext:
-            allowPrivilegeEscalation: false
+            {{- toYaml . | nindent 10 }}
+          {{- end }}
           args:
             - --enable-leader-election
           command:
@@ -35,3 +36,5 @@ spec:
             {{- toYaml . | nindent 12 }}
             {{- end }}
       terminationGracePeriodSeconds: 10
+
+      
