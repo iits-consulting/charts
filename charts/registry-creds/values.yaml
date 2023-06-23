@@ -14,3 +14,13 @@ replicaCount: 1
 defaultClusterPullSecret:
   enabled: true
   dockerConfigJsonBase64Encoded: "eyJhdXRo...REPLACE_ME"
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 999
+  runAsGroup: 1000
+  fsGroup: 2000
+  seccompProfile: 
+    type: "RuntimeDefault"
+  supplementalGroups: [1001]
+containerSecurityContext:
+  allowPrivilegeEscalation: false
