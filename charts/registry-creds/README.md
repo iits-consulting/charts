@@ -36,6 +36,7 @@ helm install registry-creds iits-charts/registry-creds --set defaultClusterPullS
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| containerSecurityContext.allowPrivilegeEscalation | bool | `false` |  |
 | defaultClusterPullSecret.dockerConfigJsonBase64Encoded | string | `"eyJhdXRo...REPLACE_ME"` |  |
 | defaultClusterPullSecret.enabled | bool | `true` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
@@ -47,6 +48,12 @@ helm install registry-creds iits-charts/registry-creds --set defaultClusterPullS
 | resources.limits.memory | string | `"256Mi"` |  |
 | resources.requests.cpu | string | `"100m"` |  |
 | resources.requests.memory | string | `"45Mi"` |  |
+| securityContext.fsGroup | int | `2000` |  |
+| securityContext.runAsGroup | int | `1000` |  |
+| securityContext.runAsNonRoot | bool | `true` |  |
+| securityContext.runAsUser | int | `999` |  |
+| securityContext.seccompProfile.type | string | `"RuntimeDefault"` |  |
+| securityContext.supplementalGroups[0] | int | `1001` |  |
 
 <img src="https://iits-consulting.de/wp-content/uploads/2021/08/iits-logo-2021-red-square-xl.png"
 alt="iits consulting" id="logo" width="200" height="200">
