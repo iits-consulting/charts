@@ -1269,6 +1269,24 @@ entries:
     version: 43.1.3-storage-bugfix
   registry-creds:
   - apiVersion: v2
+    created: "2023-06-26T14:29:56.187103873Z"
+    description: 'This project is based on https://github.com/alexellis/registry-creds  ##
+      Usage  Create `dockerconfigjson`  ```shell kubectl create secret docker-registry
+      regcred --docker-server=https://index.docker.io/v1/ --docker-username=victor.getz@iits-consulting.de
+      --docker-password=my-password --docker-email=victor.getz@iits-consulting.de
+      --dry-run=client -o yaml ```  Output will looks like this:  ```yaml apiVersion:
+      v1 data:   .dockerconfigjson: eyJhdXRocyI6eyJodHRwczovL2luZGV4LmRvY2tlci5pby92MS8iOnsidXNlcm5hbWUiOiJ2aWN0b3IuZ2V0ekBpaXRzLWNvbnN1bHRpbmcuZGUiLCJwYXNzd29yZCI6Im15LXBhc3N3b3JkIiwiZW1haWwiOiJ2aWN0b3IuZ2V0ekBpaXRzLWNvbnN1bHRpbmcuZGUiLCJhdXRoIjoiZG1samRHOXlMbWRsZEhwQWFXbDBjeTFqYjI1emRXeDBhVzVuTG1SbE9tMTVMWEJoYzNOM2IzSmsifX19
+      kind: Secret metadata:   creationTimestamp: null   name: regcred type: kubernetes.io/dockerconfigjson
+      ``` Copy `dockerconfigjson` and perform these commands  ```shell helm repo add
+      iits-charts https://charts.iits.tech helm search repo registry-creds helm install
+      registry-creds iits-charts/registry-creds --set defaultClusterPullSecret.dockerConfigJsonBase64Encoded="eyJhdXRocyI6eyJodHRwczovL2luZGV4LmRvY2tlci5pby92MS8iOnsidXNlcm5hbWUiOiJ2aWN0b3IuZ2V0ekBpaXRzLWNvbnN1bHRpbmcuZGUiLCJwYXNzd29yZCI6Im15LXBhc3N3b3JkIiwiZW1haWwiOiJ2aWN0b3IuZ2V0ekBpaXRzLWNvbnN1bHRpbmcuZGUiLCJhdXRoIjoiZG1samRHOXlMbWRsZEhwQWFXbDBjeTFqYjI1emRXeDBhVzVuTG1SbE9tMTVMWEJoYzNOM2IzSmsifX19"
+      ``` '
+    digest: 5878aced548f6bb7aac161173d09124e83df61145e167e5ff0db21394ab48848
+    name: registry-creds
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/registry-creds-1.1.5/registry-creds-1.1.5.tgz
+    version: 1.1.5
+  - apiVersion: v2
     created: "2023-06-26T14:23:32.394247462Z"
     description: 'This project is based on https://github.com/alexellis/registry-creds  ##
       Usage  Create `dockerconfigjson`  ```shell kubectl create secret docker-registry
@@ -1635,4 +1653,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2023-06-26T14:23:32.394840179Z"
+generated: "2023-06-26T14:29:56.187410497Z"
