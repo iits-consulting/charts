@@ -1,6 +1,7 @@
 botkube:
   image:
     repository: docker.io/infracloudio/botkube
+    tag: v0.12.1
   resources:
     requests:
       memory: "60Mi"

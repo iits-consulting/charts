@@ -5,4 +5,4 @@ dependencies:
   version: v0.12.4
 description: botkube for Open Telekom Cloud work together with elasticsearch
 name: otc-botkube
-version: 0.1.0
+version: 0.1.1
