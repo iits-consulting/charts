@@ -1,6 +1,6 @@
 # prometheus-stack
 
-![Version: 43.1.3-storage-bugfix](https://img.shields.io/badge/Version-43.1.3--storage--bugfix-informational?style=flat-square)
+![Version: 43.1.3-no-default-storage](https://img.shields.io/badge/Version-43.1.3--no--default--storage-informational?style=flat-square)
 
 A complete monitoring/alerting stack with Grafana Prometheus Alertmanager
 
@@ -75,7 +75,6 @@ A complete monitoring/alerting stack with Grafana Prometheus Alertmanager
 | prometheusStack.prometheus.prometheusSpec.routePrefix | string | `"/prometheus"` |  |
 | prometheusStack.prometheus.prometheusSpec.storageSpec.volumeClaimTemplate.spec.accessModes[0] | string | `"ReadWriteOnce"` |  |
 | prometheusStack.prometheus.prometheusSpec.storageSpec.volumeClaimTemplate.spec.resources.requests.storage | string | `"30G"` |  |
-| prometheusStack.prometheus.prometheusSpec.storageSpec.volumeClaimTemplate.spec.storageClassName | string | `"ssd-encrypted"` |  |
 | prometheusStack.prometheusOperator.admissionWebhooks.enabled | bool | `false` |  |
 | prometheusStack.prometheusOperator.admissionWebhooks.patch.enabled | bool | `false` |  |
 | prometheusStack.prometheusOperator.enabled | bool | `true` |  |
