@@ -1284,6 +1284,19 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/prometheus-stack-43.1.3-storage-bugfix/prometheus-stack-43.1.3-storage-bugfix.tgz
     version: 43.1.3-storage-bugfix
+  - apiVersion: v2
+    created: "2023-06-28T18:18:03.267633182Z"
+    dependencies:
+    - alias: prometheusStack
+      name: kube-prometheus-stack
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 43.1.3
+    description: A complete monitoring/alerting stack with Grafana Prometheus Alertmanager
+    digest: 6bef8f4932663d1045f2df43f43d3d21b28cb95f7fc31bed2b97447974b90175
+    name: prometheus-stack
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/prometheus-stack-43.1.3-no-default-storage/prometheus-stack-43.1.3-no-default-storage.tgz
+    version: 43.1.3-no-default-storage
   registry-creds:
   - apiVersion: v2
     created: "2023-06-26T14:29:56.187103873Z"
@@ -1670,4 +1683,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2023-06-28T17:48:35.410134049Z"
+generated: "2023-06-28T18:18:03.26789438Z"
