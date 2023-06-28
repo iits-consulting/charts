@@ -17,6 +17,9 @@ spec:
     - policyName: disallow-host-ports
       ruleNames:
         - host-ports-none
+    - policyName: disallow-host-path
+      ruleNames:
+        - host-path
   match:
     any:
       - resources:
