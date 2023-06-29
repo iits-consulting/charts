@@ -4,6 +4,15 @@
 
 Awesome Logs
 
+## Usage inside infrastructure-charts
+```yaml
+  elastic-stack:
+    namespace: monitoring
+    targetRevision: "7.17.3-otc-volumes"
+    parameters:
+      elasticsearch.replicas: "1"
+```
+
 ## Requirements
 
 | Repository | Name | Version |

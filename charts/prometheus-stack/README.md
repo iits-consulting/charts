@@ -4,6 +4,23 @@
 
 A complete monitoring/alerting stack with Grafana Prometheus Alertmanager
 
+## Usage inside infrastructure-charts
+```yaml
+  prometheus-stack:
+    namespace: monitoring
+    targetRevision: "43.1.3-no-default-storage"
+    ignoreDifferences:
+      - jsonPointers:
+          - /imagePullSecrets
+        kind: ServiceAccount
+    syncOptions:
+      - ServerSideApply=true
+    parameters:
+      prometheusStack.prometheus.prometheusSpec.externalUrl: "https://admin.{{.Values.projectValues.rootDomain}}/prometheus"
+      prometheusStack.prometheus.prometheusSpec.serviceMonitorSelectorNilUsesHelmValues: "false"
+      prometheusStack.grafana.grafana\.ini.server.root_url": "https://admin.{{.Values.projectValues.rootDomain}}/grafana"
+```
+
 ## Requirements
 
 | Repository | Name | Version |

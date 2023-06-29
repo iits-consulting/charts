@@ -7,7 +7,7 @@ This is just a Proof of Concept for KASM. Don't use it for production.
 kasm:
   namespace: kasm
   repoURL: "https://charts.iits.tech"
-  targetRevision: "0.1.0"
+  targetRevision: "0.1.1"
   parameters:
     services.firstuser.extraEnv.VNC_PW: "REPLACE_ME"
     services.firstuser.ingressRoute.domain: "REPLACE_ME"
