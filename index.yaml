@@ -661,6 +661,27 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/elastic-stack-7.17.3-otc-volumes/elastic-stack-7.17.3-otc-volumes.tgz
     version: 7.17.3-otc-volumes
+  - apiVersion: v2
+    created: "2023-06-29T07:35:35.423020074Z"
+    dependencies:
+    - condition: elasticsearch.enabled
+      name: elasticsearch
+      repository: https://helm.elastic.co
+      version: 7.17.3
+    - condition: kibana.enabled
+      name: kibana
+      repository: https://helm.elastic.co
+      version: 7.17.3
+    - condition: filebeat.enabled
+      name: filebeat
+      repository: https://helm.elastic.co
+      version: 7.17.3
+    description: Awesome Logs
+    digest: 2685e2a18d253d676797fb2927d62d415468bfa119f3e8929eaf2f6758486a0e
+    name: elastic-stack
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/elastic-stack-7.17.3-otc-volumes/elastic-stack-7.17.3-otc-volumes.tgz
+    version: 7.17.3-otc-volumes
   iits-admin-dashboard:
   - apiVersion: v2
     created: "2023-05-25T10:46:18.826210848Z"
@@ -1297,6 +1318,19 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/prometheus-stack-43.1.3-no-default-storage/prometheus-stack-43.1.3-no-default-storage.tgz
     version: 43.1.3-no-default-storage
+  - apiVersion: v2
+    created: "2023-06-29T07:35:35.93234811Z"
+    dependencies:
+    - alias: prometheusStack
+      name: kube-prometheus-stack
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 43.1.3
+    description: A complete monitoring/alerting stack with Grafana Prometheus Alertmanager
+    digest: 7b56e4187a5ccd4825992663778bc6d33dc05d14ce889b2d0db3e66ef992a889
+    name: prometheus-stack
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/prometheus-stack-43.1.3-no-default-storage/prometheus-stack-43.1.3-no-default-storage.tgz
+    version: 43.1.3-no-default-storage
   registry-creds:
   - apiVersion: v2
     created: "2023-06-26T14:29:56.187103873Z"
@@ -1683,4 +1717,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2023-06-28T18:18:03.26789438Z"
+generated: "2023-06-29T07:35:36.096928528Z"
