@@ -14,7 +14,7 @@ metadata:
 data:
   name: {{ printf $registryName| b64enc }}
   password: {{ printf $registry.password | b64enc }}
-  project: {{ $projectName }}
+  project: {{ $projectName | b64enc }}
   type: {{ printf "helm" | b64enc }}
   url: {{ $registry.url | b64enc }}
   username: {{ printf ($registry.username | default "ARGOCD_GIT_ACCESS_TOKEN") | b64enc }}
