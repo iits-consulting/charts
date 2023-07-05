@@ -55,7 +55,7 @@ description: |
 dependencies:
   - name: "kyverno"
     repository: "https://kyverno.github.io/kyverno/"
-    version: v2.7.2
+    version: 2.7.2
   - name: "policy-reporter"
     repository: "https://kyverno.github.io/policy-reporter"
     version: 2.19.0
