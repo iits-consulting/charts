@@ -205,13 +205,29 @@ entries:
     - https://github.com/iits-consulting/charts/releases/download/argocd-5.30.1-repo-server-fix/argocd-5.30.1-repo-server-fix.tgz
     version: 5.30.1-repo-server-fix
   - apiVersion: v2
-    created: "2023-05-16T07:01:59.004319496Z"
+    created: "2023-05-17T13:59:13.743559383Z"
     dependencies:
     - name: argo-cd
       repository: https://argoproj.github.io/argo-helm
       version: 5.30.1
-    description: argocd bootstrap
-    digest: 2cd6a536ab62fa1c89a756e5bf225e9403db9fbb1b6d6c10e7e796c646c61eb6
+    description: 'This chart is used to bootstrap a Kubernetes cluster with `argocd`.
+      You can use this chart to deploy `argocd` through tools like `terraform`.  Usage
+      example:  ```hcl resource "helm_release" "argocd" {   name                  =
+      "argocd"   repository            = "https://charts.iits.tech"   chart                 =
+      "argocd"   version               = "5.30.1-fix-proj-generation"   namespace             =
+      "argocd"   create_namespace      = true   wait                  = true   atomic                =
+      true   timeout               = 900 // 15 Minutes   render_subchart_notes = true   dependency_update     =
+      true   wait_for_jobs         = true   values                = [     yamlencode({       projects
+      = {         infrastructure-charts = {           projectValues = {             #
+      Set this to enable stage $STAGE-values.yaml             stage        = var.stage             #
+      Example values which are handed down to the project. Like this you can give
+      over informations from terraform to argocd             traefikElbId = module.terraform_secrets_from_encrypted_s3_bucket.secrets["elb_id"]             adminDomain  =
+      "admin.${var.domain_name}"           }            git = {             password
+      = var.git_token             repoUrl  = "https://github.com/iits-consulting/otc-infrastructure-charts-template"           }         }       }     }     )   ]
+      } ```  In the project https://github.com/iits-consulting/otc-infrastructure-charts-template
+      it expects a helm chart named infrastructure-charts and will install everything
+      from there. '
+    digest: 12d6a4a3828929a71f243e72aed3d9f4008af38a5d1f9a195f87445061b4b77c
     name: argocd
     urls:
     - https://github.com/iits-consulting/charts/releases/download/argocd-5.30.1-fix-proj-generation/argocd-5.30.1-fix-proj-generation.tgz
@@ -257,29 +273,13 @@ entries:
     - https://github.com/iits-consulting/charts/releases/download/argocd-5.30.1-fix-proj-generation/argocd-5.30.1-fix-proj-generation.tgz
     version: 5.30.1-fix-proj-generation
   - apiVersion: v2
-    created: "2023-05-17T13:59:13.743559383Z"
+    created: "2023-05-16T07:01:59.004319496Z"
     dependencies:
     - name: argo-cd
       repository: https://argoproj.github.io/argo-helm
       version: 5.30.1
-    description: 'This chart is used to bootstrap a Kubernetes cluster with `argocd`.
-      You can use this chart to deploy `argocd` through tools like `terraform`.  Usage
-      example:  ```hcl resource "helm_release" "argocd" {   name                  =
-      "argocd"   repository            = "https://charts.iits.tech"   chart                 =
-      "argocd"   version               = "5.30.1-fix-proj-generation"   namespace             =
-      "argocd"   create_namespace      = true   wait                  = true   atomic                =
-      true   timeout               = 900 // 15 Minutes   render_subchart_notes = true   dependency_update     =
-      true   wait_for_jobs         = true   values                = [     yamlencode({       projects
-      = {         infrastructure-charts = {           projectValues = {             #
-      Set this to enable stage $STAGE-values.yaml             stage        = var.stage             #
-      Example values which are handed down to the project. Like this you can give
-      over informations from terraform to argocd             traefikElbId = module.terraform_secrets_from_encrypted_s3_bucket.secrets["elb_id"]             adminDomain  =
-      "admin.${var.domain_name}"           }            git = {             password
-      = var.git_token             repoUrl  = "https://github.com/iits-consulting/otc-infrastructure-charts-template"           }         }       }     }     )   ]
-      } ```  In the project https://github.com/iits-consulting/otc-infrastructure-charts-template
-      it expects a helm chart named infrastructure-charts and will install everything
-      from there. '
-    digest: 12d6a4a3828929a71f243e72aed3d9f4008af38a5d1f9a195f87445061b4b77c
+    description: argocd bootstrap
+    digest: 2cd6a536ab62fa1c89a756e5bf225e9403db9fbb1b6d6c10e7e796c646c61eb6
     name: argocd
     urls:
     - https://github.com/iits-consulting/charts/releases/download/argocd-5.30.1-fix-proj-generation/argocd-5.30.1-fix-proj-generation.tgz
@@ -308,6 +308,34 @@ entries:
       it expects a helm chart named infrastructure-charts and will install everything
       from there. '
     digest: 6cabea2f688460a9074402abb5ddacf07a004dc37551ddd800511df42c52e93d
+    name: argocd
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/argocd-5.30.1-fix-helm-registries/argocd-5.30.1-fix-helm-registries.tgz
+    version: 5.30.1-fix-helm-registries
+  - apiVersion: v2
+    created: "2023-07-05T17:12:02.698822375Z"
+    dependencies:
+    - name: argo-cd
+      repository: https://argoproj.github.io/argo-helm
+      version: 5.30.1
+    description: 'This chart is used to bootstrap a Kubernetes cluster with `argocd`.
+      You can use this chart to deploy `argocd` through tools like `terraform`.  Usage
+      example:  ```hcl resource "helm_release" "argocd" {   name                  =
+      "argocd"   repository            = "https://charts.iits.tech"   chart                 =
+      "argocd"   version               = "5.30.1-fix-proj-generation"   namespace             =
+      "argocd"   create_namespace      = true   wait                  = true   atomic                =
+      true   timeout               = 900 // 15 Minutes   render_subchart_notes = true   dependency_update     =
+      true   wait_for_jobs         = true   values                = [     yamlencode({       projects
+      = {         infrastructure-charts = {           projectValues = {             #
+      Set this to enable stage $STAGE-values.yaml             stage        = var.stage             #
+      Example values which are handed down to the project. Like this you can give
+      over informations from terraform to argocd             traefikElbId = module.terraform_secrets_from_encrypted_s3_bucket.secrets["elb_id"]             adminDomain  =
+      "admin.${var.domain_name}"           }            git = {             password
+      = var.git_token             repoUrl  = "https://github.com/iits-consulting/otc-infrastructure-charts-template"           }         }       }     }     )   ]
+      } ```  In the project https://github.com/iits-consulting/otc-infrastructure-charts-template
+      it expects a helm chart named infrastructure-charts and will install everything
+      from there. '
+    digest: deab019d5148ed2021b96a7968924b7e89161f9ea735ce38e3ef3cc697186df7
     name: argocd
     urls:
     - https://github.com/iits-consulting/charts/releases/download/argocd-5.30.1-fix-helm-registries/argocd-5.30.1-fix-helm-registries.tgz
@@ -731,6 +759,27 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/elastic-stack-7.17.3-otc-volumes/elastic-stack-7.17.3-otc-volumes.tgz
     version: 7.17.3-otc-volumes
+  - apiVersion: v2
+    created: "2023-07-05T17:12:02.910079087Z"
+    dependencies:
+    - condition: elasticsearch.enabled
+      name: elasticsearch
+      repository: https://helm.elastic.co
+      version: 7.17.3
+    - condition: kibana.enabled
+      name: kibana
+      repository: https://helm.elastic.co
+      version: 7.17.3
+    - condition: filebeat.enabled
+      name: filebeat
+      repository: https://helm.elastic.co
+      version: 7.17.3
+    description: Awesome Logs
+    digest: 9e213225e0058ae4b7fd4661bcbd5b130721ed1292b9679196e5f7b254dfc4a6
+    name: elastic-stack
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/elastic-stack-7.17.3-otc-volumes/elastic-stack-7.17.3-otc-volumes.tgz
+    version: 7.17.3-otc-volumes
   iits-admin-dashboard:
   - apiVersion: v2
     created: "2023-05-25T10:46:18.826210848Z"
@@ -777,6 +826,23 @@ entries:
     - https://github.com/iits-consulting/charts/releases/download/iits-admin-dashboard-1.0.0/iits-admin-dashboard-1.0.0.tgz
     version: 1.0.0
   iits-kyverno-policies:
+  - apiVersion: v2
+    created: "2023-07-05T17:12:03.061791475Z"
+    dependencies:
+    - name: kyverno-policies
+      repository: https://kyverno.github.io/kyverno/
+      version: v2.7.2
+    description: 'This chart wraps the upstream `kyverno-policies` chart and adds
+      a few useful policies:   - Verify all images are signed with cosign   - Verify
+      all images come from allowed image repositories   - Replace the complete registry
+      reference with a custom one   - Prepend the image reference with a custom prefix,
+      useful for e.g. pull-through caches '
+    digest: 78ec087e97972939ea493c781fa24ea1717c0395f28ff6f4161d24105a99beb1
+    name: iits-kyverno-policies
+    type: application
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/iits-kyverno-policies-1.4.8/iits-kyverno-policies-1.4.8.tgz
+    version: 1.4.8
   - apiVersion: v2
     created: "2023-07-05T17:05:56.049459879Z"
     dependencies:
@@ -1445,6 +1511,19 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/prometheus-stack-43.1.3-no-default-storage/prometheus-stack-43.1.3-no-default-storage.tgz
     version: 43.1.3-no-default-storage
+  - apiVersion: v2
+    created: "2023-07-05T17:12:03.447336612Z"
+    dependencies:
+    - alias: prometheusStack
+      name: kube-prometheus-stack
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 43.1.3
+    description: A complete monitoring/alerting stack with Grafana Prometheus Alertmanager
+    digest: 533f33f6dbab51daee135a9a2e049d8185cccd212624515b2adb4b39bc94777e
+    name: prometheus-stack
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/prometheus-stack-43.1.3-no-default-storage/prometheus-stack-43.1.3-no-default-storage.tgz
+    version: 43.1.3-no-default-storage
   registry-creds:
   - apiVersion: v2
     created: "2023-06-26T14:29:56.187103873Z"
@@ -1831,4 +1910,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2023-07-05T17:05:56.049747781Z"
+generated: "2023-07-05T17:12:03.447732516Z"
