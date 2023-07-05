@@ -188,7 +188,7 @@ disallowUnsignedImages:
   # -- How policy violation should be handled. Use either `enforce` or `audit`. See https://kyverno.io/docs/writing-policies/validate/ for details
   # If a policy is violated and the action is "enforce", then the ressource will not be allowed
   # to be created. On the other the `audit` action allows the ressource but reports this incident.
-  validationAction: "enforce"
+  validationAction: "Enforce"
 
   # A list of images and public key pairs.
   #
@@ -241,7 +241,7 @@ disallowUnspecifiedDockerRegistries:
   # -- How policy violation should be handled. Use either `enforce` or `audit`. See https://kyverno.io/docs/writing-policies/validate/ for details
   # If a policy is violated and the action is "enforce", then the ressource will not be allowed
   # to be created. On the other the `audit` action allows the ressource but reports this incident.
-  validationAction: "enforce"
+  validationAction: "Enforce"
 
   # -- Exclude the policy on the given list of namespaces
   # Wildcards are supported.
