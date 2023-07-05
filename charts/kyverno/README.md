@@ -57,7 +57,7 @@ resource "helm_release" "iits_kyverno_policies" {
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://kyverno.github.io/kyverno/ | kyverno | v2.7.2 |
+| https://kyverno.github.io/kyverno/ | kyverno | 2.7.2 |
 | https://kyverno.github.io/policy-reporter | policy-reporter | 2.19.0 |
 
 ## Values
