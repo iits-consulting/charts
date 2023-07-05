@@ -22,32 +22,32 @@ kyverno-policies:
               - Deployment
               - ReplicaSet
               - Pod
-          namespaces:
-            - kube-system
+            namespaces:
+              - kube-system
     disallow-host-namespaces:
       any:
         - resources:
             kinds:
               - DaemonSet
               - Pod
-          namespaces:
-            - kube-system
+            namespaces:
+              - kube-system
     disallow-privileged-containers:
       any:
         - resources:
             kinds:
               - DaemonSet
               - Pod
-          namespaces:
-            - kube-system
+            namespaces:
+              - kube-system
     disallow-host-ports:
       any:
         - resources:
             kinds:
               - DaemonSet
               - Pod
-          namespaces:
-            - kube-system
+            namespaces:
+              - kube-system
 
     disallow-capabilities-strict:
       any:
@@ -56,8 +56,8 @@ kyverno-policies:
               - Deployment
               - ReplicaSet
               - Pod
-          namespaces:
-            - kube-system
+            namespaces:
+              - kube-system
     disallow-privilege-escalation:
       any:
         - resources:
@@ -65,8 +65,8 @@ kyverno-policies:
               - Deployment
               - ReplicaSet
               - Pod
-          namespaces:
-            - kube-system
+            namespaces:
+              - kube-system
     require-run-as-non-root-user:
       any:
         - resources:
@@ -74,8 +74,8 @@ kyverno-policies:
               - Deployment
               - ReplicaSet
               - Pod
-          namespaces:
-            - kube-system
+            namespaces:
+              - kube-system
     require-run-as-nonroot:
       any:
         - resources:
@@ -83,8 +83,8 @@ kyverno-policies:
               - Deployment
               - ReplicaSet
               - Pod
-          namespaces:
-            - kube-system
+            namespaces:
+              - kube-system
     restrict-seccomp-strict:
       any:
         - resources:
@@ -92,8 +92,8 @@ kyverno-policies:
               - Deployment
               - ReplicaSet
               - Pod
-          namespaces:
-            - kube-system
+            namespaces:
+              - kube-system
     restrict-volume-types:
       any:
         - resources:
@@ -101,8 +101,8 @@ kyverno-policies:
               - Deployment
               - ReplicaSet
               - Pod
-          namespaces:
-            - kube-system
+            namespaces:
+              - kube-system
 
 
 prependCustomImageRegistry:
@@ -138,7 +138,7 @@ addImagePullSecrets:
   name: add-image-pull-secret
 
   # -- What to do when this action fails. Either `audit` or `enforce`
-  validationFailureAction: "audit"
+  validationFailureAction: "Audit"
 
   imagePullSecrets:
     # -- Array of registries where a custom pull secret should be added to a pod
@@ -165,7 +165,7 @@ replaceImageRegistry:
   # -- the target image repository
   target: "mysecure-registry/common-signed-docker-images"
 
-  validationFailureAction: "audit"
+  validationFailureAction: "Audit"
 
   # -- Excludes images from the replacement. Wildcard * is supported
   excludeRegistries:
