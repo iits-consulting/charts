@@ -1,10 +1,7 @@
 ## Set this to encrypt all ssd volumes by default
 kmsId:
-diskType:
-  evs:
-    ssd:
-      isDefault: true
-      reclaimPolicy: "retain"
-    sata:
-      reclaimPolicy: "retain"
-  sfs-turbo:
+evsTypes:
+  - "SSD"
+  - "SATA"
+evsDefaultType: "SSD"
+
