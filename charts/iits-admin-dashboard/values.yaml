@@ -117,9 +117,6 @@ serviceAccount:
 ingress:
   enabled: true
 
-  # -- Required, replace it with your host address
-  host:
-
   labels:
 
   annotations:
