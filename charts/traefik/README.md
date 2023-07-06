@@ -20,8 +20,6 @@ The traefik ingress controller with some additional resources and sane default v
 | ingressRoute.adminDomain | string | `"admin.my-domain.com"` |  |
 | ingressRoute.rootDomain | string | `"my-domain.com"` |  |
 | traefik.additionalArguments[0] | string | `"--ping"` |  |
-| traefik.additionalArguments[1] | string | `"--entryPoints.web.forwardedHeaders.trustedIPs=100.125.0.0/16"` |  |
-| traefik.additionalArguments[2] | string | `"--entryPoints.websecure.forwardedHeaders.trustedIPs=100.125.0.0/16"` |  |
 | traefik.deployment.replicas | int | `2` |  |
 | traefik.globalArguments[0] | string | `"--global.checknewversion"` |  |
 | traefik.ingressClass.enabled | bool | `true` |  |
