@@ -1,3 +1,4 @@
+{{ if .Values.defaultCert.enabled }}
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
@@ -5,9 +6,7 @@ metadata:
   namespace: routing
 spec:
   secretName: {{.Release.Name}}-default-cert
-  issuerRef:
-    kind: ClusterIssuer
-    name: letsencrypt
+  issuerRef: {{- toYaml .Values.defaultCert.issuerRef | nindent 4}}
   commonName: {{ .Values.ingressRoute.rootDomain }}
   privateKey:
     algorithm: "RSA"
@@ -16,3 +15,4 @@ spec:
   {{- range $k, $domain := .Values.ingressRoute }}
     - {{ $domain }}
   {{- end }}
+{{- end }}
