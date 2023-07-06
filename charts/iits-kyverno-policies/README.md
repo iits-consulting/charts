@@ -1,6 +1,6 @@
 # iits-kyverno-policies
 
-![Version: 1.4.8](https://img.shields.io/badge/Version-1.4.8-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 1.5.0](https://img.shields.io/badge/Version-1.5.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 This chart wraps the upstream `kyverno-policies` chart and adds a few useful policies:
   - Verify all images are signed with cosign
@@ -18,11 +18,9 @@ This chart wraps the upstream `kyverno-policies` chart and adds a few useful pol
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| addImagePullSecrets.autogenControllers | string | `"none"` | Auto gen rules for pod controllers. See https://kyverno.io/docs/writing-policies/autogen/ |
-| addImagePullSecrets.enabled | bool | `false` | Enable or disable the policy globally |
-| addImagePullSecrets.imagePullSecrets[0] | object | `{"imagePullSecretName":"my-test-secret","registryWildcard":"registry.example.com/*"}` | Array of registries where a custom pull secret should be added to a pod |
-| addImagePullSecrets.name | string | `"add-image-pull-secret"` | The base name of the policy |
-| addImagePullSecrets.validationFailureAction | string | `"Audit"` | What to do when this action fails. Either `audit` or `enforce` |
+| autoInjectDockerPullSecrets.autogenControllers | string | `"none"` | Auto gen rules for pod controllers. See https://kyverno.io/docs/writing-policies/autogen/ |
+| autoInjectDockerPullSecrets.enabled | bool | `false` |  |
+| autoInjectDockerPullSecrets.secrets | string | `nil` |  |
 | disallowUnsignedImages.autogenControllers | string | `"none"` | Auto gen rules for pod controllers. See https://kyverno.io/docs/writing-policies/autogen/ |
 | disallowUnsignedImages.background | bool | `true` | Also check already existing containers. See https://kyverno.io/docs/writing-policies/background/ |
 | disallowUnsignedImages.enabled | bool | `false` | Enable or disable the policy globally |

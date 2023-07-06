@@ -4,6 +4,16 @@
 
 Custom storage classes for Open Telekom Cloud. Often used in IITS projects
 
+## Values
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| diskType.evs.sata.reclaimPolicy | string | `"retain"` |  |
+| diskType.evs.ssd.isDefault | bool | `true` |  |
+| diskType.evs.ssd.reclaimPolicy | string | `"retain"` |  |
+| diskType.sfs-turbo | string | `nil` |  |
+| kmsId | string | `nil` |  |
+
 <img src="https://iits-consulting.de/wp-content/uploads/2021/08/iits-logo-2021-red-square-xl.png"
 alt="iits consulting" id="logo" width="200" height="200">
 <br>
