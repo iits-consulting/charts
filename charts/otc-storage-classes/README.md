@@ -1,6 +1,6 @@
 # otc-storage-classes
 
-![Version: 2.0.0](https://img.shields.io/badge/Version-2.0.0-informational?style=flat-square)
+![Version: 2.0.1](https://img.shields.io/badge/Version-2.0.1-informational?style=flat-square)
 
 Custom storage classes for Open Telekom Cloud. Often used in IITS projects
 
@@ -8,10 +8,11 @@ Custom storage classes for Open Telekom Cloud. Often used in IITS projects
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| evsDefaultType | string | `"SSD"` |  |
+| defaultClass.retention | string | `"Retain"` |  |
+| defaultClass.type | string | `"SSD"` |  |
 | evsTypes[0] | string | `"SSD"` |  |
 | evsTypes[1] | string | `"SATA"` |  |
-| kmsId | string | `nil` |  |
+| kmsId | string | `"foo"` |  |
 
 <img src="https://iits-consulting.de/wp-content/uploads/2021/08/iits-logo-2021-red-square-xl.png"
 alt="iits consulting" id="logo" width="200" height="200">
