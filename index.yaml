@@ -1751,6 +1751,20 @@ entries:
     version: 10.22.0-internal-svc
   - apiVersion: v2
     appVersion: 10.22.0
+    created: "2023-07-06T10:42:57.126233149Z"
+    dependencies:
+    - name: traefik
+      repository: https://helm.traefik.io/traefik
+      version: 10.22.0
+    description: The traefik ingress controller with some additional resources and
+      sane default values for IITS projects
+    digest: c394496f3f01a5ebee6547874317b6a52fbef08f9d65b8bfb9be085a711717d3
+    name: traefik
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/traefik-10.22.0-internal-svc/traefik-10.22.0-internal-svc.tgz
+    version: 10.22.0-internal-svc
+  - apiVersion: v2
+    appVersion: 10.22.0
     created: "2023-05-30T09:25:34.845433906Z"
     dependencies:
     - name: traefik
@@ -1793,20 +1807,6 @@ entries:
     version: 10.22.0-cleanup
   - apiVersion: v2
     appVersion: 10.22.0
-    created: "2023-05-17T13:59:16.238558987Z"
-    dependencies:
-    - name: traefik
-      repository: https://helm.traefik.io/traefik
-      version: 10.22.0
-    description: The traefik ingress controller with some additional resources and
-      sane default values for IITS projects
-    digest: 14438fa4d4f98e41c3b1a82323c6e2a0e321798b0061a4c61386d810da64f146
-    name: traefik
-    urls:
-    - https://github.com/iits-consulting/charts/releases/download/traefik-10.22.0-bugfix-traefik-annotations/traefik-10.22.0-bugfix-traefik-annotations.tgz
-    version: 10.22.0-bugfix-traefik-annotations
-  - apiVersion: v2
-    appVersion: 10.22.0
     created: "2023-05-17T07:20:08.667946366Z"
     dependencies:
     - name: traefik
@@ -1828,6 +1828,20 @@ entries:
       version: 10.22.0
     description: traefik
     digest: fa45beb4dac4dfe7599ce4bf0c718aca0116411999eb4aabd8f17a3907ccaa79
+    name: traefik
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/traefik-10.22.0-bugfix-traefik-annotations/traefik-10.22.0-bugfix-traefik-annotations.tgz
+    version: 10.22.0-bugfix-traefik-annotations
+  - apiVersion: v2
+    appVersion: 10.22.0
+    created: "2023-05-17T13:59:16.238558987Z"
+    dependencies:
+    - name: traefik
+      repository: https://helm.traefik.io/traefik
+      version: 10.22.0
+    description: The traefik ingress controller with some additional resources and
+      sane default values for IITS projects
+    digest: 14438fa4d4f98e41c3b1a82323c6e2a0e321798b0061a4c61386d810da64f146
     name: traefik
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-10.22.0-bugfix-traefik-annotations/traefik-10.22.0-bugfix-traefik-annotations.tgz
@@ -1936,4 +1950,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2023-07-06T10:39:20.477627037Z"
+generated: "2023-07-06T10:42:57.126824275Z"
