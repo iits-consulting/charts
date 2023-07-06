@@ -22,5 +22,6 @@ parameters:
 provisioner: everest-csi-provisioner
 reclaimPolicy: {{ $retention }}
 volumeBindingMode: Immediate
+---
 {{- end }}
 {{- end }}
