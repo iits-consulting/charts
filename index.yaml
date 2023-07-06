@@ -1442,6 +1442,15 @@ entries:
     version: 0.1.0
   otc-storage-classes:
   - apiVersion: v2
+    created: "2023-07-06T10:39:20.477210134Z"
+    description: Custom storage classes for Open Telekom Cloud. Often used in IITS
+      projects
+    digest: 61673437138e195a80336a6eb2c50ecacbbeae793ecbe384d55d7300742fa45a
+    name: otc-storage-classes
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/otc-storage-classes-2.0.0/otc-storage-classes-2.0.0.tgz
+    version: 2.0.0
+  - apiVersion: v2
     created: "2023-05-02T18:40:06.139560369Z"
     description: custom storage classes for otc
     digest: 8586addaa4df04ff218822ff882a60f8b4d2540faa7b7a3e0c8ea019c8788491
@@ -1927,4 +1936,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2023-07-05T18:59:06.79364322Z"
+generated: "2023-07-06T10:39:20.477627037Z"
