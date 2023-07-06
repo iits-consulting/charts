@@ -41,6 +41,7 @@ defaultCert:
   issuerRef:
     kind: ClusterIssuer
     name: letsencrypt
+
 ingressRoute:
-  rootDomain: "my-domain.com"
-  adminDomain: "admin.my-domain.com"
+    rootDomain: "my-domain.com"
+    adminDomain: "admin.my-domain.com"
