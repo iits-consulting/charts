@@ -12,7 +12,7 @@ Custom storage classes for Open Telekom Cloud. Often used in IITS projects
 | defaultClass.type | string | `"SSD"` |  |
 | evsTypes[0] | string | `"SSD"` |  |
 | evsTypes[1] | string | `"SATA"` |  |
-| kmsId | string | `"foo"` |  |
+| kmsId | string | `nil` |  |
 
 <img src="https://iits-consulting.de/wp-content/uploads/2021/08/iits-logo-2021-red-square-xl.png"
 alt="iits consulting" id="logo" width="200" height="200">
