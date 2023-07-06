@@ -10,7 +10,7 @@ metadata:
   name: csi-disk-{{ lower $type }}-{{ lower $retention }}
   {{- end }}
   annotations:
-    storageclass.kubernetes.io/is-default-class: {{ eq $type $.Values.evsDefaultType }}
+    storageclass.kubernetes.io/is-default-class: "{{ eq $type $.Values.evsDefaultType }}"
 parameters:
   csi.storage.k8s.io/csi-driver-name: disk.csi.everest.io
   csi.storage.k8s.io/fstype: ext4
