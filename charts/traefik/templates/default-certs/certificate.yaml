@@ -1,0 +1,18 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{.Release.Name}}-default-cert
+  namespace: routing
+spec:
+  secretName: {{.Release.Name}}-default-cert
+  issuerRef:
+    kind: ClusterIssuer
+    name: letsencrypt
+  commonName: {{ .Values.ingressRoute.rootDomain }}
+  privateKey:
+    algorithm: "RSA"
+    size: 4096
+  dnsNames:
+  {{- range $k, $domain := .Values.ingressRoute }}
+    - {{ $domain }}
+  {{- end }}
