@@ -6,4 +6,4 @@ dependencies:
     version: 10.22.0
 description: The traefik ingress controller with some additional resources and sane default values for IITS projects
 name: traefik
-version: 10.22.0-internal-svc
+version: 21.0.0
