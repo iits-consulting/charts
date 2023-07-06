@@ -1,5 +1,5 @@
 ## Set this to encrypt all ssd volumes by default
-kmsId: "foo"
+kmsId:
 evsTypes:
   - "SSD"
   - "SATA"
