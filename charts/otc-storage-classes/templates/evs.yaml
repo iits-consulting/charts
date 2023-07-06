@@ -1,24 +1,26 @@
-{{ range $diskTypeName,$diskTypeValues := .Values.diskType.evs }}
+{{- range $type := .Values.evsTypes }}
+{{- range $retention := tuple "Retain" "Delete"}}
 allowVolumeExpansion: true
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-  {{- if .Values.kmsId }}
-  name: csi-disk-{{ $diskTypeName }}-{{ $diskTypeValues.reclaimPolicy }}-encrypted
+  {{- if $.Values.kmsId }}
+  name: csi-disk-{{ lower $type }}-{{ lower $retention }}-encrypted
   {{- else }}
-  name: csi-disk-{{ $diskTypeName}}-{{ $diskTypeValues.reclaimPolicy }}
+  name: csi-disk-{{ lower $type }}-{{ lower $retention }}
   {{- end }}
   annotations:
-    storageclass.kubernetes.io/is-default-class: {{ default "false" $diskTypeValues.isDefault }}
+    storageclass.kubernetes.io/is-default-class: {{ eq $type $.Values.evsDefaultType }}
 parameters:
   csi.storage.k8s.io/csi-driver-name: disk.csi.everest.io
   csi.storage.k8s.io/fstype: ext4
-  {{- if .Values.kmsId }}
+  {{- if $.Values.kmsId }}
   everest.io/crypt-key-id: {{ $.Values.kmsId }}
   {{- end }}
-  everest.io/disk-volume-type: {{ $diskTypeValues.reclaimPolicy }}
+  everest.io/disk-volume-type: {{ $type }}
   everest.io/passthrough: "true"
 provisioner: everest-csi-provisioner
-reclaimPolicy: {{ $diskTypeValues.reclaimPolicy }}
+reclaimPolicy: {{ $retention }}
 volumeBindingMode: Immediate
+{{- end }}
 {{- end }}
