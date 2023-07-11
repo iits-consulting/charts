@@ -1,0 +1,37 @@
+dbInit:
+  postgres:
+    enabled: true
+    name: "postgres-db-init"
+    image:
+      repository: "postgres"
+      tag: "13"
+      pullPolicy: "IfNotPresent"
+    labels: { }
+    env:
+      PGHOST: "postgres.vpc.private"
+      PGPORT: "5432"
+      PGDATABASE: "postgres"
+      PGUSER: "root"
+      PGPASSWORD: "REPLACE_ME"
+    databases:
+#      Example
+#      firstdatabase:
+#        username: "firstuser"
+#        password: "REPLACE_ME"
+#      seconddatabase:
+#        username: "seconduser"
+#        password: "REPLACE_ME"
+    script: |
+      {{- range $databaseName,$databaseValues := .Values.dbInit.postgres.databases }}
+        SELECT 'CREATE DATABASE {{$databaseName}} WITH LC_COLLATE ''C'' LC_CTYPE ''C'' TEMPLATE template0'
+        WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = '{{$databaseName}}')\gexec
+        \connect {{$databaseName}};
+        SELECT 'CREATE USER {{$databaseValues.username}} WITH ENCRYPTED PASSWORD ''{{$databaseValues.password}}'''
+        WHERE NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = '{{$databaseValues.username}}')\gexec
+        GRANT {{$databaseValues.username}} TO {{$.Values.dbInit.postgres.env.PGUSER}};
+        GRANT ALL PRIVILEGES ON DATABASE {{$databaseName}} TO {{$databaseValues.username}};
+        GRANT ALL ON ALL TABLES IN SCHEMA public TO {{$databaseValues.username}};
+        GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO {{$databaseValues.username}};
+        GRANT ALL ON ALL FUNCTIONS IN SCHEMA public TO {{$databaseValues.username}};
+        ALTER USER {{$databaseValues.username}} WITH ENCRYPTED PASSWORD '{{$databaseValues.password}}';
+      {{- end }}
