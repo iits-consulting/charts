@@ -104,7 +104,6 @@ resource "helm_release" "db_init" {
     )
   ]
 }
-
 ```
 
 ## 4. Deploy the keycloak helm chart

@@ -1,0 +1,11 @@
+{{- if .Values.dbInit.postgres.enabled }}
+{{- with .Values.dbInit.postgres }}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{.name}}
+type: Opaque
+data:
+  init.sql: {{ tpl .script $ | b64enc }}
+{{- end }}
+{{- end }}

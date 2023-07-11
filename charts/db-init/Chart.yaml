@@ -1,0 +1,4 @@
+apiVersion: v2
+name: db-init
+description: A Helm chart to initialize a database
+version: 0.1.0
