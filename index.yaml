@@ -1740,6 +1740,25 @@ entries:
   swagger-ui:
   - apiVersion: v2
     appVersion: 4.19.0
+    created: "2023-07-12T10:33:22.895090358Z"
+    description: Swagger is an open-source software framework backed by a large ecosystem
+      of tools that helps developers design, build, document, and consume RESTful
+      Web services.
+    digest: 6d29ccbb48ed91f9fee2d8a0d28e8056131c4b3a54ab7ef6de97ea0f13b2556b
+    home: https://swagger.io
+    keywords:
+    - swagger
+    - ui
+    maintainers:
+    - email: denis.lavrushko@iits-consulting.de
+      name: Denis Lavrushko
+      url: https://github.com/behoof4mind
+    name: swagger-ui
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/swagger-ui-0.1.0/swagger-ui-0.1.0.tgz
+    version: 0.1.0
+  - apiVersion: v2
+    appVersion: 4.19.0
     created: "2023-06-02T13:58:20.064678428Z"
     description: Swagger is an open-source software framework backed by a large ecosystem
       of tools that helps developers design, build, document, and consume RESTful
@@ -2028,4 +2047,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2023-07-12T09:30:51.89794041Z"
+generated: "2023-07-12T10:33:22.895448473Z"
