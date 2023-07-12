@@ -24,7 +24,22 @@ deployment:
   extraEnv:
   # - name: BASE_URL
   #   value: /swagger
+  securityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - ALL
+
 podAnnotations: {}
+podSecurityContext:
+    fsGroup: 2000
+    runAsGroup: 1000
+    runAsNonRoot: true
+    runAsUser: 1000
+    seccompProfile:
+      type: RuntimeDefault
+    supplementalGroups:
+      - 9001
 
 ## Expose the swagger-ui service and
 ## Provides options for the service so chart users have the full choice
