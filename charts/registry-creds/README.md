@@ -1,5 +1,15 @@
 # registry-creds
 
+## DEPRECATED
+
+registry-creds has some issues with updating the docker secrets. That's why we switched to a kyverno policy.
+
+Please use this for the future:
+
+https://github.com/iits-consulting/charts/tree/main/charts/iits-kyverno-policies
+
+
+
 ![Version: 1.1.5](https://img.shields.io/badge/Version-1.1.5-informational?style=flat-square)
 
 This project is based on https://github.com/alexellis/registry-creds
