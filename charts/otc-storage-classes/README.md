@@ -1,6 +1,6 @@
 # otc-storage-classes
 
-![Version: 2.0.1](https://img.shields.io/badge/Version-2.0.1-informational?style=flat-square)
+![Version: 2.0.2](https://img.shields.io/badge/Version-2.0.2-informational?style=flat-square)
 
 Custom storage classes for Open Telekom Cloud. Often used in IITS projects
 
