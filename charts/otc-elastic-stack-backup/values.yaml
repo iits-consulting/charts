@@ -1,0 +1,18 @@
+elasticsearch:
+  backup:
+    job:
+      name: elasticsearch-backup
+      image: curlimages/curl:7.82.0
+      schedule: "0 0 * * 0"
+      configName: elasticsearch-backup-config
+    volume:
+      storageClassName: csi-nas
+      storage: 100G
+      accessMode: ReadWriteMany
+      volumeID: "REPLACE_ME"
+      deviceMountPath: "REPLACE_ME"
+    snapshotEnv:
+      host: elasticsearch-master.monitoring.svc.cluster.local
+      port: "9200"
+      snapshotRepository: backup_repository
+      snapshotName: "%3Csnapshot-%7Bnow%2Fd%7Bdd.MM.yyyy%7D%7D%3E"

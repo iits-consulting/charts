@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{.Values.elasticsearch.backup.job.name}}-pv
+spec:
+  accessModes:
+    - {{.Values.elasticsearch.backup.volume.accessMode}}
+  capacity:
+    storage: {{.Values.elasticsearch.backup.volume.storage}}
+  csi:
+    driver: nas.csi.everest.io
+    fsType: nfs
+    volumeAttributes:
+      everest.io/share-export-location: {{.Values.elasticsearch.backup.volume.deviceMountPath}}
+      storage.kubernetes.io/csiProvisionerIdentity: everest-csi-provisioner
+    volumeHandle: {{.Values.elasticsearch.backup.volume.volumeID}}
+  storageClassName: {{.Values.elasticsearch.backup.volume.storageClassName}}
