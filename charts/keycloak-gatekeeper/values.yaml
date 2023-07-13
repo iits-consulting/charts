@@ -1,8 +1,9 @@
 ingressRoute:
   upstream:
     service:
-      name: keycloak-gatekeeper
-      port: 3000
+      # If unset like this, defaults to the service of this gatekeeper
+      name:
+      port:
   domain: "my-domain.com"
   entryPointName: "websecure"
   certificate:
@@ -13,13 +14,13 @@ gatekeeper:
   replicaCount: 2
   automountServiceAccountToken: true
   extraVolumeMounts:
-    - name: no-permission-link
+    - name: keycloak-gatekeeper-no-permission-link
       mountPath: /tmp
       readOnly: true
   extraVolumes:
-    - name: no-permission-link
+    - name: keycloak-gatekeeper-no-permission-link
       configMap:
-        name: no-permission-link
+        name: keycloak-gatekeeper-no-permission-link
         defaultMode: 0777
   strategy:
     type: "RollingUpdate"
