@@ -14,13 +14,13 @@ gatekeeper:
   replicaCount: 2
   automountServiceAccountToken: true
   extraVolumeMounts:
-    - name: no-permission-link
+    - name: keycloak-gatekeeper-no-permission-link
       mountPath: /tmp
       readOnly: true
   extraVolumes:
-    - name: no-permission-link
+    - name: keycloak-gatekeeper-no-permission-link
       configMap:
-        name: no-permission-link
+        name: keycloak-gatekeeper-no-permission-link
         defaultMode: 0777
   strategy:
     type: "RollingUpdate"
