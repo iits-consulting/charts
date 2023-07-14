@@ -1,6 +1,6 @@
 argo-cd:
-
   controller:
+    replicas: 2
     env:
       - name: "TZ"
         value: "Europe/Berlin"
