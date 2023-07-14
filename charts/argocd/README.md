@@ -2,36 +2,6 @@
 
 ![Version: 15.0.0](https://img.shields.io/badge/Version-15.0.0-informational?style=flat-square)
 
-## Attention
-
-We had major bug inside the version 5.30.X
-We created the first application through applicationset which added argo finalizer annotations.
-If you deleted the applicationsset it would delete everything including the sub argocd apps.
-
-### Migration Guide to 15.0.0
-
-Execute this bash script first:
-
-```shell
-ARGOCD_NAMESPACE="argocd"
-kubectl scale deployments -n $ARGOCD_NAMESPACE --all --replicas 0
-
-# Patch all pods in the namespace
-APPS=$(kubectl get apps -n "$NAMESPACE" -o jsonpath='{.items[*].metadata.name}')
-
-for APP in $APPS; do
-  kubectl patch apps "$APP" -n "$ARGOCD_NAMESPACE" -p '{"metadata": {"finalizers": null}}' --type merge
-done
-
-kubectl delete applicationsets --all -n $ARGOCD_NAMESPACE
-
-helm delete -n $ARGOCD_NAMESPACE argocd
-```
-
-Afterwards change the version to 15.0.0 and install the helm chart.
-
-## Description
-
 This chart is used to bootstrap a Kubernetes cluster with `argocd`.
 You can use this chart to deploy `argocd` through tools like `terraform`.
 
@@ -42,7 +12,7 @@ resource "helm_release" "argocd" {
   name                  = "argocd"
   repository            = "https://charts.iits.tech"
   chart                 = "argocd"
-  version               = "15.0.0"
+  version               = "5.30.1-fix-proj-generation"
   namespace             = "argocd"
   create_namespace      = true
   wait                  = true
@@ -60,7 +30,7 @@ resource "helm_release" "argocd" {
             stage        = var.stage
             # Example values which are handed down to the project. Like this you can give over informations from terraform to argocd
             traefikElbId = module.terraform_secrets_from_encrypted_s3_bucket.secrets["elb_id"]
-            rootDomain  = var.domain_name
+            adminDomain  = "admin.${var.domain_name}"
           }
 
           git = {
@@ -82,7 +52,7 @@ named infrastructure-charts and will install everything from there.
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://argoproj.github.io/argo-helm | argo-cd | 15.0.0  |
+| https://argoproj.github.io/argo-helm | argo-cd | 5.30.1 |
 
 ## Values
 
@@ -93,6 +63,7 @@ named infrastructure-charts and will install everything from there.
 | argo-cd.controller.env[1].name | string | `"ARGOCD_GPG_ENABLED"` |  |
 | argo-cd.controller.env[1].value | string | `"false"` |  |
 | argo-cd.controller.logFormat | string | `"json"` |  |
+| argo-cd.controller.replicas | int | `2` |  |
 | argo-cd.crds.install | string | `"true"` |  |
 | argo-cd.dex.env[0].name | string | `"TZ"` |  |
 | argo-cd.dex.env[0].value | string | `"Europe/Berlin"` |  |
