@@ -145,6 +145,34 @@ entries:
     version: 0.3.1-fix-probes
   argocd:
   - apiVersion: v2
+    created: "2023-07-21T08:55:16.373920538Z"
+    dependencies:
+    - name: argo-cd
+      repository: https://argoproj.github.io/argo-helm
+      version: 5.30.1
+    description: 'This chart is used to bootstrap a Kubernetes cluster with `argocd`.
+      You can use this chart to deploy `argocd` through tools like `terraform`.  Usage
+      example:  ```hcl resource "helm_release" "argocd" {   name                  =
+      "argocd"   repository            = "https://charts.iits.tech"   chart                 =
+      "argocd"   version               = "5.30.1-fix-proj-generation"   namespace             =
+      "argocd"   create_namespace      = true   wait                  = true   atomic                =
+      true   timeout               = 900 // 15 Minutes   render_subchart_notes = true   dependency_update     =
+      true   wait_for_jobs         = true   values                = [     yamlencode({       projects
+      = {         infrastructure-charts = {           projectValues = {             #
+      Set this to enable stage $STAGE-values.yaml             stage        = var.stage             #
+      Example values which are handed down to the project. Like this you can give
+      over informations from terraform to argocd             traefikElbId = module.terraform_secrets_from_encrypted_s3_bucket.secrets["elb_id"]             adminDomain  =
+      "admin.${var.domain_name}"           }            git = {             password
+      = var.git_token             repoUrl  = "https://github.com/iits-consulting/otc-infrastructure-charts-template"           }         }       }     }     )   ]
+      } ```  In the project https://github.com/iits-consulting/otc-infrastructure-charts-template
+      it expects a helm chart named infrastructure-charts and will install everything
+      from there. '
+    digest: 822a465f93a051e4aabc5faf6f9a4c081bcfe1b3274222b3e7289cf4fc185295
+    name: argocd
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/argocd-15.0.1/argocd-15.0.1.tgz
+    version: 15.0.1
+  - apiVersion: v2
     created: "2023-07-17T08:16:12.827411655Z"
     dependencies:
     - name: argo-cd
@@ -233,13 +261,13 @@ entries:
     - https://github.com/iits-consulting/charts/releases/download/argocd-5.30.1-repo-server-fix/argocd-5.30.1-repo-server-fix.tgz
     version: 5.30.1-repo-server-fix
   - apiVersion: v2
-    created: "2023-05-16T07:01:59.004319496Z"
+    created: "2023-05-10T10:46:05.529433176Z"
     dependencies:
     - name: argo-cd
       repository: https://argoproj.github.io/argo-helm
       version: 5.30.1
     description: argocd bootstrap
-    digest: 2cd6a536ab62fa1c89a756e5bf225e9403db9fbb1b6d6c10e7e796c646c61eb6
+    digest: ef94350e24afccbb2792834c09d953c61c0b1c4112058b12e64bc202631cfbf6
     name: argocd
     urls:
     - https://github.com/iits-consulting/charts/releases/download/argocd-5.30.1-fix-proj-generation/argocd-5.30.1-fix-proj-generation.tgz
@@ -273,18 +301,6 @@ entries:
     - https://github.com/iits-consulting/charts/releases/download/argocd-5.30.1-fix-proj-generation/argocd-5.30.1-fix-proj-generation.tgz
     version: 5.30.1-fix-proj-generation
   - apiVersion: v2
-    created: "2023-05-10T10:46:05.529433176Z"
-    dependencies:
-    - name: argo-cd
-      repository: https://argoproj.github.io/argo-helm
-      version: 5.30.1
-    description: argocd bootstrap
-    digest: ef94350e24afccbb2792834c09d953c61c0b1c4112058b12e64bc202631cfbf6
-    name: argocd
-    urls:
-    - https://github.com/iits-consulting/charts/releases/download/argocd-5.30.1-fix-proj-generation/argocd-5.30.1-fix-proj-generation.tgz
-    version: 5.30.1-fix-proj-generation
-  - apiVersion: v2
     created: "2023-05-17T13:59:13.743559383Z"
     dependencies:
     - name: argo-cd
@@ -308,6 +324,18 @@ entries:
       it expects a helm chart named infrastructure-charts and will install everything
       from there. '
     digest: 12d6a4a3828929a71f243e72aed3d9f4008af38a5d1f9a195f87445061b4b77c
+    name: argocd
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/argocd-5.30.1-fix-proj-generation/argocd-5.30.1-fix-proj-generation.tgz
+    version: 5.30.1-fix-proj-generation
+  - apiVersion: v2
+    created: "2023-05-16T07:01:59.004319496Z"
+    dependencies:
+    - name: argo-cd
+      repository: https://argoproj.github.io/argo-helm
+      version: 5.30.1
+    description: argocd bootstrap
+    digest: 2cd6a536ab62fa1c89a756e5bf225e9403db9fbb1b6d6c10e7e796c646c61eb6
     name: argocd
     urls:
     - https://github.com/iits-consulting/charts/releases/download/argocd-5.30.1-fix-proj-generation/argocd-5.30.1-fix-proj-generation.tgz
@@ -2075,4 +2103,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2023-07-17T08:16:12.827835358Z"
+generated: "2023-07-21T08:55:16.374478382Z"
