@@ -1236,6 +1236,18 @@ entries:
     version: 0.1.1
   keycloak-gatekeeper:
   - apiVersion: v2
+    created: "2023-07-25T14:17:30.763100484Z"
+    dependencies:
+    - name: gatekeeper
+      repository: https://gogatekeeper.github.io/helm-gogatekeeper
+      version: 0.1.33
+    description: keycloak-gatekeeper
+    digest: a95a1b4bf8aa075f8ec4cb84e0f6a6dfefb0f33c9322d61b7b6840757adac7f1
+    name: keycloak-gatekeeper
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/keycloak-gatekeeper-1.1.7/keycloak-gatekeeper-1.1.7.tgz
+    version: 1.1.7
+  - apiVersion: v2
     created: "2023-06-13T08:18:28.110932104Z"
     dependencies:
     - name: gatekeeper
@@ -2103,4 +2115,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2023-07-21T08:55:16.374478382Z"
+generated: "2023-07-25T14:17:30.763410985Z"
