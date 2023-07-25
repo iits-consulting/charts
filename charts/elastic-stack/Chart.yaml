@@ -3,7 +3,7 @@ dependencies:
 - condition: elasticsearch.enabled
   name: elasticsearch
   repository: https://helm.elastic.co
-  version: 7.17.3
+  version: 8.5.1
 - condition: kibana.enabled
   name: kibana
   repository: https://helm.elastic.co
@@ -11,7 +11,7 @@ dependencies:
 - condition: filebeat.enabled
   name: filebeat
   repository: https://helm.elastic.co
-  version: 7.17.3
+  version: 8.5.1
 description: Awesome Logs
-name: elastic-stack
-version: 7.17.3-otc-volumes
+name: elasticsearch
+version: 8.5.1
