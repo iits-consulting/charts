@@ -1,4 +1,4 @@
 apiVersion: v2
 description: Basic auth gateway chart for traefik
 name: basic-auth-gateway
-version: 0.5.1
+version: 0.6.0

@@ -1,6 +1,7 @@
 #https://doc.traefik.io/traefik/middlewares/http/basicauth/
-credentials: |-
-  admin:$2y$05$4F7SwJRC6SL.uu0DUr1cjO.IOnY3uVb12MWTi/YG/TVsFulTRk4qe
+credentials:
+  username: "admin"
+  password:
 ingressRoute:
   upstream:
     service:
