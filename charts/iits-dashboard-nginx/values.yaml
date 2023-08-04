@@ -1,0 +1,58 @@
+ingress:
+  domain: "dev.reev.com"
+  host: "tools.dev.reev.com"
+  path: "/"
+oauth2:
+  enabled: false
+image:
+  repository: nginx
+  tag: 1.20.2-alpine
+service:
+  port: 8080
+  type: ClusterIP
+resources:
+  requests:
+    memory: "4Mi"
+    cpu: "1m"
+  limits:
+    memory: "8Mi"
+    cpu: "10m"
+replicas: 1
+
+logoSrc: "https://iits-consulting.de/wp-content/uploads/2021/08/iits-logo-2021-red-square-xl.png"
+logoAlt: "IITS Consulting Logo"
+title: "Tech Admin Board"
+
+tiles:
+  - href: "argocd"
+    imgSrc: "https://landscape.cncf.io/logos/argo.svg"
+    imgAlt: "ArgoCD"
+  - href: "akhq/ui/kafka/topic"
+    imgSrc: "https://cdn.icon-icons.com/icons2/2699/PNG/512/apache_kafka_vertical_logo_icon_169585.png"
+    imgAlt: "akhq (kafka headquarter)"
+  - href: "dashboard/"
+    imgSrc: "https://raw.githubusercontent.com/docker-library/docs/a6cc2c5f4bc6658168f2a0abbb0307acaefff80e/traefik/logo.png"
+    imgAlt: "Traefik Dashboard"
+  - href: "policies/"
+    imgSrc: "https://boxboat.com/2021/12/06/secure-supply-chains-kyverno/featured.png"
+    imgAlt: "Kyverno Policies"
+  - href: "prometheus/"
+    imgSrc: "https://cncf-branding.netlify.app/img/projects/prometheus/horizontal/color/prometheus-horizontal-color.png"
+    imgAlt: "Prometheus"
+  - href: "grafana/"
+    imgSrc: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Grafana_logo.svg/1200px-Grafana_logo.svg.png"
+    imgAlt: "Grafana"
+  - href: "elasticsearch/"
+    imgSrc: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Elasticsearch_logo.svg/800px-Elasticsearch_logo.svg.png"
+    imgAlt: "Elasticsearch"
+  - href: "vault/"
+    imgSrc: "https://www.datocms-assets.com/2885/1620155128-brandhcvaultverticalcolor.svg"
+    imgAlt: "Vault"
+  - href: "keycloak/"
+    imgSrc: "https://repository-images.githubusercontent.com/285686362/18b9ec00-daf2-11ea-8f6f-4d5aeb309e63"
+    imgAlt: "Keycloak"
+  - href: "cloud/"
+    imgSrc: ""
+    imgAlt: "Cloud"
+  # Add other tiles here...
+

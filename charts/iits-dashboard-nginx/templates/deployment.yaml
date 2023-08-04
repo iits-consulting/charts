@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Chart.Name }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}
+      release: {{ .Chart.Name }}
+  replicas: {{ .Values.replicas }}
+  template:
+    metadata:
+      annotations:
+        htmlChecksum: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+      labels:
+        app: {{ .Chart.Name }}
+        release: {{ .Chart.Name }}
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 101
+      containers:
+        - name: {{  .Chart.Name }}
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ default "IfNotPresent" .Values.image.pullPolicy }}
+          securityContext:
+            allowPrivilegeEscalation: false
+          ports:
+            - name: app-internal
+              containerPort: {{ .Values.service.port }}
+          livenessProbe:
+            httpGet:
+              path: "/"
+              port: {{ .Values.service.port }}
+            initialDelaySeconds: 10
+            periodSeconds: 60
+          readinessProbe:
+            httpGet:
+              path: "/"
+              port: {{ .Values.service.port }}
+          volumeMounts:
+            - name: {{  .Chart.Name }}-nginx-config
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
+            - name: {{  .Chart.Name }}-html
+              mountPath: /usr/share/nginx/html
+            - name: nginx-cache
+              mountPath: /var/cache/nginx
+            - name: nginx-pid
+              mountPath: /var/run
+            - name: nginx-log
+              mountPath: /var/log/nginx
+      volumes:
+        - name: {{  .Chart.Name }}-nginx-config
+          configMap:
+            name: {{  .Chart.Name }}-nginx-config
+        - name: {{  .Chart.Name }}-html
+          configMap:
+            name: {{  .Chart.Name }}-html
+        - name: nginx-cache
+          emptyDir: {}
+        - name: nginx-pid
+          emptyDir: {}
+        - name: nginx-log
+          emptyDir: {}

@@ -1,0 +1,289 @@
+/* Default light mode styles */
+
+html {
+  background-color: white;
+  color: black;
+}
+
+[data-theme="dark"] {
+  /* Dark mode styles */
+  background-color: black;
+  color: white;
+}
+
+h1 {
+  color: inherit;
+  transition: color 0.3s;
+}
+
+[data-theme="dark"] h1 {
+  /* H1 text color in dark mode */
+  color: white;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  color: black;
+  transition: background-color 0.3s;
+}
+
+[data-theme="dark"],
+[data-theme="light"] {
+  /* Smooth transition for theme change */
+  transition: color 0.3s;
+}
+
+header {
+  /* Header styles */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  transition: background-color 0.3s;
+}
+
+[data-theme="dark"] header {
+  /* Header background color in dark mode */
+  background-color: rgba(255, 255, 255, 0.95); /* White with slight transparency in dark mode */
+}
+
+[data-theme="light"] header {
+  /* Header background color in light mode */
+  background-color: rgba(0, 0, 0, 0.85); /* White with slight transparency in dark mode */
+}
+
+.logo {
+  max-width: 5%;
+  width: 5%;
+  height: auto;
+  transition: filter 0.3s;
+}
+
+.container {
+  /* Main content container */
+  width: 50%;
+  max-width: 40%;
+  margin: 100px auto;
+  padding: 20px;
+  text-align: center;
+}
+
+/* Tile container using grid */
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(2, 170px); /* Set the width of each column to 150px */
+  grid-template-rows: repeat(2, 150px); /* Set the height of each row to 150px */
+  grid-gap: 20px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.tiles-text {
+  display: grid;
+  grid-template-columns: repeat(2, 170px); /* Set the width of each column to 150px */
+  grid-template-rows: repeat(2, 75px); /* Set the height of each row to 150px */
+  grid-gap: 20px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+/* Individual tile */
+.tile {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  background-color: white;
+  cursor: pointer;
+  transition: box-shadow 0.3s, transform 0.3s;
+}
+
+/* Hover effect for tiles */
+.tile:hover:not([data-disabled="true"]) {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Active effect for tiles */
+.tile:active:not([data-disabled="true"]) {
+  transform: translateY(2px);
+}
+
+/* Disabled tile styles */
+.tile[data-disabled="true"] {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Disabled tile hover styles */
+.tile[data-disabled="true"]:hover {
+  box-shadow: none;
+  transform: none;
+}
+
+/* Disabled tile active styles */
+.tile[data-disabled="true"]:active {
+  transform: none;
+}
+
+/* Tile images */
+.tile img {
+  min-width: 64px;
+  max-width: 128px;
+  min-height: 64px;
+  max-height: 128px;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Tile styles in dark mode */
+[data-theme="dark"] .tile {
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.3); /* White drop shadow in dark mode */
+}
+
+/* Hover effect for tiles in dark mode */
+[data-theme="dark"] .tile:hover:not([data-disabled="true"]) {
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.6); /* White drop shadow in dark mode */
+}
+
+/* Active effect for tiles in dark mode */
+[data-theme="dark"] .tile:active:not([data-disabled="true"]) {
+  transform: translateY(2px);
+}
+
+/* Footer styles */
+footer {
+  text-align: center;
+  padding: 10px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  transition: background-color 0.3s;
+}
+
+/* Footer background color in dark mode */
+[data-theme="dark"] footer {
+  background-color: rgba(255, 255, 255, 0.85); /* White with slight transparency in dark mode */
+}
+
+/* Footer background color in light mode */
+[data-theme="light"] footer {
+  background-color: rgba(0, 0, 0, 0.85); /* Black with slight transparency in light mode */
+}
+
+.theme-toggle {
+  font-size: 24px;
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: center;
+}
+
+input[type="radio"] {
+  display: none;
+}
+
+.radio-container {
+  display: flex;
+}
+.custom-radio-label .radio-emoji {
+  font-size: 24px;
+}
+
+/* Active effect for radio buttons (light mode) */
+#lightModeRadio:checked + .custom-radio-label .radio-emoji {
+  text-shadow: 0 0 5px rgba(255, 255, 255, 1.0); /* Dark drop shadow in light mode */
+}
+
+/* Active effect for radio buttons (dark mode) */
+[data-theme="dark"] #darkModeRadio:checked + .custom-radio-label .radio-emoji {
+  text-shadow: 0 0 5px rgba(0, 0, 0, 1.0); /* White drop shadow in dark mode */
+}
+
+/* Keyframes Animation */
+@keyframes flyInTile {
+  0% {
+    opacity: 0;
+    transform: translateY(-50px);
+    transform: translateX(-50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    transform: translateX(0);
+  }
+}
+
+/* Apply animation class on page load */
+.animate-tiles .tile {
+  animation: flyInTile 1s ease-in-out;
+}
+
+/* Remove animation class after animation is completed */
+.no-animation .tile {
+  animation: none;
+  opacity: 1;
+  transform: none;
+}
+
+.tile.animation-complete {
+  animation: none !important; /* Remove animation styles after animation is complete */
+}
+/* Tile text styles for tiles with text */
+.tile-with-text .tile-text {
+  font-size: 12px;
+  color: white; /* White text color */
+  font-weight: bold; /* Make the text bold */
+  white-space: nowrap; /* Prevent text from wrapping */
+  overflow: hidden; /* Hide overflowing text */
+  text-overflow: ellipsis; /* Show ellipsis for truncated text */
+  padding: 0 10px; /* Add padding to the left and right */
+  max-width: 100%; /* Set the maximum width to 100% */
+  box-sizing: border-box; /* Include padding in the width calculation */
+}
+
+/* Link styles for tiles with text */
+.tile-with-text {
+  color: white; /* Set the link color to white */
+  text-decoration: none; /* Remove underline from the link */
+}
+
+/* Hover effect for links */
+.tile-with-text:hover {
+  color: #e0e0e0; /* Set the link color on hover */
+}
+
+/* Active effect for links */
+.tile-with-text:active {
+  color: #b0b0b0; /* Set the link color on active */
+}
+h1 {
+  text-align: center;
+}
+
+.badge-container {
+  display: flex;
+  justify-content: center;
+}
+
+.badge-container img {
+  max-width: 100%;
+  height: auto;
+  margin-top: 10px;
+}

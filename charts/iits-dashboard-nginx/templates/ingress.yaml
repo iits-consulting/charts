@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+{{- if  .Values.oauth2.enabled }}
+  annotations:
+    nginx.ingress.kubernetes.io/auth-signin: https://{{ .Values.ingress.domain }}/oauth2/start?rd=$escaped_request_uri
+    nginx.ingress.kubernetes.io/auth-url: https://{{ .Values.ingress.domain }}/oauth2/auth
+{{- end }}
+  name: {{ .Chart.Name }}
+spec:
+  rules:
+    - host: {{ .Values.ingress.host }}
+      http:
+        paths:
+          - backend:
+              service:
+                name: {{ .Chart.Name }}
+                port:
+                  number: {{ .Values.service.port }}
+            path: {{ .Values.ingress.path }}
+            pathType: ImplementationSpecific
