@@ -9,9 +9,9 @@ document.addEventListener('DOMContentLoaded', function () {
     document.documentElement.setAttribute('data-theme', newColorScheme);
     localStorage.setItem('theme', newColorScheme);
     if (newColorScheme === 'dark') {
-      logoImage.setAttribute('src', 'reev_black.svg');
+      logoImage.setAttribute('src', 'logo_black.svg');
     } else {
-      logoImage.setAttribute('src', 'reev_white.svg');
+      logoImage.setAttribute('src', 'logo_white.svg');
     }
   }
 
