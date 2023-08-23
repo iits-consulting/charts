@@ -1,6 +1,0 @@
-dependencies:
-- name: iits-admin-dashboard
-  repository: https://charts.iits.tech
-  version: 1.2.1
-digest: sha256:86fc6a6add72a580a88dc9cea5810c4e440f76cecd41ebc8edba60618423c180
-generated: "2023-07-29T11:49:16.616872+02:00"
