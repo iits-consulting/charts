@@ -1,0 +1,53 @@
+config:
+  network:
+    protocol: http
+    interface: 0.0.0.0
+    websocket_port: 6091
+    use_ipv4: true
+    ssl:
+      pem_certificate: /opt/kasm/current/certs/tls.crt
+      pem_key: /opt/kasm/current/certs/tls.key
+      require_ssl: true
+    udp:
+      public_ip: auto
+
+services:
+  firstuser:
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+          - ALL
+    ingressRoute:
+      domain: "REPLACE_ME"
+      entryPointName: "websecure"
+      certificate:
+        # defaults to the service name + -cert
+        name:
+        clusterIssuer: letsencrypt
+    image:
+      repository: "iits/epikur_kasm"
+      tag: "0.0.1"
+      pullPolicy: "IfNotPresent"
+    podSecurityContext:
+      fsGroup: 2000
+      runAsGroup: 1000
+      runAsNonRoot: true
+      runAsUser: 1000
+      seccompProfile:
+        type: RuntimeDefault
+      supplementalGroups:
+        - 9001
+    replicaCount: 1
+    service:
+      port: 6901
+      externalPort: 6901
+    resources:
+      requests:
+        cpu: 400m
+        memory: 1024Mi
+    extraEnv:
+      VNC_PW: "REPLACE_ME"
+      KASM_SVC_GAMEPAD: 0
+      KASM_SVC_AUDIO_INPUT: 0
+      KASM_SVC_UPLOADS: 0
