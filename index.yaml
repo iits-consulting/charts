@@ -605,6 +605,29 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/basic-auth-gateway-0.2.4/basic-auth-gateway-0.2.4.tgz
     version: 0.2.4
+  botkube:
+  - apiVersion: v2
+    created: "2023-09-04T13:03:34.049889832Z"
+    dependencies:
+    - name: botkube
+      repository: https://infracloudio.github.io/charts
+      version: v0.12.4
+    description: botkube designed to work with elasticsearch
+    digest: 071e2a9993d0ab7dd6c1a8d43388415dbc09eac0333961e89c69aafc4e49c9c4
+    name: botkube
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/botkube-0.1.1/botkube-0.1.1.tgz
+    version: 0.1.1
+  cce-storage-classes:
+  - apiVersion: v2
+    created: "2023-09-04T13:03:34.265586689Z"
+    description: Custom storage classes for Everest CSI plugin powered CCE clusters.
+      Often used in IITS projects
+    digest: f0de3159122c7c741fe6d9cfb120bc6b5033a490c2bb3749df89780887828a11
+    name: cce-storage-classes
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/cce-storage-classes-2.0.2/cce-storage-classes-2.0.2.tgz
+    version: 2.0.2
   cert-manager:
   - apiVersion: v2
     created: "2023-06-18T17:05:03.461267833Z"
@@ -862,6 +885,27 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/elastic-stack-7.17.3-otc-volumes/elastic-stack-7.17.3-otc-volumes.tgz
     version: 7.17.3-otc-volumes
+  - apiVersion: v2
+    created: "2023-09-04T13:03:34.505031639Z"
+    dependencies:
+    - condition: elasticsearch.enabled
+      name: elasticsearch
+      repository: https://helm.elastic.co
+      version: 7.17.3
+    - condition: kibana.enabled
+      name: kibana
+      repository: https://helm.elastic.co
+      version: 7.17.3
+    - condition: filebeat.enabled
+      name: filebeat
+      repository: https://helm.elastic.co
+      version: 7.17.3
+    description: Awesome Logs
+    digest: 7b2c35608e236469cd2be759b52e76fa79945992fea8379b06be4e2608932c7f
+    name: elastic-stack
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/elastic-stack-7.17.3-cce-volumes/elastic-stack-7.17.3-cce-volumes.tgz
+    version: 7.17.3-cce-volumes
   iits-admin-dashboard:
   - apiVersion: v2
     created: "2023-07-26T15:05:35.87158066Z"
@@ -2166,4 +2210,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2023-08-28T09:14:16.082189128Z"
+generated: "2023-09-04T13:03:34.505410641Z"
