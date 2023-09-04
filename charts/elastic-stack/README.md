@@ -1,6 +1,6 @@
 # elastic-stack
 
-![Version: 7.17.3-otc-volumes](https://img.shields.io/badge/Version-7.17.3--otc--volumes-informational?style=flat-square)
+![Version: 7.17.3-cce-volumes](https://img.shields.io/badge/Version-7.17.3--cce--volumes-informational?style=flat-square)
 
 Awesome Logs
 

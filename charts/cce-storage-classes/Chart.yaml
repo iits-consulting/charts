@@ -1,0 +1,4 @@
+apiVersion: v2
+description: Custom storage classes for Everest CSI plugin powered CCE clusters. Often used in IITS projects
+name: cce-storage-classes
+version: 2.0.2
