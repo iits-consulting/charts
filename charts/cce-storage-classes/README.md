@@ -1,8 +1,8 @@
-# otc-storage-classes
+# cce-storage-classes
 
 ![Version: 2.0.2](https://img.shields.io/badge/Version-2.0.2-informational?style=flat-square)
 
-Custom storage classes for Open Telekom Cloud. Often used in IITS projects
+Custom storage classes for Everest CSI plugin powered CCE clusters. Often used in IITS projects
 
 ## Values
 
