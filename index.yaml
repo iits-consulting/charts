@@ -56,6 +56,19 @@ entries:
     version: 0.1.0
   akhq:
   - apiVersion: v2
+    created: "2023-09-18T08:53:09.697245243Z"
+    dependencies:
+    - name: akhq
+      repository: https://akhq.io/
+      version: 0.3.1
+    description: Kafka GUI for Apache Kafka® to manage topics, topics data, consumers
+      group, schema registry, connect and more...
+    digest: 844d532ca83db028c2aca2d63c14b03f660189e361801f4538739205ec901a96
+    name: akhq
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/akhq-1.0.0/akhq-1.0.0.tgz
+    version: 1.0.0
+  - apiVersion: v2
     created: "2023-05-04T07:44:11.846994463Z"
     dependencies:
     - name: akhq
@@ -696,6 +709,27 @@ entries:
     - https://github.com/iits-consulting/charts/releases/download/elastalert-0.1.1/elastalert-0.1.1.tgz
     version: 0.1.1
   elastic-stack:
+  - apiVersion: v2
+    created: "2023-09-18T08:53:09.886101072Z"
+    dependencies:
+    - condition: elasticsearch.enabled
+      name: elasticsearch
+      repository: https://helm.elastic.co
+      version: 7.17.3
+    - condition: kibana.enabled
+      name: kibana
+      repository: https://helm.elastic.co
+      version: 7.17.3
+    - condition: filebeat.enabled
+      name: filebeat
+      repository: https://helm.elastic.co
+      version: 7.17.3
+    description: Awesome Logs
+    digest: 1888abb9adf73726928bad2d12276262e651253842cbdc6a0fed0888827ae17d
+    name: elastic-stack
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/elastic-stack-7.17.4/elastic-stack-7.17.4.tgz
+    version: 7.17.4
   - apiVersion: v2
     created: "2023-05-02T15:27:51.938876111Z"
     dependencies:
@@ -2210,4 +2244,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2023-09-04T13:03:34.505410641Z"
+generated: "2023-09-18T08:53:09.886437472Z"
