@@ -669,6 +669,18 @@ entries:
     version: 0.2.3
   crds:
   - apiVersion: v2
+    created: "2023-09-26T18:02:15.321934133Z"
+    description: 'This chart deploys common `CustomResourceDefinitions` for iits-consulting
+      only projects. With this we avoid a typical catch-22, e.g. where you can not
+      use `traefik` `IngressRoute` before you deploy `traefik` and such. You could
+      also use sync-waves and other mechanism, but it creates a lot of complexity
+      and a huge dependency graph. '
+    digest: 54412908c23945ca44b87a057c6b531caa9ccd712cbd87aef23ffde683a28990
+    name: crds
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/crds-1.5.1/crds-1.5.1.tgz
+    version: 1.5.1
+  - apiVersion: v2
     created: "2023-05-02T15:54:38.038813522Z"
     description: default crds for common iits helm charts
     digest: b843f4ba57787826853c979aa5b9968d701f76daba9bb380d1450666340f79e6
@@ -2244,4 +2256,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2023-09-18T08:53:09.886437472Z"
+generated: "2023-09-26T18:02:15.322341628Z"
