@@ -1009,6 +1009,16 @@ entries:
     version: 1.0.0
   iits-admin-dashboard-nginx:
   - apiVersion: v2
+    created: "2023-10-10T15:45:54.114116759Z"
+    description: 'This chart deploys a nginx webserver that provides a simple website
+      with helm support containing links to a set of dashboards that are usually deployed
+      in our infrastructure setup as well as some nifty external tools. '
+    digest: 25c8ec60c20156ab31a7616225ef59eee0e5d2fd2f88739a85cf482ed49eea8f
+    name: iits-admin-dashboard-nginx
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/iits-admin-dashboard-nginx-1.2.5/iits-admin-dashboard-nginx-1.2.5.tgz
+    version: 1.2.5
+  - apiVersion: v2
     created: "2023-08-28T09:14:15.911515121Z"
     description: 'This chart deploys a nginx webserver that provides a simple website
       with helm support containing links to a set of dashboards that are usually deployed
@@ -2256,4 +2266,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2023-09-26T18:02:15.322341628Z"
+generated: "2023-10-10T15:45:55.093401961Z"
