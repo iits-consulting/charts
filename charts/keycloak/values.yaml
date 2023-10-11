@@ -2,7 +2,8 @@ ingressRoute:
   domain: "my-domain.com"
   entryPointName: "websecure"
   certificate:
-    name: "keycloak-cert"
+    # Defaults to .Release.Name -cert
+    name:
     clusterIssuer: letsencrypt
 keycloak:
   image:

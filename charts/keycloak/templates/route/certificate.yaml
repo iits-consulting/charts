@@ -1,9 +1,11 @@
+{{- if ne (.Values.ingressRoute.certificate.enabled | toString) "false" }}
+{{- $certSecretName := .Values.ingressRoute.certificate.name | default (printf "%s-%s" .Release.Name "cert")}}
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name:  {{ .Values.ingressRoute.certificate.name }}
+  name: {{ .Release.Name }}
 spec:
-  secretName: {{.Values.ingressRoute.certificate.name }}
+  secretName: {{ $certSecretName }}
   issuerRef:
     name: {{.Values.ingressRoute.certificate.clusterIssuer}}
     kind: ClusterIssuer
@@ -13,3 +15,4 @@ spec:
     size: 4096
   dnsNames:
     - {{.Values.ingressRoute.domain}}
+{{- end }}
