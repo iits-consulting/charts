@@ -954,6 +954,16 @@ entries:
     version: 7.17.3-cce-volumes
   iits-admin-dashboard:
   - apiVersion: v2
+    created: "2023-10-12T11:41:53.557471325Z"
+    description: 'This chart deploys a super simple webserver that provides a simple
+      website containing links to a set of dashboards that are usually deployed in
+      our infrastructure setup as well as some nifty external tools. '
+    digest: 17d34254744fb873238b375b72bf40417c08b2a7ac71815d54fe933d85983496
+    name: iits-admin-dashboard
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/iits-admin-dashboard-1.3.0/iits-admin-dashboard-1.3.0.tgz
+    version: 1.3.0
+  - apiVersion: v2
     created: "2023-07-26T15:05:35.87158066Z"
     description: 'This chart deploys a super simple webserver that provides a simple
       website containing links to a set of dashboards that are usually deployed in
@@ -2278,4 +2288,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2023-10-11T14:30:28.316899284Z"
+generated: "2023-10-12T11:41:54.578001789Z"
