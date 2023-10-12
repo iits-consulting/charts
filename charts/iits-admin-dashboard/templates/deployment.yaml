@@ -7,7 +7,7 @@ spec:
     matchLabels:
       app: {{ .Chart.Name }}
       release: {{ .Chart.Name }}
-  replicas: {{ .Values.replicas }}
+  replicas: 1
   template:
     metadata:
       annotations:
@@ -39,27 +39,9 @@ spec:
               path: "/"
               port: {{ .Values.service.port }}
           volumeMounts:
-            - name: {{  .Chart.Name }}-nginx-config
-              mountPath: /etc/nginx/nginx.conf
-              subPath: nginx.conf
-            - name: {{  .Chart.Name }}-html
-              mountPath: /usr/share/nginx/html
-            - name: nginx-cache
-              mountPath: /var/cache/nginx
-            - name: nginx-pid
-              mountPath: /var/run
-            - name: nginx-log
-              mountPath: /var/log/nginx
+            - name: {{ .Chart.Name }}
+              mountPath: /home/static
       volumes:
-        - name: {{  .Chart.Name }}-nginx-config
+        - name: {{ .Chart.Name }}
           configMap:
-            name: {{  .Chart.Name }}-nginx-config
-        - name: {{  .Chart.Name }}-html
-          configMap:
-            name: {{  .Chart.Name }}-html
-        - name: nginx-cache
-          emptyDir: {}
-        - name: nginx-pid
-          emptyDir: {}
-        - name: nginx-log
-          emptyDir: {}
+            name: {{ .Chart.Name }}

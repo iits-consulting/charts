@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>{{ .Values.defaultDashboard.title }}</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link the new CSS file -->
+</head>
+
+<body>
+<div class="container">
+    <header>
+        <img class="logo" src="{{ .Values.defaultDashboard.logoSrc }}" alt="{{ .Values.defaultDashboard.logoAlt }}"/>
+    </header>
+    <h1>{{ .Values.defaultDashboard.title }}</h1>
+    <div class="tiles">
+        {{- range .Values.defaultDashboard.tiles }}
+        <a href="{{ .href }}" class="tile" target="_blank">
+            <img src="{{ .imgSrc }}" alt="{{ .imgAlt }}">
+        </a>
+        {{- end }}
+    </div>
+</div>
+</body>
+</html>

@@ -1,7 +1,0 @@
-apiVersion: v2
-description: |
-  This chart deploys a nginx webserver that provides a simple website with helm support containing links to a set
-  of dashboards that are usually deployed in our infrastructure setup as well as some nifty external
-  tools.
-name: iits-admin-dashboard-nginx
-version: 1.2.5
