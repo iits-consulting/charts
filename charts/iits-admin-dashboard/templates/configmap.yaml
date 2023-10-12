@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Chart.Name }}
+data:
+  index.html: |-
+{{- if empty .Values.website }}
+{{ tpl (.Files.Get "files/index.html") . | indent 4 }}
+{{- else }}
+{{ tpl (.Values.website) . | indent 4 }}
+{{- end }}
+  httpd.conf: |
+    I:index.html
+binaryData:
+{{- range $path, $_ :=  .Files.Glob  "files/*" }}
+{{- $base := base $path }}
+{{- if ne $base "index.html" }}
+  {{ $base }}: |-
+{{ $.Files.Get $path | b64enc | indent 4 }}
+{{- end }}
+{{- end }}
