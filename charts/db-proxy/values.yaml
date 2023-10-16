@@ -1,0 +1,12 @@
+replicaCount: 1
+image:
+  repository: alpine/socat
+  tag: latest
+service:
+  port: 5330
+  type: ClusterIP
+mappings:
+  database:
+    talk: "REPLACE ME WITH DB NAME"
+    talkToPort: "5432"
+    port: "5330"
