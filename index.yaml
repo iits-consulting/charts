@@ -1335,6 +1335,18 @@ entries:
     version: 0.1.0
   keycloak:
   - apiVersion: v2
+    created: "2023-10-16T18:58:12.917568169Z"
+    dependencies:
+    - name: keycloak
+      repository: https://charts.bitnami.com/bitnami
+      version: 12.1.5
+    description: Keycloak
+    digest: a65e058a35b53fd27ba49a2346f40c4b43019035f8ae74bd6785e2651cf284bb
+    name: keycloak
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/keycloak-0.1.7/keycloak-0.1.7.tgz
+    version: 0.1.7
+  - apiVersion: v2
     created: "2023-10-11T14:30:28.316536468Z"
     dependencies:
     - name: keycloak
@@ -2288,4 +2300,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2023-10-12T11:41:54.578001789Z"
+generated: "2023-10-16T18:58:12.917918477Z"
