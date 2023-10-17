@@ -3,6 +3,6 @@ image:
   repository: alpine/socat
   tag: latest
 mappings:
-  targetName: "master.database.vpc.private"
+  targetName: "REPLACE_ME"
   targetPort: "5432"
   listenToport: "5330"
