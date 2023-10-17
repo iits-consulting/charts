@@ -11,7 +11,7 @@ Alpine Linux base image with Socat
 | image.repository | string | `"alpine/socat"` |  |
 | image.tag | string | `"latest"` |  |
 | mappings.listenToport | string | `"5330"` |  |
-| mappings.targetName | string | `"master.database.vpc.private"` |  |
+| mappings.targetName | string | `"REPLACE_ME"` |  |
 | mappings.targetPort | string | `"5432"` |  |
 | replicaCount | int | `1` |  |
 
