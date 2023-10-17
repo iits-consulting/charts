@@ -10,12 +10,10 @@ Alpine Linux base image with Socat
 |-----|------|---------|-------------|
 | image.repository | string | `"alpine/socat"` |  |
 | image.tag | string | `"latest"` |  |
-| mappings.database.port | string | `"5330"` |  |
-| mappings.database.talk | string | `"REPLACE ME WITH DB NAME"` |  |
-| mappings.database.talkToPort | string | `"5432"` |  |
+| mappings.listenToport | string | `"5330"` |  |
+| mappings.targetName | string | `"master.database.vpc.private"` |  |
+| mappings.targetPort | string | `"5432"` |  |
 | replicaCount | int | `1` |  |
-| service.port | int | `5330` |  |
-| service.type | string | `"ClusterIP"` |  |
 
 <img src="https://iits-consulting.de/wp-content/uploads/2021/08/iits-logo-2021-red-square-xl.png"
 alt="iits consulting" id="logo" width="200" height="200">
