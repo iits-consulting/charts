@@ -1,4 +1,4 @@
 apiVersion: v2
 description: Alpine Linux base image with Socat
-name: db-proxy
+name: tcp-proxy
 version: 2.43.0-6aab4ef2895c3e4e9db9ff5b8216f94ec1dfa3a7

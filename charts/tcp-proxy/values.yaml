@@ -1,0 +1,8 @@
+replicaCount: 1
+image:
+  repository: alpine/socat
+  tag: latest
+mappings:
+  targetName: "master.database.vpc.private"
+  targetPort: "5432"
+  listenToport: "5330"

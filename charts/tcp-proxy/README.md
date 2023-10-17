@@ -1,4 +1,4 @@
-# db-proxy
+# tcp-proxy
 
 ![Version: 2.43.0-6aab4ef2895c3e4e9db9ff5b8216f94ec1dfa3a7](https://img.shields.io/badge/Version-2.43.0--6aab4ef2895c3e4e9db9ff5b8216f94ec1dfa3a7-informational?style=flat-square)
 
