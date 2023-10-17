@@ -4,5 +4,5 @@ image:
   tag: latest
 mappings:
   targetName: "REPLACE_ME"
-  targetPort: "5432"
-  listenToport: "5330"
+  targetPort: "REPLACE_ME"
+  listenToport: "REPLACE_ME"
