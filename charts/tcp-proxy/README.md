@@ -10,9 +10,9 @@ Alpine Linux base image with Socat
 |-----|------|---------|-------------|
 | image.repository | string | `"alpine/socat"` |  |
 | image.tag | string | `"latest"` |  |
-| mappings.listenToport | string | `"5330"` |  |
+| mappings.listenToport | string | `"REPLACE_ME"` |  |
 | mappings.targetName | string | `"REPLACE_ME"` |  |
-| mappings.targetPort | string | `"5432"` |  |
+| mappings.targetPort | string | `"REPLACE_ME"` |  |
 | replicaCount | int | `1` |  |
 
 <img src="https://iits-consulting.de/wp-content/uploads/2021/08/iits-logo-2021-red-square-xl.png"
