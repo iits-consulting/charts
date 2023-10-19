@@ -1,0 +1,11 @@
+replicaCount: 1
+image:
+  repository: alpine/socat
+  tag: 1.7.4.4
+mappings:
+  # Replace me
+  targetName: "dummyService"
+  # Replace me
+  targetPort: 0
+  # Replace me
+  listenToport: 0

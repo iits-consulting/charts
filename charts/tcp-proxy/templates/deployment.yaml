@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+      release: {{ .Release.Name }}
+  replicas: {{ .Values.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{  .Release.Name }}
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ default "IfNotPresent" }}
+          ports:
+          - containerPort: {{ .Values.mappings.listenToport }}
+          args:
+            - tcp-listen:{{ .Values.mappings.listenToport  }},fork,reuseaddr
+            - tcp-connect:{{ .Values.mappings.targetName }}:{{ .Values.mappings.targetPort }}
