@@ -2029,6 +2029,16 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/swagger-ui-0.0.1/swagger-ui-0.0.1.tgz
     version: 0.0.1
+  tcp-proxy:
+  - apiVersion: v2
+    appVersion: 1.7.4.4
+    created: "2023-10-19T10:58:50.957132813Z"
+    description: Alpine Linux base image with Socat
+    digest: 2f5f3b593f580e2a87a27f0fdabcb7201e120e5c3be430348bd8097f5b95c872
+    name: tcp-proxy
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/tcp-proxy-1.0.0/tcp-proxy-1.0.0.tgz
+    version: 1.0.0
   traefik:
   - apiVersion: v2
     appVersion: 10.22.0
@@ -2300,4 +2310,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2023-10-16T18:58:12.917918477Z"
+generated: "2023-10-19T10:58:50.957671718Z"
