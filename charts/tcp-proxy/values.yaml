@@ -1,7 +1,7 @@
 replicaCount: 1
 image:
   repository: alpine/socat
-  tag: latest
+  tag: 1.7.4.4
 mappings:
   targetName: "REPLACE_ME"
   targetPort: "REPLACE_ME"
