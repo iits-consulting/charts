@@ -3,6 +3,9 @@ image:
   repository: alpine/socat
   tag: 1.7.4.4
 mappings:
-  targetName: "REPLACE_ME"
-  targetPort: "REPLACE_ME"
-  listenToport: "REPLACE_ME"
+  # Replace me
+  targetName: "dummyService"
+  # Replace me
+  targetPort: 0
+  # Replace me
+  listenToport: 0
