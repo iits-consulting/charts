@@ -75,7 +75,7 @@ prometheusStack:
     config:
       global:
         resolve_timeout: 5m
-        slack_api_url: "REPLACE_ME"
+        slack_api_url: "http://myhost.local"
       route:
         group_by: [ 'job' ]
         group_wait: 30s
