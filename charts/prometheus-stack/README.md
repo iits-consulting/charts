@@ -1,6 +1,6 @@
 # prometheus-stack
 
-![Version: 43.1.4](https://img.shields.io/badge/Version-43.1.4-informational?style=flat-square)
+![Version: 43.1.5](https://img.shields.io/badge/Version-43.1.5-informational?style=flat-square)
 
 A complete monitoring/alerting stack with Grafana Prometheus Alertmanager
 
@@ -20,6 +20,7 @@ A complete monitoring/alerting stack with Grafana Prometheus Alertmanager
 | prometheusStack.alertmanager.alertmanagerSpec.resources.requests.memory | string | `"100Mi"` |  |
 | prometheusStack.alertmanager.alertmanagerSpec.routePrefix | string | `"/alertmanager"` |  |
 | prometheusStack.alertmanager.config.global.resolve_timeout | string | `"5m"` |  |
+| prometheusStack.alertmanager.config.global.slack_api_url | string | `"REPLACE_ME"` |  |
 | prometheusStack.alertmanager.config.receivers[0].name | string | `"null"` |  |
 | prometheusStack.alertmanager.config.receivers[1].name | string | `"slack"` |  |
 | prometheusStack.alertmanager.config.receivers[1].slack_configs[0].channel | string | `"infrastructure"` |  |
