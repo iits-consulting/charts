@@ -1,4 +1,4 @@
-{{- if ne (.Values.prometheusStack.alertmanager.enabled | toString ) "false" }}
+{{- if .Values.prometheusStack.alertmanager.enabled }}
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
