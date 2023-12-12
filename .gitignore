@@ -21,3 +21,4 @@
 
 ### Helm ###
 **/requirements.lock
+**/*.tgz
