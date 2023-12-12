@@ -6,4 +6,4 @@ description: |
   You could also use sync-waves and other mechanism, but it creates a lot of complexity
   and a huge dependency graph.
 name: crds
-version: 1.6.2
+version: 1.6.3
