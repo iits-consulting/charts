@@ -1646,7 +1646,7 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: "{{ .Release.Name }}"
+    app.kubernetes.io/instance: cert-manager
     # Generated labels {{- include "labels" . | nindent 4 }}
 spec:
   group: cert-manager.io
@@ -2964,7 +2964,7 @@ metadata:
   labels:
     app: cert-manager
     app.kubernetes.io/name: cert-manager
-    app.kubernetes.io/instance: "{{ .Release.Name }}"
+    app.kubernetes.io/instance: cert-manager
     # Generated labels {{- include "labels" . | nindent 4 }}
 spec:
   group: cert-manager.io
