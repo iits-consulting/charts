@@ -643,6 +643,19 @@ entries:
     version: 2.0.2
   cert-manager:
   - apiVersion: v2
+    created: "2023-12-12T09:25:27.384990616Z"
+    dependencies:
+    - name: cert-manager
+      repository: https://charts.jetstack.io
+      version: v1.13.2
+    description: Wrapper chart for cert-manager. Deploys a ClusterIssuer resource
+      to bootstrap Let's encrypt cert generation
+    digest: 7f6056b1341492185534a4a8fe9bf3f8a0477f0ebbe8b22ed0672e44e784d08b
+    name: cert-manager
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/cert-manager-1.0.0/cert-manager-1.0.0.tgz
+    version: 1.0.0
+  - apiVersion: v2
     created: "2023-06-18T17:05:03.461267833Z"
     dependencies:
     - name: cert-manager
@@ -668,6 +681,18 @@ entries:
     - https://github.com/iits-consulting/charts/releases/download/cert-manager-0.2.3/cert-manager-0.2.3.tgz
     version: 0.2.3
   crds:
+  - apiVersion: v2
+    created: "2023-12-12T09:25:27.521057514Z"
+    description: 'This chart deploys common `CustomResourceDefinitions` for iits-consulting
+      only projects. With this we avoid a typical catch-22, e.g. where you can not
+      use `traefik` `IngressRoute` before you deploy `traefik` and such. You could
+      also use sync-waves and other mechanism, but it creates a lot of complexity
+      and a huge dependency graph. '
+    digest: 98bc3cb82d88b9655c21996ad260a1e97c90ea4f4a4e6997efd4213ca6b005f5
+    name: crds
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/crds-1.6.0/crds-1.6.0.tgz
+    version: 1.6.0
   - apiVersion: v2
     created: "2023-09-26T18:02:15.321934133Z"
     description: 'This chart deploys common `CustomResourceDefinitions` for iits-consulting
@@ -2350,4 +2375,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2023-11-15T11:57:34.244814027Z"
+generated: "2023-12-12T09:25:27.521545866Z"
