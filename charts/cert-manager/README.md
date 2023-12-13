@@ -1,6 +1,6 @@
 # cert-manager
 
-![Version: 0.3.0](https://img.shields.io/badge/Version-0.3.0-informational?style=flat-square)
+![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square)
 
 Wrapper chart for cert-manager. Deploys a ClusterIssuer resource to bootstrap Let's encrypt cert generation
 
@@ -8,7 +8,7 @@ Wrapper chart for cert-manager. Deploys a ClusterIssuer resource to bootstrap Le
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://charts.jetstack.io | cert-manager | v1.11.3 |
+| https://charts.jetstack.io | cert-manager | v1.13.2 |
 
 ## Values
 

@@ -1,6 +1,6 @@
 # crds
 
-![Version: 1.5.1](https://img.shields.io/badge/Version-1.5.1-informational?style=flat-square)
+![Version: 1.6.3](https://img.shields.io/badge/Version-1.6.3-informational?style=flat-square)
 
 This chart deploys common `CustomResourceDefinitions` for iits-consulting only projects.
 With this we avoid a typical catch-22, e.g. where you can not use `traefik`

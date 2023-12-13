@@ -4,29 +4,16 @@
 prometheus-stack:
   namespace: monitoring
   repoURL: "https://charts.iits.tech"
-  targetRevision: "43.1.3-no-default-storage"
-  valueFile: "value-files/prometheus-stack/values.yaml"
-  syncOptions:
-    - ServerSideApply=true
+  targetRevision: "43.2.0"
   ignoreDifferences:
     - jsonPointers:
         - /imagePullSecrets
       kind: ServiceAccount
-```
-
-values.yaml
-```yaml
-prometheusStack:
-  prometheus:
-    prometheusSpec:
-      externalUrl: https://admin.{{.Values.projectValues.rootDomain}}/prometheus
-      serviceMonitorSelectorNilUsesHelmValues: false
-  grafana:
-    grafana.ini:
-      server:
-        root_url: https://admin.{{.Values.projectValues.rootDomain}}/grafana
-  alertmanager:
-#    config:
-#      global:
-#        slack_api_url: "REPLACE_ME"
+  syncOptions:
+    - ServerSideApply=true
+  parameters:
+    global.alertmanager.host: "admin.{{.Values.projectValues.rootDomain}}"
+    global.prometheus.host: "admin.{{.Values.projectValues.rootDomain}}"
+    global.grafana.host: "admin.{{.Values.projectValues.rootDomain}}"
+    prometheusStack.grafana.grafana\\.ini.server.security.admin_password: "REPLACE_ME"
 ```

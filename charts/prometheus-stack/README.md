@@ -1,6 +1,6 @@
 # prometheus-stack
 
-![Version: 43.1.5](https://img.shields.io/badge/Version-43.1.5-informational?style=flat-square)
+![Version: 43.2.0](https://img.shields.io/badge/Version-43.2.0-informational?style=flat-square)
 
 A complete monitoring/alerting stack with Grafana Prometheus Alertmanager
 
@@ -14,8 +14,9 @@ A complete monitoring/alerting stack with Grafana Prometheus Alertmanager
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| ingressRoute.adminDomain | string | `"admin.my-domain.com"` |  |
-| ingressRoute.entryPointName | string | `"after-proxy"` |  |
+| global.alertmanager.host | string | `"REPLACE_ME"` |  |
+| global.grafana.host | string | `"REPLACE_ME"` |  |
+| global.prometheus.host | string | `"REPLACE_ME"` |  |
 | prometheusStack.alertmanager.alertmanagerSpec.resources.requests.cpu | string | `"5m"` |  |
 | prometheusStack.alertmanager.alertmanagerSpec.resources.requests.memory | string | `"100Mi"` |  |
 | prometheusStack.alertmanager.alertmanagerSpec.routePrefix | string | `"/alertmanager"` |  |
@@ -64,16 +65,38 @@ A complete monitoring/alerting stack with Grafana Prometheus Alertmanager
 | prometheusStack.defaultRules.rules.prometheus | bool | `true` |  |
 | prometheusStack.defaultRules.rules.prometheusOperator | bool | `true` |  |
 | prometheusStack.defaultRules.rules.time | bool | `true` |  |
+| prometheusStack.grafana."grafana.ini"."auth.basic".enabled | bool | `true` |  |
+| prometheusStack.grafana."grafana.ini".auth.disable_login_form | bool | `false` |  |
+| prometheusStack.grafana."grafana.ini".security.admin_password | string | `"REPLACE_ME"` |  |
+| prometheusStack.grafana."grafana.ini".security.disable_initial_admin_creation | bool | `false` |  |
+| prometheusStack.grafana."grafana.ini".server.root_url | string | `"https://{{$.Values.global.grafana.host}}/grafana"` |  |
 | prometheusStack.grafana."grafana.ini".server.serve_from_sub_path | bool | `true` |  |
+| prometheusStack.ingress.alertmanager.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"after-proxy"` |  |
+| prometheusStack.ingress.alertmanager.annotations."traefik.ingress.kubernetes.io/router.middlewares" | string | `"{{.Release.Namespace}}-strip-prefix-{{ .Release.Name }}@kubernetescrd"` |  |
+| prometheusStack.ingress.alertmanager.enabled | bool | `true` |  |
+| prometheusStack.ingress.alertmanager.host | string | `"{{$.Values.global.alertmanager.host}}"` |  |
+| prometheusStack.ingress.grafana.annotations."cert-manager.io/cluster-issuer" | string | `"letsencrypt"` |  |
+| prometheusStack.ingress.grafana.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
+| prometheusStack.ingress.grafana.annotations."traefik.ingress.kubernetes.io/router.tls" | string | `"true"` |  |
+| prometheusStack.ingress.grafana.className | string | `"traefik"` |  |
+| prometheusStack.ingress.grafana.enabled | bool | `true` |  |
+| prometheusStack.ingress.grafana.host | string | `"{{$.Values.global.grafana.host}}"` |  |
+| prometheusStack.ingress.grafana.tls[0].hosts[0] | string | `"{{$.Values.global.grafana.host}}"` |  |
+| prometheusStack.ingress.prometheus.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"after-proxy"` |  |
+| prometheusStack.ingress.prometheus.enabled | bool | `true` |  |
+| prometheusStack.ingress.prometheus.host | string | `"{{$.Values.global.prometheus.host}}"` |  |
 | prometheusStack.kubeControllerManager.enabled | bool | `false` |  |
 | prometheusStack.kubeProxy.enabled | bool | `false` |  |
 | prometheusStack.kubeScheduler.enabled | bool | `false` |  |
 | prometheusStack.kubelet.enabled | bool | `true` |  |
 | prometheusStack.nameOverride | string | `"prometheus-stack"` |  |
-| prometheusStack.prometheus.prometheusSpec.podMonitorSelector.matchLabels."argocd.argoproj.io/instance" | string | `"my-app"` |  |
+| prometheusStack.prometheus.prometheusSpec.externalUrl | string | `"https://{{$.Values.global.prometheus.host}}/prometheus"` |  |
+| prometheusStack.prometheus.prometheusSpec.podMonitorSelector | string | `nil` |  |
+| prometheusStack.prometheus.prometheusSpec.podMonitorSelectorNilUsesHelmValues | bool | `false` |  |
 | prometheusStack.prometheus.prometheusSpec.resources.requests.cpu | string | `"60m"` |  |
 | prometheusStack.prometheus.prometheusSpec.resources.requests.memory | string | `"2255Mi"` |  |
 | prometheusStack.prometheus.prometheusSpec.routePrefix | string | `"/prometheus"` |  |
+| prometheusStack.prometheus.prometheusSpec.serviceMonitorSelectorNilUsesHelmValues | bool | `false` |  |
 | prometheusStack.prometheus.prometheusSpec.storageSpec.volumeClaimTemplate.spec.accessModes[0] | string | `"ReadWriteOnce"` |  |
 | prometheusStack.prometheus.prometheusSpec.storageSpec.volumeClaimTemplate.spec.resources.requests.storage | string | `"30G"` |  |
 | prometheusStack.prometheusOperator.admissionWebhooks.enabled | bool | `false` |  |
