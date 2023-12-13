@@ -1,3 +1,4 @@
+{{- if eq .Values.prometheusStack.ingress.grafana.className "traefik" }}
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
@@ -6,3 +7,4 @@ spec:
   stripPrefix:
     prefixes:
       - "/grafana"
+  {{- end }}
