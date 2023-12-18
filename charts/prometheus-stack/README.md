@@ -1,6 +1,6 @@
 # prometheus-stack
 
-![Version: 43.2.0](https://img.shields.io/badge/Version-43.2.0-informational?style=flat-square)
+![Version: 43.2.1](https://img.shields.io/badge/Version-43.2.1-informational?style=flat-square)
 
 A complete monitoring/alerting stack with Grafana Prometheus Alertmanager
 
@@ -67,10 +67,10 @@ A complete monitoring/alerting stack with Grafana Prometheus Alertmanager
 | prometheusStack.defaultRules.rules.time | bool | `true` |  |
 | prometheusStack.grafana."grafana.ini"."auth.basic".enabled | bool | `true` |  |
 | prometheusStack.grafana."grafana.ini".auth.disable_login_form | bool | `false` |  |
-| prometheusStack.grafana."grafana.ini".security.admin_password | string | `"REPLACE_ME"` |  |
 | prometheusStack.grafana."grafana.ini".security.disable_initial_admin_creation | bool | `false` |  |
 | prometheusStack.grafana."grafana.ini".server.root_url | string | `"https://{{$.Values.global.grafana.host}}/grafana"` |  |
 | prometheusStack.grafana."grafana.ini".server.serve_from_sub_path | bool | `true` |  |
+| prometheusStack.grafana.adminPassword | string | `"REPLACE_ME"` |  |
 | prometheusStack.ingress.alertmanager.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"after-proxy"` |  |
 | prometheusStack.ingress.alertmanager.annotations."traefik.ingress.kubernetes.io/router.middlewares" | string | `"{{.Release.Namespace}}-strip-prefix-{{ .Release.Name }}@kubernetescrd"` |  |
 | prometheusStack.ingress.alertmanager.enabled | bool | `true` |  |
