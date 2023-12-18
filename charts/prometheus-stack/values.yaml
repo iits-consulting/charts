@@ -99,6 +99,7 @@ prometheusStack:
       patch:
         enabled: false
   grafana:
+    adminPassword: "REPLACE_ME"
     grafana.ini:
       server:
         serve_from_sub_path: true
@@ -109,7 +110,6 @@ prometheusStack:
         enabled: true
       security:
         disable_initial_admin_creation: false
-        admin_password: "REPLACE_ME"
 
   alertmanager:
     config:

@@ -15,5 +15,5 @@ prometheus-stack:
     global.alertmanager.host: "admin.{{.Values.projectValues.rootDomain}}"
     global.prometheus.host: "admin.{{.Values.projectValues.rootDomain}}"
     global.grafana.host: "admin.{{.Values.projectValues.rootDomain}}"
-    prometheusStack.grafana.grafana\\.ini.server.security.admin_password: "REPLACE_ME"
+    prometheusStack.grafana.adminPassword: "REPLACE_ME"
 ```
