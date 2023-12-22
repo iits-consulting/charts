@@ -1735,6 +1735,19 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/kyverno-1.0.0/kyverno-1.0.0.tgz
     version: 1.0.0
+  oidc-forward-auth:
+  - apiVersion: v2
+    created: "2023-12-22T10:30:01.026258791Z"
+    dependencies:
+    - name: gatekeeper
+      repository: https://gogatekeeper.github.io/helm-gogatekeeper
+      version: 0.1.33
+    description: oidc-forward-auth
+    digest: 163a6d6de64c6117061c616e0f587a80749cfb45b4fa7f356abea7b476333eb9
+    name: oidc-forward-auth
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/oidc-forward-auth-1.0.0/oidc-forward-auth-1.0.0.tgz
+    version: 1.0.0
   otc-botkube:
   - apiVersion: v2
     created: "2023-07-12T07:51:03.619469313Z"
@@ -2437,4 +2450,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2023-12-18T17:17:09.060537249Z"
+generated: "2023-12-22T10:30:01.239902666Z"
