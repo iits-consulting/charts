@@ -1,0 +1,58 @@
+{{- with .Values.ingress }}
+{{- if .enabled }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "forwardAuth.fullname" $ }}
+  {{- with .labels }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .annotations }}
+  annotations:
+    {{- tpl (toYaml .) $ | nindent 4 }}
+  {{- end }}
+spec:
+  ingressClassName: {{ .className | default "traefik" }}
+  {{- if .tls }}
+  tls:
+    {{- range .tls }}
+    {{- $certSecretName := .secretName | default (printf "%s-%s" (include "forwardAuth.fullname" $) "cert")}}
+    {{- if .hosts }}
+    {{- range .hosts }}
+    - hosts:
+        - {{ tpl (toYaml .) $ }}
+      secretName: {{ $certSecretName }}
+    {{- end }}
+    {{- end }}
+    {{- end }}
+  {{- end }}
+  rules:
+      {{- if .hosts }}
+      {{- range .hosts }}
+    - host: {{ tpl (toYaml .host) $ }}
+      http:
+        paths:
+            {{- range .paths }}
+          - path: {{ .path  }}
+            pathType: {{ .pathType | default "Prefix"}}
+            backend:
+              service:
+                name: {{ include "forwardAuth.fullname" $ }}-gatekeeper
+                port:
+                  number: {{ default 8080 $.Values.gatekeeper.service.proxy.port }}
+            {{- end }}
+      {{- end }}
+    {{- else }}
+    - host: {{ tpl (toYaml .host) $ }}
+      http:
+        paths:
+          - path: "/oauth"
+            pathType: "Prefix"
+            backend:
+              service:
+                name: {{ include "forwardAuth.fullname" $ }}-gatekeeper
+                port:
+                  number: {{ default 8080 $.Values.gatekeeper.service.proxy.port }}
+    {{- end }}
+{{- end }}
+{{- end }}
