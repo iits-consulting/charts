@@ -280,9 +280,9 @@ backup:
   repoName: "s3_backups"
   bucket:
     endpoint: "https://obs.eu-de.otc.t-systems.com"
-#    name: "REPLACE_ME"
-#    accessKey: "REPLACE_ME"
-#    secretKey: "REPLACE_ME"
+    name: "REPLACE_ME"
+    accessKey: "REPLACE_ME"
+    secretKey: "REPLACE_ME"
   policy:
     name: "nightly-backup"
     schedule: "0 0 0 * * ?"
