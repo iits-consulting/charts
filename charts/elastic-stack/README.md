@@ -16,7 +16,10 @@ Awesome Logs
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| backup.bucket.accessKey | string | `"REPLACE_ME"` |  |
 | backup.bucket.endpoint | string | `"https://obs.eu-de.otc.t-systems.com"` |  |
+| backup.bucket.name | string | `"REPLACE_ME"` |  |
+| backup.bucket.secretKey | string | `"REPLACE_ME"` |  |
 | backup.image.repository | string | `"docker.io/curlimages/curl"` |  |
 | backup.image.tag | string | `"7.82.0"` |  |
 | backup.policy.indices[0] | string | `"*"` |  |
