@@ -8,8 +8,17 @@ data:
     {{- range $indexName,$indexValues  := .Values.indexPatternInit.indices }}
     # Apply default Index Pattern into Kibana
     echo "create index pattern {{$indexName}}"
-    curl -X POST -v http://{{$.Release.Name}}-kibana:5601/api/saved_objects/index-pattern/{{$indexName}} \
-    -H 'kbn-xsrf: true' -H 'Content-Type: application/json' \
-    -d '{"attributes": {"title": "{{$indexValues.index}}","timeFieldName": "{{$indexValues.timestampField}}","override":true,"refresh_fields":true}}'
+    curl -s -X POST {{$.Release.Name}}-kibana:5601/api/data_views/data_view \
+    -H 'kbn-xsrf: true' -H 'Content-Type: application/json' --data-binary @- << EOF
+        {
+          "override": true,
+          "data_view": {
+            "title": "{{$indexName}}*" ,
+            "timeFieldName": "{{$indexValues.timestampField}}"
+          }
+        }
+    EOF
+
+    echo
     echo "create index pattern {{$indexName}} finished"
     {{ end }}

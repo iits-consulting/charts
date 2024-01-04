@@ -5,14 +5,14 @@ metadata:
   annotations:
     helm.sh/hook: post-install,post-upgrade
     helm.sh/hook-weight: "-5"
-    checksum/config: {{ include (print $.Template.BasePath "/ilm/ilm-config.yaml") . | sha256sum | substr 0 50 }}
+    checksum/config: {{ include (print $.Template.BasePath "/ilm/config.yaml") . | sha256sum | substr 0 50 }}
 spec:
   backoffLimit: 0
   parallelism: 1
   completions: 1
   template:
     metadata:
-      name: {{.Release.Name}}-jobcommand
+      name: {{.Release.Name}}-ilm-init
     spec:
       restartPolicy: OnFailure
       containers:

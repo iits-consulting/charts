@@ -1,12 +1,12 @@
 dependencies:
 - name: elasticsearch
   repository: https://helm.elastic.co
-  version: 7.17.3
+  version: 8.5.1
 - name: kibana
   repository: https://helm.elastic.co
-  version: 7.17.3
+  version: 8.5.1
 - name: filebeat
   repository: https://helm.elastic.co
-  version: 7.17.3
-digest: sha256:dcfc1c24d855779e4141b03e3c595b421ac5d9aba81fb6cbdd364e635988d2a3
-generated: "2023-05-30T19:44:47.893067588+02:00"
+  version: 8.5.1
+digest: sha256:92d7441aa3d259f19fee75256e7e2fd82edcabfe7d707a305cce53cd225a12b1
+generated: "2023-07-17T14:36:55.314532134+02:00"

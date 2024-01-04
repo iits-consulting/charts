@@ -12,7 +12,7 @@ spec:
   completions: 1
   template:
     metadata:
-      name: {{.Release.Name}}-jobcommand
+      name: {{.Release.Name}}-index-pattern-init
     spec:
       restartPolicy: Never
       containers:

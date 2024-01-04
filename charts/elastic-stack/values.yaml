@@ -14,12 +14,48 @@ ingressRoute:
 #        az: "REPLACE_ME"
 #        kmsId: "REPLACE_ME"
 
+elasticsearch:
+  protocol: http
+  createCert: false
+  updateStrategy: RollingUpdate
+  enabled: true
+  volumeClaimTemplate:
+    accessModes: [ "ReadWriteOnce" ]
+    resources:
+      requests:
+        storage: 200G
+  esJavaOpts: "-Xmx6g -Xms6g -Dlog4j2.formatMsgNoLookups=true -Des.allow_insecure_settings=true"
+  resources:
+    requests:
+      cpu: "200m"
+      memory: "6G"
+    limits:
+      cpu: "1000m"
+      memory: "8G"
+  replicas: 2
+  esConfig:
+    elasticsearch.yml: |
+      cluster.name: "docker-cluster"
+      network.host: 0.0.0.0
+      http.max_header_size: 16kb
+      cluster.max_shards_per_node: 30000
+      xpack.security:
+        enabled: false
+        http.ssl.enabled: false
+        transport.ssl.enabled: false
+        authc:
+          anonymous:
+            username: anonymous
+            roles: superuser
+            authz_exception: false
+
 filebeat:
   enabled: true
-  extraEnvs:
-    - name: STAGE
-      value: "REPLACE_ME"
   daemonset:
+    extraEnvs:
+      - name: STAGE
+        value: "REPLACE_ME"
+    secretMounts: []
     extraVolumes:
       - name: varlibcontainerdcontainerlogs
         hostPath:
@@ -27,6 +63,7 @@ filebeat:
     extraVolumeMounts:
       - name: varlibcontainerdcontainerlogs
         mountPath: /var/lib/containerd/container_logs
+
   readinessProbe:
     failureThreshold: 50
     initialDelaySeconds: 20
@@ -130,7 +167,8 @@ filebeat:
               - contains:
                   message: "agent.server: member joined, marking health alive:"
       output.elasticsearch:
-        hosts: '${ELASTICSEARCH_HOSTS:elasticsearch-master:9200}'
+        hosts: '["${ELASTICSEARCH_HOSTS:elasticsearch-master:9200}"]'
+        protocol: http
         indices:
             - index: "traefik-and-keycloak-proxy-%{[agent.version]}-%{+yyyy.MM}"
               when:
@@ -167,44 +205,28 @@ filebeat:
         host: "elastic-stack-kibana:5601"
         protocol: "http"
 
-elasticsearch:
-  updateStrategy: RollingUpdate
-  enabled: true
-  volumeClaimTemplate:
-    accessModes: [ "ReadWriteOnce" ]
-    resources:
-      requests:
-        storage: 200G
-  esJavaOpts: "-Xmx6g -Xms6g -Dlog4j2.formatMsgNoLookups=true"
-  resources:
-    requests:
-      cpu: "200m"
-      memory: "6G"
-    limits:
-      cpu: "1000m"
-      memory: "8G"
-  replicas: 2
-  esConfig:
-    elasticsearch.yml: |
-      cluster.name: "docker-cluster"
-      network.host: 0.0.0.0
-      http.max_header_size: 16kb
-      cluster.max_shards_per_node: 30000
-
 kibana:
   enabled: true
   replicas: 2
+  image: "docker.elastic.co/kibana/kibana"
+  imageTag: "8.5.1"
   kibanaConfig:
     kibana.yml: |
-      server.name: kibana
-      server.host: "0"
-      server.basePath: "/kibana"
+      server:
+        name: kibana
+        host: "localhost"
+        basePath: "/kibana"
       elasticsearch.hosts: [ "http://elasticsearch:9200" ]
-      xpack.monitoring.ui.container.elasticsearch.enabled: true
-      xpack.monitoring.enabled: true
-      xpack.reporting.csv.maxSizeBytes: 1048576000
-      xpack.reporting.queue.timeout: 1800000
-      xpack.reporting.encryptionKey: "2r6QH87Y3tJP9JkNqaM!w9&zQBO6p&M%"
+      monitoring.ui.container.elasticsearch.enabled: true
+      xpack:
+        reporting:
+          csv.maxSizeBytes: 1048576000
+          queue.timeout: 1800000
+          kibanaServer.hostname: localhost
+          encryptionKey: "2r6QH87Y3tJP9JkNqaM!w9&zQBO6p&M%"
+        security.encryptionKey: "2r6QH87Y3tJP9JkNqaM!w9&zQBO6p&M%"
+        encryptedSavedObjects.encryptionKey: "2r6QH87Y3tJP9JkNqaM!w9&zQBO6p&M%"
+
   service:
     type: ClusterIP
     port: 5601
@@ -216,28 +238,20 @@ indexPatternInit:
     tag: 7.82.0
   indices:
     botkube:
-      index: "botkube*"
       timestampField: "Timestamp"
     traefik-and-keycloak-proxy:
-      index: "traefik-and-keycloak-proxy*"
       timestampField: "@timestamp"
     vault:
-      index: "vault*"
       timestampField: "@timestamp"
     argocd:
-      index: "argocd*"
       timestampField: "@timestamp"
     auth:
-      index: "auth*"
       timestampField: "@timestamp"
     elastalert:
-      index: "elastalert*"
       timestampField: "@timestamp"
     kyverno:
-      index: "kyverno*"
       timestampField: "@timestamp"
     not-defined:
-      index: "not-defined*"
       timestampField: "@timestamp"
 
 ilm:
@@ -258,3 +272,23 @@ ilm:
       indexPatterns: [ "elastalert*", "argocd*", "kyverno*" ]
       coldAfter: 2d
       deleteAfter: 14d
+
+backup:
+  image:
+    repository: docker.io/curlimages/curl
+    tag: 7.82.0
+  repoName: "s3_backups"
+  bucket:
+    endpoint: "https://obs.eu-de.otc.t-systems.com"
+    name: "REPLACE_ME"
+    accessKey: "REPLACE_ME"
+    secretKey: "REPLACE_ME"
+  policy:
+    name: "nightly-backup"
+    schedule: "0 0 0 * * ?"
+#    indices can also be set to a list such as [ "data-*", "important" ]
+    indices: [ "*" ]
+    retention:
+      expireAfter: "15d"
+      minCount: 5
+      maxCount: 15
