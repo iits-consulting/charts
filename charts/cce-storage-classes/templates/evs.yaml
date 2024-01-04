@@ -1,0 +1,27 @@
+{{- range $type := .Values.evsTypes }}
+{{- range $retention := tuple "Retain" "Delete"}}
+allowVolumeExpansion: true
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  {{- if $.Values.kmsId }}
+  name: csi-disk-{{ lower $type }}-{{ lower $retention }}-encrypted
+  {{- else }}
+  name: csi-disk-{{ lower $type }}-{{ lower $retention }}
+  {{- end }}
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "{{ and (eq $type $.Values.defaultClass.type) (eq $retention $.Values.defaultClass.retention )}}"
+parameters:
+  csi.storage.k8s.io/csi-driver-name: disk.csi.everest.io
+  csi.storage.k8s.io/fstype: ext4
+  {{- if $.Values.kmsId }}
+  everest.io/crypt-key-id: {{ $.Values.kmsId }}
+  {{- end }}
+  everest.io/disk-volume-type: {{ $type }}
+  everest.io/passthrough: "true"
+provisioner: everest-csi-provisioner
+reclaimPolicy: {{ $retention }}
+volumeBindingMode: Immediate
+---
+{{- end }}
+{{- end }}

@@ -1,6 +1,14 @@
 # This Readme.md just counts for OTC
 
-## Database
+
+Steps to set it up:
+
+  * [1. Create a postgres database](#1-create-a-postgres-database)
+  * [2. Create a private dns entry](#2-create-a-private-dns-entry)
+  * [3. Initialize the database](#3-initialize-the-database)
+  * [4. Deploy the keycloak helm chart](#4-deploy-the-keycloak-helm-chart)
+
+## 1. Create a postgres database
 
 First you need to create the RDS (postgres) database like this:
 
@@ -26,66 +34,84 @@ module "postgres" {
   sg_allowed_cidr = [local.vpc_cidr]
 }
 
-module "private_dns" {
-  source  = "registry.terraform.io/iits-consulting/project-factory/opentelekomcloud//modules/private_dns"
-  version = "5.2.1"
-  domain  = "vpc.private"
-  a_records = {
-    postgres   = [module.postgres.db_private_ip]
-  }
-  vpc_id = module.vpc.vpc.id
-}
-
 ```
+
+## 2. Create a private dns entry
+
+The next step is to create a private dns entry since we don't want to use the IP Address.
+
+```terraform
+module "private_dns" {
+source  = "registry.terraform.io/iits-consulting/project-factory/opentelekomcloud//modules/private_dns"
+version = "5.2.1"
+domain  = "vpc.private"
+a_records = {
+postgres   = [module.postgres.db_private_ip]
+}
+vpc_id = module.vpc.vpc.id
+}
+```
+
+## 3. Initialize the database
 
 After that go to terraform kubernetes and initialize the database like this:
 
 ```terraform
 
-locals {
-  # List all databases you want to create
-  databases = toset([
-    "keycloak",
-  ])
+resource "random_password" "keycloak" {
+  length      = 32
+  special     = false
+  min_lower   = 1
+  min_numeric = 1
+  min_upper   = 1
 }
 
-module "db-init" {
-  source          = "registry.terraform.io/iits-consulting/db-init/kubernetes"
-  database_engine = "postgres"
-  database_root_credentials = {
-    username = module.terraform_secrets_from_encrypted_s3_bucket.secrets["postgres_root_username"]
-    password = module.terraform_secrets_from_encrypted_s3_bucket.secrets["postgres_root_password"]
-    address  = module.terraform_secrets_from_encrypted_s3_bucket.secrets["postgres_addr"]
+resource "helm_release" "db_init" {
+  depends_on = [
+    helm_release.iits_kyverno_policies
+  ]
+  name                  = "db-init"
+  repository            = "https://charts.iits.tech"
+  chart                 = "db-init"
+  version               = local.chart_versions.db_init
+  namespace             = "db-init"
+  create_namespace      = true
+  wait                  = true
+  atomic                = true
+  timeout               = 900 // 15 Minutes
+  render_subchart_notes = true
+  wait_for_jobs         = true
+  set_sensitive {
+    name  = "dbInit.postgres.env.PGPASSWORD"
+    value = module.terraform_secrets_from_encrypted_s3_bucket.secrets["db_root_password"]
   }
-  initdb_script = templatefile("./initdb.sql", { #Path to the SQL Script
-    databases = [for database in local.databases : {# This populates variables set inside the initdb.sql script
-      name     = database
-      username = database
-      password = random_password.database_passwords[database].result
-    }]
-  })
-  pod_config = {
-    namespace = "database"
-    namespace_create = true
-    name             = "db-init"
-    image            = "alpine:3.15.5"
-    annotations      = {}
-    labels = {
-      "app.kubernetes.io/instance" = "alpine"
-      "app.kubernetes.io/name"     = "db-init"
+  set_sensitive {
+    name  = "dbInit.postgres.databases.keycloak.password"
+    value = random_password.keycloak.result
+  }
+  values                = [
+    yamlencode({
+      dbInit ={
+        postgres = {
+          databases = {
+            keycloak = {
+              username = "keycloak"
+            }
+          }
+        }
+      }
     }
-  }
+    )
+  ]
 }
-
 ```
 
-## Deployment example
+## 4. Deploy the keycloak helm chart
 
 ```yaml
 charts:
   keycloak:
-    disableAutoSync: true
-    targetRevision: "0.1.1"
+    targetRevision: "0.1.2"
     repoURL: "https://charts.iits.tech"
     namespace: auth
     parameters:

@@ -1,0 +1,54 @@
+ingress:
+  enabled: true
+  host: "REPLACE_ME"
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+  hosts:
+    - host: "{{.Values.ingress.host}}"
+      paths:
+        - path: /oauth
+  tls:
+    - hosts:
+        - "{{.Values.ingress.host}}"
+      secretName: "oidc-forward-auth-cert"
+gatekeeper:
+  replicaCount: 1
+  automountServiceAccountToken: true
+  extraVolumeMounts:
+    - name: oidc-forward-auth-no-permission-link
+      mountPath: /tmp
+      readOnly: true
+  extraVolumes:
+    - name: oidc-forward-auth-no-permission-link
+      configMap:
+        name: oidc-forward-auth-no-permission-link
+        defaultMode: 0777
+  strategy:
+    type: "RollingUpdate"
+  config:
+    client-id: "REPLACE_ME"
+    client-secret: "REPLACE_ME"
+    discovery-url: "REPLACE_ME"
+    enable-compression: true
+    enable-default-deny: false
+    enable-json-logging: true
+    enable-request-id: true
+    enable-logging: false
+    enable-metrics: false
+    enable-refresh-tokens: false
+    enable-token-header: false
+    listen: 0.0.0.0:3000
+    listen-admin: :4000
+    preserve-host: true
+    server-read-timeout: 300s
+    server-write-timeout: 300s
+    #important
+    no-proxy: true
+    #important
+    no-redirects: false
+    skip-access-token-clientid-check: true
+    resources:
+      - require-any-role: true
+        uri: /*

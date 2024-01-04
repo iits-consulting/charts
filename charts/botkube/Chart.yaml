@@ -1,0 +1,8 @@
+apiVersion: v2
+dependencies:
+- name: botkube
+  repository: https://infracloudio.github.io/charts
+  version: v0.12.4
+description: botkube designed to work with elasticsearch
+name: botkube
+version: 0.1.1

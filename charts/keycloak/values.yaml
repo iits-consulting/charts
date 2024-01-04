@@ -2,9 +2,12 @@ ingressRoute:
   domain: "my-domain.com"
   entryPointName: "websecure"
   certificate:
-    name: "keycloak-cert"
+    # Defaults to .Release.Name -cert
+    name:
     clusterIssuer: letsencrypt
 keycloak:
+  logging:
+    output: "json"
   image:
     # As we won't necessarily update the version when changing the container
     # we enforce pulling the image
@@ -23,4 +26,3 @@ keycloak:
     host: "REPLACE_ME"
     database: "REPLACE_ME"
     port: "REPLACE_ME"
-

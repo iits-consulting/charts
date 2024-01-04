@@ -1,0 +1,26 @@
+apiVersion: kyverno.io/v2alpha1
+kind: PolicyException
+metadata:
+  name: kafka
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-weight": "-5"
+spec:
+  exceptions:
+    - policyName: require-run-as-non-root-user
+      ruleNames:
+        - run-as-non-root-user
+    - policyName: enforce-security-context
+      ruleNames:
+        - add-pod-security-context
+  match:
+    any:
+      - resources:
+          kinds:
+            - Pod
+            - Deployment
+            - ReplicaSet
+          names:
+            - kafka*
+          namespaces:
+            - kafka

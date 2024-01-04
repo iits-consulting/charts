@@ -1,8 +1,0 @@
-apiVersion: v2
-dependencies:
-- name: botkube
-  repository: https://infracloudio.github.io/charts
-  version: v0.12.4
-description: botkube for Open Telekom Cloud work together with elasticsearch
-name: otc-botkube
-version: 0.1.0

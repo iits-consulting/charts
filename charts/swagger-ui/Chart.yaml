@@ -1,7 +1,7 @@
 ---
 apiVersion: v2
 name: swagger-ui
-version: 0.0.1
+version: 0.1.0
 appVersion: 4.19.0
 description: Swagger is an open-source software framework backed by a large ecosystem of tools that helps developers design, build, document, and consume RESTful Web services.
 keywords:

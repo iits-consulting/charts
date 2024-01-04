@@ -5,9 +5,9 @@ metadata:
 data:
   index.html: |-
 {{- if empty .Values.website }}
-{{ .Files.Get "files/index.html" | indent 4 }}
+{{ tpl (.Files.Get "files/index.html") . | indent 4 }}
 {{- else }}
-{{ .Values.website | indent 4 }}
+{{ tpl (.Values.website) . | indent 4 }}
 {{- end }}
   httpd.conf: |
     I:index.html

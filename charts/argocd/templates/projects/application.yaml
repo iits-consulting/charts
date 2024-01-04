@@ -1,0 +1,40 @@
+{{ range $projectName,$project := .Values.projects }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ $projectName }}
+  # application needs to be installed after the crds
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "-5"
+spec:
+   project: {{ $projectName }}
+   revisionHistoryLimit: 3
+   syncPolicy:
+     automated:
+       prune: true
+       selfHeal: true
+       allowEmpty: true
+     syncOptions:
+       - CreateNamespace=true
+       {{- if $project.serverSideApply}}
+       - ServerSideApply=true
+       {{- end}}
+   destination:
+     server: https://kubernetes.default.svc
+     namespace: {{ $.Release.Namespace }}
+   source:
+     path: {{ $project.git.path | default $projectName }}
+     repoURL: {{ $project.git.repoUrl }}
+     targetRevision: {{ $project.git.branch | default "main" }}
+     helm:
+       values: |
+         projectValues:
+           {{- $project.projectValues | toYaml | nindent 12}}
+       valueFiles:
+         - values.yaml
+         {{- if ($project.projectValues).stage }}
+         - values-{{ $project.projectValues.stage }}.yaml
+         {{- end}}
+---
+{{- end }}

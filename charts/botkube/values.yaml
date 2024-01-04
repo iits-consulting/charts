@@ -1,0 +1,179 @@
+botkube:
+  image:
+    repository: docker.io/infracloudio/botkube
+    tag: v0.12.1
+  resources:
+    requests:
+      memory: "60Mi"
+      cpu: "3m"
+  # Communication settings
+  communications:
+    # Settings for ELS
+    elasticsearch:
+      enabled: true
+      server: 'http://elasticsearch-master:9200'
+      # ELS index settings
+      index:
+        name: botkube
+        type: botkube-event
+        shards: 1
+        replicas: 0
+  config:
+    ## Resources you want to watch
+    resources:
+      - name: v1/pods # Name of the resources e.g pod, deployment, ingress, etc. (Resource name must be in singular form)
+        namespaces:
+          include:
+            - all
+          ignore:
+            # List of namespaces to be ignored (omitempty), used only with include: all
+            -  # example : include [all], ignore [x,y,z]
+        events:
+          # List of lifecycle events you want to receive, e.g create, update, delete, error OR all
+          - error
+      - name: v1/services
+        namespaces:
+          include:
+            - all
+          ignore:
+            - 
+        events:
+          - error
+      - name: apps/v1/deployments
+        namespaces:
+          include:
+            - all
+          ignore:
+            - 
+        events:
+          - error
+        updateSetting:
+          includeDiff: true
+          fields:
+            - spec.template.spec.containers[*].image
+            - status.availableReplicas
+      - name: apps/v1/statefulsets
+        namespaces:
+          include:
+            - all
+          ignore:
+            - 
+        events:
+          - error
+        updateSetting:
+          includeDiff: true
+          fields:
+            - spec.template.spec.containers[*].image
+            - status.readyReplicas
+      - name: v1/nodes
+        namespaces:
+          include:
+            - all
+          ignore:
+            - 
+        events:
+          - error
+      - name: v1/namespaces
+        namespaces:
+          include:
+            - all
+          ignore:
+            - 
+        events:
+          - error
+      - name: v1/persistentvolumes
+        namespaces:
+          include:
+            - all
+          ignore:
+            - 
+        events:
+          - error
+      - name: v1/persistentvolumeclaims
+        namespaces:
+          include:
+            - all
+          ignore:
+            - 
+        events:
+          - error
+      - name: v1/configmaps
+        namespaces:
+          include:
+            - all
+          ignore:
+            - 
+        events:
+          - error
+      - name: apps/v1/daemonsets
+        namespaces:
+          include:
+            - all
+          ignore:
+            - 
+        events:
+          - error
+        updateSetting:
+          includeDiff: true
+          fields:
+            - spec.template.spec.containers[*].image
+            - status.numberReady
+      - name: batch/v1/jobs
+        namespaces:
+          include:
+            - all
+          ignore:
+            - 
+        events:
+          - error
+        updateSetting:
+          includeDiff: true
+          fields:
+            - spec.template.spec.containers[*].image
+            - status.conditions[*].type
+      - name: rbac.authorization.k8s.io/v1/roles
+        namespaces:
+          include:
+            - all
+          ignore:
+            - 
+        events:
+          - error
+      - name: rbac.authorization.k8s.io/v1/rolebindings
+        namespaces:
+          include:
+            - all
+          ignore:
+            - 
+        events:
+          - error
+      - name: rbac.authorization.k8s.io/v1/clusterroles
+        namespaces:
+          include:
+            - all
+          ignore:
+            - 
+        events:
+          - error
+      - name: rbac.authorization.k8s.io/v1/clusterrolebindings
+        namespaces:
+          include:
+            - all
+          ignore:
+            - 
+        events:
+          - error
+    # Setting to support multiple clusters
+    settings:
+      # Cluster name to differentiate incoming messages
+      # this will get replaced by argocd
+      # SET BY ARGOCD STAGE VALUES
+      clustername: # Set true to enable kubectl commands execution
+
+      allowkubectl: false
+      # Set true to enable commands execution from configured channel only
+      restrictAccess: false
+      # Set true to enable config watcher
+      configwatcher: false
+      # Set false to disable upgrade notification
+      upgradeNotifier: true

@@ -1,0 +1,9 @@
+{{ if .Values.defaultCert.enabled }}
+apiVersion: traefik.containo.us/v1alpha1
+kind: TLSStore
+metadata:
+  name: default
+spec:
+  defaultCertificate:
+    secretName: {{.Release.Name}}-default-cert
+{{- end }}

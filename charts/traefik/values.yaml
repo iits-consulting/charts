@@ -34,5 +34,12 @@ traefik:
     enabled: true
     isDefaultClass: true
 
+defaultCert:
+  enabled: true
+  issuerRef:
+    kind: ClusterIssuer
+    name: letsencrypt
+
 ingressRoute:
+  rootDomain: "my-domain.com"
   adminDomain: "admin.my-domain.com"

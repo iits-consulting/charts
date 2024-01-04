@@ -1,3 +1,5 @@
+{{- if ne (.Values.ingressRoute.enabled | toString ) "false" }}
+{{- $certSecretName := .Values.ingressRoute.certificate.name | default (printf "%s-%s" .Release.Name "cert")}}
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
@@ -9,9 +11,12 @@ spec:
     - kind: Rule
       match: Host(`{{ .Values.ingressRoute.domain }}`)
       services:
-        - name: {{ .Release.Name }}
-          port: {{ .Values.gatekeeper.service.proxy.port }}
+        - name: {{ default (include "gatekeeper.fullname" .) .Values.ingressRoute.upstream.service.name }}
+          port: {{ default .Values.gatekeeper.service.proxy.port .Values.ingressRoute.upstream.service.port }}
+  {{- if ne (.Values.ingressRoute.certificate.enabled | toString) "false" }}
   tls:
-    secretName: {{.Values.ingressRoute.certificate.name }}
+    secretName: {{ $certSecretName }}
     domains:
       - main: {{ .Values.ingressRoute.domain}}
+  {{- end }}
+{{- end }}

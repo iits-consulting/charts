@@ -2,7 +2,7 @@ apiVersion: v2
 dependencies:
   - name: cert-manager
     repository: https://charts.jetstack.io
-    version: v1.6.1
+    version: v1.13.2
 name: cert-manager
 description: Wrapper chart for cert-manager. Deploys a ClusterIssuer resource to bootstrap Let's encrypt cert generation
-version: 0.2.3
+version: 1.0.0

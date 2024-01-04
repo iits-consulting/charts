@@ -1,6 +1,6 @@
 # iits-kyverno-policies
 
-![Version: 1.3.1](https://img.shields.io/badge/Version-1.3.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 1.5.0](https://img.shields.io/badge/Version-1.5.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 This chart wraps the upstream `kyverno-policies` chart and adds a few useful policies:
   - Verify all images are signed with cosign
@@ -18,48 +18,71 @@ This chart wraps the upstream `kyverno-policies` chart and adds a few useful pol
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| addImagePullSecrets.autogenControllers | string | `"none"` | Auto gen rules for pod controllers. See https://kyverno.io/docs/writing-policies/autogen/ |
-| addImagePullSecrets.enabled | bool | `false` | Enable or disable the policy globally |
-| addImagePullSecrets.imagePullSecrets[0] | object | `{"imagePullSecretName":"my-test-secret","registryWildcard":"registry.example.com/*"}` | Array of registries where a custom pull secret should be added to a pod |
-| addImagePullSecrets.name | string | `"add-image-pull-secret"` | The base name of the policy |
-| addImagePullSecrets.validationFailureAction | string | `"audit"` | What to do when this action fails. Either `audit` or `enforce` |
+| autoInjectDockerPullSecrets.autogenControllers | string | `"none"` | Auto gen rules for pod controllers. See https://kyverno.io/docs/writing-policies/autogen/ |
+| autoInjectDockerPullSecrets.enabled | bool | `false` |  |
+| autoInjectDockerPullSecrets.secrets | string | `nil` |  |
 | disallowUnsignedImages.autogenControllers | string | `"none"` | Auto gen rules for pod controllers. See https://kyverno.io/docs/writing-policies/autogen/ |
 | disallowUnsignedImages.background | bool | `true` | Also check already existing containers. See https://kyverno.io/docs/writing-policies/background/ |
 | disallowUnsignedImages.enabled | bool | `false` | Enable or disable the policy globally |
 | disallowUnsignedImages.excludeNamespaces | list | `["kube-system"]` | Exclude the policy on the given list of namespaces Wildcards are supported. For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards |
 | disallowUnsignedImages.imagesAndPublicKeyPairs | list | `[{"image":"*","key":"-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEXzV8f2YUEmXF176k//uSmgEEZoKb\ng2b7+PuoKjfaYVw3HTAE2Z4ak5ZNNq5HF8G1cRt3P713MyuIXiNKP6v2Nw==\n-----END PUBLIC KEY-----"}]` | List of image definitions and the associated public key used for signing. |
 | disallowUnsignedImages.name | string | `"disallow-unsigned-images"` | The name of the policy |
-| disallowUnsignedImages.validationAction | string | `"enforce"` | How policy violation should be handled. Use either `enforce` or `audit`. See https://kyverno.io/docs/writing-policies/validate/ for details If a policy is violated and the action is "enforce", then the ressource will not be allowed to be created. On the other the `audit` action allows the ressource but reports this incident. |
+| disallowUnsignedImages.validationAction | string | `"Enforce"` | How policy violation should be handled. Use either `enforce` or `audit`. See https://kyverno.io/docs/writing-policies/validate/ for details If a policy is violated and the action is "enforce", then the ressource will not be allowed to be created. On the other the `audit` action allows the ressource but reports this incident. |
 | disallowUnspecifiedDockerRegistries.autogenControllers | string | `"none"` | Auto gen rules for pod controllers. See https://kyverno.io/docs/writing-policies/autogen/ |
 | disallowUnspecifiedDockerRegistries.background | bool | `true` | Also check already existing containers. See https://kyverno.io/docs/writing-policies/background/ |
 | disallowUnspecifiedDockerRegistries.enabled | bool | `false` | Enable or disable the policy globally |
 | disallowUnspecifiedDockerRegistries.excludeNamespaces | list | `["kube-system"]` | Exclude the policy on the given list of namespaces Wildcards are supported. For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards |
 | disallowUnspecifiedDockerRegistries.name | string | `"disallow-unspecified-docker-registries"` | The name of the policy |
 | disallowUnspecifiedDockerRegistries.registryUrls | list | `["mysecure-registry/common-signed-docker-images/*"]` | List of allowed registries. Wildcards are supported. For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards |
-| disallowUnspecifiedDockerRegistries.validationAction | string | `"enforce"` | How policy violation should be handled. Use either `enforce` or `audit`. See https://kyverno.io/docs/writing-policies/validate/ for details If a policy is violated and the action is "enforce", then the ressource will not be allowed to be created. On the other the `audit` action allows the ressource but reports this incident. |
+| disallowUnspecifiedDockerRegistries.validationAction | string | `"Enforce"` | How policy violation should be handled. Use either `enforce` or `audit`. See https://kyverno.io/docs/writing-policies/validate/ for details If a policy is violated and the action is "enforce", then the ressource will not be allowed to be created. On the other the `audit` action allows the ressource but reports this incident. |
+| enforceSecurityContext.autogenControllers | string | `"none"` | Auto gen rules for pod controllers. See https://kyverno.io/docs/writing-policies/autogen/ |
+| enforceSecurityContext.enabled | bool | `true` | Enable or disable the policy globally |
+| enforceSecurityContext.excludeNamespaces | list | `["kube-system"]` | Exclude the policy on the given list of namespaces Wildcards are supported. For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards |
+| enforceSecurityContext.name | string | `"enforce-security-context"` | The name of the policy |
+| kyverno-policies.autogenControllers | string | `"none"` |  |
 | kyverno-policies.install | bool | `true` | Whether to install the default policies for kyverno |
-| kyverno-policies.podSecurityStandard | string | `"baseline"` | The pod security standard as defined in https://kyverno.io/policies/pod-security. |
-| kyverno-policies.policyExclude.disallow-capabilities.any[0].namespaces[0] | string | `"kube-system"` |  |
+| kyverno-policies.podSecurityStandard | string | `"restricted"` | The pod security standarcd as defined in https://kyverno.io/policies/pod-security. |
+| kyverno-policies.policyExclude.disallow-capabilities-strict.any[0].resources.kinds[0] | string | `"Deployment"` |  |
+| kyverno-policies.policyExclude.disallow-capabilities-strict.any[0].resources.kinds[1] | string | `"ReplicaSet"` |  |
+| kyverno-policies.policyExclude.disallow-capabilities-strict.any[0].resources.kinds[2] | string | `"Pod"` |  |
+| kyverno-policies.policyExclude.disallow-capabilities-strict.any[0].resources.namespaces[0] | string | `"kube-system"` |  |
 | kyverno-policies.policyExclude.disallow-capabilities.any[0].resources.kinds[0] | string | `"Deployment"` |  |
 | kyverno-policies.policyExclude.disallow-capabilities.any[0].resources.kinds[1] | string | `"ReplicaSet"` |  |
 | kyverno-policies.policyExclude.disallow-capabilities.any[0].resources.kinds[2] | string | `"Pod"` |  |
-| kyverno-policies.policyExclude.disallow-host-namespaces.any[0].namespaces[0] | string | `"kube-system"` |  |
+| kyverno-policies.policyExclude.disallow-capabilities.any[0].resources.namespaces[0] | string | `"kube-system"` |  |
 | kyverno-policies.policyExclude.disallow-host-namespaces.any[0].resources.kinds[0] | string | `"DaemonSet"` |  |
 | kyverno-policies.policyExclude.disallow-host-namespaces.any[0].resources.kinds[1] | string | `"Pod"` |  |
+| kyverno-policies.policyExclude.disallow-host-namespaces.any[0].resources.namespaces[0] | string | `"kube-system"` |  |
 | kyverno-policies.policyExclude.disallow-host-path.any[0].resources.kinds[0] | string | `"Deployment"` |  |
 | kyverno-policies.policyExclude.disallow-host-path.any[0].resources.kinds[1] | string | `"ReplicaSet"` |  |
 | kyverno-policies.policyExclude.disallow-host-path.any[0].resources.kinds[2] | string | `"Pod"` |  |
 | kyverno-policies.policyExclude.disallow-host-path.any[0].resources.namespaces[0] | string | `"kube-system"` |  |
-| kyverno-policies.policyExclude.disallow-host-ports.any[0].namespaces[0] | string | `"kube-system"` |  |
 | kyverno-policies.policyExclude.disallow-host-ports.any[0].resources.kinds[0] | string | `"DaemonSet"` |  |
 | kyverno-policies.policyExclude.disallow-host-ports.any[0].resources.kinds[1] | string | `"Pod"` |  |
-| kyverno-policies.policyExclude.disallow-privileged-containers.any[0].namespaces[0] | string | `"kube-system"` |  |
+| kyverno-policies.policyExclude.disallow-host-ports.any[0].resources.namespaces[0] | string | `"kube-system"` |  |
+| kyverno-policies.policyExclude.disallow-privilege-escalation.any[0].resources.kinds[0] | string | `"Deployment"` |  |
+| kyverno-policies.policyExclude.disallow-privilege-escalation.any[0].resources.kinds[1] | string | `"ReplicaSet"` |  |
+| kyverno-policies.policyExclude.disallow-privilege-escalation.any[0].resources.kinds[2] | string | `"Pod"` |  |
+| kyverno-policies.policyExclude.disallow-privilege-escalation.any[0].resources.namespaces[0] | string | `"kube-system"` |  |
 | kyverno-policies.policyExclude.disallow-privileged-containers.any[0].resources.kinds[0] | string | `"DaemonSet"` |  |
 | kyverno-policies.policyExclude.disallow-privileged-containers.any[0].resources.kinds[1] | string | `"Pod"` |  |
-| kyverno-policies.policyExclude.restrict-seccomp.any[0].namespaces[0] | string | `"argocd"` |  |
-| kyverno-policies.policyExclude.restrict-seccomp.any[0].resources.kinds[0] | string | `"Deployment"` |  |
-| kyverno-policies.policyExclude.restrict-seccomp.any[0].resources.kinds[1] | string | `"ReplicaSet"` |  |
-| kyverno-policies.policyExclude.restrict-seccomp.any[0].resources.kinds[2] | string | `"Pod"` |  |
+| kyverno-policies.policyExclude.disallow-privileged-containers.any[0].resources.namespaces[0] | string | `"kube-system"` |  |
+| kyverno-policies.policyExclude.require-run-as-non-root-user.any[0].resources.kinds[0] | string | `"Deployment"` |  |
+| kyverno-policies.policyExclude.require-run-as-non-root-user.any[0].resources.kinds[1] | string | `"ReplicaSet"` |  |
+| kyverno-policies.policyExclude.require-run-as-non-root-user.any[0].resources.kinds[2] | string | `"Pod"` |  |
+| kyverno-policies.policyExclude.require-run-as-non-root-user.any[0].resources.namespaces[0] | string | `"kube-system"` |  |
+| kyverno-policies.policyExclude.require-run-as-nonroot.any[0].resources.kinds[0] | string | `"Deployment"` |  |
+| kyverno-policies.policyExclude.require-run-as-nonroot.any[0].resources.kinds[1] | string | `"ReplicaSet"` |  |
+| kyverno-policies.policyExclude.require-run-as-nonroot.any[0].resources.kinds[2] | string | `"Pod"` |  |
+| kyverno-policies.policyExclude.require-run-as-nonroot.any[0].resources.namespaces[0] | string | `"kube-system"` |  |
+| kyverno-policies.policyExclude.restrict-seccomp-strict.any[0].resources.kinds[0] | string | `"Deployment"` |  |
+| kyverno-policies.policyExclude.restrict-seccomp-strict.any[0].resources.kinds[1] | string | `"ReplicaSet"` |  |
+| kyverno-policies.policyExclude.restrict-seccomp-strict.any[0].resources.kinds[2] | string | `"Pod"` |  |
+| kyverno-policies.policyExclude.restrict-seccomp-strict.any[0].resources.namespaces[0] | string | `"kube-system"` |  |
+| kyverno-policies.policyExclude.restrict-volume-types.any[0].resources.kinds[0] | string | `"Deployment"` |  |
+| kyverno-policies.policyExclude.restrict-volume-types.any[0].resources.kinds[1] | string | `"ReplicaSet"` |  |
+| kyverno-policies.policyExclude.restrict-volume-types.any[0].resources.kinds[2] | string | `"Pod"` |  |
+| kyverno-policies.policyExclude.restrict-volume-types.any[0].resources.namespaces[0] | string | `"kube-system"` |  |
 | prependCustomImageRegistry.autogenControllers | string | `"none"` | Auto gen rules for pod controllers. See https://kyverno.io/docs/writing-policies/autogen/ |
 | prependCustomImageRegistry.enabled | bool | `false` | Enable or disable the policy globally |
 | prependCustomImageRegistry.excludeNamespaces | list | `[]` | Exclude the policy on the given list of namespaces Wildcards are supported. For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards |
@@ -73,7 +96,7 @@ This chart wraps the upstream `kyverno-policies` chart and adds a few useful pol
 | replaceImageRegistry.name | string | `"replace-image-registry"` | The name of the policy |
 | replaceImageRegistry.sourceRegex | string | `"'.*(.*)/'"` | source regex for matching it. Needs to be golang compatible |
 | replaceImageRegistry.target | string | `"mysecure-registry/common-signed-docker-images"` | the target image repository |
-| replaceImageRegistry.validationFailureAction | string | `"audit"` |  |
+| replaceImageRegistry.validationFailureAction | string | `"Audit"` |  |
 
 <img src="https://iits-consulting.de/wp-content/uploads/2021/08/iits-logo-2021-red-square-xl.png"
 alt="iits consulting" id="logo" width="200" height="200">
@@ -81,4 +104,4 @@ alt="iits consulting" id="logo" width="200" height="200">
 *This chart is provided by [iits-consulting](https://iits-consulting.de/) - your Cloud-Native Innovation Teams as a Service!*
 
 ----------------------------------------------
-Autogenerated from chart metadata using [helm-docs v1.11.0](https://github.com/norwoodj/helm-docs/releases/v1.11.0)
+Autogenerated from chart metadata using [helm-docs v1.12.0](https://github.com/norwoodj/helm-docs/releases/v1.12.0)

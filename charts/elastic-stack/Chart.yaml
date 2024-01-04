@@ -15,3 +15,4 @@ dependencies:
 description: Awesome Logs
 name: elasticsearch
 version: 8.5.1
+

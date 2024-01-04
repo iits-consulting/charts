@@ -1,8 +1,16 @@
 ingressRoute:
+  upstream:
+    service:
+      name: akhq
+      port: 80
   adminDomain: "admin.my-domain.com"
-  pathPrefix: "/akhq"
   entryPointName: "after-proxy"
-
+  pathPrefix: "/akhq"
+  certificate:
+    enabled: false
+    # Defaults to .Release.Name -cert
+    name:
+    clusterIssuer: letsencrypt
 akhq:
   networkPolicy:
     enabled: false

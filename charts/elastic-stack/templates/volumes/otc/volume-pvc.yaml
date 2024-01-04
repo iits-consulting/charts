@@ -1,13 +1,13 @@
-{{- if .Values.otc }}
-{{- range $i, $volume  := .Values.otc.elasticsearch.volumes }}
+{{- if .Values.cce }}
+{{- range $i, $volume  := .Values.cce.elasticsearch.volumes }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   labels:
-    failure-domain.beta.kubernetes.io/region: {{ $.Values.otc.elasticsearch.region }}
+    failure-domain.beta.kubernetes.io/region: {{ $.Values.cce.elasticsearch.region }}
     failure-domain.beta.kubernetes.io/zone: {{ $volume.az }}
   annotations:
-    everest.io/disk-volume-type: {{ $.Values.otc.elasticsearch.volumeType }}
+    everest.io/disk-volume-type: {{ $.Values.cce.elasticsearch.volumeType }}
     everest.io/crypt-key-id: {{ $volume.kmsId }}
   name: elasticsearch-master-elasticsearch-master-{{ $i }}
 spec:
@@ -17,7 +17,7 @@ spec:
     requests:
       storage: {{ $.Values.elasticsearch.volumeClaimTemplate.resources.requests.storage }}
   volumeName: elasticsearch-{{ $i }}
-  storageClassName: {{ $.Values.otc.elasticsearch.storageClassName }}
+  storageClassName: {{ $.Values.cce.elasticsearch.storageClassName }}
 ---
 {{- end }}
 {{- end }}

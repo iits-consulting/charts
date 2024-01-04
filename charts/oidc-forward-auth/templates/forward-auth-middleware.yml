@@ -1,0 +1,13 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: {{ include "forwardAuth.fullname" $ }}
+spec:
+  forwardAuth:
+    address: http://{{ include "forwardAuth.fullname" $ }}-gatekeeper.{{.Release.Namespace}}.svc.cluster.local:{{.Values.gatekeeper.service.proxy.port}}
+    authResponseHeaders:
+      - "Set-Cookie"
+    authRequestHeaders:
+      - "Accept"
+      - "Authorization"
+      - "Cookie"

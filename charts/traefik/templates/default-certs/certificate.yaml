@@ -1,0 +1,18 @@
+{{ if .Values.defaultCert.enabled }}
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{.Release.Name}}-default-cert
+  namespace: routing
+spec:
+  secretName: {{.Release.Name}}-default-cert
+  issuerRef: {{- toYaml .Values.defaultCert.issuerRef | nindent 4}}
+  commonName: {{ .Values.ingressRoute.rootDomain }}
+  privateKey:
+    algorithm: "RSA"
+    size: 4096
+  dnsNames:
+  {{- range $k, $domain := .Values.ingressRoute }}
+    - {{ $domain }}
+  {{- end }}
+{{- end }}

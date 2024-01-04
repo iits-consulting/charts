@@ -1,8 +1,38 @@
-ingressRoute:
-  adminDomain: "admin.my-domain.com"
-  entryPointName: "after-proxy"
+global:
+  prometheus:
+    host: "REPLACE_ME"
+  grafana:
+    host: "REPLACE_ME"
+  alertmanager:
+    host: "REPLACE_ME"
 
 prometheusStack:
+  #Config if you are behind an oauth proxy
+  ingress:
+    prometheus:
+      enabled: true
+      host: "{{$.Values.global.prometheus.host}}"
+      annotations:
+        traefik.ingress.kubernetes.io/router.entrypoints: after-proxy
+    grafana:
+      enabled: true
+      className: "traefik"
+      host: "{{$.Values.global.grafana.host}}"
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt
+        traefik.ingress.kubernetes.io/router.entrypoints: websecure
+        traefik.ingress.kubernetes.io/router.tls: "true"
+      tls:
+        - hosts:
+            - "{{$.Values.global.grafana.host}}"
+    alertmanager:
+      enabled: true
+      host: "{{$.Values.global.alertmanager.host}}"
+      annotations:
+        traefik.ingress.kubernetes.io/router.entrypoints: after-proxy
+        traefik.ingress.kubernetes.io/router.middlewares: "{{.Release.Namespace}}-strip-prefix-{{ .Release.Name }}@kubernetescrd"
+
+
   kubeProxy:
     enabled: false
   kubeScheduler:
@@ -44,9 +74,10 @@ prometheusStack:
       time: true
   prometheus:
     prometheusSpec:
-      podMonitorSelector:
-        matchLabels:
-          argocd.argoproj.io/instance: my-app
+      externalUrl: https://{{$.Values.global.prometheus.host}}/prometheus
+      serviceMonitorSelectorNilUsesHelmValues: false
+      podMonitorSelectorNilUsesHelmValues: false
+      podMonitorSelector: null
       routePrefix: "/prometheus"
       resources:
         requests:
@@ -55,8 +86,7 @@ prometheusStack:
       storageSpec:
         volumeClaimTemplate:
           spec:
-            storageClassName: ssd-encrypted
-            accessModes: ["ReadWriteOnce"]
+            accessModes: [ "ReadWriteOnce" ]
             resources:
               requests:
                 storage: 30G
@@ -69,13 +99,23 @@ prometheusStack:
       patch:
         enabled: false
   grafana:
+    adminPassword: "REPLACE_ME"
     grafana.ini:
       server:
         serve_from_sub_path: true
+        root_url: https://{{$.Values.global.grafana.host}}/grafana
+      auth:
+        disable_login_form: false
+      auth.basic:
+        enabled: true
+      security:
+        disable_initial_admin_creation: false
+
   alertmanager:
     config:
       global:
         resolve_timeout: 5m
+        slack_api_url: "http://myhost.local"
       route:
         group_by: [ 'job' ]
         group_wait: 30s

@@ -1,8 +1,53 @@
 ingressRoute:
+  upstream:
+    service:
+      name: argocd-server
+      port: 80
   adminDomain: "admin.my-domain.com"
-  pathPrefix: "/argocd"
   entryPointName: "after-proxy"
+  pathPrefix: "/argocd"
+  certificate:
+    enabled: false
+    # Defaults to .Release.Name -cert
+    name:
+    clusterIssuer: letsencrypt
 configs:
+  rbac:
+    enabled: false
+    config:
+      # See https://github.com/argoproj/argo-cd/blob/master/docs/operator-manual/rbac.md for additional information.
+      "policy.csv": |
+        g, ARGOCD-ADMIN, role:admin
+        g, SYSTEM-ADMINISTRATOR, role:admin
+  config:
+    url: "https://{{.Values.ingressRoute.adminDomain}}{{.Values.ingressRoute.pathPrefix}}"
+    resource.customizations: |
+      # Ignores .data changes of all secrets with a vaultInjectionChecksum annotation
+      argoproj.io/Application:
+       ignoreDifferences: |
+          jqPathExpressions:
+            - '. | select(.metadata.annotations.parametersChecksum) | .spec.source.helm'
+            - '. | select(.metadata.annotations.valueFileChecksum) | .spec.source.helm'
+      # Ignores caBundle and template changes of the following resources
+      admissionregistration.k8s.io/MutatingWebhookConfiguration:
+        ignoreDifferences: |
+          jqPathExpressions:
+            - .metadata.annotations.template
+            - '.webhooks'
+      apiextensions.k8s.io/CustomResourceDefinition:
+        ignoreDifferences: |
+          jqPathExpressions:
+            - .spec.conversion.webhookClientConfig.caBundle
+      admissionregistration.k8s.io/ValidatingWebhookConfiguration:
+        ignoreDifferences: |
+          jqPathExpressions:
+            - .metadata.annotations.template
+            - '.webhooks[]?.clientConfig.caBundle'
+            - '.webhooks'
+      cert-manager.io/Certificate:
+        ignoreDifferences: |
+          jqPathExpressions:
+            - .spec.duration
   secret:
     # -- Annotations to be added to argocd-secret
     annotations: { }
