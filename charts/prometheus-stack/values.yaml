@@ -77,9 +77,8 @@ prometheusStack:
       externalUrl: https://{{$.Values.global.prometheus.host}}/prometheus
       serviceMonitorSelectorNilUsesHelmValues: false
       podMonitorSelectorNilUsesHelmValues: false
+      probeSelectorNilUsesHelmValues: false
       podMonitorSelector: null
-      probeNamespaceSelector: null
-      probeSelector: null
       routePrefix: "/prometheus"
       resources:
         requests:
