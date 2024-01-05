@@ -78,6 +78,8 @@ prometheusStack:
       serviceMonitorSelectorNilUsesHelmValues: false
       podMonitorSelectorNilUsesHelmValues: false
       podMonitorSelector: null
+      probeNamespaceSelector: null
+      probeSelector: null
       routePrefix: "/prometheus"
       resources:
         requests:
