@@ -1,6 +1,6 @@
 # prometheus-stack
 
-![Version: 43.2.1](https://img.shields.io/badge/Version-43.2.1-informational?style=flat-square)
+![Version: 43.2.2](https://img.shields.io/badge/Version-43.2.2-informational?style=flat-square)
 
 A complete monitoring/alerting stack with Grafana Prometheus Alertmanager
 
@@ -93,6 +93,8 @@ A complete monitoring/alerting stack with Grafana Prometheus Alertmanager
 | prometheusStack.prometheus.prometheusSpec.externalUrl | string | `"https://{{$.Values.global.prometheus.host}}/prometheus"` |  |
 | prometheusStack.prometheus.prometheusSpec.podMonitorSelector | string | `nil` |  |
 | prometheusStack.prometheus.prometheusSpec.podMonitorSelectorNilUsesHelmValues | bool | `false` |  |
+| prometheusStack.prometheus.prometheusSpec.probeNamespaceSelector | string | `nil` |  |
+| prometheusStack.prometheus.prometheusSpec.probeSelector | string | `nil` |  |
 | prometheusStack.prometheus.prometheusSpec.resources.requests.cpu | string | `"60m"` |  |
 | prometheusStack.prometheus.prometheusSpec.resources.requests.memory | string | `"2255Mi"` |  |
 | prometheusStack.prometheus.prometheusSpec.routePrefix | string | `"/prometheus"` |  |
