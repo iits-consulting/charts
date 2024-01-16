@@ -1,0 +1,25 @@
+apiVersion: v2
+name: iits-ollama-fullstack
+description: Get up and running with large language models locally.
+type: application
+version: 0.1.1
+home: https://ollama.ai/
+icon: https://ollama.ai/public/ollama.png
+keywords:
+  - ai
+  - llm
+  - llama
+  - mistral
+dependencies:
+  - name: weaviate
+    repository: https://weaviate.github.io/weaviate-helm
+    version: 16.8.0
+    condition: weaviate.enabled
+  - name: airbyte
+    version: 0.50.20
+    repository: https://airbytehq.github.io/helm-charts
+    condition: airbyte.enabled
+  - name: ollama
+    version: 0.6.2
+    repository: https://charts.iits.tech
+    condition: ollama.enabled
