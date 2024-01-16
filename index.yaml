@@ -1341,6 +1341,35 @@ entries:
     version: 1.1.0
   iits-ollama-fullstack:
   - apiVersion: v2
+    created: "2024-01-16T18:09:47.987223423Z"
+    dependencies:
+    - condition: weaviate.enabled
+      name: weaviate
+      repository: https://weaviate.github.io/weaviate-helm
+      version: 16.8.0
+    - condition: airbyte.enabled
+      name: airbyte
+      repository: https://airbytehq.github.io/helm-charts
+      version: 0.50.20
+    - condition: ollama.enabled
+      name: ollama
+      repository: https://charts.iits.tech
+      version: 0.6.2
+    description: Get up and running with large language models locally.
+    digest: faf622a15b3c02134444053ee5668dae124b78d4d6ad6a8be6e4916424ca9d1b
+    home: https://ollama.ai/
+    icon: https://ollama.ai/public/ollama.png
+    keywords:
+    - ai
+    - llm
+    - llama
+    - mistral
+    name: iits-ollama-fullstack
+    type: application
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/iits-ollama-fullstack-0.1.2/iits-ollama-fullstack-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
     created: "2024-01-16T12:46:55.96435313Z"
     dependencies:
     - condition: weaviate.enabled
@@ -1801,6 +1830,24 @@ entries:
     - https://github.com/iits-consulting/charts/releases/download/oidc-forward-auth-1.0.0/oidc-forward-auth-1.0.0.tgz
     version: 1.0.0
   ollama:
+  - apiVersion: v2
+    appVersion: 0.1.16
+    created: "2024-01-16T18:09:48.127754568Z"
+    description: Get up and running with large language models locally.
+    digest: d67d5be22b9a26be9d6b125ec7386f741913898cd5133914e99c9d9685f08cc8
+    home: https://ollama.ai/
+    icon: https://ollama.ai/public/ollama.png
+    keywords:
+    - ai
+    - llm
+    - llama
+    - mistral
+    kubeVersion: ^1.16.0-0
+    name: ollama
+    type: application
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/ollama-0.6.4/ollama-0.6.4.tgz
+    version: 0.6.4
   - apiVersion: v2
     appVersion: 0.1.16
     created: "2024-01-16T12:17:14.534001711Z"
@@ -2534,4 +2581,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2024-01-16T12:46:56.117217146Z"
+generated: "2024-01-16T18:09:48.128080495Z"
