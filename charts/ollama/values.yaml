@@ -67,7 +67,7 @@ ollama:
     hosts:
       - host: "{{.Values.ollama.ingress.host}}"
         paths:
-          - path: /api
+          - path: /ollama
     tls:
       - hosts:
           - "{{.Values.ollama.ingress.host}}"
