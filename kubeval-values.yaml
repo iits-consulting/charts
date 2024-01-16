@@ -1,2 +1,5 @@
 credentials:
   password: "DUMMY_VALUE"
+webui:
+  env:
+    OLLAMA_API_BASE_URL: "https://ollama.my-domain.com/api"
