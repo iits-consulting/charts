@@ -1013,6 +1013,28 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/elastic-stack-7.17.3-cce-volumes/elastic-stack-7.17.3-cce-volumes.tgz
     version: 7.17.3-cce-volumes
+  elasticsearch:
+  - apiVersion: v2
+    created: "2024-01-16T12:17:13.644882319Z"
+    dependencies:
+    - condition: elasticsearch.enabled
+      name: elasticsearch
+      repository: https://helm.elastic.co
+      version: 8.5.1
+    - condition: kibana.enabled
+      name: kibana
+      repository: https://helm.elastic.co
+      version: 7.17.3
+    - condition: filebeat.enabled
+      name: filebeat
+      repository: https://helm.elastic.co
+      version: 8.5.1
+    description: Awesome Logs
+    digest: a64e331989899e4fc46903bca5feac46f8782e4d26c2770129b5d1287d5e6261
+    name: elasticsearch
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/elasticsearch-8.5.1/elasticsearch-8.5.1.tgz
+    version: 8.5.1
   iits-admin-dashboard:
   - apiVersion: v2
     created: "2023-10-12T11:41:53.557471325Z"
@@ -1748,6 +1770,25 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/oidc-forward-auth-1.0.0/oidc-forward-auth-1.0.0.tgz
     version: 1.0.0
+  ollama:
+  - apiVersion: v2
+    appVersion: 0.1.16
+    created: "2024-01-16T12:17:14.534001711Z"
+    description: Get up and running with large language models locally.
+    digest: d4138e4765ad39442848accf358c592d503ac74f323f7ced1b1697e39f703e6a
+    home: https://ollama.ai/
+    icon: https://ollama.ai/public/ollama.png
+    keywords:
+    - ai
+    - llm
+    - llama
+    - mistral
+    kubeVersion: ^1.16.0-0
+    name: ollama
+    type: application
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/ollama-0.6.2/ollama-0.6.2.tgz
+    version: 0.6.2
   otc-botkube:
   - apiVersion: v2
     created: "2023-07-12T07:51:03.619469313Z"
@@ -1824,6 +1865,19 @@ entries:
     - https://github.com/iits-consulting/charts/releases/download/otc-storage-classes-1.0.0/otc-storage-classes-1.0.0.tgz
     version: 1.0.0
   prometheus-stack:
+  - apiVersion: v2
+    created: "2024-01-16T12:17:14.724087397Z"
+    dependencies:
+    - alias: prometheusStack
+      name: kube-prometheus-stack
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 43.1.3
+    description: A complete monitoring/alerting stack with Grafana Prometheus Alertmanager
+    digest: 7f113eaf45e0965b1167201f823e47a3c5b0308e429c6be78255f609b1bdaa1c
+    name: prometheus-stack
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/prometheus-stack-43.2.3/prometheus-stack-43.2.3.tgz
+    version: 43.2.3
   - apiVersion: v2
     created: "2023-12-18T17:17:09.060191986Z"
     dependencies:
@@ -2450,4 +2504,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2023-12-22T10:30:01.239902666Z"
+generated: "2024-01-16T12:17:14.996273948Z"
