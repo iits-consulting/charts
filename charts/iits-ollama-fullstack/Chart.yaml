@@ -20,6 +20,6 @@ dependencies:
     repository: https://airbytehq.github.io/helm-charts
     condition: airbyte.enabled
   - name: ollama
-    version: 0.6.3
+    version: 0.6.2
     repository: https://charts.iits.tech
     condition: ollama.enabled
