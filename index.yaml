@@ -1339,6 +1339,36 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/iits-kyverno-policies-1.1.0/iits-kyverno-policies-1.1.0.tgz
     version: 1.1.0
+  iits-ollama-fullstack:
+  - apiVersion: v2
+    created: "2024-01-16T12:46:55.96435313Z"
+    dependencies:
+    - condition: weaviate.enabled
+      name: weaviate
+      repository: https://weaviate.github.io/weaviate-helm
+      version: 16.8.0
+    - condition: airbyte.enabled
+      name: airbyte
+      repository: https://airbytehq.github.io/helm-charts
+      version: 0.50.20
+    - condition: ollama.enabled
+      name: ollama
+      repository: https://charts.iits.tech
+      version: 0.6.2
+    description: Get up and running with large language models locally.
+    digest: c23f24d08c87cdb686cb87ab801443ce05e70e04bc0e58db7dbf88e3d90ca69b
+    home: https://ollama.ai/
+    icon: https://ollama.ai/public/ollama.png
+    keywords:
+    - ai
+    - llm
+    - llama
+    - mistral
+    name: iits-ollama-fullstack
+    type: application
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/iits-ollama-fullstack-0.1.1/iits-ollama-fullstack-0.1.1.tgz
+    version: 0.1.1
   kafka:
   - apiVersion: v2
     created: "2023-06-18T17:05:03.8037039Z"
@@ -2504,4 +2534,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2024-01-16T12:17:14.996273948Z"
+generated: "2024-01-16T12:46:56.117217146Z"
