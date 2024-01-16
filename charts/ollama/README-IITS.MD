@@ -4,7 +4,7 @@
   ollama:
     namespace: ollama
     repoURL: "https://charts.my-domain.com"
-    targetRevision: "0.6.1"
+    targetRevision: "0.6.2"
     valueFile: "value-files/ollama/values.yaml"
 ```
 
