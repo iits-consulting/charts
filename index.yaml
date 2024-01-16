@@ -1861,6 +1861,24 @@ entries:
   ollama:
   - apiVersion: v2
     appVersion: 0.1.16
+    created: "2024-01-16T19:53:12.295549618Z"
+    description: Get up and running with large language models locally.
+    digest: 934f13d8d02b12df8ae503aad0b8066ffc1ccb7406b865dcf43564e3369f0b2f
+    home: https://ollama.ai/
+    icon: https://ollama.ai/public/ollama.png
+    keywords:
+    - ai
+    - llm
+    - llama
+    - mistral
+    kubeVersion: ^1.16.0-0
+    name: ollama
+    type: application
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/ollama-0.6.6/ollama-0.6.6.tgz
+    version: 0.6.6
+  - apiVersion: v2
+    appVersion: 0.1.16
     created: "2024-01-16T18:14:19.885878276Z"
     description: Get up and running with large language models locally.
     digest: 4557cf69a3809ed4059f5c38669c2aab854f0f3c933608f2976cc94f51c4e679
@@ -2628,4 +2646,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2024-01-16T18:14:19.8862943Z"
+generated: "2024-01-16T19:53:12.295840261Z"
