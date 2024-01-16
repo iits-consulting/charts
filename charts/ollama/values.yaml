@@ -58,10 +58,12 @@ ollama:
   ingress:
     enabled: true
     host: "REPLACE_ME"
+    traefikMiddlewareEnabled: "true"
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt
       traefik.ingress.kubernetes.io/router.entrypoints: websecure
       traefik.ingress.kubernetes.io/router.tls: "true"
+      traefik.ingress.kubernetes.io/router.middlewares: "{{.Release.Namespace}}-strip-prefix-ollama@kubernetescrd"
     hosts:
       - host: "{{.Values.ollama.ingress.host}}"
         paths:

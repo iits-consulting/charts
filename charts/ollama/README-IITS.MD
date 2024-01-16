@@ -20,7 +20,7 @@ ollama:
     host: "ollama.my-domain.com"
     annotations:
       # Adds the oidc proxy upfront
-      traefik.ingress.kubernetes.io/router.middlewares: "ollama-oidc-forward-auth-ollama@kubernetescrd"
+      traefik.ingress.kubernetes.io/router.middlewares: "ollama-oidc-forward-auth-ollama@kubernetescrd, ollama-strip-prefix-ollama@kubernetescrd"
 webui:
   env:
     OLLAMA_API_BASE_URL: "https://ollama.my-domain.com/api"
