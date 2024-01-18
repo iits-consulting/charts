@@ -37,7 +37,7 @@ spec:
             pathType: {{ .pathType | default "Prefix"}}
             backend:
               service:
-                name: {{$.Release.Name}}
+                name: {{ include "ollama.fullname" $ }}
                 port:
                   number: {{ default 8080 $.Values.ollama.service.port }}
             {{- end }}

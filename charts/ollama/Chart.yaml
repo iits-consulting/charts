@@ -2,7 +2,7 @@ apiVersion: v2
 name: ollama
 description: Get up and running with large language models locally.
 type: application
-version: 0.6.7
+version: 0.6.8
 appVersion: "0.1.16"
 kubeVersion: "^1.16.0-0"
 home: https://ollama.ai/
