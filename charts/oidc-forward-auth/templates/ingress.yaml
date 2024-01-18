@@ -9,7 +9,7 @@ metadata:
   {{- end }}
   {{- with .annotations }}
   annotations:
-    iits-consulting.chart-creator-version: "1.0.0"
+    iits-consulting.chart-creator/version: "1.0.2"
     {{- tpl (toYaml .) $ | nindent 4 }}
   {{- end }}
 spec:
@@ -38,7 +38,7 @@ spec:
                   {{- if ((.defaultIngress.backend).port).name }}
                   name: {{ tpl (toYaml .defaultIngress.backend.port.name) $ }}
                   {{- else }}
-                  name: {{ default (include "oidc-forward-auth.fullname" $)}}
+                  name: "http"
                   {{- end}}
   {{- else }}
 
@@ -74,7 +74,7 @@ spec:
                   {{- if ((.backend).port).name }}
                   name: {{ tpl (toYaml .defaultIngress.backend.port.name) $ }}
                   {{- else }}
-                  name: {{ default (include "oidc-forward-auth.fullname" $)}}
+                  name: "http"
                   {{- end}}
             {{- end }}
       {{- end }}

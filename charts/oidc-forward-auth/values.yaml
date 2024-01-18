@@ -54,6 +54,8 @@ ingress:
     #pathType: "Prefix"
     backend:
       name: "{{$.Release.Name}}-gatekeeper"
+      port:
+        name: "proxy"
 
   ## If you don't want to use the default Ingress, you can define it here on your own
   #tls:
