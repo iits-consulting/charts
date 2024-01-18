@@ -1,11 +1,4 @@
 {{/*
-Expand the name of the chart.
-*/}}
-{{- define "ollama.name" -}}
-{{- default .Release.Name .Values.ollama.nameOverride | trunc 63 | trimSuffix "-" }}
-{{- end }}
-
-{{/*
 Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
@@ -48,7 +41,7 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 Selector labels
 */}}
 {{- define "ollama.selectorLabels" -}}
-app: {{ include "ollama.name" . }}
+app: {{ include "ollama.fullname" . }}
 {{- end }}
 
 {{/*
@@ -82,17 +75,10 @@ If release name contains chart name it will be used as a full name.
 {{- end }}
 
 {{/*
-Expand the name of the chart.
-*/}}
-{{- define "webui.name" -}}
-{{- default .Release.Name .Values.webui.nameOverride | trunc 63 | trimSuffix "-" }}
-{{- end }}
-
-{{/*
 Selector labels
 */}}
 {{- define "webui.selectorLabels" -}}
-app: {{ include "webui.name" . }}
+app: {{ include "webui.fullname" . }}
 {{- end }}
 
 {{/*
