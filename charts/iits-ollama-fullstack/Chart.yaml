@@ -2,7 +2,7 @@ apiVersion: v2
 name: iits-ollama-fullstack
 description: Get up and running with large language models locally.
 type: application
-version: 0.1.4
+version: 0.1.5
 home: https://ollama.ai/
 icon: https://ollama.ai/public/ollama.png
 keywords:
