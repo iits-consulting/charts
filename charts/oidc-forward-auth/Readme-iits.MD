@@ -18,18 +18,14 @@ charts:
 ```yaml
 ingress:
   enabled: true
-  host: "REPLACE_ME"
+  host: #REPLACE_ME
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
     traefik.ingress.kubernetes.io/router.tls: "true"
     #namespace-name@kubernetescrd
     traefik.ingress.kubernetes.io/router.middlewares: routing-oidc-forward-auth@kubernetescrd
-  hosts:
-    - host: "{{.Values.ingress.host}}"
-      paths:
-        - path: /
-  tls:
-    - hosts:
-        - "{{.Values.ingress.host}}"
+  # Creates default Ingress with tls and the given host from .Values.ingress.host
+  defaultIngress:
+    enabled: true
 ```

@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "forwardAuth.name" -}}
+{{- define "oidc-forward-auth.name" -}}
 {{- default .Release.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "forwardAuth.fullname" -}}
+{{- define "oidc-forward-auth.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,16 +26,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "forwardAuth.chart" -}}
+{{- define "oidc-forward-auth.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "forwardAuth.labels" -}}
-helm.sh/chart: {{ include "forwardAuth.chart" . }}
-{{ include "forwardAuth.selectorLabels" . }}
+{{- define "oidc-forward-auth.labels" -}}
+helm.sh/chart: {{ include "oidc-forward-auth.chart" . }}
+{{ include "oidc-forward-auth.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,6 +45,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "forwardAuth.selectorLabels" -}}
-app: {{ include "forwardAuth.name" . }}
+{{- define "oidc-forward-auth.selectorLabels" -}}
+app: {{ include "oidc-forward-auth.name" . }}
+{{- end }}
+
+{{/*
+Create the name of the service account to use
+*/}}
+{{- define "oidc-forward-auth.serviceAccountName" -}}
+{{- if .Values.serviceAccount.create }}
+{{- default (include "oidc-forward-auth.fullname" .) .Values.serviceAccount.name }}
+{{- else }}
+{{- default "default" .Values.serviceAccount.name }}
+{{- end }}
 {{- end }}

@@ -1,18 +1,3 @@
-ingress:
-  enabled: true
-  host: "REPLACE_ME"
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt
-    traefik.ingress.kubernetes.io/router.entrypoints: websecure
-    traefik.ingress.kubernetes.io/router.tls: "true"
-  hosts:
-    - host: "{{.Values.ingress.host}}"
-      paths:
-        - path: /oauth
-  tls:
-    - hosts:
-        - "{{.Values.ingress.host}}"
-      secretName: "oidc-forward-auth-cert"
 gatekeeper:
   replicaCount: 1
   automountServiceAccountToken: true
@@ -52,3 +37,36 @@ gatekeeper:
     resources:
       - require-any-role: true
         uri: /*
+ingress:
+  enabled: true
+  host: #REPLACE_ME
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+  # Creates default Ingress with tls and the given host from .Values.ingress.host
+  defaultIngress:
+    enabled: true
+    ## Default values can be overriden
+    #tls:
+    #  secretName: "oidc-forward-auth.fullname"
+    path: "/oauth"
+    #pathType: "Prefix"
+    backend:
+      name: "{{$.Release.Name}}-gatekeeper"
+      port:
+        name: "{{ include \"gatekeeper.fullname\" . }}"
+
+  ## If you don't want to use the default Ingress, you can define it here on your own
+  #tls:
+  #  - hosts:
+  #      - "{{.Values.ingress.host}}"
+  #    secretName: "oidc-forward-auth-cert"
+  #hosts:
+  #  - host: "{{.Values.ingress.host}}"
+  #    paths:
+  #      - path: "/"
+  #        backend:
+  #         name: "{{include "oidc-forward-auth.fullname" $}}"
+  #         port:
+  #            name: "{{include "oidc-forward-auth.fullname" $}}"
