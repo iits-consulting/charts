@@ -35,6 +35,7 @@ Common labels
 */}}
 {{- define "oidc-forward-auth.labels" -}}
 helm.sh/chart: {{ include "oidc-forward-auth.chart" . }}
+iits-consulting.chart-creator/version: 1.0.9
 {{ include "oidc-forward-auth.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}

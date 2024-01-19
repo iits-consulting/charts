@@ -9,13 +9,13 @@ metadata:
   {{- end }}
   {{- with .annotations }}
   annotations:
-    iits-consulting.chart-creator/version: "1.0.2"
+    iits-consulting.chart-creator/version: 1.0.9
     {{- tpl (toYaml .) $ | nindent 4 }}
   {{- end }}
 spec:
   ingressClassName: {{ .className | default "traefik" }}
 
-  {{- if .defaultIngress.enabled | default true }}
+  {{- if .defaultIngress.enabled }}
   {{- $certSecretName := (.defaultIngress.tls).secretName | default (printf "%s-%s" (include "oidc-forward-auth.fullname" $) "cert")}}
   tls:
     - hosts:
