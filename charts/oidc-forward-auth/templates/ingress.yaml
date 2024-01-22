@@ -72,7 +72,7 @@ spec:
                 {{- end}}
                 port:
                   {{- if ((.backend).port).name }}
-                  name: {{ tpl (toYaml .defaultIngress.backend.port.name) $ }}
+                  name: {{ tpl (toYaml ((.backend).port).name) $ }}
                   {{- else }}
                   name: "http"
                   {{- end}}
