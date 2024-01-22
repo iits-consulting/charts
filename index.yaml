@@ -1905,6 +1905,18 @@ entries:
     version: 1.0.0
   oidc-forward-auth:
   - apiVersion: v2
+    created: "2024-01-22T11:08:05.174957799Z"
+    dependencies:
+    - name: gatekeeper
+      repository: https://gogatekeeper.github.io/helm-gogatekeeper
+      version: 0.1.33
+    description: oidc-forward-auth
+    digest: c5e36d9e576c2ccffa5b19a983bf21369f99cdccfeb428d213160c9f5a626853
+    name: oidc-forward-auth
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/oidc-forward-auth-1.1.4/oidc-forward-auth-1.1.4.tgz
+    version: 1.1.4
+  - apiVersion: v2
     created: "2024-01-19T10:59:11.53474969Z"
     dependencies:
     - name: gatekeeper
@@ -2788,4 +2800,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2024-01-19T10:59:11.535174612Z"
+generated: "2024-01-22T11:08:05.175292183Z"
