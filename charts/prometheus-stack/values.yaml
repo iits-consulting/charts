@@ -13,7 +13,13 @@ prometheusStack:
       enabled: true
       host: "{{$.Values.global.prometheus.host}}"
       annotations:
-        traefik.ingress.kubernetes.io/router.entrypoints: after-proxy
+        cert-manager.io/cluster-issuer: letsencrypt
+        traefik.ingress.kubernetes.io/router.entrypoints: websecure
+        traefik.ingress.kubernetes.io/router.tls: "true"
+        traefik.ingress.kubernetes.io/router.middlewares: routing-oidc-forward-auth@kubernetescrd
+      tls:
+        - hosts:
+            - "{{$.Values.global.prometheus.host}}"
     grafana:
       enabled: true
       className: "traefik"
@@ -22,6 +28,7 @@ prometheusStack:
         cert-manager.io/cluster-issuer: letsencrypt
         traefik.ingress.kubernetes.io/router.entrypoints: websecure
         traefik.ingress.kubernetes.io/router.tls: "true"
+        traefik.ingress.kubernetes.io/router.middlewares: routing-oidc-forward-auth@kubernetescrd
       tls:
         - hosts:
             - "{{$.Values.global.grafana.host}}"
@@ -29,10 +36,13 @@ prometheusStack:
       enabled: true
       host: "{{$.Values.global.alertmanager.host}}"
       annotations:
-        traefik.ingress.kubernetes.io/router.entrypoints: after-proxy
-        traefik.ingress.kubernetes.io/router.middlewares: "{{.Release.Namespace}}-strip-prefix-{{ .Release.Name }}@kubernetescrd"
-
-
+        cert-manager.io/cluster-issuer: letsencrypt
+        traefik.ingress.kubernetes.io/router.entrypoints: websecure
+        traefik.ingress.kubernetes.io/router.tls: "true"
+        traefik.ingress.kubernetes.io/router.middlewares: "{{.Release.Namespace}}-strip-prefix-{{ .Release.Name }}@kubernetescrd, routing-oidc-forward-auth@kubernetescrd"
+      tls:
+        - hosts:
+            - "{{$.Values.global.alertmanager.host}}"
   kubeProxy:
     enabled: false
   kubeScheduler:

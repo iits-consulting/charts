@@ -7,12 +7,12 @@ metadata:
 spec:
   secretName: {{.Release.Name}}-default-cert
   issuerRef: {{- toYaml .Values.defaultCert.issuerRef | nindent 4}}
-  commonName: {{ .Values.ingressRoute.rootDomain }}
+  commonName: {{ .Values.defaultCert.dnsNames.rootDomain }}
   privateKey:
     algorithm: "RSA"
     size: 4096
   dnsNames:
-  {{- range $k, $domain := .Values.ingressRoute }}
+  {{- range $k, $domain := .Values.defaultCert.dnsNames }}
     - {{ $domain }}
   {{- end }}
 {{- end }}

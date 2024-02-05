@@ -1,6 +1,6 @@
 # kyverno
 
-![Version: 1.2.1](https://img.shields.io/badge/Version-1.2.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 1.3.1](https://img.shields.io/badge/Version-1.3.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 This chart wraps kyverno and some additional components such as the policy reporter as well as
 IngressRoutes/Middlewares to allow usage of the Kyverno UI.
@@ -74,15 +74,28 @@ To install the chart with the release name kyverno:
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| ingressRoute.adminDomain | string | `"admin.my-domain.com"` |  |
-| ingressRoute.enabled | bool | `false` |  |
-| ingressRoute.entryPointName | string | `"after-proxy"` |  |
-| ingressRoute.pathPrefix | string | `"/policies`,`/_nuxt"` |  |
+| ingress.annotations."cert-manager.io/cluster-issuer" | string | `"letsencrypt"` |  |
+| ingress.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
+| ingress.annotations."traefik.ingress.kubernetes.io/router.middlewares" | string | `"{{.Release.Namespace}}-strip-prefix-{{ .Release.Name }}@kubernetescrd, routing-oidc-forward-auth@kubernetescrd"` |  |
+| ingress.annotations."traefik.ingress.kubernetes.io/router.tls" | string | `"true"` |  |
+| ingress.defaultIngress.enabled | bool | `false` |  |
+| ingress.enabled | bool | `true` |  |
+| ingress.host | string | `nil` |  |
+| ingress.hosts[0].host | string | `"{{.Values.ingress.host}}"` |  |
+| ingress.hosts[0].paths[0].backend.name | string | `"{{include \"kyverno.fullname\" $}}-ui"` |  |
+| ingress.hosts[0].paths[0].path | string | `"/_nuxt"` |  |
+| ingress.hosts[0].paths[1].backend.name | string | `"{{include \"kyverno.fullname\" $}}-ui"` |  |
+| ingress.hosts[0].paths[1].path | string | `"/policies"` |  |
+| ingress.tls[0].hosts[0] | string | `"{{.Values.ingress.host}}"` |  |
+| ingress.tls[0].secretName | string | `"kyverno-cert"` |  |
 | kyverno.existingImagePullSecrets | list | `[]` |  |
 | kyverno.extraArgs[0] | string | `"--loggingFormat=text"` |  |
 | kyverno.extraArgs[1] | string | `"--exceptionNamespace={{ include \"kyverno.namespace\" . }}"` |  |
 | kyverno.extraArgs[2] | string | `"--enablePolicyException=true"` |  |
+| kyverno.grafana.enabled | bool | `true` |  |
+| kyverno.grafana.namespace | string | `"monitoring"` |  |
 | kyverno.installCRDs | bool | `true` |  |
+| kyverno.serviceMonitor.enabled | bool | `true` |  |
 | policy-reporter.install | bool | `true` |  |
 | policy-reporter.kyvernoPlugin.enabled | bool | `true` |  |
 | policy-reporter.ui.enabled | bool | `true` |  |

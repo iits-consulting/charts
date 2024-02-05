@@ -1,10 +1,33 @@
-ingressRoute:
-  enabled: false
-  adminDomain: "admin.my-domain.com"
-  pathPrefix: "/policies`,`/_nuxt"
-  entryPointName: "after-proxy"
+ingress:
+  enabled: true
+  host: #REPLACE_ME
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    traefik.ingress.kubernetes.io/router.middlewares: "{{.Release.Namespace}}-strip-prefix-{{ .Release.Name }}@kubernetescrd, routing-oidc-forward-auth@kubernetescrd"
+  defaultIngress:
+    enabled: false
+  tls:
+    - hosts:
+        - "{{.Values.ingress.host}}"
+      secretName: "kyverno-cert"
+  hosts:
+    - host: "{{.Values.ingress.host}}"
+      paths:
+        - path: "/_nuxt"
+          backend:
+           name: "{{include \"kyverno.fullname\" $}}-ui"
+        - path: "/policies"
+          backend:
+            name: "{{include \"kyverno.fullname\" $}}-ui"
 
 kyverno:
+  serviceMonitor:
+    enabled: true
+  grafana:
+    enabled: true
+    namespace: monitoring
   installCRDs: true
   existingImagePullSecrets: []
   extraArgs:

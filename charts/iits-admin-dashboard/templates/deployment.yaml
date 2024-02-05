@@ -1,47 +1,111 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Chart.Name }}
+  name: {{ include "iits-admin-dashboard.fullname" . }}
+  {{- with .annotations }}
+  annotations:
+    iits-consulting.chart-creator/version: 1.0.10
+    {{- tpl (toYaml .) $ | nindent 4 }}
+  {{- end }}
+  labels:
+    {{- include "iits-admin-dashboard.labels" . | nindent 4 }}
 spec:
+  replicas: {{ .Values.deployment.replicaCount }}
+  revisionHistoryLimit: 3
   selector:
     matchLabels:
-      app: {{ .Chart.Name }}
-      release: {{ .Chart.Name }}
-  replicas: 1
+      {{- include "iits-admin-dashboard.selectorLabels" . | nindent 6 }}
   template:
     metadata:
+      {{- with .Values.deployment.podAnnotations }}
       annotations:
-        htmlChecksum: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       labels:
-        app: {{ .Chart.Name }}
-        release: {{ .Chart.Name }}
+        {{- include "iits-admin-dashboard.selectorLabels" . | nindent 8 }}
     spec:
+      {{- if .Values.deployment.onePodForEachNode}}
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: "app"
+                    operator: In
+                    values:
+                      - {{ include "iits-admin-dashboard.fullname" . }}
+              topologyKey: "kubernetes.io/hostname"
+      {{- end}}
+      {{- with .Values.deployment.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "iits-admin-dashboard.serviceAccountName" . }}
+      {{- if .Values.deployment.podSecurityContext }}
       securityContext:
-        runAsNonRoot: true
-        runAsUser: 101
+        {{- toYaml .Values.deployment.podSecurityContext | nindent 8 }}
+      {{- end }}
       containers:
-        - name: {{  .Chart.Name }}
-          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
-          imagePullPolicy: {{ default "IfNotPresent" .Values.image.pullPolicy }}
+        - name: {{ .Release.Name }}
+          {{- if .Values.deployment.securityContext }}
           securityContext:
-            allowPrivilegeEscalation: false
+            {{- toYaml .Values.deployment.securityContext | nindent 12 }}
+          {{- end }}
+          image: "{{ tpl .Values.deployment.image.repository . }}:{{ .Values.deployment.image.tag }}"
+          imagePullPolicy: {{ .Values.deployment.image.pullPolicy }}
+          env:
+            {{- range $key, $value := .Values.deployment.env }}
+            - name: {{ printf "%s" $key | replace "." "_" | upper | quote }}
+              value: {{ tpl ($value | toString) $ | quote }}
+            {{- end }}
+          {{- if .Values.deployment.envSecretName}}
+          envFrom:
+            - secretRef:
+                name: {{.Values.deployment.envSecretName}}
+          {{- end }}
           ports:
-            - name: app-internal
-              containerPort: {{ .Values.service.port }}
+            {{- range $name,$values := .Values.deployment.ports }}
+            - name: {{$name }}
+              protocol: {{ ($values).protocol | default "TCP"}}
+              containerPort: {{($values).port | default 80 }}
+            {{- end }}
+          {{- with ((.Values.deployment).health).liveness }}
           livenessProbe:
             httpGet:
-              path: "/"
-              port: {{ .Values.service.port }}
-            initialDelaySeconds: 10
-            periodSeconds: 60
+              path: {{ tpl .path $ | default "/" }}
+              port: {{ .port | default 80 }}
+            initialDelaySeconds: {{ .initialDelaySeconds | default 20 }}
+            periodSeconds: 5
+            failureThreshold: {{ .failureThreshold | default 5 }}
+          {{- end }}
+          {{- with ((.Values.deployment).health).readiness }}
           readinessProbe:
             httpGet:
-              path: "/"
-              port: {{ .Values.service.port }}
+              path: {{ tpl .path $ | default "/" }}
+              port: {{ .port | default 80 }}
+            initialDelaySeconds: {{ .initialDelaySeconds | default 20 }}
+            periodSeconds: 5
+            failureThreshold: {{ .failureThreshold | default 5 }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.deployment.resources | nindent 12 }}
+      {{- with .Values.deployment.volumeMounts }}
           volumeMounts:
-            - name: {{ .Chart.Name }}
-              mountPath: /home/static
+              {{- toYaml . | nindent 12 }}
+      {{- end }}
+      {{- with .Values.deployment.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.deployment.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.deployment.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.deployment.volumes }}
       volumes:
-        - name: {{ .Chart.Name }}
-          configMap:
-            name: {{ .Chart.Name }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
