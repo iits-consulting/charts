@@ -284,11 +284,11 @@ backup:
   bucket:
     endpoint: "https://obs.eu-de.otc.t-systems.com"
     # -- Required
-    name:
+    name: "REPLACE_ME"
     # -- Required
-    accessKey:
+    accessKey: "REPLACE_ME"
     # -- Required
-    secretKey:
+    secretKey: "REPLACE_ME"
   policy:
     name: "nightly-backup"
     schedule: "0 0 0 * * ?"

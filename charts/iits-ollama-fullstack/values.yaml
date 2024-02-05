@@ -42,8 +42,8 @@ ollama:
   webui:
     fullnameOverride: ollama-webui
     env:
-      # -- Replace this value with your api base url, example: "https://ollama.my-domain.com/api"
-      OLLAMA_API_BASE_URL:
+      # -- Replace this value with your api base url
+      OLLAMA_API_BASE_URL: "https://ollama.my-domain.com/api"
     ingress:
       # -- Replace this value with your host
       host:

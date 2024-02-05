@@ -8,7 +8,7 @@ These charts are running only with a OIDC Proxy upfront and traefik as a Ingress
 
 ## Installation
 
-Take a look at the specific README.md of the chart
+Take a look at the specific README.md of the chart.
 
 ## Acceptance criteria
 

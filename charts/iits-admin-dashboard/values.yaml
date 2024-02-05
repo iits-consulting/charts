@@ -160,11 +160,11 @@ deployment:
 
   securityContext:
     allowPrivilegeEscalation: false
+    runAsNonRoot: true
   # capabilities:
   #   drop:
   #   - ALL
   # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
   # runAsUser: 1000
 
   volumes:

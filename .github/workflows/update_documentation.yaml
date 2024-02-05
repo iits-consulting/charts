@@ -21,7 +21,7 @@ jobs:
         uses: gabe565/setup-helm-docs-action@v1
       - name: Update README.md files
         run: |
-          helm-docs -c charts -l debug -t charts/README.md.gotmpl
+          helm-docs -c charts -l debug -t README.md.gotmpl
       - name: Commit files
         shell: "bash {0}"
         run: |

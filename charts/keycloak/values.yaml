@@ -20,15 +20,15 @@ keycloak:
     enabled: false
   auth:
     # -- Required
-    adminUser:
+    adminUser: "REPLACE_ME"
     # -- Required
-    adminPassword:
+    adminPassword: "REPLACE_ME"
   externalDatabase:
     # -- Required
-    user:
+    user: "REPLACE_ME"
     # -- Required, replace it with your host address
-    host:
+    host: "REPLACE_ME"
     # -- Required
-    database:
+    database: "REPLACE_ME"
     # -- Required
-    port:
+    port: "REPLACE_ME"
