@@ -4,14 +4,23 @@
 
 Basic auth gateway chart for traefik
 
+## Installing the Chart
+
+To install the chart with the release name basic-auth-gateway:
+
+```shell
+    helm repo add iits-charts https://charts.iits.tech
+    helm search repo basic-auth-gateway
+    helm install basic-auth-gateway iits-charts/basic-auth-gateway
+```
+
 ## Values
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| credentials.password | string | `nil` |  |
-| credentials.username | string | `"admin"` |  |
+| credentials | object | `{"password":null,"username":"admin"}` | https://doc.traefik.io/traefik/middlewares/http/basicauth/ |
 | ingressRoute.certificate.clusterIssuer | string | `"letsencrypt"` |  |
-| ingressRoute.certificate.name | string | `nil` |  |
+| ingressRoute.certificate.name | string | `nil` | Defaults to .Release.Name -cert |
 | ingressRoute.domain | string | `"admin.my-domain.com"` |  |
 | ingressRoute.entryPointName | string | `"websecure"` |  |
 | ingressRoute.upstream.service.name | string | `"traefik-internal"` |  |

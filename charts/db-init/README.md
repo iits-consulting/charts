@@ -1,0 +1,149 @@
+# db-init
+
+![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square)
+
+A Helm chart to initialize a database
+
+## Installing the Chart on OTC
+
+### Create Database
+
+First you need to create the RDS (postgres) database with terraform like this:
+
+```terraform
+locals {
+  db = {
+    type              = "PostgreSQL"
+    version           = "14"
+    cpus              = "1"
+    memory            = "2"
+    high_availability = false
+  }
+}
+
+module "postgres" {
+  source  = "registry.terraform.io/iits-consulting/project-factory/opentelekomcloud//modules/rds"
+  version = "5.2.1"
+  tags    = local.tags
+  name    = "${var.context}-${var.stage}-database"
+
+  vpc_id                = module.vpc.vpc.id
+  subnet_id             = module.vpc.subnets["database-subnet"].id
+  db_type               = local.db.type
+  db_availability_zones = var.availability_zones
+  db_version            = local.db.version
+  db_cpus               = local.db.cpus
+  db_memory             = local.db.memory
+  db_high_availability  = local.db.high_availability
+  db_parameters = {
+    timezone        = "Europe/Berlin"
+    max_connections = 1000
+  }
+  sg_allowed_cidr = [local.vpc_cidr]
+}
+
+module "private_dns" {
+  source  = "registry.terraform.io/iits-consulting/project-factory/opentelekomcloud//modules/private_dns"
+  version = "5.2.1"
+  domain  = "vpc.private"
+  a_records = {
+    postgres   = [module.postgres.db_private_ip]
+  }
+  vpc_id = module.vpc.vpc.id
+}
+
+```
+
+After that go to terraform kubernetes and you can use it like this:
+
+```terraform
+
+resource "random_password" "keycloak" {
+  length      = 32
+  special     = false
+  min_lower   = 1
+  min_numeric = 1
+  min_upper   = 1
+}
+
+resource "helm_release" "db_init" {
+  depends_on = [
+    helm_release.iits_kyverno_policies
+  ]
+  name                  = "db-init"
+  repository            = "https://charts.iits.tech"
+  chart                 = "db-init"
+  version               = local.chart_versions.db_init
+  namespace             = "db-init"
+  create_namespace      = true
+  wait                  = true
+  atomic                = true
+  timeout               = 900 // 15 Minutes
+  render_subchart_notes = true
+  wait_for_jobs         = true
+  set_sensitive {
+    name  = "dbInit.postgres.env.PGPASSWORD"
+    value = module.terraform_secrets_from_encrypted_s3_bucket.secrets["db_root_password"]
+  }
+  set_sensitive {
+    name  = "dbInit.postgres.databases.keycloak.password"
+    value = random_password.keycloak.result
+  }
+  values                = [
+    yamlencode({
+      dbInit ={
+        postgres = {
+          databases = {
+            keycloak = {
+              username = "keycloak"
+            }
+#            seconddatabase = {
+#              username = "secondUser"
+#              password = "REPLACE_ME"
+#            }
+#            ...
+          }
+        }
+      }
+    }
+    )
+  ]
+}
+
+```
+
+## Installing the Chart
+
+To install the chart with the release name db-init:
+
+```shell
+    helm repo add iits-charts https://charts.iits.tech
+    helm search repo db-init
+    helm install db-init iits-charts/db-init
+```
+
+## Values
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| dbInit.postgres.databases | string | `nil` | Databases which should be created with given username and password |
+| dbInit.postgres.enabled | bool | `true` |  |
+| dbInit.postgres.env.PGDATABASE | string | `"postgres"` |  |
+| dbInit.postgres.env.PGHOST | string | `"postgres.vpc.private"` | Host address to connect to |
+| dbInit.postgres.env.PGPASSWORD | string | `"REPLACE_ME"` |  |
+| dbInit.postgres.env.PGPORT | string | `"5432"` |  |
+| dbInit.postgres.env.PGUSER | string | `"root"` |  |
+| dbInit.postgres.image.pullPolicy | string | `"IfNotPresent"` |  |
+| dbInit.postgres.image.repository | string | `"postgres"` |  |
+| dbInit.postgres.image.tag | string | `"13"` |  |
+| dbInit.postgres.labels | object | `{}` |  |
+| dbInit.postgres.name | string | `"postgres-db-init"` |  |
+| dbInit.postgres.script | string | `"{{- range $databaseName,$databaseValues := .Values.dbInit.postgres.databases }}\n  SELECT 'CREATE DATABASE {{$databaseName}} WITH LC_COLLATE ''C'' LC_CTYPE ''C'' TEMPLATE template0'\n  WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = '{{$databaseName}}')\\gexec\n  \\connect {{$databaseName}};\n  SELECT 'CREATE USER {{$databaseValues.username}} WITH ENCRYPTED PASSWORD ''{{$databaseValues.password}}'''\n  WHERE NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = '{{$databaseValues.username}}')\\gexec\n  GRANT {{$databaseValues.username}} TO {{$.Values.dbInit.postgres.env.PGUSER}};\n  GRANT ALL PRIVILEGES ON DATABASE {{$databaseName}} TO {{$databaseValues.username}};\n  GRANT ALL ON ALL TABLES IN SCHEMA public TO {{$databaseValues.username}};\n  GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO {{$databaseValues.username}};\n  GRANT ALL ON ALL FUNCTIONS IN SCHEMA public TO {{$databaseValues.username}};\n  ALTER USER {{$databaseValues.username}} WITH ENCRYPTED PASSWORD '{{$databaseValues.password}}';\n{{- end }}"` | Default postgres script for initializing can be overriden |
+
+<img src="https://iits-consulting.de/wp-content/uploads/2021/08/iits-logo-2021-red-square-xl.png"
+alt="iits consulting" id="logo" width="200" height="200">
+<br>
+*This chart is provided by [iits-consulting](https://iits-consulting.de/) - your Cloud-Native Innovation Teams as a Service!*
+
+----------------------------------------------
+Autogenerated from chart metadata using [helm-docs v1.12.0](https://github.com/norwoodj/helm-docs/releases/v1.12.0)

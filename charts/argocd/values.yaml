@@ -39,7 +39,7 @@ argo-cd:
       - "--rootpath=/argocd"
       - "--basehref=/argocd"
     logFormat: json
-# List of projects which you want to bootstrap
+# -- List of projects which you want to bootstrap
 projects:
 ## bootstraps infrastructure related charts like traefik, elastic-stack...
 #  infrastructure-charts:

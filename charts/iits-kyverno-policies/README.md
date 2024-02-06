@@ -8,6 +8,16 @@ This chart wraps the upstream `kyverno-policies` chart and adds a few useful pol
   - Replace the complete registry reference with a custom one
   - Prepend the image reference with a custom prefix, useful for e.g. pull-through caches
 
+## Installing the Chart
+
+To install the chart with the release name iits-kyverno-policies:
+
+```shell
+    helm repo add iits-charts https://charts.iits.tech
+    helm search repo iits-kyverno-policies
+    helm install iits-kyverno-policies iits-charts/iits-kyverno-policies
+```
+
 ## Requirements
 
 | Repository | Name | Version |

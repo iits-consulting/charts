@@ -6,7 +6,7 @@ botkube:
     requests:
       memory: "60Mi"
       cpu: "3m"
-  # Communication settings
+  # -- Communication settings
   communications:
     # Settings for ELS
     elasticsearch:
@@ -19,7 +19,7 @@ botkube:
         shards: 1
         replicas: 0
   config:
-    ## Resources you want to watch
+    ## -- Resources you want to watch
     resources:
       - name: v1/pods # Name of the resources e.g pod, deployment, ingress, etc. (Resource name must be in singular form)
         namespaces:
@@ -163,7 +163,7 @@ botkube:
             - 
         events:
           - error
-    # Setting to support multiple clusters
+    # -- Setting to support multiple clusters
     settings:
       # Cluster name to differentiate incoming messages
       # this will get replaced by argocd

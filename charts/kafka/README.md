@@ -5,6 +5,16 @@
 Apache Kafka is an open-source distributed event streaming platform used by thousands of companies for high-performance data pipelines, streaming analytics, data integration, and mission-critical applications.
 This chart wraps the `kafka` chart from bitnami and defines a few sensible defaults.
 
+## Installing the Chart
+
+To install the chart with the release name kafka:
+
+```shell
+    helm repo add iits-charts https://charts.iits.tech
+    helm search repo kafka
+    helm install kafka iits-charts/kafka
+```
+
 ## Requirements
 
 | Repository | Name | Version |

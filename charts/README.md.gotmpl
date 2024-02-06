@@ -5,6 +5,8 @@
 
 {{ template "chart.description" . }}
 
+{{ template "extra.chartInstallation" . }}
+
 {{ template "chart.homepageLine" . }}
 
 {{ template "chart.maintainersSection" . }}
@@ -21,3 +23,15 @@ alt="iits consulting" id="logo" width="200" height="200">
 *This chart is provided by [iits-consulting](https://iits-consulting.de/) - your Cloud-Native Innovation Teams as a Service!*
 
 {{ template "helm-docs.versionFooter" . }}
+
+{{- define "extra.chartInstallation" }}
+## Installing the Chart
+
+To install the chart with the release name {{ template "chart.name" . }}:
+
+```shell
+    helm repo add iits-charts https://charts.iits.tech
+    helm search repo {{ template "chart.name" . }}
+    helm install {{ template "chart.name" . }} iits-charts/{{ template "chart.name" . }}
+```
+{{- end}}

@@ -1,4 +1,4 @@
-## Set this to encrypt all ssd volumes by default
+# -- Set this to encrypt all ssd volumes by default
 kmsId:
 evsTypes:
   - "SSD"

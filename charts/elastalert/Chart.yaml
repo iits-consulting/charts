@@ -1,5 +1,20 @@
 apiVersion: v2
-description: Wrapper chart for elastalert2 with custom rules to kickstart IITS projects
+description: |
+  Wrapper chart for elastalert2 with custom rules to kickstart IITS projects
+  
+  ## Installing the Chart with iits ArgoCD
+  
+  ```yaml
+  elastalert:
+    namespace: monitoring
+    repoURL: "https://charts.iits.tech"
+    targetRevision: "0.1.1"
+    # If you need custom rules
+    valueFile: "value-files/elastalert/values.yaml"
+    parameters:
+      customRules.slack.webhookUrl: "${vault:mySecretPath/data/common/slack#webhookUrl}"
+  ```
+
 name: elastalert
 version: 0.1.1
 dependencies:

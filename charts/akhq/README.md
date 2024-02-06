@@ -4,6 +4,16 @@
 
 Kafka GUI for Apache Kafka® to manage topics, topics data, consumers group, schema registry, connect and more...
 
+## Installing the Chart
+
+To install the chart with the release name akhq:
+
+```shell
+    helm repo add iits-charts https://charts.iits.tech
+    helm search repo akhq
+    helm install akhq iits-charts/akhq
+```
+
 ## Requirements
 
 | Repository | Name | Version |
@@ -31,7 +41,7 @@ Kafka GUI for Apache Kafka® to manage topics, topics data, consumers group, sch
 | ingressRoute.adminDomain | string | `"admin.my-domain.com"` |  |
 | ingressRoute.certificate.clusterIssuer | string | `"letsencrypt"` |  |
 | ingressRoute.certificate.enabled | bool | `false` |  |
-| ingressRoute.certificate.name | string | `nil` |  |
+| ingressRoute.certificate.name | string | `nil` | Defaults to .Release.Name -cert |
 | ingressRoute.entryPointName | string | `"after-proxy"` |  |
 | ingressRoute.pathPrefix | string | `"/akhq"` |  |
 | ingressRoute.upstream.service.name | string | `"akhq"` |  |

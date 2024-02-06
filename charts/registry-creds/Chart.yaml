@@ -1,8 +1,10 @@
 apiVersion: v2
 name: registry-creds
 version: 1.1.5
-
+deprecated: true
 description: |
+  DEPRECATED USE PLEASE iits-kyverno-policies chart !!!
+  
   This project is based on https://github.com/alexellis/registry-creds
 
   ## Usage

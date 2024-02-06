@@ -4,6 +4,27 @@ dependencies:
     name: kube-prometheus-stack
     repository: https://prometheus-community.github.io/helm-charts
     version: 43.1.3
-description: A complete monitoring/alerting stack with Grafana Prometheus Alertmanager
+description: |
+  A complete monitoring/alerting stack with Grafana Prometheus Alertmanager
+  
+  ## Installing the Chart with iits ArgoCD
+
+  ```yaml
+  prometheus-stack:
+    namespace: monitoring
+    repoURL: "https://charts.iits.tech"
+    targetRevision: "43.2.0"
+    ignoreDifferences:
+      - jsonPointers:
+          - /imagePullSecrets
+        kind: ServiceAccount
+    syncOptions:
+      - ServerSideApply=true
+    parameters:
+      global.alertmanager.host: "admin.{{.Values.projectValues.rootDomain}}"
+      global.prometheus.host: "admin.{{.Values.projectValues.rootDomain}}"
+      global.grafana.host: "admin.{{.Values.projectValues.rootDomain}}"
+      prometheusStack.grafana.adminPassword: "REPLACE_ME"
+  ```
 name: prometheus-stack
 version: 43.2.3

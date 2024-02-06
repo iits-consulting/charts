@@ -8,7 +8,7 @@ ingressRoute:
   pathPrefix: "/akhq"
   certificate:
     enabled: false
-    # Defaults to .Release.Name -cert
+    # -- Defaults to .Release.Name -cert
     name:
     clusterIssuer: letsencrypt
 akhq:

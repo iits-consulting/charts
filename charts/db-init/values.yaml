@@ -8,11 +8,13 @@ dbInit:
       pullPolicy: "IfNotPresent"
     labels: { }
     env:
+      # -- Host address to connect to
       PGHOST: "postgres.vpc.private"
       PGPORT: "5432"
       PGDATABASE: "postgres"
       PGUSER: "root"
       PGPASSWORD: "REPLACE_ME"
+    # -- Databases which should be created with given username and password
     databases:
 #      Example
 #      firstdatabase:
@@ -21,6 +23,7 @@ dbInit:
 #      seconddatabase:
 #        username: "seconduser"
 #        password: "REPLACE_ME"
+    # -- Default postgres script for initializing can be overriden
     script: |
       {{- range $databaseName,$databaseValues := .Values.dbInit.postgres.databases }}
         SELECT 'CREATE DATABASE {{$databaseName}} WITH LC_COLLATE ''C'' LC_CTYPE ''C'' TEMPLATE template0'

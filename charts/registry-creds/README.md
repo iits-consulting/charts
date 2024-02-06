@@ -1,6 +1,10 @@
 # registry-creds
 
+> **:exclamation: This Helm Chart is deprecated!**
+
 ![Version: 1.1.5](https://img.shields.io/badge/Version-1.1.5-informational?style=flat-square)
+
+DEPRECATED USE PLEASE iits-kyverno-policies chart !!!
 
 This project is based on https://github.com/alexellis/registry-creds
 
@@ -30,6 +34,16 @@ Copy `dockerconfigjson` and perform these commands
 helm repo add iits-charts https://charts.iits.tech
 helm search repo registry-creds
 helm install registry-creds iits-charts/registry-creds --set defaultClusterPullSecret.dockerConfigJsonBase64Encoded="eyJhdXRocyI6eyJodHRwczovL2luZGV4LmRvY2tlci5pby92MS8iOnsidXNlcm5hbWUiOiJ2aWN0b3IuZ2V0ekBpaXRzLWNvbnN1bHRpbmcuZGUiLCJwYXNzd29yZCI6Im15LXBhc3N3b3JkIiwiZW1haWwiOiJ2aWN0b3IuZ2V0ekBpaXRzLWNvbnN1bHRpbmcuZGUiLCJhdXRoIjoiZG1samRHOXlMbWRsZEhwQWFXbDBjeTFqYjI1emRXeDBhVzVuTG1SbE9tMTVMWEJoYzNOM2IzSmsifX19"
+```
+
+## Installing the Chart
+
+To install the chart with the release name registry-creds:
+
+```shell
+    helm repo add iits-charts https://charts.iits.tech
+    helm search repo registry-creds
+    helm install registry-creds iits-charts/registry-creds
 ```
 
 ## Values

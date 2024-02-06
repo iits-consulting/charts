@@ -4,6 +4,36 @@
 
 A complete monitoring/alerting stack with Grafana Prometheus Alertmanager
 
+## Installing the Chart with iits ArgoCD
+
+```yaml
+prometheus-stack:
+  namespace: monitoring
+  repoURL: "https://charts.iits.tech"
+  targetRevision: "43.2.0"
+  ignoreDifferences:
+    - jsonPointers:
+        - /imagePullSecrets
+      kind: ServiceAccount
+  syncOptions:
+    - ServerSideApply=true
+  parameters:
+    global.alertmanager.host: "admin.{{.Values.projectValues.rootDomain}}"
+    global.prometheus.host: "admin.{{.Values.projectValues.rootDomain}}"
+    global.grafana.host: "admin.{{.Values.projectValues.rootDomain}}"
+    prometheusStack.grafana.adminPassword: "REPLACE_ME"
+```
+
+## Installing the Chart
+
+To install the chart with the release name prometheus-stack:
+
+```shell
+    helm repo add iits-charts https://charts.iits.tech
+    helm search repo prometheus-stack
+    helm install prometheus-stack iits-charts/prometheus-stack
+```
+
 ## Requirements
 
 | Repository | Name | Version |

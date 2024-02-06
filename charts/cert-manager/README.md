@@ -4,6 +4,16 @@
 
 Wrapper chart for cert-manager. Deploys a ClusterIssuer resource to bootstrap Let's encrypt cert generation
 
+## Installing the Chart
+
+To install the chart with the release name cert-manager:
+
+```shell
+    helm repo add iits-charts https://charts.iits.tech
+    helm search repo cert-manager
+    helm install cert-manager iits-charts/cert-manager
+```
+
 ## Requirements
 
 | Repository | Name | Version |

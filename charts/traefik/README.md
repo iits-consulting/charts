@@ -4,6 +4,16 @@
 
 The traefik ingress controller with some additional resources and sane default values for IITS projects
 
+## Installing the Chart
+
+To install the chart with the release name traefik:
+
+```shell
+    helm repo add iits-charts https://charts.iits.tech
+    helm search repo traefik
+    helm install traefik iits-charts/traefik
+```
+
 ## Requirements
 
 | Repository | Name | Version |

@@ -8,14 +8,14 @@ ingressRoute:
   pathPrefix: "/argocd"
   certificate:
     enabled: false
-    # Defaults to .Release.Name -cert
+    # -- Defaults to .Release.Name -cert
     name:
     clusterIssuer: letsencrypt
 configs:
   rbac:
     enabled: false
     config:
-      # See https://github.com/argoproj/argo-cd/blob/master/docs/operator-manual/rbac.md for additional information.
+      # -- See https://github.com/argoproj/argo-cd/blob/master/docs/operator-manual/rbac.md for additional information.
       "policy.csv": |
         g, ARGOCD-ADMIN, role:admin
         g, SYSTEM-ADMINISTRATOR, role:admin

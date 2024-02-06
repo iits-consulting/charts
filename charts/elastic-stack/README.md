@@ -4,6 +4,16 @@
 
 Awesome Logs
 
+## Installing the Chart
+
+To install the chart with the release name elasticsearch:
+
+```shell
+    helm repo add iits-charts https://charts.iits.tech
+    helm search repo elasticsearch
+    helm install elasticsearch iits-charts/elasticsearch
+```
+
 ## Requirements
 
 | Repository | Name | Version |

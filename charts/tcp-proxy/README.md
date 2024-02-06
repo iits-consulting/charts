@@ -1,28 +1,29 @@
-# cce-storage-classes
+# tcp-proxy
 
-![Version: 2.0.2](https://img.shields.io/badge/Version-2.0.2-informational?style=flat-square)
+![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square) ![AppVersion: 1.7.4.4](https://img.shields.io/badge/AppVersion-1.7.4.4-informational?style=flat-square)
 
-Custom storage classes for Everest CSI plugin powered CCE clusters. Often used in IITS projects
+Alpine Linux base image with Socat
 
 ## Installing the Chart
 
-To install the chart with the release name cce-storage-classes:
+To install the chart with the release name tcp-proxy:
 
 ```shell
     helm repo add iits-charts https://charts.iits.tech
-    helm search repo cce-storage-classes
-    helm install cce-storage-classes iits-charts/cce-storage-classes
+    helm search repo tcp-proxy
+    helm install tcp-proxy iits-charts/tcp-proxy
 ```
 
 ## Values
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| defaultClass.retention | string | `"Retain"` |  |
-| defaultClass.type | string | `"SSD"` |  |
-| evsTypes[0] | string | `"SSD"` |  |
-| evsTypes[1] | string | `"SATA"` |  |
-| kmsId | string | `nil` | Set this to encrypt all ssd volumes by default |
+| image.repository | string | `"alpine/socat"` |  |
+| image.tag | string | `"1.7.4.4"` |  |
+| mappings.listenToport | int | `0` |  |
+| mappings.targetName | string | `"dummyService"` |  |
+| mappings.targetPort | int | `0` |  |
+| replicaCount | int | `1` |  |
 
 <img src="https://iits-consulting.de/wp-content/uploads/2021/08/iits-logo-2021-red-square-xl.png"
 alt="iits consulting" id="logo" width="200" height="200">

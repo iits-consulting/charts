@@ -8,6 +8,16 @@ With this we avoid a typical catch-22, e.g. where you can not use `traefik`
 You could also use sync-waves and other mechanism, but it creates a lot of complexity
 and a huge dependency graph.
 
+## Installing the Chart
+
+To install the chart with the release name crds:
+
+```shell
+    helm repo add iits-charts https://charts.iits.tech
+    helm search repo crds
+    helm install crds iits-charts/crds
+```
+
 <img src="https://iits-consulting.de/wp-content/uploads/2021/08/iits-logo-2021-red-square-xl.png"
 alt="iits consulting" id="logo" width="200" height="200">
 <br>

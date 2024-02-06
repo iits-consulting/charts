@@ -1,6 +1,40 @@
 apiVersion: v2
 name: ollama
-description: Get up and running with large language models locally.
+description: |
+  Get up and running with large language models locally.
+  
+  ## Installing the Chart with iits ArgoCD
+
+  ```yaml
+    ollama:
+      namespace: ollama
+      repoURL: "https://charts.my-domain.com"
+      targetRevision: "0.6.2"
+      valueFile: "value-files/ollama/values.yaml"
+  ```
+
+
+  value-files/ollama/values.yaml
+
+  ```yaml
+  ollama:
+    ollama:
+      gpu:
+        enabled: "true"
+    ingress:
+      host: "ollama.my-domain.com"
+      annotations:
+        # Adds the oidc proxy upfront
+        traefik.ingress.kubernetes.io/router.middlewares: "ollama-oidc-forward-auth-ollama@kubernetescrd, ollama-strip-prefix-ollama@kubernetescrd"
+  webui:
+    env:
+      OLLAMA_API_BASE_URL: "https://ollama.my-domain.com/api"
+    ingress:
+      annotations:
+        # Adds the oidc proxy upfront
+        traefik.ingress.kubernetes.io/router.middlewares: "ollama-oidc-forward-auth-ollama@kubernetescrd"
+      host: "ollama.my-domain.com"
+  ```
 type: application
 version: 0.6.8
 appVersion: "0.1.16"

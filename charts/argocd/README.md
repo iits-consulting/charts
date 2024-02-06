@@ -48,6 +48,16 @@ resource "helm_release" "argocd" {
 In the project https://github.com/iits-consulting/otc-infrastructure-charts-template it expects a helm chart
 named infrastructure-charts and will install everything from there.
 
+## Installing the Chart
+
+To install the chart with the release name argocd:
+
+```shell
+    helm repo add iits-charts https://charts.iits.tech
+    helm search repo argocd
+    helm install argocd iits-charts/argocd
+```
+
 ## Requirements
 
 | Repository | Name | Version |
@@ -85,7 +95,7 @@ named infrastructure-charts and will install everything from there.
 | argo-cd.server.extraArgs[1] | string | `"--rootpath=/argocd"` |  |
 | argo-cd.server.extraArgs[2] | string | `"--basehref=/argocd"` |  |
 | argo-cd.server.logFormat | string | `"json"` |  |
-| projects | string | `nil` |  |
+| projects | string | `nil` | List of projects which you want to bootstrap |
 
 <img src="https://iits-consulting.de/wp-content/uploads/2021/08/iits-logo-2021-red-square-xl.png"
 alt="iits consulting" id="logo" width="200" height="200">

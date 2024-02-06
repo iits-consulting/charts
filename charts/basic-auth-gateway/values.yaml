@@ -1,4 +1,4 @@
-#https://doc.traefik.io/traefik/middlewares/http/basicauth/
+# -- https://doc.traefik.io/traefik/middlewares/http/basicauth/
 credentials:
   username: "admin"
   password:
@@ -10,6 +10,6 @@ ingressRoute:
   domain: "admin.my-domain.com"
   entryPointName: "websecure"
   certificate:
-    # Defaults to .Release.Name -cert
+    # -- Defaults to .Release.Name -cert
     name:
     clusterIssuer: letsencrypt

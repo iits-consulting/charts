@@ -53,6 +53,16 @@ resource "helm_release" "iits_kyverno_policies" {
 }
 ```
 
+## Installing the Chart
+
+To install the chart with the release name kyverno:
+
+```shell
+    helm repo add iits-charts https://charts.iits.tech
+    helm search repo kyverno
+    helm install kyverno iits-charts/kyverno
+```
+
 ## Requirements
 
 | Repository | Name | Version |
