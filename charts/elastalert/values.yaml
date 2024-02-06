@@ -11,7 +11,8 @@ elastalert2:
     - kafkaTopicCreatedNotification
 customRules:
   slack:
-    webhookUrl: "REPLACE_ME"
+    # -- Required
+    webhookUrl:
   alerting:
     argoCD:
       name: ArgoCD Error

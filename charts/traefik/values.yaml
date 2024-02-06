@@ -29,7 +29,8 @@ traefik:
 defaultCert:
   enabled: true
   dnsNames:
-    rootDomain: #REPLACE_ME
+    # -- Required
+    rootDomain:
     #adminDomain:
   issuerRef:
     kind: ClusterIssuer
@@ -38,7 +39,8 @@ defaultCert:
 ingress:
   # Just enable it if you set up forward auth
   enabled: false
-  host: #REPLACE_ME
+  # -- Required, replace it with your host address
+  host:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
     traefik.ingress.kubernetes.io/router.entrypoints: websecure

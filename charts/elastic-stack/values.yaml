@@ -7,12 +7,18 @@ ingressRoute:
 #    storageClassName: "ssd-encrypted"
 #    volumeType: "SSD"
 #    volumes:
-#      - id: "REPLACE_ME"
-#        az: "REPLACE_ME"
-#        kmsId: "REPLACE_ME"
-#      - id: "REPLACE_ME"
-#        az: "REPLACE_ME"
-#        kmsId: "REPLACE_ME"
+# -- Required
+#      - id:
+# -- Required
+#        az:
+# -- Required
+#        kmsId:
+# -- Required
+#      - id:
+# -- Required
+#        az:
+# -- Required
+#        kmsId:
 
 elasticsearch:
   protocol: http
@@ -277,9 +283,12 @@ backup:
   repoName: "s3_backups"
   bucket:
     endpoint: "https://obs.eu-de.otc.t-systems.com"
-    name: "REPLACE_ME"
-    accessKey: "REPLACE_ME"
-    secretKey: "REPLACE_ME"
+    # -- Required
+    name:
+    # -- Required
+    accessKey:
+    # -- Required
+    secretKey:
   policy:
     name: "nightly-backup"
     schedule: "0 0 0 * * ?"
@@ -292,7 +301,8 @@ backup:
 
 ingress:
   enabled: true
-  host: #REPLACE_ME
+  # -- Required, replace it with your host address
+  host:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
     traefik.ingress.kubernetes.io/router.entrypoints: websecure

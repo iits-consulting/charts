@@ -13,7 +13,8 @@ dbInit:
       PGPORT: "5432"
       PGDATABASE: "postgres"
       PGUSER: "root"
-      PGPASSWORD: "REPLACE_ME"
+      # -- Required
+      PGPASSWORD:
     # -- Databases which should be created with given username and password
     databases:
 #      Example

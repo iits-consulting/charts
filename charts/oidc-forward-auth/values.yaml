@@ -13,9 +13,12 @@ gatekeeper:
   strategy:
     type: "RollingUpdate"
   config:
-    client-id: "REPLACE_ME"
-    client-secret: "REPLACE_ME"
-    discovery-url: "REPLACE_ME"
+    # -- Required
+    client-id:
+    # -- Required
+    client-secret:
+    # -- Required
+    discovery-url:
     enable-compression: true
     enable-default-deny: false
     enable-json-logging: true
@@ -39,7 +42,8 @@ gatekeeper:
         uri: /*
 ingress:
   enabled: true
-  host: #REPLACE_ME
+  # -- Required, replace it with your host address
+  host:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
     traefik.ingress.kubernetes.io/router.entrypoints: websecure

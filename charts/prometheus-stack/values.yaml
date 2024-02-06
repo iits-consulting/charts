@@ -1,10 +1,13 @@
 global:
   prometheus:
-    host: "REPLACE_ME"
+    # -- Required, replace it with your host address
+    host:
   grafana:
-    host: "REPLACE_ME"
+    # -- Required, replace it with your host address
+    host:
   alertmanager:
-    host: "REPLACE_ME"
+    # -- Required, replace it with your host address
+    host:
 
 prometheusStack:
   #Config if you are behind an oauth proxy
@@ -110,7 +113,8 @@ prometheusStack:
       patch:
         enabled: false
   grafana:
-    adminPassword: "REPLACE_ME"
+    # -- Required
+    adminPassword:
     grafana.ini:
       server:
         serve_from_sub_path: true

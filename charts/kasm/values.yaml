@@ -19,7 +19,8 @@ services:
         drop:
           - ALL
     ingressRoute:
-      domain: "REPLACE_ME"
+      # -- Required
+      domain:
       entryPointName: "websecure"
       certificate:
         # defaults to the service name + -cert
@@ -47,7 +48,8 @@ services:
         cpu: 400m
         memory: 1024Mi
     extraEnv:
-      VNC_PW: "REPLACE_ME"
+      # -- Required
+      VNC_PW:
       KASM_SVC_GAMEPAD: 0
       KASM_SVC_AUDIO_INPUT: 0
       KASM_SVC_UPLOADS: 0
