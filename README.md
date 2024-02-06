@@ -29,3 +29,4 @@ Any helm chart provided by iits-consulting needs to adhere to the following acce
 * Provide a default .helmignore
 * HorizontalPodAutoscaler should be present
 * Have a `NOTES.txt` that provides information about the deployment
+
