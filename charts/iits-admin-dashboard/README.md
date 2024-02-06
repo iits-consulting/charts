@@ -74,6 +74,7 @@ tools.
 | deployment.resources.requests.cpu | string | `"1m"` |  |
 | deployment.resources.requests.memory | string | `"4Mi"` |  |
 | deployment.securityContext.allowPrivilegeEscalation | bool | `false` |  |
+| deployment.securityContext.runAsNonRoot | bool | `true` |  |
 | deployment.volumeMounts[0].mountPath | string | `"/home/static"` |  |
 | deployment.volumeMounts[0].name | string | `"admin-dashboard-config"` |  |
 | deployment.volumes[0].configMap.name | string | `"admin-dashboard-config"` |  |
