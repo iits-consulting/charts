@@ -16,14 +16,6 @@ traefik:
     type: LoadBalancer
     spec:
       externalTrafficPolicy: Cluster
-  ports:
-    after-proxy:
-      exposedPort: 8444
-      port: 8444
-      expose: false
-      protocol: TCP
-      tls:
-        enabled: false
   providers:
     kubernetesCRD:
       enabled: true
@@ -36,10 +28,60 @@ traefik:
 
 defaultCert:
   enabled: true
+  dnsNames:
+    # -- Required
+    rootDomain:
+    #adminDomain:
   issuerRef:
     kind: ClusterIssuer
     name: letsencrypt
 
-ingressRoute:
-  rootDomain: "my-domain.com"
-  adminDomain: "admin.my-domain.com"
+ingress:
+  # Just enable it if you set up forward auth
+  enabled: false
+  # -- Required, replace it with your host address
+  host:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+  # Creates default Ingress with tls and the given host from .Values.ingress.host
+  defaultIngress:
+    enabled: false
+    ## Default values can be overriden
+    #tls:
+    #  secretName: "traefik.fullname"
+    #path: "/"
+    #pathType: "Prefix"
+    #backend:
+    #  name: "traefik.fullname" #tpl supported
+    #  port:
+    #    name: http #tpl supported
+
+  # If you don't want to use the default Ingress, you can define it here on your own
+  tls:
+    - hosts:
+        - "{{.Values.ingress.host}}"
+      secretName: "traefik-default-cert"
+  hosts:
+    - host: "{{.Values.ingress.host}}"
+      paths:
+        - path: "/api"
+          backend:
+           name: traefik-internal
+           port:
+              name: traefik
+        - path: "/dashboard"
+          backend:
+            name: traefik-internal
+            port:
+              name: traefik
+
+podMonitor:
+  enabled: true
+  # Default values, override them if necessary
+  #labels: {}
+  #annotations: {}
+  #port: "metrics"
+  #interval: "10s"
+  #path: "/metrics"

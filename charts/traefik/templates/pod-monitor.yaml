@@ -1,0 +1,23 @@
+{{- if .Values.podMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: {{ include "traefik.fullname" $ }}
+  {{- with .Values.podMonitor.labels }}
+  labels:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.podMonitor.annotations }}
+  annotations:
+    iits-consulting.chart-creator/version: 1.1.0
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: traefik
+  podMetricsEndpoints:
+    - port: {{ default "metrics" .Values.podMonitor.port }}
+      interval: {{ default "10s" .Values.podMonitor.interval }}
+      path: {{ default "/metrics" .Values.podMonitor.path }}
+{{- end }}

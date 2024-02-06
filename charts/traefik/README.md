@@ -1,6 +1,6 @@
 # traefik
 
-![Version: 21.1.0](https://img.shields.io/badge/Version-21.1.0-informational?style=flat-square) ![AppVersion: 10.22.0](https://img.shields.io/badge/AppVersion-10.22.0-informational?style=flat-square)
+![Version: 21.2.0](https://img.shields.io/badge/Version-21.2.0-informational?style=flat-square) ![AppVersion: 10.22.0](https://img.shields.io/badge/AppVersion-10.22.0-informational?style=flat-square)
 
 The traefik ingress controller with some additional resources and sane default values for IITS projects
 
@@ -24,11 +24,26 @@ To install the chart with the release name traefik:
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| defaultCert.dnsNames.rootDomain | string | `nil` |  |
 | defaultCert.enabled | bool | `true` |  |
 | defaultCert.issuerRef.kind | string | `"ClusterIssuer"` |  |
 | defaultCert.issuerRef.name | string | `"letsencrypt"` |  |
-| ingressRoute.adminDomain | string | `"admin.my-domain.com"` |  |
-| ingressRoute.rootDomain | string | `"my-domain.com"` |  |
+| ingress.annotations."cert-manager.io/cluster-issuer" | string | `"letsencrypt"` |  |
+| ingress.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
+| ingress.annotations."traefik.ingress.kubernetes.io/router.tls" | string | `"true"` |  |
+| ingress.defaultIngress.enabled | bool | `false` |  |
+| ingress.enabled | bool | `false` |  |
+| ingress.host | string | `nil` |  |
+| ingress.hosts[0].host | string | `"{{.Values.ingress.host}}"` |  |
+| ingress.hosts[0].paths[0].backend.name | string | `"traefik-internal"` |  |
+| ingress.hosts[0].paths[0].backend.port.name | string | `"traefik"` |  |
+| ingress.hosts[0].paths[0].path | string | `"/api"` |  |
+| ingress.hosts[0].paths[1].backend.name | string | `"traefik-internal"` |  |
+| ingress.hosts[0].paths[1].backend.port.name | string | `"traefik"` |  |
+| ingress.hosts[0].paths[1].path | string | `"/dashboard"` |  |
+| ingress.tls[0].hosts[0] | string | `"{{.Values.ingress.host}}"` |  |
+| ingress.tls[0].secretName | string | `"traefik-default-cert"` |  |
+| podMonitor.enabled | bool | `true` |  |
 | traefik.additionalArguments[0] | string | `"--ping"` |  |
 | traefik.deployment.replicas | int | `2` |  |
 | traefik.globalArguments[0] | string | `"--global.checknewversion"` |  |
@@ -38,11 +53,6 @@ To install the chart with the release name traefik:
 | traefik.logs.access.format | string | `"json"` |  |
 | traefik.logs.general.format | string | `"json"` |  |
 | traefik.logs.general.level | string | `"INFO"` |  |
-| traefik.ports.after-proxy.expose | bool | `false` |  |
-| traefik.ports.after-proxy.exposedPort | int | `8444` |  |
-| traefik.ports.after-proxy.port | int | `8444` |  |
-| traefik.ports.after-proxy.protocol | string | `"TCP"` |  |
-| traefik.ports.after-proxy.tls.enabled | bool | `false` |  |
 | traefik.providers.kubernetesCRD.allowCrossNamespace | bool | `true` |  |
 | traefik.providers.kubernetesCRD.enabled | bool | `true` |  |
 | traefik.providers.kubernetesIngress.enabled | bool | `true` |  |

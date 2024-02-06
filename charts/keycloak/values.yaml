@@ -19,10 +19,16 @@ keycloak:
   postgresql:
     enabled: false
   auth:
-    adminUser: "REPLACE_ME"
-    adminPassword: "REPLACE_ME"
+    # -- Required
+    adminUser:
+    # -- Required
+    adminPassword:
   externalDatabase:
-    user: "REPLACE_ME"
-    host: "REPLACE_ME"
-    database: "REPLACE_ME"
-    port: "REPLACE_ME"
+    # -- Required
+    user:
+    # -- Required, replace it with your host address
+    host:
+    # -- Required
+    database:
+    # -- Required
+    port:

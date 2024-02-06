@@ -1,10 +1,13 @@
 global:
   prometheus:
-    host: "REPLACE_ME"
+    # -- Required, replace it with your host address
+    host:
   grafana:
-    host: "REPLACE_ME"
+    # -- Required, replace it with your host address
+    host:
   alertmanager:
-    host: "REPLACE_ME"
+    # -- Required, replace it with your host address
+    host:
 
 prometheusStack:
   #Config if you are behind an oauth proxy
@@ -13,7 +16,13 @@ prometheusStack:
       enabled: true
       host: "{{$.Values.global.prometheus.host}}"
       annotations:
-        traefik.ingress.kubernetes.io/router.entrypoints: after-proxy
+        cert-manager.io/cluster-issuer: letsencrypt
+        traefik.ingress.kubernetes.io/router.entrypoints: websecure
+        traefik.ingress.kubernetes.io/router.tls: "true"
+        traefik.ingress.kubernetes.io/router.middlewares: routing-oidc-forward-auth@kubernetescrd
+      tls:
+        - hosts:
+            - "{{$.Values.global.prometheus.host}}"
     grafana:
       enabled: true
       className: "traefik"
@@ -22,6 +31,7 @@ prometheusStack:
         cert-manager.io/cluster-issuer: letsencrypt
         traefik.ingress.kubernetes.io/router.entrypoints: websecure
         traefik.ingress.kubernetes.io/router.tls: "true"
+        traefik.ingress.kubernetes.io/router.middlewares: routing-oidc-forward-auth@kubernetescrd
       tls:
         - hosts:
             - "{{$.Values.global.grafana.host}}"
@@ -29,10 +39,13 @@ prometheusStack:
       enabled: true
       host: "{{$.Values.global.alertmanager.host}}"
       annotations:
-        traefik.ingress.kubernetes.io/router.entrypoints: after-proxy
-        traefik.ingress.kubernetes.io/router.middlewares: "{{.Release.Namespace}}-strip-prefix-{{ .Release.Name }}@kubernetescrd"
-
-
+        cert-manager.io/cluster-issuer: letsencrypt
+        traefik.ingress.kubernetes.io/router.entrypoints: websecure
+        traefik.ingress.kubernetes.io/router.tls: "true"
+        traefik.ingress.kubernetes.io/router.middlewares: "{{.Release.Namespace}}-strip-prefix-{{ .Release.Name }}@kubernetescrd, routing-oidc-forward-auth@kubernetescrd"
+      tls:
+        - hosts:
+            - "{{$.Values.global.alertmanager.host}}"
   kubeProxy:
     enabled: false
   kubeScheduler:
@@ -100,7 +113,8 @@ prometheusStack:
       patch:
         enabled: false
   grafana:
-    adminPassword: "REPLACE_ME"
+    # -- Required
+    adminPassword:
     grafana.ini:
       server:
         serve_from_sub_path: true

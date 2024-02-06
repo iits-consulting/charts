@@ -7,10 +7,14 @@ ingressRoute:
 
 nextcloudStorage:
   s3:
-    S3_BUCKET_NAME: "REPLACE_ME"
-    S3_PUBLIC_KEY: "REPLACE_ME"
-    S3_SECRET_KEY: "REPLACE_ME"
-    S3_BUCKET_URL: "REPLACE_ME"
+  # -- Required
+    S3_BUCKET_NAME:
+    # -- Required
+    S3_PUBLIC_KEY:
+    # -- Required
+    S3_SECRET_KEY:
+    # -- Required
+    S3_BUCKET_URL:
 
 nextcloud:
   phpClientHttpsFix:
@@ -22,13 +26,18 @@ nextcloud:
   externalDatabase:
     enabled: true
     type: postgresql
-    host: "REPLACE_ME"
-    user: "REPLACE_ME"
-    port: "REPLACE_ME"
-    password: "REPLACE_ME"
+    # -- Required, replace it with your host address
+    host:
+    # -- Required
+    user:
+    # -- Required
+    port:
+    # -- Required
+    password:
 
   nextcloud:
-    host: "REPLACE_ME"
+    # -- Required, replace it with your host address
+    host:
     extraEnv:
       - name: S3_BUCKET_NAME
         valueFrom:

@@ -1,26 +1,47 @@
-ingressRoute:
-  upstream:
-    service:
-      name: argocd-server
-      port: 80
-  adminDomain: "admin.my-domain.com"
-  entryPointName: "after-proxy"
-  pathPrefix: "/argocd"
-  certificate:
-    enabled: false
-    # -- Defaults to .Release.Name -cert
-    name:
-    clusterIssuer: letsencrypt
+ingress:
+  enabled: true
+  # -- Required, replace it with your host address
+  host:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+  # Creates default Ingress with tls and the given host from .Values.ingress.host
+  defaultIngress:
+    enabled: true
+    ## Default values can be overriden
+    #tls:
+    #  secretName: "argocd-config.fullname"
+    path: "/argocd"
+    #pathType: "Prefix"
+    backend:
+      name: "argocd-server"
+#      port:
+#        name: http #tpl supported
+
+  ## If you don't want to use the default Ingress, you can define it here on your own
+  #tls:
+  #  - hosts:
+  #      - "{{.Values.ingress.host}}"
+  #    secretName: "argocd-config-cert"
+  #hosts:
+  #  - host: "{{.Values.ingress.host}}"
+  #    paths:
+  #      - path: "/"
+  #        backend:
+  #         name: "{{include "argocd-config.fullname" $}}"
+  #         port:
+  #            name: "{{include "argocd-config.fullname" $}}"
 configs:
   rbac:
     enabled: false
     config:
-      # -- See https://github.com/argoproj/argo-cd/blob/master/docs/operator-manual/rbac.md for additional information.
+      # See https://github.com/argoproj/argo-cd/blob/master/docs/operator-manual/rbac.md for additional information.
       "policy.csv": |
         g, ARGOCD-ADMIN, role:admin
         g, SYSTEM-ADMINISTRATOR, role:admin
   config:
-    url: "https://{{.Values.ingressRoute.adminDomain}}{{.Values.ingressRoute.pathPrefix}}"
+    url: "https://{{.Values.ingress.host}}{{.Values.ingress.defaultIngress.path}}"
     resource.customizations: |
       # Ignores .data changes of all secrets with a vaultInjectionChecksum annotation
       argoproj.io/Application:
@@ -48,6 +69,11 @@ configs:
         ignoreDifferences: |
           jqPathExpressions:
             - .spec.duration
+      networking.k8s.io/Ingress:
+        health.lua: |
+          hs = {}
+          hs.status = "Healthy"
+          return hs
   secret:
     # -- Annotations to be added to argocd-secret
     annotations: { }
