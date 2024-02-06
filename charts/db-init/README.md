@@ -130,7 +130,7 @@ To install the chart with the release name db-init:
 | dbInit.postgres.enabled | bool | `true` |  |
 | dbInit.postgres.env.PGDATABASE | string | `"postgres"` |  |
 | dbInit.postgres.env.PGHOST | string | `"postgres.vpc.private"` | Host address to connect to |
-| dbInit.postgres.env.PGPASSWORD | string | `"REPLACE_ME"` |  |
+| dbInit.postgres.env.PGPASSWORD | string | `nil` | Required |
 | dbInit.postgres.env.PGPORT | string | `"5432"` |  |
 | dbInit.postgres.env.PGUSER | string | `"root"` |  |
 | dbInit.postgres.image.pullPolicy | string | `"IfNotPresent"` |  |

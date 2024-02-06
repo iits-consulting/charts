@@ -73,7 +73,7 @@ Kubernetes: `^1.16.0-0`
 | ollama.ingress.annotations."traefik.ingress.kubernetes.io/router.middlewares" | string | `"{{.Release.Namespace}}-strip-prefix-ollama@kubernetescrd"` |  |
 | ollama.ingress.annotations."traefik.ingress.kubernetes.io/router.tls" | string | `"true"` |  |
 | ollama.ingress.enabled | bool | `true` |  |
-| ollama.ingress.host | string | `"REPLACE_ME"` | Mandatory values change this one |
+| ollama.ingress.host | string | `nil` | Required, replace it with your host address |
 | ollama.ingress.hosts[0].host | string | `"{{.Values.ollama.ingress.host}}"` |  |
 | ollama.ingress.hosts[0].paths[0].path | string | `"/ollama"` |  |
 | ollama.ingress.tls[0].hosts[0] | string | `"{{.Values.ollama.ingress.host}}"` |  |
@@ -129,7 +129,7 @@ Kubernetes: `^1.16.0-0`
 | webui.autoscaling.maxReplicas | int | `100` |  |
 | webui.autoscaling.minReplicas | int | `1` |  |
 | webui.autoscaling.targetCPUUtilizationPercentage | int | `80` |  |
-| webui.env.OLLAMA_API_BASE_URL | string | `nil` |  |
+| webui.env.OLLAMA_API_BASE_URL | string | `nil` | Required |
 | webui.envSecretName | string | `nil` |  |
 | webui.fullnameOverride | string | `""` |  |
 | webui.image.pullPolicy | string | `"IfNotPresent"` |  |
@@ -140,7 +140,7 @@ Kubernetes: `^1.16.0-0`
 | webui.ingress.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
 | webui.ingress.annotations."traefik.ingress.kubernetes.io/router.tls" | string | `"true"` |  |
 | webui.ingress.enabled | bool | `true` |  |
-| webui.ingress.host | string | `"REPLACE_ME"` |  |
+| webui.ingress.host | string | `nil` | Required, replace it with your host address |
 | webui.ingress.hosts[0].host | string | `"{{.Values.webui.ingress.host}}"` |  |
 | webui.ingress.hosts[0].paths[0].path | string | `"/"` |  |
 | webui.ingress.tls[0].hosts[0] | string | `"{{.Values.webui.ingress.host}}"` |  |

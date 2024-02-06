@@ -24,7 +24,7 @@ To install the chart with the release name traefik:
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| defaultCert.dnsNames.rootDomain | string | `nil` |  |
+| defaultCert.dnsNames.rootDomain | string | `nil` | Required |
 | defaultCert.enabled | bool | `true` |  |
 | defaultCert.issuerRef.kind | string | `"ClusterIssuer"` |  |
 | defaultCert.issuerRef.name | string | `"letsencrypt"` |  |
@@ -33,7 +33,7 @@ To install the chart with the release name traefik:
 | ingress.annotations."traefik.ingress.kubernetes.io/router.tls" | string | `"true"` |  |
 | ingress.defaultIngress.enabled | bool | `false` |  |
 | ingress.enabled | bool | `false` |  |
-| ingress.host | string | `nil` |  |
+| ingress.host | string | `nil` | Required, replace it with your host address |
 | ingress.hosts[0].host | string | `"{{.Values.ingress.host}}"` |  |
 | ingress.hosts[0].paths[0].backend.name | string | `"traefik-internal"` |  |
 | ingress.hosts[0].paths[0].backend.port.name | string | `"traefik"` |  |

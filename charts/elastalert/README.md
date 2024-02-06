@@ -176,7 +176,7 @@ To install the chart with the release name elastalert:
 | customRules.alerting.vaultInjection.slack_title | string | `"Vault Injection Error"` |  |
 | customRules.alerting.vaultInjection.slack_webhook_url | string | `"{{ $.Values.customRules.slack.webhookUrl }}"` |  |
 | customRules.alerting.vaultInjection.type | string | `"any"` |  |
-| customRules.slack.webhookUrl | string | `"REPLACE_ME"` |  |
+| customRules.slack.webhookUrl | string | `nil` | Required |
 | elastalert2.elasticsearch.host | string | `"elasticsearch-master"` | needs to be in the same namespaces as elastic stack if used like this |
 | elastalert2.secretRulesList[0] | string | `"argoCD"` |  |
 | elastalert2.secretRulesList[1] | string | `"botKube"` |  |

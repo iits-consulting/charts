@@ -53,13 +53,13 @@ To install the chart with the release name kasm:
 | services.firstuser.extraEnv.KASM_SVC_AUDIO_INPUT | int | `0` |  |
 | services.firstuser.extraEnv.KASM_SVC_GAMEPAD | int | `0` |  |
 | services.firstuser.extraEnv.KASM_SVC_UPLOADS | int | `0` |  |
-| services.firstuser.extraEnv.VNC_PW | string | `"REPLACE_ME"` |  |
+| services.firstuser.extraEnv.VNC_PW | string | `nil` | Required |
 | services.firstuser.image.pullPolicy | string | `"IfNotPresent"` |  |
 | services.firstuser.image.repository | string | `"kasmweb/ubuntu-focal-desktop"` |  |
 | services.firstuser.image.tag | string | `"1.13.0"` |  |
 | services.firstuser.ingressRoute.certificate.clusterIssuer | string | `"letsencrypt"` |  |
 | services.firstuser.ingressRoute.certificate.name | string | `nil` |  |
-| services.firstuser.ingressRoute.domain | string | `"REPLACE_ME"` |  |
+| services.firstuser.ingressRoute.domain | string | `nil` | Required |
 | services.firstuser.ingressRoute.entryPointName | string | `"websecure"` |  |
 | services.firstuser.podSecurityContext.fsGroup | int | `2000` |  |
 | services.firstuser.podSecurityContext.runAsGroup | int | `1000` |  |

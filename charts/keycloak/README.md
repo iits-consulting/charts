@@ -158,12 +158,12 @@ To install the chart with the release name keycloak:
 | ingressRoute.certificate.name | string | `nil` |  |
 | ingressRoute.domain | string | `"my-domain.com"` |  |
 | ingressRoute.entryPointName | string | `"websecure"` |  |
-| keycloak.auth.adminPassword | string | `"REPLACE_ME"` |  |
-| keycloak.auth.adminUser | string | `"REPLACE_ME"` |  |
-| keycloak.externalDatabase.database | string | `"REPLACE_ME"` |  |
-| keycloak.externalDatabase.host | string | `"REPLACE_ME"` |  |
-| keycloak.externalDatabase.port | string | `"REPLACE_ME"` |  |
-| keycloak.externalDatabase.user | string | `"REPLACE_ME"` |  |
+| keycloak.auth.adminPassword | string | `nil` | Required |
+| keycloak.auth.adminUser | string | `nil` | Required |
+| keycloak.externalDatabase.database | string | `nil` | Required |
+| keycloak.externalDatabase.host | string | `nil` | Required, replace it with your host address |
+| keycloak.externalDatabase.port | string | `nil` | Required |
+| keycloak.externalDatabase.user | string | `nil` | Required |
 | keycloak.image.pullPolicy | string | `"Always"` |  |
 | keycloak.logging.output | string | `"json"` |  |
 | keycloak.postgresql.enabled | bool | `false` |  |

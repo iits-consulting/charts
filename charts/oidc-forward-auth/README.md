@@ -24,7 +24,7 @@ charts:
 ingress:
   enabled: true
   # -- Mandatory, replace it with your host address
-  host: 
+  host:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
@@ -57,9 +57,9 @@ To install the chart with the release name oidc-forward-auth:
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | gatekeeper.automountServiceAccountToken | bool | `true` |  |
-| gatekeeper.config.client-id | string | `"REPLACE_ME"` |  |
-| gatekeeper.config.client-secret | string | `"REPLACE_ME"` |  |
-| gatekeeper.config.discovery-url | string | `"REPLACE_ME"` |  |
+| gatekeeper.config.client-id | string | `nil` | Required |
+| gatekeeper.config.client-secret | string | `nil` | Required |
+| gatekeeper.config.discovery-url | string | `nil` | Required |
 | gatekeeper.config.enable-compression | bool | `true` |  |
 | gatekeeper.config.enable-default-deny | bool | `false` |  |
 | gatekeeper.config.enable-json-logging | bool | `true` |  |
@@ -94,7 +94,7 @@ To install the chart with the release name oidc-forward-auth:
 | ingress.defaultIngress.enabled | bool | `true` |  |
 | ingress.defaultIngress.path | string | `"/oauth"` |  |
 | ingress.enabled | bool | `true` |  |
-| ingress.host | string | `nil` |  |
+| ingress.host | string | `nil` | Required, replace it with your host address |
 
 <img src="https://iits-consulting.de/wp-content/uploads/2021/08/iits-logo-2021-red-square-xl.png"
 alt="iits consulting" id="logo" width="200" height="200">

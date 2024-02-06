@@ -1,6 +1,6 @@
 # argocd-config
 
-![Version: 0.5.0](https://img.shields.io/badge/Version-0.5.0-informational?style=flat-square)
+![Version: 0.6.0](https://img.shields.io/badge/Version-0.6.0-informational?style=flat-square)
 
 Basic argocd related configuration for bootstrapping the IITS project infra
 
@@ -18,9 +18,9 @@ To install the chart with the release name argocd-config:
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| configs.config."resource.customizations" | string | `"# Ignores .data changes of all secrets with a vaultInjectionChecksum annotation\nargoproj.io/Application:\n ignoreDifferences: |\n    jqPathExpressions:\n      - '. | select(.metadata.annotations.parametersChecksum) | .spec.source.helm'\n      - '. | select(.metadata.annotations.valueFileChecksum) | .spec.source.helm'\n# Ignores caBundle and template changes of the following resources\nadmissionregistration.k8s.io/MutatingWebhookConfiguration:\n  ignoreDifferences: |\n    jqPathExpressions:\n      - .metadata.annotations.template\n      - '.webhooks'\napiextensions.k8s.io/CustomResourceDefinition:\n  ignoreDifferences: |\n    jqPathExpressions:\n      - .spec.conversion.webhookClientConfig.caBundle\nadmissionregistration.k8s.io/ValidatingWebhookConfiguration:\n  ignoreDifferences: |\n    jqPathExpressions:\n      - .metadata.annotations.template\n      - '.webhooks[]?.clientConfig.caBundle'\n      - '.webhooks'\ncert-manager.io/Certificate:\n  ignoreDifferences: |\n    jqPathExpressions:\n      - .spec.duration\n"` |  |
-| configs.config.url | string | `"https://{{.Values.ingressRoute.adminDomain}}{{.Values.ingressRoute.pathPrefix}}"` |  |
-| configs.rbac.config."policy.csv" | string | `"g, ARGOCD-ADMIN, role:admin\ng, SYSTEM-ADMINISTRATOR, role:admin\n"` | See https://github.com/argoproj/argo-cd/blob/master/docs/operator-manual/rbac.md for additional information. |
+| configs.config."resource.customizations" | string | `"# Ignores .data changes of all secrets with a vaultInjectionChecksum annotation\nargoproj.io/Application:\n ignoreDifferences: |\n    jqPathExpressions:\n      - '. | select(.metadata.annotations.parametersChecksum) | .spec.source.helm'\n      - '. | select(.metadata.annotations.valueFileChecksum) | .spec.source.helm'\n# Ignores caBundle and template changes of the following resources\nadmissionregistration.k8s.io/MutatingWebhookConfiguration:\n  ignoreDifferences: |\n    jqPathExpressions:\n      - .metadata.annotations.template\n      - '.webhooks'\napiextensions.k8s.io/CustomResourceDefinition:\n  ignoreDifferences: |\n    jqPathExpressions:\n      - .spec.conversion.webhookClientConfig.caBundle\nadmissionregistration.k8s.io/ValidatingWebhookConfiguration:\n  ignoreDifferences: |\n    jqPathExpressions:\n      - .metadata.annotations.template\n      - '.webhooks[]?.clientConfig.caBundle'\n      - '.webhooks'\ncert-manager.io/Certificate:\n  ignoreDifferences: |\n    jqPathExpressions:\n      - .spec.duration\nnetworking.k8s.io/Ingress:\n  health.lua: |\n    hs = {}\n    hs.status = \"Healthy\"\n    return hs\n"` |  |
+| configs.config.url | string | `"https://{{.Values.ingress.host}}{{.Values.ingress.defaultIngress.path}}"` |  |
+| configs.rbac.config."policy.csv" | string | `"g, ARGOCD-ADMIN, role:admin\ng, SYSTEM-ADMINISTRATOR, role:admin\n"` |  |
 | configs.rbac.enabled | bool | `false` |  |
 | configs.secret.annotations | object | `{}` | Annotations to be added to argocd-secret |
 | configs.secret.argocdServerAdminPassword | string | `""` | Bcrypt hashed admin password # Argo expects the password in the secret to be bcrypt hashed. You can create this hash with # `htpasswd -nbBC 10 "" $ARGO_PWD | tr -d ':\n' | sed 's/$2y/$2a/'` |
@@ -32,14 +32,14 @@ To install the chart with the release name argocd-config:
 | configs.secret.githubSecret | string | `""` | Shared secret for authenticating GitHub webhook events |
 | configs.secret.gitlabSecret | string | `""` | Shared secret for authenticating GitLab webhook events |
 | configs.secret.gogsSecret | string | `""` | Shared secret for authenticating Gogs webhook events |
-| ingressRoute.adminDomain | string | `"admin.my-domain.com"` |  |
-| ingressRoute.certificate.clusterIssuer | string | `"letsencrypt"` |  |
-| ingressRoute.certificate.enabled | bool | `false` |  |
-| ingressRoute.certificate.name | string | `nil` | Defaults to .Release.Name -cert |
-| ingressRoute.entryPointName | string | `"after-proxy"` |  |
-| ingressRoute.pathPrefix | string | `"/argocd"` |  |
-| ingressRoute.upstream.service.name | string | `"argocd-server"` |  |
-| ingressRoute.upstream.service.port | int | `80` |  |
+| ingress.annotations."cert-manager.io/cluster-issuer" | string | `"letsencrypt"` |  |
+| ingress.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
+| ingress.annotations."traefik.ingress.kubernetes.io/router.tls" | string | `"true"` |  |
+| ingress.defaultIngress.backend.name | string | `"argocd-server"` |  |
+| ingress.defaultIngress.enabled | bool | `true` |  |
+| ingress.defaultIngress.path | string | `"/argocd"` |  |
+| ingress.enabled | bool | `true` |  |
+| ingress.host | string | `nil` | Required, replace it with your host address |
 
 <img src="https://iits-consulting.de/wp-content/uploads/2021/08/iits-logo-2021-red-square-xl.png"
 alt="iits consulting" id="logo" width="200" height="200">

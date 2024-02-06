@@ -1,6 +1,6 @@
 # iits-admin-dashboard
 
-![Version: 1.3.0](https://img.shields.io/badge/Version-1.3.0-informational?style=flat-square)
+![Version: 1.4.0](https://img.shields.io/badge/Version-1.4.0-informational?style=flat-square)
 
 This chart deploys a super simple webserver that provides a simple website containing links to a set
 of dashboards that are usually deployed in our infrastructure setup as well as some nifty external
@@ -59,17 +59,45 @@ To install the chart with the release name iits-admin-dashboard:
 | defaultDashboard.tiles.vault.imgAlt | string | `"Vault"` |  |
 | defaultDashboard.tiles.vault.imgSrc | string | `"https://www.drupal.org/files/project-images/Vault_VerticalLogo_FullColor.png"` |  |
 | defaultDashboard.title | string | `"Tech Admin Board"` |  |
-| image.repository | string | `"lipanski/docker-static-website"` |  |
-| image.tag | string | `"2.1.0"` |  |
-| ingressRoute.adminDomain | string | `"admin.my-domain.com"` |  |
-| ingressRoute.entryPointName | string | `"after-proxy"` |  |
-| ingressRoute.pathPrefix | string | `"/"` |  |
-| resources.limits.cpu | string | `"10m"` |  |
-| resources.limits.memory | string | `"8Mi"` |  |
-| resources.requests.cpu | string | `"1m"` |  |
-| resources.requests.memory | string | `"4Mi"` |  |
-| service.port | int | `3000` |  |
-| service.type | string | `"ClusterIP"` |  |
+| deployment.affinity | object | `{}` |  |
+| deployment.annotations.htmlChecksum | string | `"{{ include (print $.Template.BasePath \"/configmap.yaml\") . | sha256sum }}"` |  |
+| deployment.env.MUH | string | `"KUH"` |  |
+| deployment.envFromSecret | string | `nil` |  |
+| deployment.fullnameOverride | string | `""` |  |
+| deployment.health.liveness.path | string | `"/"` |  |
+| deployment.health.liveness.port | int | `3000` |  |
+| deployment.health.readiness.path | string | `"/"` |  |
+| deployment.health.readiness.port | int | `3000` |  |
+| deployment.health.startupProbe.path | string | `"/"` |  |
+| deployment.health.startupProbe.port | int | `3000` |  |
+| deployment.image.imagePullPolicy | string | `"IfNotPresent"` |  |
+| deployment.image.repository | string | `"lipanski/docker-static-website"` |  |
+| deployment.image.tag | string | `"2.1.0"` |  |
+| deployment.imagePullSecrets | list | `[]` |  |
+| deployment.nameOverride | string | `""` |  |
+| deployment.podAnnotations | object | `{}` |  |
+| deployment.podSecurityContext | string | `nil` |  |
+| deployment.ports.http.port | int | `3000` |  |
+| deployment.replicaCount | string | `"2"` |  |
+| deployment.resources.limits.cpu | string | `"10m"` |  |
+| deployment.resources.limits.memory | string | `"8Mi"` |  |
+| deployment.resources.requests.cpu | string | `"1m"` |  |
+| deployment.resources.requests.memory | string | `"4Mi"` |  |
+| deployment.securityContext.allowPrivilegeEscalation | bool | `false` |  |
+| deployment.volumeMounts[0].mountPath | string | `"/home/static"` |  |
+| deployment.volumeMounts[0].name | string | `"admin-dashboard-config"` |  |
+| deployment.volumes[0].configMap.name | string | `"admin-dashboard-config"` |  |
+| deployment.volumes[0].name | string | `"admin-dashboard-config"` |  |
+| ingress.annotations."cert-manager.io/cluster-issuer" | string | `"letsencrypt"` |  |
+| ingress.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
+| ingress.annotations."traefik.ingress.kubernetes.io/router.tls" | string | `"true"` |  |
+| ingress.defaultIngress.enabled | bool | `true` |  |
+| ingress.enabled | bool | `true` |  |
+| ingress.host | string | `nil` | Required, replace it with your host address |
+| service.ports.http.targetPort | int | `3000` |  |
+| serviceAccount.annotations | object | `{}` |  |
+| serviceAccount.create | bool | `true` |  |
+| serviceAccount.name | string | `""` |  |
 
 <img src="https://iits-consulting.de/wp-content/uploads/2021/08/iits-logo-2021-red-square-xl.png"
 alt="iits consulting" id="logo" width="200" height="200">

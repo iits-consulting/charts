@@ -80,7 +80,7 @@ To install the chart with the release name kyverno:
 | ingress.annotations."traefik.ingress.kubernetes.io/router.tls" | string | `"true"` |  |
 | ingress.defaultIngress.enabled | bool | `false` |  |
 | ingress.enabled | bool | `true` |  |
-| ingress.host | string | `nil` |  |
+| ingress.host | string | `nil` | Required, replace it with your host address |
 | ingress.hosts[0].host | string | `"{{.Values.ingress.host}}"` |  |
 | ingress.hosts[0].paths[0].backend.name | string | `"{{include \"kyverno.fullname\" $}}-ui"` |  |
 | ingress.hosts[0].paths[0].path | string | `"/_nuxt"` |  |

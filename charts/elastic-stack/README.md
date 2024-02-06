@@ -26,10 +26,10 @@ To install the chart with the release name elasticsearch:
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| backup.bucket.accessKey | string | `"REPLACE_ME"` |  |
+| backup.bucket.accessKey | string | `nil` | Required |
 | backup.bucket.endpoint | string | `"https://obs.eu-de.otc.t-systems.com"` |  |
-| backup.bucket.name | string | `"REPLACE_ME"` |  |
-| backup.bucket.secretKey | string | `"REPLACE_ME"` |  |
+| backup.bucket.name | string | `nil` | Required |
+| backup.bucket.secretKey | string | `nil` | Required |
 | backup.image.repository | string | `"docker.io/curlimages/curl"` |  |
 | backup.image.tag | string | `"7.82.0"` |  |
 | backup.policy.indices[0] | string | `"*"` |  |
@@ -100,7 +100,7 @@ To install the chart with the release name elasticsearch:
 | ingress.defaultIngress.enabled | bool | `true` |  |
 | ingress.defaultIngress.path | string | `"/kibana"` |  |
 | ingress.enabled | bool | `true` |  |
-| ingress.host | string | `nil` |  |
+| ingress.host | string | `nil` | Required, replace it with your host address |
 | ingressRoute.adminDomain | string | `"admin.my-domain.com"` |  |
 | ingressRoute.entryPointName | string | `"after-proxy"` |  |
 | kibana.enabled | bool | `true` |  |

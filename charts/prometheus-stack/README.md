@@ -44,9 +44,9 @@ To install the chart with the release name prometheus-stack:
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| global.alertmanager.host | string | `"REPLACE_ME"` |  |
-| global.grafana.host | string | `"REPLACE_ME"` |  |
-| global.prometheus.host | string | `"REPLACE_ME"` |  |
+| global.alertmanager.host | string | `nil` | Required, replace it with your host address |
+| global.grafana.host | string | `nil` | Required, replace it with your host address |
+| global.prometheus.host | string | `nil` | Required, replace it with your host address |
 | prometheusStack.alertmanager.alertmanagerSpec.resources.requests.cpu | string | `"5m"` |  |
 | prometheusStack.alertmanager.alertmanagerSpec.resources.requests.memory | string | `"100Mi"` |  |
 | prometheusStack.alertmanager.alertmanagerSpec.routePrefix | string | `"/alertmanager"` |  |
@@ -100,7 +100,7 @@ To install the chart with the release name prometheus-stack:
 | prometheusStack.grafana."grafana.ini".security.disable_initial_admin_creation | bool | `false` |  |
 | prometheusStack.grafana."grafana.ini".server.root_url | string | `"https://{{$.Values.global.grafana.host}}/grafana"` |  |
 | prometheusStack.grafana."grafana.ini".server.serve_from_sub_path | bool | `true` |  |
-| prometheusStack.grafana.adminPassword | string | `"REPLACE_ME"` |  |
+| prometheusStack.grafana.adminPassword | string | `nil` | Required |
 | prometheusStack.ingress.alertmanager.annotations."cert-manager.io/cluster-issuer" | string | `"letsencrypt"` |  |
 | prometheusStack.ingress.alertmanager.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
 | prometheusStack.ingress.alertmanager.annotations."traefik.ingress.kubernetes.io/router.middlewares" | string | `"{{.Release.Namespace}}-strip-prefix-{{ .Release.Name }}@kubernetescrd, routing-oidc-forward-auth@kubernetescrd"` |  |
