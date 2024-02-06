@@ -1,6 +1,6 @@
 # ollama
 
-![Version: 0.6.8](https://img.shields.io/badge/Version-0.6.8-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.1.16](https://img.shields.io/badge/AppVersion-0.1.16-informational?style=flat-square)
+![Version: 0.6.9](https://img.shields.io/badge/Version-0.6.9-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.1.16](https://img.shields.io/badge/AppVersion-0.1.16-informational?style=flat-square)
 
 Get up and running with large language models locally.
 
@@ -62,7 +62,7 @@ Kubernetes: `^1.16.0-0`
 | ollama.autoscaling.minReplicas | int | `1` |  |
 | ollama.autoscaling.targetCPUUtilizationPercentage | int | `80` |  |
 | ollama.env | string | `nil` |  |
-| ollama.envSecretName | string | `nil` |  |
+| ollama.envSecretName | string | `nil` | set the secret where to take env from |
 | ollama.fullnameOverride | string | `""` |  |
 | ollama.image.pullPolicy | string | `"IfNotPresent"` |  |
 | ollama.image.repository | string | `"ollama/ollama"` |  |
@@ -73,11 +73,11 @@ Kubernetes: `^1.16.0-0`
 | ollama.ingress.annotations."traefik.ingress.kubernetes.io/router.middlewares" | string | `"{{.Release.Namespace}}-strip-prefix-ollama@kubernetescrd"` |  |
 | ollama.ingress.annotations."traefik.ingress.kubernetes.io/router.tls" | string | `"true"` |  |
 | ollama.ingress.enabled | bool | `true` |  |
-| ollama.ingress.host | string | `"REPLACE_ME"` |  |
+| ollama.ingress.host | string | `"REPLACE_ME"` | Mandatory values change this one |
 | ollama.ingress.hosts[0].host | string | `"{{.Values.ollama.ingress.host}}"` |  |
 | ollama.ingress.hosts[0].paths[0].path | string | `"/ollama"` |  |
 | ollama.ingress.tls[0].hosts[0] | string | `"{{.Values.ollama.ingress.host}}"` |  |
-| ollama.ingress.tls[0].secretName | string | `"ollama-cert"` |  |
+| ollama.ingress.tls[0].secretName | string | `"llm-cert"` |  |
 | ollama.ingress.traefikMiddlewareEnabled | string | `"true"` |  |
 | ollama.livenessProbe.enabled | bool | `true` |  |
 | ollama.livenessProbe.failureThreshold | int | `6` |  |
@@ -88,8 +88,7 @@ Kubernetes: `^1.16.0-0`
 | ollama.livenessProbe.timeoutSeconds | int | `5` |  |
 | ollama.nameOverride | string | `""` |  |
 | ollama.nodeSelector | object | `{}` |  |
-| ollama.ollama.gpu.enabled | bool | `false` |  |
-| ollama.ollama.gpu.number | int | `1` |  |
+| ollama.ollama.gpu | object | `{"enabled":false,"number":1}` | If you want to use GPU, set it to true |
 | ollama.persistentVolume.accessModes[0] | string | `"ReadWriteOnce"` |  |
 | ollama.persistentVolume.annotations."argocd.argoproj.io/sync-options" | string | `"Prune=false"` |  |
 | ollama.persistentVolume.enabled | bool | `true` |  |
@@ -135,7 +134,7 @@ Kubernetes: `^1.16.0-0`
 | webui.fullnameOverride | string | `""` |  |
 | webui.image.pullPolicy | string | `"IfNotPresent"` |  |
 | webui.image.repository | string | `"iits/ollama-webui"` |  |
-| webui.image.tag | string | `"0.1.19"` |  |
+| webui.image.tag | string | `"0.1.21"` |  |
 | webui.imagePullSecrets | list | `[]` |  |
 | webui.ingress.annotations."cert-manager.io/cluster-issuer" | string | `"letsencrypt"` |  |
 | webui.ingress.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
