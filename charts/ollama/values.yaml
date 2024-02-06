@@ -16,7 +16,7 @@ ollama:
   fullnameOverride: ""
 
   ollama:
-    # If you want to use GPU, set it to true
+    # -- If you want to use GPU, set it to true
     gpu:
       enabled: false
       number: 1
@@ -52,11 +52,12 @@ ollama:
 
   env:
 
-  #set the secret where to take env from
+  # -- set the secret where to take env from
   envSecretName:
 
   ingress:
     enabled: true
+    # -- Mandatory values change this one
     host: "REPLACE_ME"
     traefikMiddlewareEnabled: "true"
     annotations:
@@ -71,7 +72,7 @@ ollama:
     tls:
       - hosts:
           - "{{.Values.ollama.ingress.host}}"
-        secretName: "ollama-cert"
+        secretName: "llm-cert"
 
   ## Configure resource requests and limits
   ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
@@ -208,7 +209,7 @@ webui:
     repository: "iits/ollama-webui"
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
-    tag: "0.1.19"
+    tag: "0.1.21"
 
   imagePullSecrets: []
   nameOverride: ""
