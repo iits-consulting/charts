@@ -487,6 +487,15 @@ entries:
     version: 5.22.1-enable-crds
   argocd-config:
   - apiVersion: v2
+    created: "2024-02-06T13:33:05.83474787Z"
+    description: Basic argocd related configuration for bootstrapping the IITS project
+      infra
+    digest: 4bb62410c4a2c1618fc89cce083d0c51f6d06afbb2330163a19d643c38771ca8
+    name: argocd-config
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/argocd-config-0.6.0/argocd-config-0.6.0.tgz
+    version: 0.6.0
+  - apiVersion: v2
     created: "2023-07-31T07:37:57.711926327Z"
     description: Basic argocd related configuration for bootstrapping the IITS project
       infra
@@ -1015,6 +1024,27 @@ entries:
     version: 7.17.3-cce-volumes
   elasticsearch:
   - apiVersion: v2
+    created: "2024-02-06T13:33:06.781010998Z"
+    dependencies:
+    - condition: elasticsearch.enabled
+      name: elasticsearch
+      repository: https://helm.elastic.co
+      version: 8.5.1
+    - condition: kibana.enabled
+      name: kibana
+      repository: https://helm.elastic.co
+      version: 7.17.3
+    - condition: filebeat.enabled
+      name: filebeat
+      repository: https://helm.elastic.co
+      version: 8.5.1
+    description: Awesome Logs
+    digest: 425f2304a924deaa66537eb76d828d4627f0e58663fc6da70dc66674befe3142
+    name: elasticsearch
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/elasticsearch-8.6.0/elasticsearch-8.6.0.tgz
+    version: 8.6.0
+  - apiVersion: v2
     created: "2024-01-16T12:17:13.644882319Z"
     dependencies:
     - condition: elasticsearch.enabled
@@ -1036,6 +1066,16 @@ entries:
     - https://github.com/iits-consulting/charts/releases/download/elasticsearch-8.5.1/elasticsearch-8.5.1.tgz
     version: 8.5.1
   iits-admin-dashboard:
+  - apiVersion: v2
+    created: "2024-02-06T13:33:06.875214261Z"
+    description: 'This chart deploys a super simple webserver that provides a simple
+      website containing links to a set of dashboards that are usually deployed in
+      our infrastructure setup as well as some nifty external tools. '
+    digest: 7dc59c1a1695bcdd80ffefcdf9f92a40d2b81bf02ddb0d6c32b30c4714b400b5
+    name: iits-admin-dashboard
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/iits-admin-dashboard-1.4.0/iits-admin-dashboard-1.4.0.tgz
+    version: 1.4.0
   - apiVersion: v2
     created: "2023-10-12T11:41:53.557471325Z"
     description: 'This chart deploys a super simple webserver that provides a simple
@@ -1122,6 +1162,23 @@ entries:
     - https://github.com/iits-consulting/charts/releases/download/iits-admin-dashboard-nginx-1.2.3/iits-admin-dashboard-nginx-1.2.3.tgz
     version: 1.2.3
   iits-kyverno-policies:
+  - apiVersion: v2
+    created: "2024-02-06T13:33:07.008209632Z"
+    dependencies:
+    - name: kyverno-policies
+      repository: https://kyverno.github.io/kyverno/
+      version: v2.7.2
+    description: 'This chart wraps the upstream `kyverno-policies` chart and adds
+      a few useful policies:   - Verify all images are signed with cosign   - Verify
+      all images come from allowed image repositories   - Replace the complete registry
+      reference with a custom one   - Prepend the image reference with a custom prefix,
+      useful for e.g. pull-through caches '
+    digest: 66c2761014978325e5b6d7360abb8bc9f973e15e15265c0b74aa9aeef8cad85e
+    name: iits-kyverno-policies
+    type: application
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/iits-kyverno-policies-1.5.1/iits-kyverno-policies-1.5.1.tgz
+    version: 1.5.1
   - apiVersion: v2
     created: "2023-07-05T18:59:06.550659029Z"
     dependencies:
@@ -1341,6 +1398,47 @@ entries:
     version: 1.1.0
   iits-ollama-fullstack:
   - apiVersion: v2
+    created: "2024-02-06T13:33:07.153555459Z"
+    dependencies:
+    - condition: weaviate.enabled
+      name: weaviate
+      repository: https://weaviate.github.io/weaviate-helm
+      version: 16.8.0
+    - condition: airbyte.enabled
+      name: airbyte
+      repository: https://airbytehq.github.io/helm-charts
+      version: 0.50.20
+    - condition: ollama.enabled
+      name: ollama
+      repository: https://charts.iits.tech
+      version: 0.6.9
+    description: 'Setup private LLM RAG Cluster with (weaviate, Ollama & airbyte)  ##
+      Installing the Chart with iits ArgoCD  # Register the Chart  ```yaml   iits-ollama-fullstack:     targetRevision:
+      "0.1.1"     namespace: ollama     valueFile: "value-files/iits-ollama-fullstack/values.yaml"
+      ```  value-files/iits-ollama-fullstack/values.yaml  ```yaml ingress:   airbyte:     host:
+      "airbyte.ollama.my-domain.com"     annotations:       # Adds the oidc proxy
+      upfront       traefik.ingress.kubernetes.io/router.middlewares: "ollama-oidc-forward-auth-ollama@kubernetescrd"
+      ollama:   ollama:     ollama:       gpu:         enabled: "true"     ingress:       host:
+      "ollama.my-domain.com"       annotations:         # Adds the oidc proxy upfront         traefik.ingress.kubernetes.io/router.middlewares:
+      "ollama-oidc-forward-auth-ollama@kubernetescrd, ollama-strip-prefix-ollama@kubernetescrd"   webui:     env:       OLLAMA_API_BASE_URL:
+      "https://ollama.my-domain.com/api"     ingress:       annotations:         #
+      Adds the oidc proxy upfront         traefik.ingress.kubernetes.io/router.middlewares:
+      "ollama-oidc-forward-auth-ollama@kubernetescrd"       host: "ollama.my-domain.com"
+      ``` '
+    digest: 9a5879836570f05d51e14096955301a270849dc95a1cc67aa2a90f2801332687
+    home: https://ollama.ai/
+    icon: https://ollama.ai/public/ollama.png
+    keywords:
+    - ai
+    - llm
+    - llama
+    - mistral
+    name: iits-ollama-fullstack
+    type: application
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/iits-ollama-fullstack-0.2.0/iits-ollama-fullstack-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
     created: "2024-01-18T19:58:35.388217348Z"
     dependencies:
     - condition: weaviate.enabled
@@ -1486,6 +1584,21 @@ entries:
     - https://github.com/iits-consulting/charts/releases/download/iits-ollama-fullstack-0.1.1/iits-ollama-fullstack-0.1.1.tgz
     version: 0.1.1
   kafka:
+  - apiVersion: v2
+    created: "2024-02-06T13:33:07.265758992Z"
+    dependencies:
+    - name: kafka
+      repository: https://charts.bitnami.com/bitnami
+      version: 22.1.5
+    description: 'Apache Kafka is an open-source distributed event streaming platform
+      used by thousands of companies for high-performance data pipelines, streaming
+      analytics, data integration, and mission-critical applications. This chart wraps
+      the `kafka` chart from bitnami and defines a few sensible defaults. '
+    digest: 5d18ee905f7d4a8cd772e48a54fbc042cb3c426e4789dd3a646a49d7edb599a2
+    name: kafka
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/kafka-22.1.6/kafka-22.1.6.tgz
+    version: 22.1.6
   - apiVersion: v2
     created: "2023-06-18T17:05:03.8037039Z"
     dependencies:
@@ -1745,6 +1858,41 @@ entries:
     - https://github.com/iits-consulting/charts/releases/download/keycloak-gatekeeper-1.0.0/keycloak-gatekeeper-1.0.0.tgz
     version: 1.0.0
   kyverno:
+  - apiVersion: v2
+    created: "2024-02-06T13:33:07.729879627Z"
+    dependencies:
+    - name: kyverno
+      repository: https://kyverno.github.io/kyverno/
+      version: 2.7.2
+    - condition: policy-reporter.install
+      name: policy-reporter
+      repository: https://kyverno.github.io/policy-reporter
+      version: 2.19.0
+    description: 'This chart wraps kyverno and some additional components such as
+      the policy reporter as well as IngressRoutes/Middlewares to allow usage of the
+      Kyverno UI.  ## Usage  As kyverno enforces policies in the Kubernetes cluster
+      it makes sense to deploy it at the very beginning when setting up new infrastructure.
+      We usually deploy essential cluster resources up to ArgoCD via Terraform. An
+      example of how to deploy a complete Kyverno setup would be:  ``` resource "helm_release"
+      "kyverno" {   name                  = "kyverno"   repository            = "https://charts.iits.tech"   version               =
+      "1.1.0"   namespace             = "kyverno"   create_namespace      = true   wait                  =
+      true   atomic                = true   timeout               = 900 // 15 Minutes   render_subchart_notes
+      = true   dependency_update     = true   wait_for_jobs         = true   skip_crds             =
+      false # The entrypoint to your cluster highly depends on your local setup   values                =
+      [     yamlencode({       route = {         enabled    = true         entrypoint
+      = "after-proxy"       }     })   ] }  resource "helm_release" "iits_kyverno_policies"
+      {   wait_for_jobs         = true   depends_on            = [helm_release.kyverno]   name                  =
+      "iits-kyverno-policies"   repository            = "https://charts.iits.tech"   version               =
+      "1.0.0"   chart                 = "iits-kyverno-policies"   namespace             =
+      "kyverno"   create_namespace      = true   wait                  = true   atomic                =
+      true   timeout               = 900 // 15 Minutes   render_subchart_notes = true   dependency_update     =
+      true } ``` '
+    digest: e7382bd13779e3b398430194ec30bd1e2c022aad7bbecb409497172ebd8fcabe
+    name: kyverno
+    type: application
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/kyverno-1.3.1/kyverno-1.3.1.tgz
+    version: 1.3.1
   - apiVersion: v2
     created: "2023-07-05T16:20:02.654012101Z"
     dependencies:
@@ -2190,6 +2338,25 @@ entries:
     version: 1.0.0
   prometheus-stack:
   - apiVersion: v2
+    created: "2024-02-06T13:33:08.290061895Z"
+    dependencies:
+    - alias: prometheusStack
+      name: kube-prometheus-stack
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 43.1.3
+    description: 'A complete monitoring/alerting stack with Grafana Prometheus Alertmanager  ##
+      Installing the Chart with iits ArgoCD  ```yaml prometheus-stack:   namespace:
+      monitoring   repoURL: "https://charts.iits.tech"   targetRevision: "43.2.0"   ignoreDifferences:     -
+      jsonPointers:         - /imagePullSecrets       kind: ServiceAccount   syncOptions:     -
+      ServerSideApply=true   parameters:     global.alertmanager.host: "admin.{{.Values.projectValues.rootDomain}}"     global.prometheus.host:
+      "admin.{{.Values.projectValues.rootDomain}}"     global.grafana.host: "admin.{{.Values.projectValues.rootDomain}}"     prometheusStack.grafana.adminPassword:
+      "REPLACE_ME" ``` '
+    digest: b140a1c929696a9821708d58be389e5aa74d2b3569ed0b3dff86c83414b981a2
+    name: prometheus-stack
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/prometheus-stack-43.3.0/prometheus-stack-43.3.0.tgz
+    version: 43.3.0
+  - apiVersion: v2
     created: "2024-01-16T12:17:14.724087397Z"
     dependencies:
     - alias: prometheusStack
@@ -2281,19 +2448,6 @@ entries:
     - https://github.com/iits-consulting/charts/releases/download/prometheus-stack-43.1.3/prometheus-stack-43.1.3.tgz
     version: 43.1.3
   - apiVersion: v2
-    created: "2023-06-05T16:33:21.100545313Z"
-    dependencies:
-    - alias: prometheusStack
-      name: kube-prometheus-stack
-      repository: https://prometheus-community.github.io/helm-charts
-      version: 43.1.3
-    description: A complete monitoring/alerting stack with Grafana Prometheus Alertmanager
-    digest: 6399807969bf6e14b7920dd8e4e4e1b6bf8ea197627ad9ceefc19ca27fe1ba43
-    name: prometheus-stack
-    urls:
-    - https://github.com/iits-consulting/charts/releases/download/prometheus-stack-43.1.3-storage-bugfix/prometheus-stack-43.1.3-storage-bugfix.tgz
-    version: 43.1.3-storage-bugfix
-  - apiVersion: v2
     created: "2023-06-05T15:45:42.916184484Z"
     dependencies:
     - alias: prometheusStack
@@ -2302,6 +2456,19 @@ entries:
       version: 43.1.3
     description: A complete monitoring/alerting stack with Grafana Prometheus Alertmanager
     digest: 1aeab4f72f043e0be8bc93a8bc6e75fa442200cf23382906a0bf915ee2627e54
+    name: prometheus-stack
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/prometheus-stack-43.1.3-storage-bugfix/prometheus-stack-43.1.3-storage-bugfix.tgz
+    version: 43.1.3-storage-bugfix
+  - apiVersion: v2
+    created: "2023-06-05T16:33:21.100545313Z"
+    dependencies:
+    - alias: prometheusStack
+      name: kube-prometheus-stack
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 43.1.3
+    description: A complete monitoring/alerting stack with Grafana Prometheus Alertmanager
+    digest: 6399807969bf6e14b7920dd8e4e4e1b6bf8ea197627ad9ceefc19ca27fe1ba43
     name: prometheus-stack
     urls:
     - https://github.com/iits-consulting/charts/releases/download/prometheus-stack-43.1.3-storage-bugfix/prometheus-stack-43.1.3-storage-bugfix.tgz
@@ -2546,6 +2713,20 @@ entries:
   traefik:
   - apiVersion: v2
     appVersion: 10.22.0
+    created: "2024-02-06T13:33:08.77261945Z"
+    dependencies:
+    - name: traefik
+      repository: https://helm.traefik.io/traefik
+      version: 10.22.0
+    description: The traefik ingress controller with some additional resources and
+      sane default values for IITS projects
+    digest: f2a4d0698e0f255144fd70a84e2df36d6772776beeea8ae2a8b701f1f585ac99
+    name: traefik
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/traefik-21.2.0/traefik-21.2.0.tgz
+    version: 21.2.0
+  - apiVersion: v2
+    appVersion: 10.22.0
     created: "2023-11-15T11:57:34.244256623Z"
     dependencies:
     - name: traefik
@@ -2698,20 +2879,6 @@ entries:
     version: 10.22.0-bugfix-traefik-annotations
   - apiVersion: v2
     appVersion: 10.22.0
-    created: "2023-05-17T07:20:08.667946366Z"
-    dependencies:
-    - name: traefik
-      repository: https://helm.traefik.io/traefik
-      version: 10.22.0
-    description: The traefik ingress controller with some additional resources and
-      sane default values for IITS projects
-    digest: e1927b34e4b313cf8e94bb9439c5fa83cb0ad3709478d6f4025b9b0bc85262d0
-    name: traefik
-    urls:
-    - https://github.com/iits-consulting/charts/releases/download/traefik-10.22.0-bugfix-traefik-annotations/traefik-10.22.0-bugfix-traefik-annotations.tgz
-    version: 10.22.0-bugfix-traefik-annotations
-  - apiVersion: v2
-    appVersion: 10.22.0
     created: "2023-05-17T13:59:16.238558987Z"
     dependencies:
     - name: traefik
@@ -2720,6 +2887,20 @@ entries:
     description: The traefik ingress controller with some additional resources and
       sane default values for IITS projects
     digest: 14438fa4d4f98e41c3b1a82323c6e2a0e321798b0061a4c61386d810da64f146
+    name: traefik
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/traefik-10.22.0-bugfix-traefik-annotations/traefik-10.22.0-bugfix-traefik-annotations.tgz
+    version: 10.22.0-bugfix-traefik-annotations
+  - apiVersion: v2
+    appVersion: 10.22.0
+    created: "2023-05-17T07:20:08.667946366Z"
+    dependencies:
+    - name: traefik
+      repository: https://helm.traefik.io/traefik
+      version: 10.22.0
+    description: The traefik ingress controller with some additional resources and
+      sane default values for IITS projects
+    digest: e1927b34e4b313cf8e94bb9439c5fa83cb0ad3709478d6f4025b9b0bc85262d0
     name: traefik
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-10.22.0-bugfix-traefik-annotations/traefik-10.22.0-bugfix-traefik-annotations.tgz
@@ -2828,4 +3009,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2024-02-06T10:20:31.002515586Z"
+generated: "2024-02-06T13:33:08.773285747Z"
