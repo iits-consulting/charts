@@ -61,7 +61,7 @@ To install the chart with the release name iits-ollama-fullstack:
 | Repository | Name | Version |
 |------------|------|---------|
 | https://airbytehq.github.io/helm-charts | airbyte | 0.50.20 |
-| https://charts.iits.tech | ollama | 0.6.8 |
+| https://charts.iits.tech | ollama | 0.6.9 |
 | https://weaviate.github.io/weaviate-helm | weaviate | 16.8.0 |
 
 ## Values
@@ -78,10 +78,15 @@ To install the chart with the release name iits-ollama-fullstack:
 | ingress.airbyte.defaultIngress.backend.port.name | string | `"http"` |  |
 | ingress.airbyte.defaultIngress.enabled | bool | `true` |  |
 | ingress.airbyte.enabled | bool | `true` |  |
-| ingress.airbyte.host | string | `nil` |  |
+| ingress.airbyte.host | string | `nil` | Replace this value with your host |
 | ollama.enabled | bool | `true` |  |
 | ollama.ollama.fullnameOverride | string | `"ollama"` |  |
+| ollama.ollama.ollama.gpu.enabled | string | `"true"` | If you want to use GPU, set it to true |
+| ollama.ollama.ollama.gpu.number | int | `1` |  |
+| ollama.ollama.ollama.ingress.host | string | `nil` | Replace this value with your host |
+| ollama.webui.env.OLLAMA_API_BASE_URL | string | `nil` | Replace this value with your api base url, example: "https://ollama.my-domain.com/api" |
 | ollama.webui.fullnameOverride | string | `"ollama-webui"` |  |
+| ollama.webui.ingress.host | string | `nil` | Replace this value with your host |
 | weaviate.service.type | string | `"ClusterIP"` |  |
 
 <img src="https://iits-consulting.de/wp-content/uploads/2021/08/iits-logo-2021-red-square-xl.png"

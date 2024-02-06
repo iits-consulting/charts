@@ -1,7 +1,8 @@
 ingress:
   airbyte:
     enabled: true
-    host: #REPLACE_ME
+    # -- Replace this value with your host
+    host:
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt
       traefik.ingress.kubernetes.io/router.entrypoints: websecure
@@ -30,5 +31,19 @@ ollama:
   enabled: true
   ollama:
     fullnameOverride: ollama
+    ollama:
+      gpu:
+        # -- If you want to use GPU, set it to true
+        enabled: "true"
+        number: 1
+      ingress:
+        # -- Replace this value with your host
+        host:
   webui:
     fullnameOverride: ollama-webui
+    env:
+      # -- Replace this value with your api base url, example: "https://ollama.my-domain.com/api"
+      OLLAMA_API_BASE_URL:
+    ingress:
+      # -- Replace this value with your host
+      host:
