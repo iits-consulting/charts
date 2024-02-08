@@ -19,9 +19,13 @@ traefik:
   providers:
     kubernetesCRD:
       enabled: true
+      allowExternalNameServices: true
       allowCrossNamespace: true
     kubernetesIngress:
       enabled: true
+      allowExternalNameServices: true
+      publishedService:
+        enabled: true
   ingressClass:
     enabled: true
     isDefaultClass: true
