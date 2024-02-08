@@ -1,6 +1,6 @@
 # traefik
 
-![Version: 21.2.0](https://img.shields.io/badge/Version-21.2.0-informational?style=flat-square) ![AppVersion: 10.22.0](https://img.shields.io/badge/AppVersion-10.22.0-informational?style=flat-square)
+![Version: 21.2.1](https://img.shields.io/badge/Version-21.2.1-informational?style=flat-square) ![AppVersion: 10.22.0](https://img.shields.io/badge/AppVersion-10.22.0-informational?style=flat-square)
 
 The traefik ingress controller with some additional resources and sane default values for IITS projects
 
@@ -44,8 +44,11 @@ The traefik ingress controller with some additional resources and sane default v
 | traefik.logs.general.format | string | `"json"` |  |
 | traefik.logs.general.level | string | `"INFO"` |  |
 | traefik.providers.kubernetesCRD.allowCrossNamespace | bool | `true` |  |
+| traefik.providers.kubernetesCRD.allowExternalNameServices | bool | `true` |  |
 | traefik.providers.kubernetesCRD.enabled | bool | `true` |  |
+| traefik.providers.kubernetesIngress.allowExternalNameServices | bool | `true` |  |
 | traefik.providers.kubernetesIngress.enabled | bool | `true` |  |
+| traefik.providers.kubernetesIngress.publishedService.enabled | bool | `true` |  |
 | traefik.service.spec.externalTrafficPolicy | string | `"Cluster"` |  |
 | traefik.service.type | string | `"LoadBalancer"` |  |
 
