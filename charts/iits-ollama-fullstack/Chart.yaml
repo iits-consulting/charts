@@ -43,7 +43,7 @@ description: |
         host: "ollama.my-domain.com"
   ```
 type: application
-version: 0.2.0
+version: 0.2.1
 home: https://ollama.ai/
 icon: https://ollama.ai/public/ollama.png
 keywords:
@@ -61,6 +61,6 @@ dependencies:
     repository: https://airbytehq.github.io/helm-charts
     condition: airbyte.enabled
   - name: ollama
-    version: 0.6.9
+    version: 0.6.11
     repository: https://charts.iits.tech
     condition: ollama.enabled
