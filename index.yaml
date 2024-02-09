@@ -1398,6 +1398,47 @@ entries:
     version: 1.1.0
   iits-ollama-fullstack:
   - apiVersion: v2
+    created: "2024-02-09T15:17:09.323748891Z"
+    dependencies:
+    - condition: weaviate.enabled
+      name: weaviate
+      repository: https://weaviate.github.io/weaviate-helm
+      version: 16.8.0
+    - condition: airbyte.enabled
+      name: airbyte
+      repository: https://airbytehq.github.io/helm-charts
+      version: 0.50.20
+    - condition: ollama.enabled
+      name: ollama
+      repository: https://charts.iits.tech
+      version: 0.6.12
+    description: 'Setup private LLM RAG Cluster with (weaviate, Ollama & airbyte)  ##
+      Installing the Chart with iits ArgoCD  # Register the Chart  ```yaml   iits-ollama-fullstack:     targetRevision:
+      "0.1.1"     namespace: ollama     valueFile: "value-files/iits-ollama-fullstack/values.yaml"
+      ```  value-files/iits-ollama-fullstack/values.yaml  ```yaml ingress:   airbyte:     host:
+      "airbyte.ollama.my-domain.com"     annotations:       # Adds the oidc proxy
+      upfront       traefik.ingress.kubernetes.io/router.middlewares: "ollama-oidc-forward-auth-ollama@kubernetescrd"
+      ollama:   ollama:     ollama:       gpu:         enabled: "true"     ingress:       host:
+      "ollama.my-domain.com"       annotations:         # Adds the oidc proxy upfront         traefik.ingress.kubernetes.io/router.middlewares:
+      "ollama-oidc-forward-auth-ollama@kubernetescrd, ollama-strip-prefix-ollama@kubernetescrd"   webui:     env:       OLLAMA_API_BASE_URL:
+      "https://ollama.my-domain.com/api"     ingress:       annotations:         #
+      Adds the oidc proxy upfront         traefik.ingress.kubernetes.io/router.middlewares:
+      "ollama-oidc-forward-auth-ollama@kubernetescrd"       host: "ollama.my-domain.com"
+      ``` '
+    digest: 1d6aa3da09f989e5223ed1f4346f723ee7291f8f1902d3c125b056baada143a4
+    home: https://ollama.ai/
+    icon: https://ollama.ai/public/ollama.png
+    keywords:
+    - ai
+    - llm
+    - llama
+    - mistral
+    name: iits-ollama-fullstack
+    type: application
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/iits-ollama-fullstack-0.2.2/iits-ollama-fullstack-0.2.2.tgz
+    version: 0.2.2
+  - apiVersion: v2
     created: "2024-02-09T12:52:45.824500141Z"
     dependencies:
     - condition: weaviate.enabled
@@ -3183,4 +3224,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2024-02-09T12:52:45.953002214Z"
+generated: "2024-02-09T15:17:09.461463127Z"
