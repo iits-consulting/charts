@@ -1,6 +1,6 @@
 # ollama
 
-![Version: 0.6.9](https://img.shields.io/badge/Version-0.6.9-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.1.16](https://img.shields.io/badge/AppVersion-0.1.16-informational?style=flat-square)
+![Version: 0.6.10](https://img.shields.io/badge/Version-0.6.10-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.1.16](https://img.shields.io/badge/AppVersion-0.1.16-informational?style=flat-square)
 
 Get up and running with large language models locally.
 
@@ -121,7 +121,7 @@ Kubernetes: `^1.16.0-0`
 | webui.autoscaling.targetCPUUtilizationPercentage | int | `80` |  |
 | webui.env.OLLAMA_API_BASE_URL | string | `nil` | Required |
 | webui.envSecretName | string | `nil` |  |
-| webui.fullnameOverride | string | `""` |  |
+| webui.fullnameOverride | string | `"ollama-webui"` |  |
 | webui.image.pullPolicy | string | `"IfNotPresent"` |  |
 | webui.image.repository | string | `"iits/ollama-webui"` |  |
 | webui.image.tag | string | `"0.1.21"` |  |
