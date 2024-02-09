@@ -28,7 +28,6 @@ kyverno:
     enabled: true
   grafana:
     enabled: true
-    namespace: monitoring
   installCRDs: true
   existingImagePullSecrets: []
   extraArgs:
