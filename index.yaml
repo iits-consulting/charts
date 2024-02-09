@@ -2162,6 +2162,34 @@ entries:
   ollama:
   - apiVersion: v2
     appVersion: 0.1.16
+    created: "2024-02-09T12:19:09.147339185Z"
+    description: 'Get up and running with large language models locally.  ## Installing
+      the Chart with iits ArgoCD  ```yaml   ollama:     namespace: ollama     repoURL:
+      "https://charts.my-domain.com"     targetRevision: "0.6.2"     valueFile: "value-files/ollama/values.yaml"
+      ```   value-files/ollama/values.yaml  ```yaml ollama:   ollama:     gpu:       enabled:
+      "true"   ingress:     host: "ollama.my-domain.com"     annotations:       #
+      Adds the oidc proxy upfront       traefik.ingress.kubernetes.io/router.middlewares:
+      "ollama-oidc-forward-auth-ollama@kubernetescrd, ollama-strip-prefix-ollama@kubernetescrd"
+      webui:   env:     OLLAMA_API_BASE_URL: "https://ollama.my-domain.com/api"   ingress:     annotations:       #
+      Adds the oidc proxy upfront       traefik.ingress.kubernetes.io/router.middlewares:
+      "ollama-oidc-forward-auth-ollama@kubernetescrd"     host: "ollama.my-domain.com"
+      ``` '
+    digest: 351a0caddb7190b1feb1943679bdb7f6115b4d330da569c5ce64c1cc48c14026
+    home: https://ollama.ai/
+    icon: https://ollama.ai/public/ollama.png
+    keywords:
+    - ai
+    - llm
+    - llama
+    - mistral
+    kubeVersion: ^1.16.0-0
+    name: ollama
+    type: application
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/ollama-0.6.10/ollama-0.6.10.tgz
+    version: 0.6.10
+  - apiVersion: v2
+    appVersion: 0.1.16
     created: "2024-02-06T10:20:30.310209487Z"
     description: 'Get up and running with large language models locally.  ## Installing
       the Chart with iits ArgoCD  ```yaml   ollama:     namespace: ollama     repoURL:
@@ -3058,4 +3086,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2024-02-09T08:28:10.438409141Z"
+generated: "2024-02-09T12:19:09.147769052Z"
