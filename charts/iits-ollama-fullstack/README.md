@@ -1,6 +1,6 @@
 # iits-ollama-fullstack
 
-![Version: 0.2.0](https://img.shields.io/badge/Version-0.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.2.1](https://img.shields.io/badge/Version-0.2.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 Setup private LLM RAG Cluster with (weaviate, Ollama & airbyte)
 
@@ -51,7 +51,7 @@ ollama:
 | Repository | Name | Version |
 |------------|------|---------|
 | https://airbytehq.github.io/helm-charts | airbyte | 0.50.20 |
-| https://charts.iits.tech | ollama | 0.6.9 |
+| https://charts.iits.tech | ollama | 0.6.11 |
 | https://weaviate.github.io/weaviate-helm | weaviate | 16.8.0 |
 
 ## Values

@@ -1,6 +1,6 @@
 # ollama
 
-![Version: 0.6.10](https://img.shields.io/badge/Version-0.6.10-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.1.16](https://img.shields.io/badge/AppVersion-0.1.16-informational?style=flat-square)
+![Version: 0.6.12](https://img.shields.io/badge/Version-0.6.12-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.1.24](https://img.shields.io/badge/AppVersion-0.1.24-informational?style=flat-square)
 
 Get up and running with large language models locally.
 
@@ -98,10 +98,10 @@ Kubernetes: `^1.16.0-0`
 | ollama.readinessProbe.successThreshold | int | `1` |  |
 | ollama.readinessProbe.timeoutSeconds | int | `3` |  |
 | ollama.replicaCount | int | `1` |  |
-| ollama.resources.limits.cpu | int | `7` |  |
-| ollama.resources.limits.memory | string | `"24Gi"` |  |
-| ollama.resources.requests.cpu | int | `4` |  |
-| ollama.resources.requests.memory | string | `"18Gi"` |  |
+| ollama.resources.limits.cpu | int | `4` |  |
+| ollama.resources.limits.memory | string | `"16Gi"` |  |
+| ollama.resources.requests.cpu | int | `2` |  |
+| ollama.resources.requests.memory | string | `"8Gi"` |  |
 | ollama.securityContext | object | `{}` |  |
 | ollama.service.port | int | `11434` |  |
 | ollama.service.type | string | `"ClusterIP"` |  |
