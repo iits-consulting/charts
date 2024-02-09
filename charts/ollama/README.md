@@ -78,7 +78,7 @@ Kubernetes: `^1.16.0-0`
 | ollama.livenessProbe.timeoutSeconds | int | `5` |  |
 | ollama.nameOverride | string | `""` |  |
 | ollama.nodeSelector | object | `{}` |  |
-| ollama.ollama.gpu | object | `{"enabled":false,"number":1}` | If you want to use GPU, set it to true |
+| ollama.ollama.gpu | object | `{"enabled":true,"number":1}` | If you want to use GPU, set it to true |
 | ollama.persistentVolume.accessModes[0] | string | `"ReadWriteOnce"` |  |
 | ollama.persistentVolume.annotations."argocd.argoproj.io/sync-options" | string | `"Prune=false"` |  |
 | ollama.persistentVolume.enabled | bool | `true` |  |
