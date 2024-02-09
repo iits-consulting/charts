@@ -1,6 +1,6 @@
 # kyverno
 
-![Version: 1.3.1](https://img.shields.io/badge/Version-1.3.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 1.3.2](https://img.shields.io/badge/Version-1.3.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 This chart wraps kyverno and some additional components such as the policy reporter as well as
 IngressRoutes/Middlewares to allow usage of the Kyverno UI.
@@ -83,7 +83,6 @@ resource "helm_release" "iits_kyverno_policies" {
 | kyverno.extraArgs[1] | string | `"--exceptionNamespace={{ include \"kyverno.namespace\" . }}"` |  |
 | kyverno.extraArgs[2] | string | `"--enablePolicyException=true"` |  |
 | kyverno.grafana.enabled | bool | `true` |  |
-| kyverno.grafana.namespace | string | `"monitoring"` |  |
 | kyverno.installCRDs | bool | `true` |  |
 | kyverno.serviceMonitor.enabled | bool | `true` |  |
 | policy-reporter.install | bool | `true` |  |
