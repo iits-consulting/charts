@@ -18,7 +18,7 @@ ollama:
   ollama:
     # -- If you want to use GPU, set it to true
     gpu:
-      enabled: false
+      enabled: true
       number: 1
 
   serviceAccount:
