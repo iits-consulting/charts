@@ -214,7 +214,7 @@ webui:
 
   imagePullSecrets: []
   nameOverride: ""
-  fullnameOverride: ""
+  fullnameOverride: "ollama-webui"
 
   serviceAccount:
     # Specifies whether a service account should be created

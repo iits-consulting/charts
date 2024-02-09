@@ -33,7 +33,7 @@ spec:
       securityContext:
         {{- toYaml .Values.ollama.podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ .Chart.Name }}
+        - name: {{ include "ollama.fullname" . }}
           securityContext:
             {{- toYaml .Values.ollama.securityContext | nindent 12 }}
           image: "{{ .Values.ollama.image.repository }}:{{ .Values.ollama.image.tag | default .Chart.AppVersion }}"

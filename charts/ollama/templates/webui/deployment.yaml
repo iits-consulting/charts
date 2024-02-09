@@ -31,7 +31,7 @@ spec:
       securityContext:
         {{- toYaml .Values.webui.podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ .Chart.Name }}
+        - name: {{ include "webui.fullname" . }}
           securityContext:
             {{- toYaml .Values.webui.securityContext | nindent 12 }}
           image: "{{ .Values.webui.image.repository }}:{{ .Values.webui.image.tag | default .Chart.AppVersion }}"
