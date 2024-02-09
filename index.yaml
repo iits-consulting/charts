@@ -1398,6 +1398,47 @@ entries:
     version: 1.1.0
   iits-ollama-fullstack:
   - apiVersion: v2
+    created: "2024-02-09T12:52:45.824500141Z"
+    dependencies:
+    - condition: weaviate.enabled
+      name: weaviate
+      repository: https://weaviate.github.io/weaviate-helm
+      version: 16.8.0
+    - condition: airbyte.enabled
+      name: airbyte
+      repository: https://airbytehq.github.io/helm-charts
+      version: 0.50.20
+    - condition: ollama.enabled
+      name: ollama
+      repository: https://charts.iits.tech
+      version: 0.6.11
+    description: 'Setup private LLM RAG Cluster with (weaviate, Ollama & airbyte)  ##
+      Installing the Chart with iits ArgoCD  # Register the Chart  ```yaml   iits-ollama-fullstack:     targetRevision:
+      "0.1.1"     namespace: ollama     valueFile: "value-files/iits-ollama-fullstack/values.yaml"
+      ```  value-files/iits-ollama-fullstack/values.yaml  ```yaml ingress:   airbyte:     host:
+      "airbyte.ollama.my-domain.com"     annotations:       # Adds the oidc proxy
+      upfront       traefik.ingress.kubernetes.io/router.middlewares: "ollama-oidc-forward-auth-ollama@kubernetescrd"
+      ollama:   ollama:     ollama:       gpu:         enabled: "true"     ingress:       host:
+      "ollama.my-domain.com"       annotations:         # Adds the oidc proxy upfront         traefik.ingress.kubernetes.io/router.middlewares:
+      "ollama-oidc-forward-auth-ollama@kubernetescrd, ollama-strip-prefix-ollama@kubernetescrd"   webui:     env:       OLLAMA_API_BASE_URL:
+      "https://ollama.my-domain.com/api"     ingress:       annotations:         #
+      Adds the oidc proxy upfront         traefik.ingress.kubernetes.io/router.middlewares:
+      "ollama-oidc-forward-auth-ollama@kubernetescrd"       host: "ollama.my-domain.com"
+      ``` '
+    digest: 43e1ebe642ac11cad6b71c3d351cd52754fb3f033ffc0edd89120528babd4ff8
+    home: https://ollama.ai/
+    icon: https://ollama.ai/public/ollama.png
+    keywords:
+    - ai
+    - llm
+    - llama
+    - mistral
+    name: iits-ollama-fullstack
+    type: application
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/iits-ollama-fullstack-0.2.1/iits-ollama-fullstack-0.2.1.tgz
+    version: 0.2.1
+  - apiVersion: v2
     created: "2024-02-06T13:33:07.153555459Z"
     dependencies:
     - condition: weaviate.enabled
@@ -2160,6 +2201,34 @@ entries:
     - https://github.com/iits-consulting/charts/releases/download/oidc-forward-auth-1.0.0/oidc-forward-auth-1.0.0.tgz
     version: 1.0.0
   ollama:
+  - apiVersion: v2
+    appVersion: 0.1.24
+    created: "2024-02-09T12:52:45.952632183Z"
+    description: 'Get up and running with large language models locally.  ## Installing
+      the Chart with iits ArgoCD  ```yaml   ollama:     namespace: ollama     repoURL:
+      "https://charts.my-domain.com"     targetRevision: "0.6.2"     valueFile: "value-files/ollama/values.yaml"
+      ```   value-files/ollama/values.yaml  ```yaml ollama:   ollama:     gpu:       enabled:
+      "true"   ingress:     host: "ollama.my-domain.com"     annotations:       #
+      Adds the oidc proxy upfront       traefik.ingress.kubernetes.io/router.middlewares:
+      "ollama-oidc-forward-auth-ollama@kubernetescrd, ollama-strip-prefix-ollama@kubernetescrd"
+      webui:   env:     OLLAMA_API_BASE_URL: "https://ollama.my-domain.com/api"   ingress:     annotations:       #
+      Adds the oidc proxy upfront       traefik.ingress.kubernetes.io/router.middlewares:
+      "ollama-oidc-forward-auth-ollama@kubernetescrd"     host: "ollama.my-domain.com"
+      ``` '
+    digest: 55cd2b784c2d6df784b5934982b85561199c18297c2fb9b48fddde75ed38c198
+    home: https://ollama.ai/
+    icon: https://ollama.ai/public/ollama.png
+    keywords:
+    - ai
+    - llm
+    - llama
+    - mistral
+    kubeVersion: ^1.16.0-0
+    name: ollama
+    type: application
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/ollama-0.6.12/ollama-0.6.12.tgz
+    version: 0.6.12
   - apiVersion: v2
     appVersion: 0.1.24
     created: "2024-02-09T12:46:35.617861914Z"
@@ -3114,4 +3183,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2024-02-09T12:46:35.618316251Z"
+generated: "2024-02-09T12:52:45.953002214Z"
