@@ -43,7 +43,7 @@ description: |
         host: "ollama.my-domain.com"
   ```
 type: application
-version: 0.2.2
+version: 0.2.3
 home: https://ollama.ai/
 icon: https://ollama.ai/public/ollama.png
 keywords:
