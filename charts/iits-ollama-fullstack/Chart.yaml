@@ -9,7 +9,7 @@ description: |
 
   ```yaml
     iits-ollama-fullstack:
-      targetRevision: "0.1.1"
+      targetRevision: "0.2.4"
       namespace: ollama
       valueFile: "value-files/iits-ollama-fullstack/values.yaml"
   ```
@@ -43,7 +43,7 @@ description: |
         host: "ollama.my-domain.com"
   ```
 type: application
-version: 0.2.3
+version: 0.2.4
 home: https://ollama.ai/
 icon: https://ollama.ai/public/ollama.png
 keywords:
@@ -54,10 +54,10 @@ keywords:
 dependencies:
   - name: weaviate
     repository: https://weaviate.github.io/weaviate-helm
-    version: 16.8.0
+    version: 16.8.1
     condition: weaviate.enabled
   - name: airbyte
-    version: 0.50.20
+    version: 0.53.137
     repository: https://airbytehq.github.io/helm-charts
     condition: airbyte.enabled
   - name: ollama
