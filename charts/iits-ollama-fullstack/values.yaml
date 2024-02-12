@@ -32,10 +32,6 @@ ollama:
   ollama:
     fullnameOverride: ollama
     ollama:
-      gpu:
-        # -- If you want to use GPU, set it to true
-        enabled: "true"
-        number: 1
       ingress:
         # -- Replace this value with your host
         host:
