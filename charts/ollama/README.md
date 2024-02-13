@@ -1,6 +1,6 @@
 # ollama
 
-![Version: 0.6.12](https://img.shields.io/badge/Version-0.6.12-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.1.24](https://img.shields.io/badge/AppVersion-0.1.24-informational?style=flat-square)
+![Version: 0.6.14](https://img.shields.io/badge/Version-0.6.14-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.1.24](https://img.shields.io/badge/AppVersion-0.1.24-informational?style=flat-square)
 
 Get up and running with large language models locally.
 
@@ -119,12 +119,13 @@ Kubernetes: `^1.16.0-0`
 | webui.autoscaling.maxReplicas | int | `100` |  |
 | webui.autoscaling.minReplicas | int | `1` |  |
 | webui.autoscaling.targetCPUUtilizationPercentage | int | `80` |  |
-| webui.env.OLLAMA_API_BASE_URL | string | `nil` | Required |
+| webui.env.MIDDLEWARE_API_BASE_URL | string | `"https://{{$.Values.webui.ingress.host}}/middleware/api"` |  |
+| webui.env.OLLAMA_API_BASE_URL | string | `"https://{{$.Values.webui.ingress.host}}/ollama/api"` |  |
 | webui.envSecretName | string | `nil` |  |
 | webui.fullnameOverride | string | `"ollama-webui"` |  |
 | webui.image.pullPolicy | string | `"IfNotPresent"` |  |
-| webui.image.repository | string | `"iits/ollama-webui"` |  |
-| webui.image.tag | string | `"0.1.21"` |  |
+| webui.image.repository | string | `"iits/ollama-rag-ui"` |  |
+| webui.image.tag | string | `"0.3.1"` |  |
 | webui.imagePullSecrets | list | `[]` |  |
 | webui.ingress.annotations."cert-manager.io/cluster-issuer" | string | `"letsencrypt"` |  |
 | webui.ingress.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
