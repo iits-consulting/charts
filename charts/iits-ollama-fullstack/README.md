@@ -1,6 +1,6 @@
 # iits-ollama-fullstack
 
-![Version: 0.2.4](https://img.shields.io/badge/Version-0.2.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.2.6](https://img.shields.io/badge/Version-0.2.6-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 Setup private LLM RAG Cluster with (weaviate, Ollama & airbyte)
 
@@ -51,7 +51,7 @@ ollama:
 | Repository | Name | Version |
 |------------|------|---------|
 | https://airbytehq.github.io/helm-charts | airbyte | 0.53.137 |
-| https://charts.iits.tech | ollama | 0.6.13 |
+| https://charts.iits.tech | ollama | 0.6.14 |
 | https://weaviate.github.io/weaviate-helm | weaviate | 16.8.1 |
 
 ## Values
@@ -72,7 +72,6 @@ ollama:
 | ollama.enabled | bool | `true` |  |
 | ollama.ollama.fullnameOverride | string | `"ollama"` |  |
 | ollama.ollama.ollama.ingress.host | string | `nil` | Replace this value with your host |
-| ollama.webui.env.OLLAMA_API_BASE_URL | string | `"https://ollama.my-domain.com/api"` | Replace this value with your api base url |
 | ollama.webui.fullnameOverride | string | `"ollama-webui"` |  |
 | ollama.webui.ingress.host | string | `nil` | Replace this value with your host |
 | weaviate.service.type | string | `"ClusterIP"` |  |
