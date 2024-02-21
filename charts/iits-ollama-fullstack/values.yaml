@@ -1,6 +1,6 @@
 ingress:
   airbyte:
-    enabled: false
+    enabled: true
     # -- Replace this value with your host
     host:
     annotations:
@@ -23,11 +23,7 @@ airbyte:
   fullnameOverride: "airbyte"
   webapp:
     ingress:
-      enabled: true
-      annotations:
-        cert-manager.io/cluster-issuer: letsencrypt
-        traefik.ingress.kubernetes.io/router.entrypoints: websecure
-        traefik.ingress.kubernetes.io/router.tls: "true"
+      enabled: false
   connector-builder-server:
     service:
       type: "ClusterIP"
