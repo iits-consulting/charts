@@ -9,7 +9,7 @@ description: |
     ollama:
       namespace: ollama
       repoURL: "https://charts.my-domain.com"
-      targetRevision: "0.6.2"
+      targetRevision: "0.7.0"
       valueFile: "value-files/ollama/values.yaml"
   ```
 
@@ -36,8 +36,8 @@ description: |
       host: "ollama.my-domain.com"
   ```
 type: application
-version: 0.6.14
-appVersion: "0.1.24"
+version: 0.7.0
+appVersion: "0.1.26"
 kubeVersion: "^1.16.0-0"
 home: https://ollama.ai/
 icon: https://ollama.ai/public/ollama.png
