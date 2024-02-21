@@ -51,7 +51,7 @@ ollama:
 | Repository | Name | Version |
 |------------|------|---------|
 | https://airbytehq.github.io/helm-charts | airbyte | 0.53.137 |
-| https://charts.iits.tech | ollama | 0.6.14 |
+| https://charts.iits.tech | ollama | 0.7.0 |
 | https://weaviate.github.io/weaviate-helm | weaviate | 16.8.1 |
 
 ## Values
@@ -60,14 +60,17 @@ ollama:
 |-----|------|---------|-------------|
 | airbyte.connector-builder-server.service.type | string | `"ClusterIP"` |  |
 | airbyte.fullnameOverride | string | `"airbyte"` |  |
-| airbyte.webapp.ingress.enabled | bool | `false` |  |
+| airbyte.webapp.ingress.annotations."cert-manager.io/cluster-issuer" | string | `"letsencrypt"` |  |
+| airbyte.webapp.ingress.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
+| airbyte.webapp.ingress.annotations."traefik.ingress.kubernetes.io/router.tls" | string | `"true"` |  |
+| airbyte.webapp.ingress.enabled | bool | `true` |  |
 | ingress.airbyte.annotations."cert-manager.io/cluster-issuer" | string | `"letsencrypt"` |  |
 | ingress.airbyte.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
 | ingress.airbyte.annotations."traefik.ingress.kubernetes.io/router.tls" | string | `"true"` |  |
 | ingress.airbyte.defaultIngress.backend.name | string | `"{{ .Release.Name }}-airbyte-webapp-svc"` |  |
 | ingress.airbyte.defaultIngress.backend.port.name | string | `"http"` |  |
 | ingress.airbyte.defaultIngress.enabled | bool | `true` |  |
-| ingress.airbyte.enabled | bool | `true` |  |
+| ingress.airbyte.enabled | bool | `false` |  |
 | ingress.airbyte.host | string | `nil` | Replace this value with your host |
 | ollama.enabled | bool | `true` |  |
 | ollama.ollama.fullnameOverride | string | `"ollama"` |  |

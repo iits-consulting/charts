@@ -1,6 +1,6 @@
 # ollama
 
-![Version: 0.6.14](https://img.shields.io/badge/Version-0.6.14-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.1.24](https://img.shields.io/badge/AppVersion-0.1.24-informational?style=flat-square)
+![Version: 0.7.0](https://img.shields.io/badge/Version-0.7.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.1.26](https://img.shields.io/badge/AppVersion-0.1.26-informational?style=flat-square)
 
 Get up and running with large language models locally.
 
@@ -10,7 +10,7 @@ Get up and running with large language models locally.
   ollama:
     namespace: ollama
     repoURL: "https://charts.my-domain.com"
-    targetRevision: "0.6.2"
+    targetRevision: "0.7.0"
     valueFile: "value-files/ollama/values.yaml"
 ```
 
