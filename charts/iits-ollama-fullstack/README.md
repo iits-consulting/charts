@@ -1,6 +1,6 @@
 # iits-ollama-fullstack
 
-![Version: 0.2.6](https://img.shields.io/badge/Version-0.2.6-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.3.0](https://img.shields.io/badge/Version-0.3.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 Setup private LLM RAG Cluster with (weaviate, Ollama & airbyte)
 
@@ -10,7 +10,7 @@ Setup private LLM RAG Cluster with (weaviate, Ollama & airbyte)
 
 ```yaml
   iits-ollama-fullstack:
-    targetRevision: "0.2.7"
+    targetRevision: "0.3.0"
     namespace: ollama
     valueFile: "value-files/iits-ollama-fullstack/values.yaml"
 ```
@@ -42,6 +42,15 @@ ollama:
         # Adds the oidc proxy upfront
         traefik.ingress.kubernetes.io/router.middlewares: "ollama-oidc-forward-auth-ollama@kubernetescrd"
       host: "ollama.my-domain.com"
+  middleware:
+    env:
+      OLLAMA_URL: "http://ollama:11434"
+      WEAVIATE_URL: "http://weaviate:80"
+    ingress:
+      annotations:
+        # Adds the oidc proxy upfront
+        traefik.ingress.kubernetes.io/router.middlewares: "ollama-oidc-forward-auth-ollama@kubernetescrd"
+      host: "ollama.my-domain.com"
 ```
 
 **Homepage:** <https://ollama.ai/>
@@ -50,8 +59,8 @@ ollama:
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://airbytehq.github.io/helm-charts | airbyte | 0.53.137 |
-| https://charts.iits.tech | ollama | 0.6.14 |
+| https://airbytehq.github.io/helm-charts | airbyte | 0.53.272 |
+| https://charts.iits.tech | ollama | 0.7.1 |
 | https://weaviate.github.io/weaviate-helm | weaviate | 16.8.1 |
 
 ## Values
@@ -70,6 +79,8 @@ ollama:
 | ingress.airbyte.enabled | bool | `true` |  |
 | ingress.airbyte.host | string | `nil` | Replace this value with your host |
 | ollama.enabled | bool | `true` |  |
+| ollama.middleware.fullnameOverride | string | `"chat-middleware"` |  |
+| ollama.middleware.ingress.host | string | `nil` | Replace this value with your host |
 | ollama.ollama.fullnameOverride | string | `"ollama"` |  |
 | ollama.ollama.ollama.ingress.host | string | `nil` | Replace this value with your host |
 | ollama.webui.fullnameOverride | string | `"ollama-webui"` |  |
