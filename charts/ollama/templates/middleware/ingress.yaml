@@ -1,61 +1,58 @@
-{{- if .Values.ingress.enabled -}}
-{{- $fullName := include "ollama-middleware.fullname" . -}}
-{{- $svcPort := .Values.service.port -}}
-{{- if and .Values.ingress.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}
-  {{- if not (hasKey .Values.ingress.annotations "kubernetes.io/ingress.class") }}
-  {{- $_ := set .Values.ingress.annotations "kubernetes.io/ingress.class" .Values.ingress.className}}
-  {{- end }}
-{{- end }}
-{{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion -}}
+{{- with .Values.middleware.ingress }}
+{{- if .enabled }}
 apiVersion: networking.k8s.io/v1
-{{- else if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
-apiVersion: networking.k8s.io/v1beta1
-{{- else -}}
-apiVersion: extensions/v1beta1
-{{- end }}
 kind: Ingress
 metadata:
-  name: {{ $fullName }}
-  labels:
-    {{- include "ollama-middleware.labels" . | nindent 4 }}
-  {{- with .Values.ingress.annotations }}
-  annotations:
+  name: {{ include "ollama-middleware.fullname" $ }}
+  {{- with .labels }}
     {{- toYaml . | nindent 4 }}
   {{- end }}
-spec:
-  {{- if and .Values.ingress.className (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion) }}
-  ingressClassName: {{ .Values.ingress.className }}
+  {{- with .annotations }}
+  annotations:
+    {{- tpl (toYaml .) $ | nindent 4 }}
   {{- end }}
-  {{- if .Values.ingress.tls }}
+spec:
+  ingressClassName: {{ .className | default "traefik" }}
+  {{- if .tls }}
   tls:
-    {{- range .Values.ingress.tls }}
+    {{- range .tls }}
+    {{- $certSecretName := .secretName | default (printf "%s-%s" (include "ollama-middleware.fullname" $) "cert")}}
+    {{- if .hosts }}
+    {{- range .hosts }}
     - hosts:
-        {{- range .hosts }}
-        - {{ . | quote }}
-        {{- end }}
-      secretName: {{ .secretName }}
+        - {{ tpl (toYaml .) $ }}
+      secretName: {{ $certSecretName }}
+    {{- end }}
+    {{- end }}
     {{- end }}
   {{- end }}
   rules:
-    {{- range .Values.ingress.hosts }}
-    - host: {{ .host | quote }}
+      {{- if .hosts }}
+      {{- range .hosts }}
+    - host: {{ tpl (toYaml .host) $ }}
       http:
         paths:
-          {{- range .paths }}
-          - path: {{ .path }}
-            {{- if and .pathType (semverCompare ">=1.18-0" $.Capabilities.KubeVersion.GitVersion) }}
-            pathType: {{ .pathType }}
-            {{- end }}
+            {{- range .paths }}
+          - path: {{ .path  }}
+            pathType: {{ .pathType | default "Prefix"}}
             backend:
-              {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
               service:
-                name: {{ $fullName }}
+                name: {{ include "ollama-middleware.fullname" $ }}
                 port:
-                  number: {{ $svcPort }}
-              {{- else }}
-              serviceName: {{ $fullName }}
-              servicePort: {{ $svcPort }}
-              {{- end }}
-          {{- end }}
+                  number: {{ default 8080 $.Values.middleware.service.port }}
+            {{- end }}
+      {{- end }}
+    {{- else }}
+    - host: {{ tpl (toYaml .host) $ }}
+      http:
+        paths:
+          - path: "/{{ include "ollama-middleware.fullname" $ }}"
+            pathType: "Prefix"
+            backend:
+              service:
+                name: {{ include "ollama-middleware.fullname" $ }}
+                port:
+                  number: {{ default 8080 $.Values.ollama.service.port }}
     {{- end }}
+{{- end }}
 {{- end }}
