@@ -9,7 +9,7 @@ description: |
 
   ```yaml
     iits-ollama-fullstack:
-      targetRevision: "0.3.0"
+      targetRevision: "0.3.1"
       namespace: ollama
       valueFile: "value-files/iits-ollama-fullstack/values.yaml"
   ```
@@ -52,7 +52,7 @@ description: |
         host: "ollama.my-domain.com"
   ```
 type: application
-version: 0.3.0
+version: 0.3.1
 home: https://ollama.ai/
 icon: https://ollama.ai/public/ollama.png
 keywords:

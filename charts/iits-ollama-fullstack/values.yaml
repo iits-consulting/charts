@@ -1,21 +1,3 @@
-ingress:
-  airbyte:
-    enabled: true
-    # -- Replace this value with your host
-    host:
-    annotations:
-      cert-manager.io/cluster-issuer: letsencrypt
-      traefik.ingress.kubernetes.io/router.entrypoints: websecure
-      traefik.ingress.kubernetes.io/router.tls: "true"
-    # Creates default Ingress with tls and the given host from .Values.ingress.host
-    defaultIngress:
-      enabled: true
-      # Default values can be overriden
-      backend:
-        name: "{{ .Release.Name }}-airbyte-webapp-svc"
-        port:
-          name: "http"
-
 weaviate:
   service:
     type: "ClusterIP"
@@ -23,7 +5,16 @@ airbyte:
   fullnameOverride: "airbyte"
   webapp:
     ingress:
-      enabled: false
+      enabled: true
+      hosts:
+        - host:
+          paths:
+            - path: "/"
+              pathType: "Prefix"
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt
+        traefik.ingress.kubernetes.io/router.entrypoints: websecure
+        traefik.ingress.kubernetes.io/router.tls: "true"
   connector-builder-server:
     service:
       type: "ClusterIP"
