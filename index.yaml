@@ -2448,6 +2448,36 @@ entries:
     version: 1.0.0
   ollama:
   - apiVersion: v2
+    created: "2024-02-22T12:58:24.391653012Z"
+    description: 'Get up and running with large language models locally.  ## Installing
+      the Chart with iits ArgoCD  ```yaml   ollama:     namespace: ollama     repoURL:
+      "https://charts.my-domain.com"     targetRevision: "0.7.1"     valueFile: "value-files/ollama/values.yaml"
+      ```   value-files/ollama/values.yaml  ```yaml ollama:   ollama:     gpu:       enabled:
+      "true"   ingress:     host: "ollama.my-domain.com"     annotations:       #
+      Adds the oidc proxy upfront       traefik.ingress.kubernetes.io/router.middlewares:
+      "ollama-oidc-forward-auth-ollama@kubernetescrd, ollama-strip-prefix-ollama@kubernetescrd"
+      webui:   env:     OLLAMA_API_BASE_URL: "https://ollama.my-domain.com/api"   ingress:     annotations:       #
+      Adds the oidc proxy upfront       traefik.ingress.kubernetes.io/router.middlewares:
+      "ollama-oidc-forward-auth-ollama@kubernetescrd"     host: "ollama.my-domain.com"
+      middleware:   env:     OLLAMA_URL: "http://ollama:11434"     WEAVIATE_URL: "http://weaviate:80"   ingress:     annotations:       #
+      Adds the oidc proxy upfront       traefik.ingress.kubernetes.io/router.middlewares:
+      "ollama-oidc-forward-auth-ollama@kubernetescrd"     host: "ollama.my-domain.com"
+      ``` '
+    digest: 733ba143cbd6f5140cf4833d6067bffbf675257c3b7547f09775499c0ecec849
+    home: https://ollama.ai/
+    icon: https://ollama.ai/public/ollama.png
+    keywords:
+    - ai
+    - llm
+    - llama
+    - mistral
+    kubeVersion: ^1.16.0-0
+    name: ollama
+    type: application
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/ollama-0.7.1/ollama-0.7.1.tgz
+    version: 0.7.1
+  - apiVersion: v2
     appVersion: 0.1.26
     created: "2024-02-21T19:57:37.95969113Z"
     description: 'Get up and running with large language models locally.  ## Installing
@@ -3513,4 +3543,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2024-02-21T20:07:34.11850369Z"
+generated: "2024-02-22T12:58:24.392128264Z"
