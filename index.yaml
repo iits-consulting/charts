@@ -2538,6 +2538,36 @@ entries:
     version: 1.0.0
   ollama:
   - apiVersion: v2
+    created: "2024-02-22T14:53:06.426984622Z"
+    description: 'Get up and running with large language models locally.  ## Installing
+      the Chart with iits ArgoCD  ```yaml   ollama:     namespace: ollama     repoURL:
+      "https://charts.my-domain.com"     targetRevision: "0.7.2"     valueFile: "value-files/ollama/values.yaml"
+      ```   value-files/ollama/values.yaml  ```yaml ollama:   ollama:     gpu:       enabled:
+      "true"   ingress:     host: "ollama.my-domain.com"     annotations:       #
+      Adds the oidc proxy upfront       traefik.ingress.kubernetes.io/router.middlewares:
+      "ollama-oidc-forward-auth-ollama@kubernetescrd, ollama-strip-prefix-ollama@kubernetescrd"
+      webui:   env:     OLLAMA_API_BASE_URL: "https://ollama.my-domain.com/api"   ingress:     annotations:       #
+      Adds the oidc proxy upfront       traefik.ingress.kubernetes.io/router.middlewares:
+      "ollama-oidc-forward-auth-ollama@kubernetescrd"     host: "ollama.my-domain.com"
+      middleware:   env:     OLLAMA_URL: "http://ollama:11434"     WEAVIATE_URL: "http://weaviate:80"   ingress:     annotations:       #
+      Adds the oidc proxy upfront       traefik.ingress.kubernetes.io/router.middlewares:
+      "ollama-oidc-forward-auth-ollama@kubernetescrd"     host: "ollama.my-domain.com"
+      ``` '
+    digest: 065922a242c8163e8995c214790f44da90e15123052a0b63594ccbe651c8e698
+    home: https://ollama.ai/
+    icon: https://ollama.ai/public/ollama.png
+    keywords:
+    - ai
+    - llm
+    - llama
+    - mistral
+    kubeVersion: ^1.16.0-0
+    name: ollama
+    type: application
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/ollama-0.7.2/ollama-0.7.2.tgz
+    version: 0.7.2
+  - apiVersion: v2
     created: "2024-02-22T12:58:24.391653012Z"
     description: 'Get up and running with large language models locally.  ## Installing
       the Chart with iits ArgoCD  ```yaml   ollama:     namespace: ollama     repoURL:
@@ -3633,4 +3663,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2024-02-22T14:21:44.59193087Z"
+generated: "2024-02-22T14:53:06.427491569Z"
