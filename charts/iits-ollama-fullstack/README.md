@@ -1,6 +1,6 @@
 # iits-ollama-fullstack
 
-![Version: 0.3.0](https://img.shields.io/badge/Version-0.3.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.3.1](https://img.shields.io/badge/Version-0.3.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 Setup private LLM RAG Cluster with (weaviate, Ollama & airbyte)
 
@@ -10,7 +10,7 @@ Setup private LLM RAG Cluster with (weaviate, Ollama & airbyte)
 
 ```yaml
   iits-ollama-fullstack:
-    targetRevision: "0.3.0"
+    targetRevision: "0.3.1"
     namespace: ollama
     valueFile: "value-files/iits-ollama-fullstack/values.yaml"
 ```
@@ -69,15 +69,13 @@ ollama:
 |-----|------|---------|-------------|
 | airbyte.connector-builder-server.service.type | string | `"ClusterIP"` |  |
 | airbyte.fullnameOverride | string | `"airbyte"` |  |
-| airbyte.webapp.ingress.enabled | bool | `false` |  |
-| ingress.airbyte.annotations."cert-manager.io/cluster-issuer" | string | `"letsencrypt"` |  |
-| ingress.airbyte.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
-| ingress.airbyte.annotations."traefik.ingress.kubernetes.io/router.tls" | string | `"true"` |  |
-| ingress.airbyte.defaultIngress.backend.name | string | `"{{ .Release.Name }}-airbyte-webapp-svc"` |  |
-| ingress.airbyte.defaultIngress.backend.port.name | string | `"http"` |  |
-| ingress.airbyte.defaultIngress.enabled | bool | `true` |  |
-| ingress.airbyte.enabled | bool | `true` |  |
-| ingress.airbyte.host | string | `nil` | Replace this value with your host |
+| airbyte.webapp.ingress.annotations."cert-manager.io/cluster-issuer" | string | `"letsencrypt"` |  |
+| airbyte.webapp.ingress.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
+| airbyte.webapp.ingress.annotations."traefik.ingress.kubernetes.io/router.tls" | string | `"true"` |  |
+| airbyte.webapp.ingress.enabled | bool | `true` |  |
+| airbyte.webapp.ingress.hosts[0].host | string | `nil` |  |
+| airbyte.webapp.ingress.hosts[0].paths[0].path | string | `"/"` |  |
+| airbyte.webapp.ingress.hosts[0].paths[0].pathType | string | `"Prefix"` |  |
 | ollama.enabled | bool | `true` |  |
 | ollama.middleware.fullnameOverride | string | `"chat-middleware"` |  |
 | ollama.middleware.ingress.host | string | `nil` | Replace this value with your host |
