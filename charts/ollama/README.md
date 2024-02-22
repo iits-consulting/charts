@@ -1,6 +1,6 @@
 # ollama
 
-![Version: 0.7.2](https://img.shields.io/badge/Version-0.7.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.7.3](https://img.shields.io/badge/Version-0.7.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 Get up and running with large language models locally.
 
@@ -10,7 +10,7 @@ Get up and running with large language models locally.
   ollama:
     namespace: ollama
     repoURL: "https://charts.my-domain.com"
-    targetRevision: "0.7.2"
+    targetRevision: "0.7.3"
     valueFile: "value-files/ollama/values.yaml"
 ```
 
@@ -60,6 +60,10 @@ Kubernetes: `^1.16.0-0`
 | middleware.deployment.env.WEAVIATE_URL | string | `"http://weaviate:80"` |  |
 | middleware.deployment.envFromSecret | string | `nil` |  |
 | middleware.deployment.fullnameOverride | string | `""` |  |
+| middleware.deployment.health.liveness.path | string | `"/middleware/api/chat/health"` |  |
+| middleware.deployment.health.liveness.port | int | `8000` |  |
+| middleware.deployment.health.readiness.path | string | `"/middleware/api/chat/health"` |  |
+| middleware.deployment.health.readiness.port | int | `8000` |  |
 | middleware.deployment.image.pullPolicy | string | `"IfNotPresent"` |  |
 | middleware.deployment.image.repository | string | `"registry.gitlab.iits.tech/private/llm/llm-middleware"` |  |
 | middleware.deployment.image.tag | string | `""` |  |
