@@ -1,68 +1,106 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "ollama-middleware.fullname" . }}
+  name: {{ include "llm-middleware.fullname" . }}
   labels:
-    {{- include "ollama-middleware.labels" . | nindent 4 }}
+    {{- include "llm-middleware.labels" . | nindent 4 }}
 spec:
-  {{- if not .Values.middleware.autoscaling.enabled }}
-  replicas: {{ .Values.middleware.replicaCount }}
-  {{- end }}
+  replicas: {{ .Values.middleware.deployment.replicaCount }}
+  revisionHistoryLimit: 3
   selector:
     matchLabels:
-      {{- include "ollama-middleware.selectorLabels" . | nindent 6 }}
+      {{- include "llm-middleware.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      {{- with .Values.middleware.podAnnotations }}
+      {{- with .Values.middleware.deployment.podAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "ollama-middleware.labels" . | nindent 8 }}
-        {{- with .Values.middleware.podLabels }}
-        {{- toYaml . | nindent 8 }}
-        {{- end }}
+        {{- include "llm-middleware.selectorLabels" . | nindent 8 }}
     spec:
-      {{- with .Values.middleware.imagePullSecrets }}
+      {{- if .Values.middleware.deployment.onePodForEachNode}}
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: "app"
+                    operator: In
+                    values:
+                      - {{ include "llm-middleware.fullname" . }}
+              topologyKey: "kubernetes.io/hostname"
+      {{- end}}
+      {{- with .Values.middleware.deployment.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "ollama-middleware.serviceAccountName" . }}
+      serviceAccountName: {{ include "llm-middleware.serviceAccountName" . }}
+      {{- if .Values.middleware.deployment.podSecurityContext }}
       securityContext:
-        {{- toYaml .Values.middleware.podSecurityContext | nindent 8 }}
-      containers:
-        - name: {{ .Chart.Name }}
-          securityContext:
-            {{- toYaml .Values.middleware.securityContext | nindent 12 }}
-          image: "{{ .Values.middleware.image.repository }}:{{ .Values.middleware.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.middleware.image.pullPolicy }}
-          ports:
-            - name: http
-              containerPort: {{ .Values.middleware.service.port }}
-              protocol: TCP
-          livenessProbe:
-            {{- toYaml .Values.middleware.livenessProbe | nindent 12 }}
-          readinessProbe:
-            {{- toYaml .Values.middleware.readinessProbe | nindent 12 }}
-          resources:
-            {{- toYaml .Values.middleware.resources | nindent 12 }}
-          {{- with .Values.middleware.volumeMounts }}
-          volumeMounts:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-      {{- with .Values.middleware.volumes }}
-      volumes:
-        {{- toYaml . | nindent 8 }}
+        {{- toYaml .Values.middleware.deployment.podSecurityContext | nindent 8 }}
       {{- end }}
-      {{- with .Values.middleware.nodeSelector }}
+      containers:
+        - name: {{ .Release.Name }}
+          {{- if .Values.middleware.deployment.securityContext }}
+          securityContext:
+            {{- toYaml .Values.middleware.deployment.securityContext | nindent 12 }}
+          {{- end }}
+          image: "{{ tpl .Values.middleware.deployment.image.repository . }}:{{ .Values.middleware.deployment.image.tag }}"
+          imagePullPolicy: {{ .Values.middleware.deployment.image.pullPolicy }}
+          env:
+            {{- range $key, $value := .Values.middleware.deployment.env }}
+            - name: {{ printf "%s" $key | replace "." "_" | upper | quote }}
+              value: {{ tpl ($value | toString) $ | quote }}
+            {{- end }}
+          {{- if .Values.middleware.deployment.envSecretName}}
+          envFrom:
+            - secretRef:
+                name: {{.Values.middleware.deployment.envSecretName}}
+          {{- end }}
+          ports:
+            {{- range $name,$values := .Values.middleware.deployment.ports }}
+            - name: {{$name }}
+              protocol: {{ ($values).protocol | default "TCP"}}
+              containerPort: {{($values).port | default 80 }}
+            {{- end }}
+          {{- with ((.Values.middleware.deployment).health).liveness }}
+          livenessProbe:
+            httpGet:
+              path: {{ tpl .path $ | default "/" }}
+              port: {{ .port | default 80 }}
+            initialDelaySeconds: {{ .initialDelaySeconds | default 20 }}
+            periodSeconds: 5
+            failureThreshold: {{ .failureThreshold | default 5 }}
+          {{- end }}
+          {{- with ((.Values.middleware.deployment).health).readiness }}
+          readinessProbe:
+            httpGet:
+              path: {{ tpl .path $ | default "/" }}
+              port: {{ .port | default 80 }}
+            initialDelaySeconds: {{ .initialDelaySeconds | default 20 }}
+            periodSeconds: 5
+            failureThreshold: {{ .failureThreshold | default 5 }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.middleware.deployment.resources | nindent 12 }}
+      {{- with .Values.middleware.deployment.volumeMounts }}
+          volumeMounts:
+              {{- toYaml . | nindent 12 }}
+      {{- end }}
+      {{- with .Values.middleware.deployment.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.middleware.affinity }}
+      {{- with .Values.middleware.deployment.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.middleware.tolerations }}
+      {{- with .Values.middleware.deployment.tolerations }}
       tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.middleware.deployment.volumes }}
+      volumes:
         {{- toYaml . | nindent 8 }}
       {{- end }}

@@ -108,8 +108,8 @@ Create the name of the service account to use
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "ollama-middleware.name" -}}
-{{- default .Chart.Name .Values.middleware.nameOverride | trunc 63 | trimSuffix "-" }}
+{{- define "llm-middleware.name" -}}
+{{- default .Release.Name .Values.middleware.deployment.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
@@ -117,11 +117,11 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "ollama-middleware.fullname" -}}
-{{- if .Values.middleware.fullnameOverride }}
-{{- .Values.middleware.fullnameOverride | trunc 63 | trimSuffix "-" }}
+{{- define "llm-middleware.fullname" -}}
+{{- if .Values.middleware.deployment.fullnameOverride }}
+{{- .Values.middleware.deployment.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
-{{- $name := default .Chart.Name .Values.middleware.nameOverride }}
+{{- $name := default .Release.Name .Values.middleware.deployment.nameOverride }}
 {{- if contains $name .Release.Name }}
 {{- .Release.Name | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -133,16 +133,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "ollama-middleware.chart" -}}
+{{- define "llm-middleware.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "ollama-middleware.labels" -}}
-helm.sh/chart: {{ include "ollama-middleware.chart" . }}
-{{ include "ollama-middleware.selectorLabels" . }}
+{{- define "llm-middleware.labels" -}}
+helm.sh/chart: {{ include "llm-middleware.chart" . }}
+{{ include "llm-middleware.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -152,18 +152,18 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "ollama-middleware.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "ollama-middleware.name" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
+{{- define "llm-middleware.selectorLabels" -}}
+app: {{ include "llm-middleware.name" . }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "ollama-middleware.serviceAccountName" -}}
+{{- define "llm-middleware.serviceAccountName" -}}
 {{- if .Values.middleware.serviceAccount.create }}
-{{- default (include "ollama-middleware.fullname" .) .Values.middleware.serviceAccount.name }}
+{{- default (include "llm-middleware.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.middleware.serviceAccount.name }}
 {{- end }}
 {{- end }}
+

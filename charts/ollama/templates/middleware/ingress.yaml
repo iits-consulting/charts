@@ -3,7 +3,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ include "ollama-middleware.fullname" $ }}
+  name: {{ include "llm-middleware.fullname" $ }}
   {{- with .labels }}
     {{- toYaml . | nindent 4 }}
   {{- end }}
@@ -13,10 +13,38 @@ metadata:
   {{- end }}
 spec:
   ingressClassName: {{ .className | default "traefik" }}
+
+  {{- if .defaultIngress.enabled | default true }}
+  {{- $certSecretName := (.defaultIngress.tls).secretName | default (printf "%s-%s" (include "llm-middleware.fullname" $) "cert")}}
+  tls:
+    - hosts:
+        - {{ tpl (toYaml .host) $ }}
+      secretName: {{ $certSecretName }}
+  rules:
+    - host: {{ tpl (toYaml .host) $ }}
+      http:
+        paths:
+          - path: {{ .defaultIngress.path | default "/" }}
+            pathType: {{ .defaultIngress.pathType | default "Prefix"}}
+            backend:
+              service:
+                {{- if (.defaultIngress.backend).name }}
+                name: {{ tpl (toYaml .defaultIngress.backend.name) $ }}
+                {{- else }}
+                name: {{ default (include "llm-middleware.fullname" $)}}
+                {{- end}}
+                port:
+                  {{- if ((.defaultIngress.backend).port).name }}
+                  name: {{ tpl (toYaml .defaultIngress.backend.port.name) $ }}
+                  {{- else }}
+                  name: {{ default (include "llm-middleware.fullname" $)}}
+                  {{- end}}
+  {{- else }}
+
   {{- if .tls }}
   tls:
     {{- range .tls }}
-    {{- $certSecretName := .secretName | default (printf "%s-%s" (include "ollama-middleware.fullname" $) "cert")}}
+    {{- $certSecretName := .secretName | default (printf "%s-%s" (include "llm-middleware.fullname" $) "cert")}}
     {{- if .hosts }}
     {{- range .hosts }}
     - hosts:
@@ -27,7 +55,6 @@ spec:
     {{- end }}
   {{- end }}
   rules:
-      {{- if .hosts }}
       {{- range .hosts }}
     - host: {{ tpl (toYaml .host) $ }}
       http:
@@ -37,22 +64,19 @@ spec:
             pathType: {{ .pathType | default "Prefix"}}
             backend:
               service:
-                name: {{ include "ollama-middleware.fullname" $ }}
+                {{- if (.backend).name }}
+                name: {{ tpl (toYaml .backend.name) $ }}
+                {{- else }}
+                name: {{ default (include "llm-middleware.fullname" $)}}
+                {{- end}}
                 port:
-                  number: {{ default 8080 $.Values.middleware.service.port }}
+                  {{- if ((.backend).port).name }}
+                  name: {{ tpl (toYaml .defaultIngress.backend.port.name) $ }}
+                  {{- else }}
+                  name: {{ default (include "llm-middleware.fullname" $)}}
+                  {{- end}}
             {{- end }}
       {{- end }}
-    {{- else }}
-    - host: {{ tpl (toYaml .host) $ }}
-      http:
-        paths:
-          - path: "/{{ include "ollama-middleware.fullname" $ }}"
-            pathType: "Prefix"
-            backend:
-              service:
-                name: {{ include "ollama-middleware.fullname" $ }}
-                port:
-                  number: {{ default 8080 $.Values.ollama.service.port }}
-    {{- end }}
+  {{- end }}
 {{- end }}
 {{- end }}

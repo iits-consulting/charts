@@ -1,15 +1,17 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "ollama-middleware.fullname" . }}
+  name: {{ include "llm-middleware.fullname" . }}
   labels:
-    {{- include "ollama-middleware.labels" . | nindent 4 }}
+    {{- include "llm-middleware.labels" . | nindent 4 }}
 spec:
-  type: {{ .Values.middleware.service.type }}
+  type: {{ (.Values.middleware.service).serviceType | default "ClusterIP"}}
   ports:
-    - port: {{ .Values.middleware.service.port }}
-      targetPort: http
-      protocol: TCP
-      name: http
+    {{- range $name,$values := .Values.middleware.service.ports }}
+    - targetPort: {{ ($values).targetPort | default 80 }}
+      name: {{ ($values).name | default $name }}
+      protocol: {{ ($values).protocol | default "TCP"}}
+      port: {{($values).port | default 80 }}
+    {{- end }}
   selector:
-    {{- include "ollama-middleware.selectorLabels" . | nindent 4 }}
+    {{- include "llm-middleware.selectorLabels" . | nindent 4 }}
