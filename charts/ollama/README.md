@@ -1,6 +1,6 @@
 # ollama
 
-![Version: 0.7.1](https://img.shields.io/badge/Version-0.7.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.7.2](https://img.shields.io/badge/Version-0.7.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 Get up and running with large language models locally.
 
@@ -10,7 +10,7 @@ Get up and running with large language models locally.
   ollama:
     namespace: ollama
     repoURL: "https://charts.my-domain.com"
-    targetRevision: "0.7.1"
+    targetRevision: "0.7.2"
     valueFile: "value-files/ollama/values.yaml"
 ```
 
@@ -55,62 +55,41 @@ Kubernetes: `^1.16.0-0`
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| middleware.affinity | object | `{}` |  |
-| middleware.autoscaling.enabled | bool | `false` |  |
-| middleware.autoscaling.maxReplicas | int | `100` |  |
-| middleware.autoscaling.minReplicas | int | `1` |  |
-| middleware.autoscaling.targetCPUUtilizationPercentage | int | `80` |  |
-| middleware.env.OLLAMA_URL | string | `"http://ollama:11434"` |  |
-| middleware.env.WEAVIATE_URL | string | `"http://weaviate:80"` |  |
-| middleware.envSecretName | string | `nil` |  |
-| middleware.fullnameOverride | string | `"chat-middleware"` |  |
-| middleware.image.pullPolicy | string | `"IfNotPresent"` |  |
-| middleware.image.repository | string | `"registry.gitlab.iits.tech/private/llm/llm-middleware"` |  |
-| middleware.image.tag | string | `""` |  |
-| middleware.imagePullSecrets | list | `[]` |  |
+| middleware.deployment.affinity | object | `{}` |  |
+| middleware.deployment.env.OLLAMA_URL | string | `"http://ollama:11434"` |  |
+| middleware.deployment.env.WEAVIATE_URL | string | `"http://weaviate:80"` |  |
+| middleware.deployment.envFromSecret | string | `nil` |  |
+| middleware.deployment.fullnameOverride | string | `""` |  |
+| middleware.deployment.image.pullPolicy | string | `"IfNotPresent"` |  |
+| middleware.deployment.image.repository | string | `"registry.gitlab.iits.tech/private/llm/llm-middleware"` |  |
+| middleware.deployment.image.tag | string | `""` |  |
+| middleware.deployment.imagePullSecrets | list | `[]` |  |
+| middleware.deployment.nameOverride | string | `""` |  |
+| middleware.deployment.podAnnotations | object | `{}` |  |
+| middleware.deployment.podSecurityContext | string | `nil` |  |
+| middleware.deployment.ports.http.port | int | `8000` |  |
+| middleware.deployment.replicaCount | string | `"1"` |  |
+| middleware.deployment.resources.limits.cpu | string | `"2000m"` |  |
+| middleware.deployment.resources.limits.memory | string | `"2Gi"` |  |
+| middleware.deployment.resources.requests.cpu | string | `"500m"` |  |
+| middleware.deployment.resources.requests.memory | string | `"512Mi"` |  |
+| middleware.deployment.securityContext | string | `nil` |  |
+| middleware.deployment.volumeMounts | object | `{}` |  |
+| middleware.deployment.volumes | object | `{}` |  |
 | middleware.ingress.annotations."cert-manager.io/cluster-issuer" | string | `"letsencrypt"` |  |
 | middleware.ingress.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
 | middleware.ingress.annotations."traefik.ingress.kubernetes.io/router.tls" | string | `"true"` |  |
+| middleware.ingress.defaultIngress.backend.port.name | string | `"http"` |  |
+| middleware.ingress.defaultIngress.enabled | bool | `true` |  |
+| middleware.ingress.defaultIngress.path | string | `"/middleware"` |  |
+| middleware.ingress.defaultIngress.tls.secretName | string | `"llm-cert"` |  |
 | middleware.ingress.enabled | bool | `true` |  |
-| middleware.ingress.host | string | `nil` | Required, replace it with your host address |
-| middleware.ingress.hosts[0].host | string | `"{{.Values.middleware.ingress.host}}"` |  |
-| middleware.ingress.hosts[0].paths[0].path | string | `"/"` |  |
-| middleware.ingress.tls[0].hosts[0] | string | `"{{.Values.middleware.ingress.host}}"` |  |
-| middleware.ingress.tls[0].secretName | string | `"ollama-cert"` |  |
-| middleware.livenessProbe.enabled | bool | `true` |  |
-| middleware.livenessProbe.failureThreshold | int | `6` |  |
-| middleware.livenessProbe.initialDelaySeconds | int | `60` |  |
-| middleware.livenessProbe.path | string | `"/"` |  |
-| middleware.livenessProbe.periodSeconds | int | `10` |  |
-| middleware.livenessProbe.successThreshold | int | `1` |  |
-| middleware.livenessProbe.timeoutSeconds | int | `5` |  |
-| middleware.nameOverride | string | `""` |  |
-| middleware.nodeSelector | object | `{}` |  |
-| middleware.podAnnotations | object | `{}` |  |
-| middleware.podLabels | object | `{}` |  |
-| middleware.podSecurityContext | object | `{}` |  |
-| middleware.readinessProbe.enabled | bool | `true` |  |
-| middleware.readinessProbe.failureThreshold | int | `6` |  |
-| middleware.readinessProbe.initialDelaySeconds | int | `30` |  |
-| middleware.readinessProbe.path | string | `"/"` |  |
-| middleware.readinessProbe.periodSeconds | int | `5` |  |
-| middleware.readinessProbe.successThreshold | int | `1` |  |
-| middleware.readinessProbe.timeoutSeconds | int | `3` |  |
-| middleware.replicaCount | int | `1` |  |
-| middleware.resources.limits.cpu | string | `"2000m"` |  |
-| middleware.resources.limits.memory | string | `"8192Mi"` |  |
-| middleware.resources.requests.cpu | string | `"1000m"` |  |
-| middleware.resources.requests.memory | string | `"4096Mi"` |  |
-| middleware.securityContext | object | `{}` |  |
-| middleware.service.port | int | `8000` |  |
-| middleware.service.type | string | `"ClusterIP"` |  |
+| middleware.ingress.host | string | `"llm.iits.tech"` |  |
+| middleware.service.ports.http.port | int | `8000` |  |
+| middleware.service.ports.http.targetPort | int | `8000` |  |
 | middleware.serviceAccount.annotations | object | `{}` |  |
-| middleware.serviceAccount.automount | bool | `true` |  |
 | middleware.serviceAccount.create | bool | `true` |  |
 | middleware.serviceAccount.name | string | `""` |  |
-| middleware.tolerations | list | `[]` |  |
-| middleware.volumeMounts | list | `[]` |  |
-| middleware.volumes | list | `[]` |  |
 | ollama.affinity | object | `{}` |  |
 | ollama.autoscaling.enabled | bool | `false` |  |
 | ollama.autoscaling.maxReplicas | int | `100` |  |

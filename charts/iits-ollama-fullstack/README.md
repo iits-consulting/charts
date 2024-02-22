@@ -18,12 +18,23 @@ Setup private LLM RAG Cluster with (weaviate, Ollama & airbyte)
 value-files/iits-ollama-fullstack/values.yaml
 
 ```yaml
-ingress:
-  airbyte:
-    host: "airbyte.ollama.my-domain.com"
-    annotations:
-      # Adds the oidc proxy upfront
-      traefik.ingress.kubernetes.io/router.middlewares: "ollama-oidc-forward-auth-ollama@kubernetescrd"
+airbyte:
+  fullnameOverride: "airbyte"
+  webapp:
+    ingress:
+      enabled: true
+      hosts:
+        - host:
+          paths:
+            - path: "/"
+              pathType: "Prefix"
+      annotations:
+        # Adds the oidc proxy upfront
+        traefik.ingress.kubernetes.io/router.middlewares: "ollama-oidc-forward-auth-ollama@kubernetescrd"
+
+  connector-builder-server:
+    service:
+      type: "ClusterIP"
 ollama:
   ollama:
     ollama:
