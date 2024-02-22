@@ -9,7 +9,7 @@ description: |
 
   ```yaml
     iits-ollama-fullstack:
-      targetRevision: "0.3.2"
+      targetRevision: "0.3.3"
       namespace: ollama
       valueFile: "value-files/iits-ollama-fullstack/values.yaml"
   ```
@@ -63,7 +63,7 @@ description: |
         host: "ollama.my-domain.com"
   ```
 type: application
-version: 0.3.2
+version: 0.3.3
 home: https://ollama.ai/
 icon: https://ollama.ai/public/ollama.png
 keywords:
@@ -81,6 +81,6 @@ dependencies:
     repository: https://airbytehq.github.io/helm-charts
     condition: airbyte.enabled
   - name: ollama
-    version: 0.7.2
+    version: 0.7.3
     repository: https://charts.iits.tech
     condition: ollama.enabled
