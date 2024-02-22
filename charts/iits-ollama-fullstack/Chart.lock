@@ -1,0 +1,12 @@
+dependencies:
+- name: weaviate
+  repository: https://weaviate.github.io/weaviate-helm
+  version: 16.8.1
+- name: airbyte
+  repository: https://airbytehq.github.io/helm-charts
+  version: 0.53.272
+- name: ollama
+  repository: https://charts.iits.tech
+  version: 0.7.1
+digest: sha256:1e8decacf5b5bc1a8f59d4d487d2b20fdd2bce63aa00e5a04dc5d1137be75f91
+generated: "2024-02-22T14:00:35.094536+01:00"

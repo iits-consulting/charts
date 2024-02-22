@@ -9,7 +9,7 @@ description: |
 
   ```yaml
     iits-ollama-fullstack:
-      targetRevision: "0.2.7"
+      targetRevision: "0.3.0"
       namespace: ollama
       valueFile: "value-files/iits-ollama-fullstack/values.yaml"
   ```
@@ -41,9 +41,18 @@ description: |
           # Adds the oidc proxy upfront
           traefik.ingress.kubernetes.io/router.middlewares: "ollama-oidc-forward-auth-ollama@kubernetescrd"
         host: "ollama.my-domain.com"
+    middleware:
+      env:
+        OLLAMA_URL: "http://ollama:11434"
+        WEAVIATE_URL: "http://weaviate:80"
+      ingress:
+        annotations:
+          # Adds the oidc proxy upfront
+          traefik.ingress.kubernetes.io/router.middlewares: "ollama-oidc-forward-auth-ollama@kubernetescrd"
+        host: "ollama.my-domain.com"
   ```
 type: application
-version: 0.2.6
+version: 0.3.0
 home: https://ollama.ai/
 icon: https://ollama.ai/public/ollama.png
 keywords:
@@ -57,10 +66,10 @@ dependencies:
     version: 16.8.1
     condition: weaviate.enabled
   - name: airbyte
-    version: 0.53.137
+    version: 0.53.272
     repository: https://airbytehq.github.io/helm-charts
     condition: airbyte.enabled
   - name: ollama
-    version: 0.6.14
+    version: 0.7.1
     repository: https://charts.iits.tech
     condition: ollama.enabled
