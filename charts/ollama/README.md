@@ -102,7 +102,7 @@ Kubernetes: `^1.16.0-0`
 | middleware.resources.requests.cpu | string | `"1000m"` |  |
 | middleware.resources.requests.memory | string | `"4096Mi"` |  |
 | middleware.securityContext | object | `{}` |  |
-| middleware.service.port | int | `8080` |  |
+| middleware.service.port | int | `8000` |  |
 | middleware.service.type | string | `"ClusterIP"` |  |
 | middleware.serviceAccount.annotations | object | `{}` |  |
 | middleware.serviceAccount.automount | bool | `true` |  |
