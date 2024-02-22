@@ -32,7 +32,8 @@ ollama:
       # -- Replace this value with your host
       host:
   middleware:
-    fullnameOverride: chat-middleware
+    deployment:
+      fullnameOverride: chat-middleware
     ingress:
       # -- Replace this value with your host
       host:
