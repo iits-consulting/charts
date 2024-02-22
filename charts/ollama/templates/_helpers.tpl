@@ -161,7 +161,7 @@ Create the name of the service account to use
 */}}
 {{- define "llm-middleware.serviceAccountName" -}}
 {{- if .Values.middleware.serviceAccount.create }}
-{{- default (include "llm-middleware.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "llm-middleware.fullname" .) .Values.middleware.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.middleware.serviceAccount.name }}
 {{- end }}
