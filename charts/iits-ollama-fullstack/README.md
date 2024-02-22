@@ -10,7 +10,7 @@ Setup private LLM RAG Cluster with (weaviate, Ollama & airbyte)
 
 ```yaml
   iits-ollama-fullstack:
-    targetRevision: "0.2.4"
+    targetRevision: "0.2.7"
     namespace: ollama
     valueFile: "value-files/iits-ollama-fullstack/values.yaml"
 ```
