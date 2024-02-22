@@ -379,25 +379,19 @@ middleware:
       http:
         port: 8000
 
-    #  health:
-    #    startupProbe:
-    #      path: "/ollama/api/chat/health"
-    #      # initialDelaySeconds: # defaults to 20
-    #      # periodSeconds: # defaults to 20
-    #      # failureThreshold: # defaults to 3
-    #      port: 8000 # defaults to 80
-    #    liveness:
-    #      path: "/ollama/api/chat/health"
-    #      # initialDelaySeconds: # defaults to 20
-    #      # periodSeconds: # defaults to 20
-    #      # failureThreshold: # defaults to 3
-    #      port: 8000 # defaults to 80
-    #    readiness:
-    #      path: "/ollama/api/chat/health"
-    #      # initialDelaySeconds: # defaults to 20
-    #      # periodSeconds: # defaults to 20
-    #      # failureThreshold: # defaults to 3
-    #      port: 8000 # defaults to 80
+    health:
+      liveness:
+        path: "/middleware/api/chat/health"
+        # initialDelaySeconds: # defaults to 20
+        # periodSeconds: # defaults to 20
+        # failureThreshold: # defaults to 3
+        port: 8000 # defaults to 80
+      readiness:
+        path: "/middleware/api/chat/health"
+        # initialDelaySeconds: # defaults to 20
+        # periodSeconds: # defaults to 20
+        # failureThreshold: # defaults to 3
+        port: 8000 # defaults to 80
 
     resources:
       requests:
