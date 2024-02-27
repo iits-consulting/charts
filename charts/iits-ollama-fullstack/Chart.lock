@@ -7,6 +7,6 @@ dependencies:
   version: 0.53.272
 - name: ollama
   repository: https://charts.iits.tech
-  version: 0.7.3
-digest: sha256:03c9e42eb0b1d877ba4a630301c8ecea53c15f4d714b7350e47bf7b4181f33f7
-generated: "2024-02-22T16:30:41.801671+01:00"
+  version: 0.7.4
+digest: sha256:fc640e91e918b0b35476b95b69a6d1433c0c985ce07a6f43f1453590a042bb2a
+generated: "2024-02-27T20:27:15.164846+01:00"

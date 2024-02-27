@@ -9,7 +9,7 @@ description: |
 
   ```yaml
     iits-ollama-fullstack:
-      targetRevision: "0.3.3"
+      targetRevision: "0.3.4"
       namespace: ollama
       valueFile: "value-files/iits-ollama-fullstack/values.yaml"
   ```
@@ -56,6 +56,7 @@ description: |
       env:
         OLLAMA_URL: "http://ollama:11434"
         WEAVIATE_URL: "http://weaviate:80"
+        OPENAI_API_TOKEN: "REPLACE_ME"
       ingress:
         annotations:
           # Adds the oidc proxy upfront
@@ -63,7 +64,7 @@ description: |
         host: "ollama.my-domain.com"
   ```
 type: application
-version: 0.3.3
+version: 0.3.4
 home: https://ollama.ai/
 icon: https://ollama.ai/public/ollama.png
 keywords:
@@ -81,6 +82,6 @@ dependencies:
     repository: https://airbytehq.github.io/helm-charts
     condition: airbyte.enabled
   - name: ollama
-    version: 0.7.3
+    version: 0.7.4
     repository: https://charts.iits.tech
     condition: ollama.enabled
