@@ -404,6 +404,7 @@ middleware:
     env:
       OLLAMA_URL: "http://ollama:11434"
       WEAVIATE_URL: "http://weaviate:80"
+      OPENAI_API_TOKEN: ""
 
     #set the secret where to take env from
     envFromSecret:
