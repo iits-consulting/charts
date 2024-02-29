@@ -1,0 +1,12 @@
+# Default values for cce-pause
+
+image:
+  repository: docker.io/library/cce-pause
+  tag: "3.1"
+
+nameOverride: ""
+fullnameOverride: ""
+
+podAnnotations: {}
+
+

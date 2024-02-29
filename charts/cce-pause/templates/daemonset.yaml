@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: {{ include "cce-pause.fullname" . }}
+  labels:
+    {{- include "cce-pause.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "cce-pause.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "cce-pause.selectorLabels" . | nindent 8 }}
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - name: cce-pause
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: Never
+          resources:
+            limits:
+              cpu: 1m
+              memory: 10Mi
+            requests:
+              cpu: 1m
+              memory: 10Mi
+          securityContext:
+            runAsUser: 10001
+            runAsGroup: 10002
+            seccompProfile:
+              type: RuntimeDefault
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            runAsNonRoot: true
+            readOnlyRootFilesystem: true
+      terminationGracePeriodSeconds: 0
