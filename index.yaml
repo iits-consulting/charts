@@ -640,6 +640,18 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/botkube-0.1.1/botkube-0.1.1.tgz
     version: 0.1.1
+  cce-pause:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-02-29T14:26:10.703933072Z"
+    description: A daemonset which keeps the built-in cce-pause image running (workaround
+      for CCE containerd garbage collection bug)
+    digest: ad04b89d176b97c21968d3528d09ca2d1d723a271adc97a37ca1e439b7d7f630
+    name: cce-pause
+    type: application
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/cce-pause-1.0.0/cce-pause-1.0.0.tgz
+    version: 1.0.0
   cce-storage-classes:
   - apiVersion: v2
     created: "2023-09-04T13:03:34.265586689Z"
@@ -3861,4 +3873,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2024-02-27T19:31:22.712906882Z"
+generated: "2024-02-29T14:26:10.704705198Z"
