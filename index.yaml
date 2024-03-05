@@ -3873,4 +3873,15 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
-generated: "2024-02-29T14:26:10.704705198Z"
+  waf-cert-uploader:
+  - apiVersion: v2
+    appVersion: v0.1.1
+    created: "2024-03-05T12:47:55.980803159Z"
+    description: A Helm chart for the WAF certificate uploader
+    digest: 0d802a52b92150ad9d2b8d18653944ad3336435be76537cff47578884f6771b0
+    name: waf-cert-uploader
+    type: application
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/waf-cert-uploader-0.1.1/waf-cert-uploader-0.1.1.tgz
+    version: 0.1.1
+generated: "2024-03-05T12:47:55.981232259Z"
