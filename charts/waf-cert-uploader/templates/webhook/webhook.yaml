@@ -1,0 +1,25 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: {{ include "app.fullname" . }}
+  annotations:
+    cert-manager.io/inject-ca-from: "{{.Release.Namespace}}/{{ include "app.fullname" . }}-webhook-cert"
+webhooks:
+  - name: {{ include "app.fullname" . }}.{{.Release.Namespace}}.svc
+    admissionReviewVersions:
+      - v1
+    sideEffects: None
+    clientConfig:
+      service:
+        name: {{ include "app.fullname" . }}-webhook
+        namespace: {{.Release.Namespace}}
+        path: "/upload-cert-to-waf"
+        port: {{ .Values.port }}
+    objectSelector:
+      matchLabels:
+        waf-cert-uploader.iits.tech/enabled: "true"
+    rules:
+      - operations: [ "UPDATE" ]
+        apiGroups: [ "" ]
+        apiVersions: [ "v1" ]
+        resources: [ "secrets" ]
