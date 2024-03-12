@@ -113,6 +113,8 @@ prometheusStack:
       patch:
         enabled: false
   grafana:
+    serviceMonitor:
+      path: "/grafana/metrics"
     # -- Required
     adminPassword:
     grafana.ini:
