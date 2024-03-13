@@ -12,10 +12,14 @@ traefik:
       enabled: false
   deployment:
     replicas: 2
+
   service:
     type: LoadBalancer
     spec:
       externalTrafficPolicy: Cluster
+    internal:
+      type: ClusterIP
+
   providers:
     kubernetesCRD:
       enabled: true
@@ -26,49 +30,55 @@ traefik:
       allowExternalNameServices: true
       publishedService:
         enabled: true
+
   ingressClass:
     enabled: true
     isDefaultClass: true
 
-defaultCert:
-  enabled: true
-  dnsNames:
-    # -- Required
-    rootDomain:
-    #adminDomain:
-  issuerRef:
-    kind: ClusterIssuer
-    name: letsencrypt
+  ports:
+    traefik:
+      exposeInternal: true
+    web:
+      redirectTo:
+        port: websecure
+
+  tlsOptions:
+    default:
+      sniStrict: true
+      minVersion: VersionTLS12
+
+
+  metrics:
+    prometheus:
+      serviceMonitor:
+        enabled: true
+      service:
+        enabled: true
 
 ingress:
   # Just enable it if you set up forward auth
   enabled: false
-  # -- Required, replace it with your host address
-  host:
+
+  # -- Required, insert your primary host address (the one traefik itself is served, e.g. admin.example.com)
+  defaultHost:
+
+  # Additional Hosts you want to request Certificates for, these get added into the default certificate
+  additionalHosts: []
+
+ # Annotations for the Ingress-Resource
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
     traefik.ingress.kubernetes.io/router.tls: "true"
-  # Creates default Ingress with tls and the given host from .Values.ingress.host
-  defaultIngress:
-    enabled: false
-    ## Default values can be overriden
-    #tls:
-    #  secretName: "traefik.fullname"
-    #path: "/"
-    #pathType: "Prefix"
-    #backend:
-    #  name: "traefik.fullname" #tpl supported
-    #  port:
-    #    name: http #tpl supported
 
-  # If you don't want to use the default Ingress, you can define it here on your own
+
   tls:
-    - hosts:
-        - "{{.Values.ingress.host}}"
-      secretName: "traefik-default-cert"
-  hosts:
-    - host: "{{.Values.ingress.host}}"
+    enabled: true
+    ## Optional
+    #secretName: "traefik-default-cert"
+
+  rules:
+    - host: "{{.Values.ingress.defaultHost}}"
       paths:
         - path: "/api"
           backend:
@@ -80,12 +90,3 @@ ingress:
             name: traefik-internal
             port:
               name: traefik
-
-podMonitor:
-  enabled: true
-  # Default values, override them if necessary
-  #labels: {}
-  #annotations: {}
-  #port: "metrics"
-  #interval: "10s"
-  #path: "/metrics"
