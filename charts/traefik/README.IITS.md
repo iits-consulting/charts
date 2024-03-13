@@ -49,4 +49,12 @@ resource "helm_release" "traefik" {
 }
 ```
 
+If you migrate from older chart versions, you might encounter an error for unknown CRD's. To fix this you need to either manually drop all old crd's or simply run:
+
+```bash
+kubectl apply --server-side --force-conflicts -k https://github.com/traefik/traefik-helm-chart/traefik/crds/
+```
+
+Reason is, Traefik is deprecating the `traefik.containo.us` namespace and moves to a new one `traefik.io`
+
 
