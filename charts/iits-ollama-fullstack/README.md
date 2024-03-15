@@ -1,6 +1,6 @@
 # iits-ollama-fullstack
 
-![Version: 0.4.0](https://img.shields.io/badge/Version-0.4.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.4.1](https://img.shields.io/badge/Version-0.4.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 Setup private LLM RAG Cluster with (weaviate, Ollama & airbyte)
 
@@ -10,7 +10,7 @@ Setup private LLM RAG Cluster with (weaviate, Ollama & airbyte)
 
 ```yaml
   iits-ollama-fullstack:
-    targetRevision: "0.4.0"
+    targetRevision: "0.4.1"
     namespace: ollama
     valueFile: "value-files/iits-ollama-fullstack/values.yaml"
 ```
@@ -18,6 +18,9 @@ Setup private LLM RAG Cluster with (weaviate, Ollama & airbyte)
 value-files/iits-ollama-fullstack/values.yaml
 
 ```yaml
+weaviate:
+  service:
+    type: "ClusterIP"
 airbyte:
   fullnameOverride: "airbyte"
   webapp:
@@ -29,40 +32,171 @@ airbyte:
             - path: "/"
               pathType: "Prefix"
       annotations:
-        # Adds the oidc proxy upfront
-        traefik.ingress.kubernetes.io/router.middlewares: "ollama-oidc-forward-auth-ollama@kubernetescrd"
-
+        cert-manager.io/cluster-issuer: letsencrypt
+        traefik.ingress.kubernetes.io/router.entrypoints: websecure
+        traefik.ingress.kubernetes.io/router.tls: "true"
   connector-builder-server:
     service:
       type: "ClusterIP"
 ollama:
+  replicaCount: 1
+
+  image:
+    repository: ollama/ollama
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: ""
+
+  imagePullSecrets: []
+  nameOverride: ""
+  fullnameOverride: "ollama"
+
   ollama:
-    ollama:
-      gpu:
-        enabled: "true"
-    ingress:
-      host: "ollama.my-domain.com"
-      annotations:
-        # Adds the oidc proxy upfront
-        traefik.ingress.kubernetes.io/router.middlewares: "ollama-oidc-forward-auth-ollama@kubernetescrd, ollama-strip-prefix-ollama@kubernetescrd"
-  webui:
-    env:
-      OLLAMA_API_BASE_URL: "https://ollama.my-domain.com/api"
-    ingress:
-      annotations:
-        # Adds the oidc proxy upfront
-        traefik.ingress.kubernetes.io/router.middlewares: "ollama-oidc-forward-auth-ollama@kubernetescrd"
-      host: "ollama.my-domain.com"
-  middleware:
-    env:
-      OLLAMA_URL: "http://ollama:11434"
-      WEAVIATE_URL: "http://weaviate:80"
-      OPENAI_API_TOKEN: "REPLACE_ME"
-    ingress:
-      annotations:
-        # Adds the oidc proxy upfront
-        traefik.ingress.kubernetes.io/router.middlewares: "ollama-oidc-forward-auth-ollama@kubernetescrd"
-      host: "ollama.my-domain.com"
+    # -- If you want to use GPU, set it to true
+    gpu:
+      enabled: true
+      number: 1
+
+  ingress:
+    enabled: true
+    # -- Required values change this one
+    # -- Required, replace it with your host address
+    host:
+    traefikMiddlewareEnabled: "true"
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      traefik.ingress.kubernetes.io/router.tls: "true"
+      traefik.ingress.kubernetes.io/router.middlewares: "{{.Release.Namespace}}-strip-prefix-ollama@kubernetescrd"
+    hosts:
+      - host: "{{.Values.ollama.ingress.host}}"
+        paths:
+          - path: /ollama
+            pathType: Prefix
+    tls:
+      - hosts:
+          - "{{.Values.ollama.ingress.host}}"
+        secretName: "llm-cert"
+
+  ## Configure resource requests and limits
+  ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
+  ##
+  resources:
+    requests:
+      memory: 8Gi
+      cpu: 2
+    limits:
+      memory: 16Gi
+      cpu: 4
+
+  persistentVolume:
+    enabled: true
+
+    ## Ollama server data Persistent Volume annotations
+    ##
+    annotations:
+      argocd.argoproj.io/sync-options: "Prune=false"
+
+    ## Ollama server data Persistent Volume size
+    ##
+    size: 100Gi
+
+  tolerations:
+    - key: gpu-node
+      operator: Exists
+      effect: PreferNoSchedule
+webui:
+  replicaCount: 1
+
+  image:
+    repository: "registry.gitlab.iits.tech/private/llm/ollama-ui"
+    pullPolicy: IfNotPresent
+    tag: ""
+
+  imagePullSecrets: []
+  nameOverride: ""
+  fullnameOverride: "ollama-webui"
+
+  serviceAccount:
+    create: true
+    automount: true
+    annotations: {}
+    name: ""
+
+  podAnnotations: {}
+  podLabels: {}
+
+  podSecurityContext: {}
+
+  securityContext: {}
+
+  service:
+    type: ClusterIP
+    port: 8080
+
+  env:
+    OLLAMA_API_BASE_URL: "https://{{$.Values.webui.ingress.host}}/ollama/api"
+
+  envSecretName:
+
+  ingress:
+    enabled: true
+    host:
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      traefik.ingress.kubernetes.io/router.tls: "true"
+    hosts:
+      - host: "{{.Values.webui.ingress.host}}"
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - hosts:
+          - "{{.Values.webui.ingress.host}}"
+        secretName: "ollama-cert"
+
+  resources:
+    requests:
+      memory: 4096Mi
+      cpu: 1000m
+    limits:
+      memory: 8192Mi
+      cpu: 2000m
+
+  livenessProbe:
+    enabled: true
+    path: /
+    initialDelaySeconds: 60
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 6
+    successThreshold: 1
+
+  readinessProbe:
+    enabled: true
+    path: /
+    initialDelaySeconds: 30
+    periodSeconds: 5
+    timeoutSeconds: 3
+    failureThreshold: 6
+    successThreshold: 1
+
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+
+  volumes: []
+
+  volumeMounts: []
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
 ```
 
 **Homepage:** <https://ollama.ai/>
@@ -101,6 +235,7 @@ ollama:
 | ollama.ingress.host | string | `nil` | Required, replace it with your host address |
 | ollama.ingress.hosts[0].host | string | `"{{.Values.ollama.ingress.host}}"` |  |
 | ollama.ingress.hosts[0].paths[0].path | string | `"/ollama"` |  |
+| ollama.ingress.hosts[0].paths[0].pathType | string | `"Prefix"` |  |
 | ollama.ingress.tls[0].hosts[0] | string | `"{{.Values.ollama.ingress.host}}"` |  |
 | ollama.ingress.tls[0].secretName | string | `"llm-cert"` |  |
 | ollama.ingress.traefikMiddlewareEnabled | string | `"true"` |  |
@@ -123,7 +258,6 @@ ollama:
 | webui.autoscaling.maxReplicas | int | `100` |  |
 | webui.autoscaling.minReplicas | int | `1` |  |
 | webui.autoscaling.targetCPUUtilizationPercentage | int | `80` |  |
-| webui.env.MIDDLEWARE_API_BASE_URL | string | `"https://{{$.Values.webui.ingress.host}}/middleware/api"` |  |
 | webui.env.OLLAMA_API_BASE_URL | string | `"https://{{$.Values.webui.ingress.host}}/ollama/api"` |  |
 | webui.envSecretName | string | `nil` |  |
 | webui.fullnameOverride | string | `"ollama-webui"` |  |
@@ -138,6 +272,7 @@ ollama:
 | webui.ingress.host | string | `nil` |  |
 | webui.ingress.hosts[0].host | string | `"{{.Values.webui.ingress.host}}"` |  |
 | webui.ingress.hosts[0].paths[0].path | string | `"/"` |  |
+| webui.ingress.hosts[0].paths[0].pathType | string | `"Prefix"` |  |
 | webui.ingress.tls[0].hosts[0] | string | `"{{.Values.webui.ingress.host}}"` |  |
 | webui.ingress.tls[0].secretName | string | `"ollama-cert"` |  |
 | webui.livenessProbe.enabled | bool | `true` |  |
