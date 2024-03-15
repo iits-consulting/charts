@@ -4,9 +4,9 @@ dependencies:
   version: 16.8.1
 - name: airbyte
   repository: https://airbytehq.github.io/helm-charts
-  version: 0.53.272
+  version: 0.55.5
 - name: ollama
-  repository: https://charts.iits.tech
-  version: 0.7.4
-digest: sha256:fc640e91e918b0b35476b95b69a6d1433c0c985ce07a6f43f1453590a042bb2a
-generated: "2024-02-27T20:27:15.164846+01:00"
+  repository: https://otwld.github.io/ollama-helm/
+  version: 0.19.0
+digest: sha256:9552d57f80c82e4a8571b6f7c4d5154ae68cf1b2b486df23bdb5e4116147f519
+generated: "2024-03-15T16:03:32.17389+01:00"
