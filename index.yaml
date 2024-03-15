@@ -1410,6 +1410,50 @@ entries:
     version: 1.1.0
   iits-ollama-fullstack:
   - apiVersion: v2
+    created: "2024-03-15T15:59:02.989806202Z"
+    dependencies:
+    - condition: weaviate.enabled
+      name: weaviate
+      repository: https://weaviate.github.io/weaviate-helm
+      version: 16.8.7
+    - condition: airbyte.enabled
+      name: airbyte
+      repository: https://airbytehq.github.io/helm-charts
+      version: 0.55.5
+    - condition: airbyte.enabled
+      name: ollama
+      repository: https://otwld.github.io/ollama-helm/
+      version: 0.19.0
+    description: 'Setup private LLM RAG Cluster with (weaviate, Ollama & airbyte)  ##
+      Installing the Chart with iits ArgoCD  # Register the Chart  ```yaml   iits-ollama-fullstack:     targetRevision:
+      "0.4.0"     namespace: ollama     valueFile: "value-files/iits-ollama-fullstack/values.yaml"
+      ```  value-files/iits-ollama-fullstack/values.yaml  ```yaml airbyte:   fullnameOverride:
+      "airbyte"   webapp:     ingress:       enabled: true       hosts:         -
+      host:           paths:             - path: "/"               pathType: "Prefix"       annotations:         #
+      Adds the oidc proxy upfront         traefik.ingress.kubernetes.io/router.middlewares:
+      "ollama-oidc-forward-auth-ollama@kubernetescrd"    connector-builder-server:     service:       type:
+      "ClusterIP" ollama:   ollama:     ollama:       gpu:         enabled: "true"     ingress:       host:
+      "ollama.my-domain.com"       annotations:         # Adds the oidc proxy upfront         traefik.ingress.kubernetes.io/router.middlewares:
+      "ollama-oidc-forward-auth-ollama@kubernetescrd, ollama-strip-prefix-ollama@kubernetescrd"   webui:     env:       OLLAMA_API_BASE_URL:
+      "https://ollama.my-domain.com/api"     ingress:       annotations:         #
+      Adds the oidc proxy upfront         traefik.ingress.kubernetes.io/router.middlewares:
+      "ollama-oidc-forward-auth-ollama@kubernetescrd"       host: "ollama.my-domain.com"   middleware:     env:       OLLAMA_URL:
+      "http://ollama:11434"       WEAVIATE_URL: "http://weaviate:80"       OPENAI_API_TOKEN:
+      "REPLACE_ME"     ingress:       annotations:         # Adds the oidc proxy upfront         traefik.ingress.kubernetes.io/router.middlewares:
+      "ollama-oidc-forward-auth-ollama@kubernetescrd"       host: "ollama.my-domain.com"
+      ``` '
+    digest: 9a5c0d138b87db5a3fa849af0323d46242fc03e756e26ef15a07f48973c226f9
+    home: https://ollama.ai/
+    icon: https://ollama.ai/public/ollama.png
+    keywords:
+    - iits AI
+    - RAG
+    name: iits-ollama-fullstack
+    type: application
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/iits-ollama-fullstack-0.4.0/iits-ollama-fullstack-0.4.0.tgz
+    version: 0.4.0
+  - apiVersion: v2
     created: "2024-02-27T19:31:21.177715188Z"
     dependencies:
     - condition: weaviate.enabled
@@ -3884,4 +3928,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/waf-cert-uploader-0.1.1/waf-cert-uploader-0.1.1.tgz
     version: 0.1.1
-generated: "2024-03-05T12:47:55.981232259Z"
+generated: "2024-03-15T15:59:05.7277245Z"
