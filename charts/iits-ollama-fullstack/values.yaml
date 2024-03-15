@@ -52,6 +52,7 @@ ollama:
       - host: "{{.Values.ollama.ingress.host}}"
         paths:
           - path: /ollama
+            pathType: Prefix
     tls:
       - hosts:
           - "{{.Values.ollama.ingress.host}}"
@@ -115,7 +116,6 @@ webui:
 
   env:
     OLLAMA_API_BASE_URL: "https://{{$.Values.webui.ingress.host}}/ollama/api"
-    MIDDLEWARE_API_BASE_URL: "https://{{$.Values.webui.ingress.host}}/middleware/api"
 
   envSecretName:
 
@@ -130,6 +130,7 @@ webui:
       - host: "{{.Values.webui.ingress.host}}"
         paths:
           - path: /
+            pathType: Prefix
     tls:
       - hosts:
           - "{{.Values.webui.ingress.host}}"
