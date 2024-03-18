@@ -5,8 +5,6 @@ metadata:
 spec:
   forwardAuth:
     address: http://{{ include "oidc-forward-auth.fullname" $ }}-gatekeeper.{{.Release.Namespace}}.svc.cluster.local:{{.Values.gatekeeper.service.proxy.port}}
-    authResponseHeaders:
-      - "Set-Cookie"
     authRequestHeaders:
       - "Accept"
       - "Authorization"
