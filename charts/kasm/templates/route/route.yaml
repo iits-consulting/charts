@@ -5,13 +5,13 @@ metadata:
   name: {{$serviceName}}
 spec:
   entryPoints:
-    - {{$serviceValues.ingressRoute.entryPointName}}
+    - {{ default "websecure" $serviceValues.ingressRoute.entryPointName}}
   routes:
     - match: HostSNI(`{{$serviceValues.ingressRoute.domain}}`)
       services:
         - name: {{ $serviceName}}
           namespace: {{ $.Release.Namespace }}
-          port: {{ $serviceValues.service.externalPort }}
+          port: {{ default 6901 ($serviceValues.service).externalPort }}
   tls:
     passthrough: true
 {{- end }}

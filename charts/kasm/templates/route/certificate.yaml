@@ -1,5 +1,6 @@
+{{- $defaultValues := .Values.kasmDefaultConfig }}
 {{ range $serviceName,$serviceValues := .Values.services }}
-{{- $certSecretName := $serviceValues.ingressRoute.certificate.name | default (printf "%s-%s" $serviceName "cert")}}
+{{- $certSecretName := (default $defaultValues.ingressRoute.certificate.name (($serviceValues.ingressRoute).certificate).name) | default (printf "%s-%s" $serviceName "cert")}}
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
@@ -7,7 +8,7 @@ metadata:
 spec:
   secretName: {{ $certSecretName }}
   issuerRef:
-    name: {{ $serviceValues.ingressRoute.certificate.clusterIssuer}}
+    name: {{ default $defaultValues.ingressRoute.certificate.clusterIssuer  (($serviceValues.ingressRoute).certificate).clusterIssuer}}
     kind: ClusterIssuer
   commonName: {{ $serviceValues.ingressRoute.domain}}
   privateKey:

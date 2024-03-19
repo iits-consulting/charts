@@ -1,3 +1,4 @@
+{{- $defaultValues := .Values.kasmDefaultConfig }}
 {{ range $serviceName,$serviceValues := .Values.services }}
 apiVersion: v1
 kind: Service
@@ -9,7 +10,7 @@ spec:
     release: {{ default $serviceName $serviceValues.nameOverride }}
   ports:
     - protocol: TCP
-      port: {{ $serviceValues.service.externalPort }}
-      targetPort: {{ $serviceValues.service.port }}
+      port: {{ default $defaultValues.service.port ($serviceValues.service).externalPort }}
+      targetPort: {{ default $defaultValues.service.port ($serviceValues.service).port }}
 ---
 {{- end }}
