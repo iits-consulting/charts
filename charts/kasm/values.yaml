@@ -57,10 +57,3 @@ services:
     extraEnv:
       # -- Required
       VNC_PW: test
-  second:
-    ingressRoute:
-      # -- Required
-      domain: test
-    extraEnv:
-      # -- Required
-      VNC_PW: test
