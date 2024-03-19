@@ -1,7 +1,7 @@
 {{- $configChecksum := include (print $.Template.BasePath "/config.yaml") . | sha256sum }}
 {{- $defaultValues := .Values.kasmDefaultConfig }}
 {{ range $serviceName,$serviceValues := .Values.services }}
-{{- $certSecretName := (default $defaultValues.ingressRoute.certificate.name (($serviceValues.ingressRoute).certificate).name) | default (printf "%s-%s" $serviceName "cert")}}
+{{- $certSecretName := (($serviceValues.ingressRoute).certificate).name | default (printf "%s-%s" $serviceName "cert")}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:

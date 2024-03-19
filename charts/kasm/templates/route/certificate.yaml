@@ -1,6 +1,6 @@
 {{- $defaultValues := .Values.kasmDefaultConfig }}
 {{ range $serviceName,$serviceValues := .Values.services }}
-{{- $certSecretName := (default $defaultValues.ingressRoute.certificate.name (($serviceValues.ingressRoute).certificate).name) | default (printf "%s-%s" $serviceName "cert")}}
+{{- $certSecretName := (($serviceValues.ingressRoute).certificate).name | default (printf "%s-%s" $serviceName "cert")}}
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
@@ -16,4 +16,5 @@ spec:
     size: 4096
   dnsNames:
     - {{ $serviceValues.ingressRoute.domain}}
+---
 {{- end }}

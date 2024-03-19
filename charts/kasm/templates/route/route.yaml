@@ -14,4 +14,5 @@ spec:
           port: {{ default 6901 ($serviceValues.service).externalPort }}
   tls:
     passthrough: true
+---
 {{- end }}

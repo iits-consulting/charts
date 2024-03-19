@@ -10,7 +10,7 @@ description: |
   kasm:
     namespace: kasm
     repoURL: "https://charts.iits.tech"
-    targetRevision: "0.2.0"
+    targetRevision: "0.2.1"
     parameters:
       services.firstuser.extraEnv.VNC_PW: "REPLACE_ME"
       services.firstuser.ingressRoute.domain: "REPLACE_ME"
@@ -27,5 +27,5 @@ description: |
   ## How to add a new instance
 
   Just duplicate the firstuser part inside values.yaml and rename it
-version: 0.2.0
+version: 0.2.1
 type: application
