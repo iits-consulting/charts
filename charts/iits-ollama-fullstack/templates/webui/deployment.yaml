@@ -40,12 +40,34 @@ spec:
             - name: http
               containerPort: {{ .Values.webui.service.port }}
               protocol: TCP
+          {{- if .Values.webui.livenessProbe.enabled }}
           livenessProbe:
-            {{- toYaml .Values.webui.livenessProbe | nindent 12 }}
+            httpGet:
+              path: {{ .Values.webui.livenessProbe.path }}
+              port: http
+            initialDelaySeconds: {{ .Values.webui.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.webui.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.webui.livenessProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.webui.livenessProbe.successThreshold }}
+            failureThreshold: {{ .Values.webui.livenessProbe.failureThreshold }}
+          {{- end }}
+          {{- if .Values.webui.readinessProbe.enabled }}
           readinessProbe:
-            {{- toYaml .Values.webui.readinessProbe | nindent 12 }}
+            httpGet:
+              path: {{ .Values.webui.readinessProbe.path }}
+              port: http
+            initialDelaySeconds: {{ .Values.webui.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.webui.readinessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.webui.readinessProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.webui.readinessProbe.successThreshold }}
+            failureThreshold: {{ .Values.webui.readinessProbe.failureThreshold }}
+          {{- end }}
+          {{- if .Values.webui.resources }}
           resources:
-            {{- toYaml .Values.webui.resources | nindent 12 }}
+            {{- $limits := default dict .Values.webui.resources.limits }}
+            {{- $ressources := merge .Values.webui.resources (dict "limits" $limits) }}
+            {{- toYaml $ressources | nindent 12 }}
+          {{- end}}
           {{- with .Values.webui.volumeMounts }}
           volumeMounts:
             {{- toYaml . | nindent 12 }}

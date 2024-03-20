@@ -9,7 +9,7 @@ description: |
 
   ```yaml
     iits-ollama-fullstack:
-      targetRevision: "0.4.3"
+      targetRevision: "0.4.4"
       namespace: ollama
       valueFile: "value-files/iits-ollama-fullstack/values.yaml"
   ```
@@ -198,7 +198,7 @@ description: |
     affinity: {}
   ```
 type: application
-version: 0.4.3
+version: 0.4.4
 home: https://ollama.ai/
 icon: https://ollama.ai/public/ollama.png
 keywords:
