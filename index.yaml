@@ -1410,6 +1410,74 @@ entries:
     version: 1.1.0
   iits-ollama-fullstack:
   - apiVersion: v2
+    created: "2024-03-20T21:06:25.292283587Z"
+    dependencies:
+    - condition: weaviate.enabled
+      name: weaviate
+      repository: https://weaviate.github.io/weaviate-helm
+      version: 16.8.7
+    - condition: airbyte.enabled
+      name: airbyte
+      repository: https://airbytehq.github.io/helm-charts
+      version: 0.55.5
+    - condition: airbyte.enabled
+      name: ollama
+      repository: https://otwld.github.io/ollama-helm/
+      version: 0.19.0
+    description: 'Setup private LLM RAG Cluster with (weaviate, Ollama & airbyte)  ##
+      Installing the Chart with iits ArgoCD  # Register the Chart  ```yaml   iits-ollama-fullstack:     targetRevision:
+      "0.4.9"     namespace: ollama     valueFile: "value-files/iits-ollama-fullstack/values.yaml"
+      ```  value-files/iits-ollama-fullstack/values.yaml  ```yaml weaviate:   service:     type:
+      "ClusterIP" airbyte:   fullnameOverride: "airbyte"   webapp:     ingress:       enabled:
+      true       hosts:         - host:           paths:             - path: "/"               pathType:
+      "Prefix"       annotations:         cert-manager.io/cluster-issuer: letsencrypt         traefik.ingress.kubernetes.io/router.entrypoints:
+      websecure         traefik.ingress.kubernetes.io/router.tls: "true"   connector-builder-server:     service:       type:
+      "ClusterIP" ollama:   replicaCount: 1    image:     repository: ollama/ollama     pullPolicy:
+      IfNotPresent     # Overrides the image tag whose default is the chart appVersion.     tag:
+      ""    imagePullSecrets: []   nameOverride: ""   fullnameOverride: "ollama"    ollama:     #
+      -- If you want to use GPU, set it to true     gpu:       enabled: true       number:
+      1    ingress:     enabled: true     # -- Required values change this one     #
+      -- Required, replace it with your host address     host:     traefikMiddlewareEnabled:
+      "true"     annotations:       cert-manager.io/cluster-issuer: letsencrypt       traefik.ingress.kubernetes.io/router.entrypoints:
+      websecure       traefik.ingress.kubernetes.io/router.tls: "true"       traefik.ingress.kubernetes.io/router.middlewares:
+      "{{.Release.Namespace}}-strip-prefix-ollama@kubernetescrd"     hosts:       -
+      host: "{{.Values.ollama.ingress.host}}"         paths:           - path: /ollama             pathType:
+      Prefix     tls:       - hosts:           - "{{.Values.ollama.ingress.host}}"         secretName:
+      "llm-cert"    ## Configure resource requests and limits   ## ref: http://kubernetes.io/docs/user-guide/compute-resources/   ##   resources:     requests:       memory:
+      8Gi       cpu: 2     limits:       memory: 16Gi       cpu: 4    persistentVolume:     enabled:
+      true      ## Ollama server data Persistent Volume annotations     ##     annotations:       argocd.argoproj.io/sync-options:
+      "Prune=false"      ## Ollama server data Persistent Volume size     ##     size:
+      100Gi    tolerations:     - key: gpu-node       operator: Exists       effect:
+      PreferNoSchedule webui:   replicaCount: 1    image:     repository: "registry.gitlab.iits.tech/private/llm/ollama-ui"     pullPolicy:
+      IfNotPresent     tag: ""    imagePullSecrets: []   nameOverride: ""   fullnameOverride:
+      "ollama-webui"    serviceAccount:     create: true     automount: true     annotations:
+      {}     name: ""    podAnnotations: {}   podLabels: {}    podSecurityContext:
+      {}    securityContext: {}    service:     type: ClusterIP     port: 8080    env:     OLLAMA_API_BASE_URL:
+      "https://{{$.Values.webui.ingress.host}}/ollama/api"    envSecretName:    ingress:     enabled:
+      true     host:     annotations:       cert-manager.io/cluster-issuer: letsencrypt       traefik.ingress.kubernetes.io/router.entrypoints:
+      websecure       traefik.ingress.kubernetes.io/router.tls: "true"     hosts:       -
+      host: "{{.Values.webui.ingress.host}}"         paths:           - path: /             pathType:
+      Prefix     tls:       - hosts:           - "{{.Values.webui.ingress.host}}"         secretName:
+      "ollama-cert"    resources:     requests:       memory: 4096Mi       cpu: 1000m     limits:       memory:
+      8192Mi       cpu: 2000m    livenessProbe:     enabled: true     path: /     initialDelaySeconds:
+      60     periodSeconds: 10     timeoutSeconds: 5     failureThreshold: 6     successThreshold:
+      1    readinessProbe:     enabled: true     path: /     initialDelaySeconds:
+      30     periodSeconds: 5     timeoutSeconds: 3     failureThreshold: 6     successThreshold:
+      1    autoscaling:     enabled: false     minReplicas: 1     maxReplicas: 100     targetCPUUtilizationPercentage:
+      80    volumes: []    volumeMounts: []    nodeSelector: {}    tolerations: []    affinity:
+      {} ``` '
+    digest: 018cf47dd4cef72c848334fc5c81f415f95fae0d025b3b204e9762fb0c7a7dad
+    home: https://ollama.ai/
+    icon: https://ollama.ai/public/ollama.png
+    keywords:
+    - iits AI
+    - RAG
+    name: iits-ollama-fullstack
+    type: application
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/iits-ollama-fullstack-0.4.9/iits-ollama-fullstack-0.4.9.tgz
+    version: 0.4.9
+  - apiVersion: v2
     created: "2024-03-20T20:58:09.09347482Z"
     dependencies:
     - condition: weaviate.enabled
@@ -4544,4 +4612,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/waf-cert-uploader-0.1.1/waf-cert-uploader-0.1.1.tgz
     version: 0.1.1
-generated: "2024-03-20T20:58:09.094167175Z"
+generated: "2024-03-20T21:06:25.292880931Z"
