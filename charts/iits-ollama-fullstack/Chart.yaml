@@ -9,7 +9,7 @@ description: |
 
   ```yaml
     iits-ollama-fullstack:
-      targetRevision: "0.4.2"
+      targetRevision: "0.4.3"
       namespace: ollama
       valueFile: "value-files/iits-ollama-fullstack/values.yaml"
   ```
@@ -198,7 +198,7 @@ description: |
     affinity: {}
   ```
 type: application
-version: 0.4.2
+version: 0.4.3
 home: https://ollama.ai/
 icon: https://ollama.ai/public/ollama.png
 keywords:
@@ -209,9 +209,6 @@ dependencies:
     repository: https://weaviate.github.io/weaviate-helm
     version: 16.8.7
     condition: weaviate.enabled
-  - name: postgresql
-    repository: https://cetic.github.io/helm-charts
-    version: 0.2.5
   - name: airbyte
     version: 0.55.5
     repository: https://airbytehq.github.io/helm-charts
