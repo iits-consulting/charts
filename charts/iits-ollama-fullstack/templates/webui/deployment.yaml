@@ -41,10 +41,10 @@ spec:
               containerPort: {{ .Values.webui.service.port }}
               protocol: TCP
           env:
-          {{- range $key, $value := .Values.webui.env }}
-            - name: {{ printf "%s" $key | replace "." "_" | upper | quote }}
-              value: {{ tpl $value $ | toString }}
-            {{- end }}
+              {{- range $name, $value := .Values.webui.env }}
+              - name: {{ $name }}
+                value: {{ $value }}
+                {{- end }}
           {{- if .Values.webui.livenessProbe.enabled }}
           livenessProbe:
             httpGet:
