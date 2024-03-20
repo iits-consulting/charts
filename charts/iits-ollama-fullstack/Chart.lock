@@ -2,14 +2,11 @@ dependencies:
 - name: weaviate
   repository: https://weaviate.github.io/weaviate-helm
   version: 16.8.7
-- name: postgresql
-  repository: https://cetic.github.io/helm-charts
-  version: 0.2.5
 - name: airbyte
   repository: https://airbytehq.github.io/helm-charts
   version: 0.55.5
 - name: ollama
   repository: https://otwld.github.io/ollama-helm/
   version: 0.19.0
-digest: sha256:033c296e77d1b91b0862bec47864f4e790185c67f22da5a419162ff2a97bcf45
-generated: "2024-03-20T18:38:52.470063+01:00"
+digest: sha256:075012b130cda9e64ebde5caa92e2bf604ba84bb1e56cf5c4f23b0f6d08f580c
+generated: "2024-03-20T19:28:00.360703+01:00"
