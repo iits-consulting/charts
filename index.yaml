@@ -2297,6 +2297,21 @@ entries:
     version: 0.2.5
   kasm:
   - apiVersion: v2
+    created: "2024-03-20T06:15:32.469044882Z"
+    description: '# Description  This is just a Proof of Concept for KASM. Don''t
+      use it for production.  ## Installing the Chart with iits ArgoCD ```yaml kasm:   namespace:
+      kasm   repoURL: "https://charts.iits.tech"   targetRevision: "0.2.2"   parameters:     services.firstuser.extraEnv.VNC_PW:
+      "REPLACE_ME"     services.firstuser.ingressRoute.domain: "REPLACE_ME" ```  ##
+      Dependencies  This services needs to be installed upfront  - traefik - cert-manager   ##
+      How to add a new instance  Just duplicate the firstuser part inside values.yaml
+      and rename it '
+    digest: afe16dbab472ab62bbc92b464cd0682fb16e5fef2c8194d506398f5e0ee0cf11
+    name: kasm
+    type: application
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/kasm-0.2.2/kasm-0.2.2.tgz
+    version: 0.2.2
+  - apiVersion: v2
     created: "2024-03-19T19:03:14.714382889Z"
     description: '# Description  This is just a Proof of Concept for KASM. Don''t
       use it for production.  ## Installing the Chart with iits ArgoCD ```yaml kasm:   namespace:
@@ -4050,4 +4065,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/waf-cert-uploader-0.1.1/waf-cert-uploader-0.1.1.tgz
     version: 0.1.1
-generated: "2024-03-19T19:03:14.818857164Z"
+generated: "2024-03-20T06:15:32.469513743Z"
