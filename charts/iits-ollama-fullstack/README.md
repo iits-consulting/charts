@@ -1,6 +1,6 @@
 # iits-ollama-fullstack
 
-![Version: 0.4.1](https://img.shields.io/badge/Version-0.4.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.4.2](https://img.shields.io/badge/Version-0.4.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 Setup private LLM RAG Cluster with (weaviate, Ollama & airbyte)
 
@@ -10,7 +10,7 @@ Setup private LLM RAG Cluster with (weaviate, Ollama & airbyte)
 
 ```yaml
   iits-ollama-fullstack:
-    targetRevision: "0.4.1"
+    targetRevision: "0.4.2"
     namespace: ollama
     valueFile: "value-files/iits-ollama-fullstack/values.yaml"
 ```
@@ -253,7 +253,6 @@ webui:
 | ollama.tolerations[0].effect | string | `"PreferNoSchedule"` |  |
 | ollama.tolerations[0].key | string | `"gpu-node"` |  |
 | ollama.tolerations[0].operator | string | `"Exists"` |  |
-| postgresql | string | `nil` |  |
 | weaviate.service.type | string | `"ClusterIP"` |  |
 | webui.affinity | object | `{}` |  |
 | webui.autoscaling.enabled | bool | `false` |  |
