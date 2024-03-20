@@ -177,4 +177,3 @@ webui:
   tolerations: []
 
   affinity: {}
-postgresql:
