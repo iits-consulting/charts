@@ -206,6 +206,7 @@ webui:
 | Repository | Name | Version |
 |------------|------|---------|
 | https://airbytehq.github.io/helm-charts | airbyte | 0.55.5 |
+| https://cetic.github.io/helm-charts | postgresql | 0.2.5 |
 | https://otwld.github.io/ollama-helm/ | ollama | 0.19.0 |
 | https://weaviate.github.io/weaviate-helm | weaviate | 16.8.7 |
 
@@ -252,6 +253,7 @@ webui:
 | ollama.tolerations[0].effect | string | `"PreferNoSchedule"` |  |
 | ollama.tolerations[0].key | string | `"gpu-node"` |  |
 | ollama.tolerations[0].operator | string | `"Exists"` |  |
+| postgresql | string | `nil` |  |
 | weaviate.service.type | string | `"ClusterIP"` |  |
 | webui.affinity | object | `{}` |  |
 | webui.autoscaling.enabled | bool | `false` |  |
