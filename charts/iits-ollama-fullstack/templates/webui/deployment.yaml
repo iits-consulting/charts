@@ -42,8 +42,8 @@ spec:
               protocol: TCP
           env:
               {{- range $name, $value := .Values.webui.env }}
-              - name: {{ $name }}
-                value: {{ $value }}
+              - name: {{ $name | upper | quote  }}
+                value: {{ $value | quote }}
                 {{- end }}
           {{- if .Values.webui.livenessProbe.enabled }}
           livenessProbe:
