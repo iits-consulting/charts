@@ -50,10 +50,10 @@ kasmDefaultConfig:
     KASM_SVC_UPLOADS: 0
 
 services:
-  firstuser:
-    ingressRoute:
-      # -- Required
-      domain: test
-    extraEnv:
-      # -- Required
-      VNC_PW: test
+#  firstuser:
+#    ingressRoute:
+#      # -- Required
+#      domain: test
+#    extraEnv:
+#      # -- Required
+#      VNC_PW: test
