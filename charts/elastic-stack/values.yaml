@@ -109,7 +109,7 @@ filebeat:
             overwrite_keys: true
         - add_labels:
             labels:
-              stage: {{.Values.projectValues.stage}}
+              stage: ${STAGE:dev}
         - drop_event:
             when:
               or:
