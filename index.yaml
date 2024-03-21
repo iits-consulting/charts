@@ -1036,6 +1036,27 @@ entries:
     version: 7.17.3-cce-volumes
   elasticsearch:
   - apiVersion: v2
+    created: "2024-03-21T13:24:17.379507028Z"
+    dependencies:
+    - condition: elasticsearch.enabled
+      name: elasticsearch
+      repository: https://helm.elastic.co
+      version: 8.5.1
+    - condition: kibana.enabled
+      name: kibana
+      repository: https://helm.elastic.co
+      version: 7.17.3
+    - condition: filebeat.enabled
+      name: filebeat
+      repository: https://helm.elastic.co
+      version: 8.5.1
+    description: Awesome Logs
+    digest: cf9436594cd44e03be78c4ef5f00d62a752f492f0f3b584b54137956e8afda51
+    name: elasticsearch
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/elasticsearch-8.6.1/elasticsearch-8.6.1.tgz
+    version: 8.6.1
+  - apiVersion: v2
     created: "2024-02-06T13:33:06.781010998Z"
     dependencies:
     - condition: elasticsearch.enabled
@@ -4612,4 +4633,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/waf-cert-uploader-0.1.1/waf-cert-uploader-0.1.1.tgz
     version: 0.1.1
-generated: "2024-03-20T21:06:25.292880931Z"
+generated: "2024-03-21T13:24:17.379921602Z"
