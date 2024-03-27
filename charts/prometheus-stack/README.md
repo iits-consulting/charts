@@ -1,6 +1,6 @@
 # prometheus-stack
 
-![Version: 43.3.0](https://img.shields.io/badge/Version-43.3.0-informational?style=flat-square)
+![Version: 56.21.0](https://img.shields.io/badge/Version-56.21.0-informational?style=flat-square)
 
 A complete monitoring/alerting stack with Grafana Prometheus Alertmanager
 
@@ -28,7 +28,7 @@ prometheus-stack:
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://prometheus-community.github.io/helm-charts | prometheusStack(kube-prometheus-stack) | 43.1.3 |
+| https://prometheus-community.github.io/helm-charts | prometheusStack(kube-prometheus-stack) | 56.21.x |
 
 ## Values
 
@@ -91,6 +91,7 @@ prometheus-stack:
 | prometheusStack.grafana."grafana.ini".server.root_url | string | `"https://{{$.Values.global.grafana.host}}/grafana"` |  |
 | prometheusStack.grafana."grafana.ini".server.serve_from_sub_path | bool | `true` |  |
 | prometheusStack.grafana.adminPassword | string | `nil` | Required |
+| prometheusStack.grafana.serviceMonitor.path | string | `"/grafana/metrics"` |  |
 | prometheusStack.ingress.alertmanager.annotations."cert-manager.io/cluster-issuer" | string | `"letsencrypt"` |  |
 | prometheusStack.ingress.alertmanager.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
 | prometheusStack.ingress.alertmanager.annotations."traefik.ingress.kubernetes.io/router.middlewares" | string | `"{{.Release.Namespace}}-strip-prefix-{{ .Release.Name }}@kubernetescrd, routing-oidc-forward-auth@kubernetescrd"` |  |
