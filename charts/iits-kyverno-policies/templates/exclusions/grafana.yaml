@@ -1,7 +1,7 @@
 apiVersion: kyverno.io/v2alpha1
 kind: PolicyException
 metadata:
-  name: filebeat
+  name: grafana
   annotations:
     "helm.sh/hook": pre-install,pre-upgrade
     "helm.sh/hook-weight": "-5"
@@ -36,15 +36,8 @@ spec:
     any:
       - resources:
           kinds:
-            - DaemonSet
-          names:
-            - elastic-stack-filebeat
-          namespaces:
-            - monitoring
-      - resources:
-          kinds:
             - Pod
           names:
-            - elastic-stack-filebeat*
+            - prometheus-stack-grafana*
           namespaces:
             - monitoring

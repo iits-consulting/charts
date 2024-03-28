@@ -10,6 +10,24 @@ spec:
     - policyName: enforce-security-context
       ruleNames:
         - add-pod-security-context
+    - policyName: require-run-as-non-root-user
+      ruleNames:
+        - run-as-non-root-user
+    - policyName: require-run-as-nonroot
+      ruleNames:
+        - run-as-non-root
+    - policyName: restrict-seccomp-strict
+      ruleNames:
+        - check-seccomp-strict
+    - policyName: disallow-capabilities-strict
+      ruleNames:
+        - require-drop-all
+    - policyName: disallow-privilege-escalation
+      ruleNames:
+        - privilege-escalation
+    - policyName: disallow-privileged-containers
+      ruleNames:
+        - privileged-containers
   match:
     any:
       - resources:

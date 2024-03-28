@@ -11,6 +11,10 @@ spec:
       ruleNames:
         - restricted-volumes
         - autogen-restricted-volumes
+    - policyName: restrict-volume-types
+      ruleNames:
+        - restricted-volumes
+        - autogen-restricted-volumes
     - policyName: disallow-host-namespaces
       ruleNames:
         - host-namespaces
@@ -28,21 +32,7 @@ spec:
           namespaces:
             - monitoring
           names:
-            - elastic-stack-filebeat
-      - resources:
-          kinds:
-            - DaemonSet
-          namespaces:
-            - monitoring
-          names:
             - prometheus-stack-prometheus-node-exporter
-      - resources:
-          kinds:
-            - Pod
-          namespaces:
-            - monitoring
-          names:
-            - elastic-stack-filebeat*
       - resources:
           kinds:
             - Pod
