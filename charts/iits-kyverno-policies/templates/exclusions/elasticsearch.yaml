@@ -35,5 +35,8 @@ spec:
             - Pod
           names:
             - elasticsearch-master*
+            - elastic-stack-ilm*
+            - elastic-stack-index*
+            - elastic-stack-backup*
           namespaces:
             - monitoring
