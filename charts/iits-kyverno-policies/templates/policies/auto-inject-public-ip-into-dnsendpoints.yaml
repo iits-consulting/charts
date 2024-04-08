@@ -23,7 +23,7 @@ spec:
                       - {{ .publicIP }}
       preconditions:
         any:
-          - key: "{{request.object.metadata.annotations.autoInjectPublicIP}}"
+          - key: "{{ `{{ request.object.metadata.annotations.autoInjectPublicIP }}` }}"
             operator: Equals
             value: 'true'
 {{- end }}
