@@ -27,5 +27,5 @@ description: |
   ## How to add a new instance
 
   Just duplicate the firstuser part inside values.yaml and rename it
-version: 0.2.2
+version: 0.3.0
 type: application
