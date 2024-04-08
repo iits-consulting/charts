@@ -263,3 +263,14 @@ autoInjectDockerPullSecrets:
 #      password: "token or password"
 #      registryUrl: "myregistry"
 #      registryWildcard: "*"
+
+# If the annotation autoInjectPublicIP is set to true it will auto inject the given public ip
+autoInjectPublicIpIntoDnsendpoints:
+  # -- Enable or disable the policy globally
+  enabled: false
+  # -- The name of the policy
+  name: auto-inject-public-ip-into-dns-endpoints
+
+  # -- The public ip / EIP
+  publicIP:
+
