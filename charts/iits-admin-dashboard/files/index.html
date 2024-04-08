@@ -15,9 +15,11 @@
     <h1>{{ .Values.defaultDashboard.title }}</h1>
     <div class="tiles">
         {{- range .Values.defaultDashboard.tiles }}
+        {{- if ne .enabled "false" }}
         <a href="{{ .href }}" class="tile" target="_blank">
             <img src="{{ .imgSrc }}" alt="{{ .imgAlt }}">
         </a>
+        {{- end }}
         {{- end }}
     </div>
 </div>

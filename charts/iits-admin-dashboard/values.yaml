@@ -4,53 +4,70 @@ defaultDashboard:
   title: "Tech Admin Board"
   tiles:
     kibana:
+      enabled: "true"
       href: "kibana/app/discover"
       imgSrc: "https://cdn.iconscout.com/icon/free/png-512/elastic-1-283281.png"
       imgAlt: "Kibana"
     dashboard:
+      enabled: "true"
       href: "dashboard/"
       imgSrc: "https://raw.githubusercontent.com/docker-library/docs/a6cc2c5f4bc6658168f2a0abbb0307acaefff80e/traefik/logo.png"
       imgAlt: "Traefik Dashboard"
     argocd:
+      enabled: "true"
       href: "argocd"
       imgSrc: "argo.svg"
       imgAlt: "ArgoCD"
     grafana:
+      enabled: "true"
       href: "grafana/login/generic_oauth"
       imgSrc: "https://seekicon.com/free-icon-download/grafana_2.png"
       imgAlt: "Grafana"
     prometheus:
+      enabled: "true"
       href: "prometheus"
       imgSrc: "https://www.logolynx.com/images/logolynx/8b/8b0c91b14fb1da0270f0c5ed3d69fac4.jpeg"
       imgAlt: "Prometheus"
     elasticsearch:
+      enabled: "true"
       href: "elasticsearch"
       imgSrc: "https://iconape.com/wp-content/png_logo_vector/elasticsearch-logo.png"
       imgAlt: "Elasticsearch"
     kyverno:
+      enabled: "true"
       href: "policies"
       imgSrc: "https://cdn.shopify.com/s/files/1/1300/8977/collections/kyverno_480x480.png"
       imgAlt: "Kyverno"
     vault:
+      enabled: "true"
       href: "vault/"
       imgSrc: "https://www.drupal.org/files/project-images/Vault_VerticalLogo_FullColor.png"
       imgAlt: "Vault"
     keycloak:
+      enabled: "true"
       href: "keycloak/"
       imgSrc: "https://www.quellwerke.de/fileadmin/Technologie_Logos/keycloak.png"
       imgAlt: "Keycloak"
     otc:
+      enabled: "true"
       href: "otcOIDC/"
       imgSrc: "https://upload.wikimedia.org/wikipedia/commons/7/75/Otc-logo.png"
       imgAlt: "OTC"
     akhq:
+      enabled: "true"
       href: "akhq/ui/"
       imgSrc: "https://cdn.icon-icons.com/icons2/2699/PNG/512/apache_kafka_vertical_logo_icon_169585.png"
       imgAlt: "akhq (kafka headquarter)"
     alertManager:
+      enabled: "true"
       href: "/alertmanager"
       imgSrc: "https://devopy.io/wp-content/uploads/2019/02/bell_260.svg"
       imgAlt: "Alertmanager"
+    logout:
+      enabled: "true"
+      href: "/logout"
+      imgSrc: "https://www.nicepng.com/png/detail/518-5189122_logout-transparent-logout-button-icon.png"
+      imgAlt: "Logout"
     # Add other tiles here...
 
 # You can add here a custom HTML website
