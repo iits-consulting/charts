@@ -107,6 +107,7 @@ ingress:
     enabled: true
     ## Default values can be overriden
     #tls:
+    #  enabled: true
     #  secretName: "iits-admin-dashboard.fullname"
     #path: "/"
     #pathType: "Prefix"

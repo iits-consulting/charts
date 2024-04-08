@@ -35,7 +35,7 @@ Common labels
 */}}
 {{- define "iits-admin-dashboard.labels" -}}
 helm.sh/chart: {{ include "iits-admin-dashboard.chart" . }}
-iits-consulting.chart-creator/version: 1.0.9
+iits-consulting.chart-creator/version: 1.2.1
 {{ include "iits-admin-dashboard.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
@@ -59,4 +59,8 @@ Create the name of the service account to use
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
+{{- end }}
+
+{{- define "ingressClassName" -}}
+{{ (.Values.ingress).className | default "traefik" }}
 {{- end }}
