@@ -1,6 +1,6 @@
 # iits-kyverno-policies
 
-![Version: 1.5.1](https://img.shields.io/badge/Version-1.5.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 1.5.4](https://img.shields.io/badge/Version-1.5.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 This chart wraps the upstream `kyverno-policies` chart and adds a few useful policies:
   - Verify all images are signed with cosign
@@ -21,6 +21,9 @@ This chart wraps the upstream `kyverno-policies` chart and adds a few useful pol
 | autoInjectDockerPullSecrets.autogenControllers | string | `"none"` | Auto gen rules for pod controllers. See https://kyverno.io/docs/writing-policies/autogen/ |
 | autoInjectDockerPullSecrets.enabled | bool | `false` |  |
 | autoInjectDockerPullSecrets.secrets | string | `nil` |  |
+| autoInjectPublicIpIntoDnsendpoints.enabled | bool | `false` | Enable or disable the policy globally |
+| autoInjectPublicIpIntoDnsendpoints.name | string | `"auto-inject-public-ip-into-dns-endpoints"` | The name of the policy |
+| autoInjectPublicIpIntoDnsendpoints.publicIP | string | `nil` | The public ip / EIP |
 | disallowUnsignedImages.autogenControllers | string | `"none"` | Auto gen rules for pod controllers. See https://kyverno.io/docs/writing-policies/autogen/ |
 | disallowUnsignedImages.background | bool | `true` | Also check already existing containers. See https://kyverno.io/docs/writing-policies/background/ |
 | disallowUnsignedImages.enabled | bool | `false` | Enable or disable the policy globally |
