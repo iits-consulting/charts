@@ -1100,6 +1100,23 @@ entries:
     version: 8.5.1
   iits-admin-dashboard:
   - apiVersion: v2
+    created: "2024-04-08T21:09:04.959112878Z"
+    description: 'This chart deploys a super simple webserver that provides a simple
+      website containing links to a set of dashboards that are usually deployed in
+      our infrastructure setup as well as some nifty external tools.  ## Installing
+      the Chart with iits ArgoCD  ```yaml iits-admin-dashboard:   namespace: admin   repoURL:
+      "https://charts.iits.tech"   targetRevision: "1.4.1"   parameters:     ingress.host:
+      "REPLACE_ME" ```  ## Installing the Chart with iits ArgoCD but with oidc-proxy-mode  ```yaml
+      iits-admin-dashboard:   namespace: admin   repoURL: "https://charts.iits.tech"   targetRevision:
+      "1.4.1"   valuesFile: ....     values.yaml:   ingress:     host: "admin.test.de"     defaultIngress:       tls:         enabled:
+      "false"     annotations:       traefik.ingress.kubernetes.io/router.entrypoints:
+      "after-proxy"       traefik.ingress.kubernetes.io/router.tls: "false" ```'
+    digest: a1b76242cdb87cc19741a11c139d1fa610eec4f44ec4ae2cc50c36d5961e33de
+    name: iits-admin-dashboard
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/iits-admin-dashboard-1.4.1/iits-admin-dashboard-1.4.1.tgz
+    version: 1.4.1
+  - apiVersion: v2
     created: "2024-02-06T13:33:06.875214261Z"
     description: 'This chart deploys a super simple webserver that provides a simple
       website containing links to a set of dashboards that are usually deployed in
@@ -4735,4 +4752,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/waf-cert-uploader-0.1.1/waf-cert-uploader-0.1.1.tgz
     version: 0.1.1
-generated: "2024-04-08T20:39:10.09359564Z"
+generated: "2024-04-08T21:09:04.959590829Z"
