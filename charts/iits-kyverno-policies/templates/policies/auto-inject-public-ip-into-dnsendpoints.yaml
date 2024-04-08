@@ -14,13 +14,10 @@ spec:
           kinds:
             - DNSEndpoint
       mutate:
-        foreach:
-          - list: "request.object.spec.endpoints"
-            patchStrategicMerge:
-              spec:
-                endpoints:
-                  - targets:
-                      - {{ .publicIP }}
+        patchesJson6902: |-
+          - op: replace
+            path: "/spec/endpoints/0/targets/0"
+            value: "{{ .publicIP }}"
       preconditions:
         any:
           - key: "{{ `{{ request.object.metadata.annotations.autoInjectPublicIP }}` }}"
