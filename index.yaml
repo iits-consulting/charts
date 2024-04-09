@@ -689,6 +689,19 @@ entries:
     version: 2.0.2
   cert-manager:
   - apiVersion: v2
+    created: "2024-04-09T18:14:26.300468111Z"
+    dependencies:
+    - name: cert-manager
+      repository: https://charts.jetstack.io
+      version: v1.13.2
+    description: Wrapper chart for cert-manager. Deploys a ClusterIssuer resource
+      to bootstrap Let's encrypt cert generation
+    digest: b0e2fbcc1245510383d4fd3f5842a9ed9b4ac65eb62aebdd055c926ca6c23d70
+    name: cert-manager
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/cert-manager-1.0.1/cert-manager-1.0.1.tgz
+    version: 1.0.1
+  - apiVersion: v2
     created: "2023-12-12T09:25:27.384990616Z"
     dependencies:
     - name: cert-manager
@@ -1124,6 +1137,23 @@ entries:
     - https://github.com/iits-consulting/charts/releases/download/elasticsearch-8.5.1/elasticsearch-8.5.1.tgz
     version: 8.5.1
   iits-admin-dashboard:
+  - apiVersion: v2
+    created: "2024-04-09T18:14:26.457375264Z"
+    description: 'This chart deploys a super simple webserver that provides a simple
+      website containing links to a set of dashboards that are usually deployed in
+      our infrastructure setup as well as some nifty external tools.  ## Installing
+      the Chart with iits ArgoCD  ```yaml iits-admin-dashboard:   namespace: admin   repoURL:
+      "https://charts.iits.tech"   targetRevision: "1.4.1"   parameters:     ingress.host:
+      "REPLACE_ME" ```  ## Installing the Chart with iits ArgoCD but with oidc-proxy-mode  ```yaml
+      iits-admin-dashboard:   namespace: admin   repoURL: "https://charts.iits.tech"   targetRevision:
+      "1.4.1"   valuesFile: ....     values.yaml:   ingress:     host: "admin.test.de"     defaultIngress:       tls:         enabled:
+      "false"     annotations:       traefik.ingress.kubernetes.io/router.entrypoints:
+      "after-proxy"       traefik.ingress.kubernetes.io/router.tls: "false" ```'
+    digest: 61ed1df1afc6d2b041ab8d487275e98bfbc313dffc91269d07392b9dd9c8e291
+    name: iits-admin-dashboard
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/iits-admin-dashboard-1.4.3/iits-admin-dashboard-1.4.3.tgz
+    version: 1.4.3
   - apiVersion: v2
     created: "2024-04-08T21:21:19.754551828Z"
     description: 'This chart deploys a super simple webserver that provides a simple
@@ -4473,6 +4503,20 @@ entries:
   traefik:
   - apiVersion: v2
     appVersion: 10.22.0
+    created: "2024-04-09T18:14:26.621094032Z"
+    dependencies:
+    - name: traefik
+      repository: https://helm.traefik.io/traefik
+      version: 10.22.0
+    description: The traefik ingress controller with some additional resources and
+      sane default values for IITS projects
+    digest: f7763cc2dde4dd7c7868c16604ffdc1868274b376e80a3c763a01e9fb3b758a5
+    name: traefik
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/traefik-21.3.1/traefik-21.3.1.tgz
+    version: 21.3.1
+  - apiVersion: v2
+    appVersion: 10.22.0
     created: "2024-04-09T12:30:29.319162082Z"
     dependencies:
     - name: traefik
@@ -4570,20 +4614,6 @@ entries:
     version: 10.22.0-internal-svc
   - apiVersion: v2
     appVersion: 10.22.0
-    created: "2023-06-05T15:27:51.211737249Z"
-    dependencies:
-    - name: traefik
-      repository: https://helm.traefik.io/traefik
-      version: 10.22.0
-    description: The traefik ingress controller with some additional resources and
-      sane default values for IITS projects
-    digest: 6906b2281c86c06d5bf83a4798618cea9cc664629b4a38257e1a960e1defe9d1
-    name: traefik
-    urls:
-    - https://github.com/iits-consulting/charts/releases/download/traefik-10.22.0-internal-svc/traefik-10.22.0-internal-svc.tgz
-    version: 10.22.0-internal-svc
-  - apiVersion: v2
-    appVersion: 10.22.0
     created: "2023-07-06T10:42:57.126233149Z"
     dependencies:
     - name: traefik
@@ -4606,6 +4636,20 @@ entries:
     description: The traefik ingress controller with some additional resources and
       sane default values for IITS projects
     digest: 5deda0ad170782a7918aafacb06f8a42de5baf977d85f3cd5d3aef065edc6338
+    name: traefik
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/traefik-10.22.0-internal-svc/traefik-10.22.0-internal-svc.tgz
+    version: 10.22.0-internal-svc
+  - apiVersion: v2
+    appVersion: 10.22.0
+    created: "2023-06-05T15:27:51.211737249Z"
+    dependencies:
+    - name: traefik
+      repository: https://helm.traefik.io/traefik
+      version: 10.22.0
+    description: The traefik ingress controller with some additional resources and
+      sane default values for IITS projects
+    digest: 6906b2281c86c06d5bf83a4798618cea9cc664629b4a38257e1a960e1defe9d1
     name: traefik
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-10.22.0-internal-svc/traefik-10.22.0-internal-svc.tgz
@@ -4654,20 +4698,6 @@ entries:
     version: 10.22.0-cleanup
   - apiVersion: v2
     appVersion: 10.22.0
-    created: "2023-05-17T13:59:16.238558987Z"
-    dependencies:
-    - name: traefik
-      repository: https://helm.traefik.io/traefik
-      version: 10.22.0
-    description: The traefik ingress controller with some additional resources and
-      sane default values for IITS projects
-    digest: 14438fa4d4f98e41c3b1a82323c6e2a0e321798b0061a4c61386d810da64f146
-    name: traefik
-    urls:
-    - https://github.com/iits-consulting/charts/releases/download/traefik-10.22.0-bugfix-traefik-annotations/traefik-10.22.0-bugfix-traefik-annotations.tgz
-    version: 10.22.0-bugfix-traefik-annotations
-  - apiVersion: v2
-    appVersion: 10.22.0
     created: "2023-05-16T07:02:00.234042801Z"
     dependencies:
     - name: traefik
@@ -4689,6 +4719,20 @@ entries:
     description: The traefik ingress controller with some additional resources and
       sane default values for IITS projects
     digest: e1927b34e4b313cf8e94bb9439c5fa83cb0ad3709478d6f4025b9b0bc85262d0
+    name: traefik
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/traefik-10.22.0-bugfix-traefik-annotations/traefik-10.22.0-bugfix-traefik-annotations.tgz
+    version: 10.22.0-bugfix-traefik-annotations
+  - apiVersion: v2
+    appVersion: 10.22.0
+    created: "2023-05-17T13:59:16.238558987Z"
+    dependencies:
+    - name: traefik
+      repository: https://helm.traefik.io/traefik
+      version: 10.22.0
+    description: The traefik ingress controller with some additional resources and
+      sane default values for IITS projects
+    digest: 14438fa4d4f98e41c3b1a82323c6e2a0e321798b0061a4c61386d810da64f146
     name: traefik
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-10.22.0-bugfix-traefik-annotations/traefik-10.22.0-bugfix-traefik-annotations.tgz
@@ -4808,4 +4852,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/waf-cert-uploader-0.1.1/waf-cert-uploader-0.1.1.tgz
     version: 0.1.1
-generated: "2024-04-09T18:11:07.861546104Z"
+generated: "2024-04-09T18:14:26.621705766Z"
