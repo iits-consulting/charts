@@ -1,16 +1,3 @@
-ingressRoute:
-  upstream:
-    service:
-      name: akhq
-      port: 80
-  adminDomain: "admin.my-domain.com"
-  entryPointName: "after-proxy"
-  pathPrefix: "/akhq"
-  certificate:
-    enabled: false
-    # -- Defaults to .Release.Name -cert
-    name:
-    clusterIssuer: letsencrypt
 akhq:
   networkPolicy:
     enabled: false
@@ -42,3 +29,39 @@ akhq:
     prefix: "/akhq"
   readinessProbe:
     prefix: "/akhq"
+
+ingress:
+  enabled: true
+  # -- Required, replace it with your host address
+  host:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    traefik.ingress.kubernetes.io/router.middlewares: routing-oidc-forward-auth@kubernetescrd
+  # Creates default Ingress with tls and the given host from .Values.ingress.host
+  defaultIngress:
+    enabled: true
+    ## Default values can be overriden
+    #tls:
+    #  secretName: "akhq.fullname"
+    path: "/akhq"
+    #pathType: "Prefix"
+    #backend:
+    #  name: "akhq.fullname" #tpl supported
+    #  port:
+    #    name: http #tpl supported
+
+  ## If you don't want to use the default Ingress, you can define it here on your own
+  #tls:
+  #  - hosts:
+  #      - "{{.Values.ingress.host}}"
+  #    secretName: "akhq-cert"
+  #hosts:
+  #  - host: "{{.Values.ingress.host}}"
+  #    paths:
+  #      - path: "/"
+  #        backend:
+  #         name: "{{include "akhq.fullname" $}}"
+  #         port:
+  #            name: "{{include "akhq.fullname" $}}"
