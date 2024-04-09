@@ -13,10 +13,6 @@ config:
 
 kasmDefaultConfig:
   securityContext:
-    allowPrivilegeEscalation: false
-    capabilities:
-      drop:
-        - ALL
   ingressRoute:
     entryPointName: "websecure"
     certificate:
@@ -28,14 +24,6 @@ kasmDefaultConfig:
     tag: "1.13.0"
     pullPolicy: "IfNotPresent"
   podSecurityContext:
-    fsGroup: 2000
-    runAsGroup: 1000
-    runAsNonRoot: true
-    runAsUser: 1000
-    seccompProfile:
-      type: RuntimeDefault
-    supplementalGroups:
-      - 9001
   replicaCount: 1
   service:
     port: 6901

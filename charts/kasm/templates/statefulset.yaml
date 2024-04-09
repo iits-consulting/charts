@@ -3,7 +3,7 @@
 {{ range $serviceName,$serviceValues := .Values.services }}
 {{- $certSecretName := (($serviceValues.ingressRoute).certificate).name | default (printf "%s-%s" $serviceName "cert")}}
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: {{ default $serviceName $serviceValues.nameOverride }}
 spec:
@@ -12,8 +12,6 @@ spec:
       app: {{ default $serviceName $serviceValues.nameOverride }}
       release: {{ default $serviceName $serviceValues.nameOverride }}
   replicas: {{ default $defaultValues.replicaCount $serviceValues.replicaCount }}
-  strategy:
-    type: Recreate
   template:
     metadata:
       annotations:
@@ -50,6 +48,8 @@ spec:
             - name: {{ $.Release.Name }}-cert
               mountPath: /opt/kasm/current/certs
               readOnly: true
+            - name: user-data
+              mountPath: /home/kasm-user
       volumes:
         - name: {{ $.Release.Name }}-config
           secret:
@@ -58,5 +58,14 @@ spec:
         - name: {{ $.Release.Name }}-cert
           secret:
             secretName: {{$certSecretName}}
+  volumeClaimTemplates:
+    - metadata:
+        name: user-data
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 50Gi
+
 ---
 {{- end }}
