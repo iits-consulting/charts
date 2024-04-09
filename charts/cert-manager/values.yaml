@@ -3,3 +3,5 @@ clusterIssuer:
   http:
     name: letsencrypt
     email: "REPLACE_ME@some.de"
+cert-manager:
+  replicaCount: 2
