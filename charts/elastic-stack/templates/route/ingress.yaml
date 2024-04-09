@@ -9,18 +9,20 @@ metadata:
   {{- end }}
   {{- with .annotations }}
   annotations:
-    iits-consulting.chart-creator/version: 1.2.0
+    iits-consulting.chart-creator/version: 1.3.1
     {{- tpl (toYaml .) $ | nindent 4 }}
   {{- end }}
 spec:
-  ingressClassName: {{ .className | default "traefik" }}
+  ingressClassName: {{ (include "ingressClassName" $) }}
 
   {{- if .defaultIngress.enabled }}
+  {{- if ne (.defaultIngress.tls).enabled "false" }}
   {{- $certSecretName := (.defaultIngress.tls).secretName | default (printf "%s-%s" (include "elastic-stack.fullname" $) "cert")}}
   tls:
     - hosts:
         - {{ tpl (toYaml .host) $ }}
       secretName: {{ $certSecretName }}
+  {{- end }}
   rules:
     - host: {{ tpl (toYaml .host) $ }}
       http:

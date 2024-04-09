@@ -1,6 +1,3 @@
-ingressRoute:
-  adminDomain: "admin.my-domain.com"
-  entryPointName: "after-proxy"
 #cce:
 #  elasticsearch:
 #    region: "eu-de"
@@ -277,6 +274,7 @@ ilm:
       deleteAfter: 14d
 
 backup:
+  enabled: "true"
   image:
     repository: docker.io/curlimages/curl
     tag: 7.82.0

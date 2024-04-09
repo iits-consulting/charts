@@ -35,7 +35,7 @@ Common labels
 */}}
 {{- define "elastic-stack.labels" -}}
 helm.sh/chart: {{ include "elastic-stack.chart" . }}
-iits-consulting.chart-creator/version: 1.2.0
+iits-consulting.chart-creator/version: 1.3.1
 {{ include "elastic-stack.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
@@ -59,4 +59,8 @@ Create the name of the service account to use
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
+{{- end }}
+
+{{- define "ingressClassName" -}}
+{{ (.Values.ingress).className | default "traefik" }}
 {{- end }}

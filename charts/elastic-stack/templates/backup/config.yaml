@@ -1,3 +1,4 @@
+{{- if ne .Values.backup.enabled "false" }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -47,3 +48,4 @@ data:
     EOF
 
     echo -e "\nINFO: SLM policy {{ .Values.backup.policy.name }} created!"
+{{- end }}
