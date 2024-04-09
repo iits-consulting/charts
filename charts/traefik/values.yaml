@@ -42,13 +42,14 @@ defaultCert:
 
 ingress:
   # Just enable it if you set up forward auth
-  enabled: false
+  enabled: true
   # -- Required, replace it with your host address
   host:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
     traefik.ingress.kubernetes.io/router.tls: "true"
+    traefik.ingress.kubernetes.io/router.middlewares: routing-oidc-forward-auth@kubernetescrd
   # Creates default Ingress with tls and the given host from .Values.ingress.host
   defaultIngress:
     enabled: false
