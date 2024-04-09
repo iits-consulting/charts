@@ -14,6 +14,7 @@ Wrapper chart for cert-manager. Deploys a ClusterIssuer resource to bootstrap Le
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| cert-manager.replicaCount | int | `2` |  |
 | clusterIssuer.http.email | string | `"REPLACE_ME@some.de"` |  |
 | clusterIssuer.http.name | string | `"letsencrypt"` |  |
 | ingressClass | string | `"traefik"` |  |
