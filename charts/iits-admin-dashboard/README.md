@@ -1,6 +1,6 @@
 # iits-admin-dashboard
 
-![Version: 1.4.2](https://img.shields.io/badge/Version-1.4.2-informational?style=flat-square)
+![Version: 1.4.3](https://img.shields.io/badge/Version-1.4.3-informational?style=flat-square)
 
 This chart deploys a super simple webserver that provides a simple website containing links to a set
 of dashboards that are usually deployed in our infrastructure setup as well as some nifty external

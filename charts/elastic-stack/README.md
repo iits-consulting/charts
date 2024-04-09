@@ -1,6 +1,6 @@
 # elasticsearch
 
-![Version: 8.6.1](https://img.shields.io/badge/Version-8.6.1-informational?style=flat-square)
+![Version: 8.6.2](https://img.shields.io/badge/Version-8.6.2-informational?style=flat-square)
 
 Awesome Logs
 
@@ -20,6 +20,7 @@ Awesome Logs
 | backup.bucket.endpoint | string | `"https://obs.eu-de.otc.t-systems.com"` |  |
 | backup.bucket.name | string | `"REPLACE_ME"` | Required |
 | backup.bucket.secretKey | string | `"REPLACE_ME"` | Required |
+| backup.enabled | string | `"true"` |  |
 | backup.image.repository | string | `"docker.io/curlimages/curl"` |  |
 | backup.image.tag | string | `"7.82.0"` |  |
 | backup.policy.indices[0] | string | `"*"` |  |
@@ -91,8 +92,6 @@ Awesome Logs
 | ingress.defaultIngress.path | string | `"/kibana"` |  |
 | ingress.enabled | bool | `true` |  |
 | ingress.host | string | `nil` | Required, replace it with your host address |
-| ingressRoute.adminDomain | string | `"admin.my-domain.com"` |  |
-| ingressRoute.entryPointName | string | `"after-proxy"` |  |
 | kibana.enabled | bool | `true` |  |
 | kibana.image | string | `"docker.elastic.co/kibana/kibana"` |  |
 | kibana.imageTag | string | `"8.5.1"` |  |
