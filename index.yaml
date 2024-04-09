@@ -554,6 +554,18 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/argocd-config-0.2.4-multiple-upload/argocd-config-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
+  basic-auth-forward-auth:
+  - apiVersion: v2
+    created: "2024-04-09T14:19:24.265419347Z"
+    description: 'For workshop we use this chart to establish a basic auth forward
+      auth. OIDC forward auth would be to complicated to implement. But since we use
+      the name "oidc-forward-auth" inside every ingress annotation as a middleware
+      we named the basic auth middleware also like this. '
+    digest: 1521b0022a07f39fa934fbd67e79577d1ee9bcaa1a4d964a74899b1acec5733a
+    name: basic-auth-forward-auth
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/basic-auth-forward-auth-0.1.0/basic-auth-forward-auth-0.1.0.tgz
+    version: 0.1.0
   basic-auth-gateway:
   - apiVersion: v2
     created: "2023-07-26T14:20:39.62291104Z"
@@ -4783,4 +4795,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/waf-cert-uploader-0.1.1/waf-cert-uploader-0.1.1.tgz
     version: 0.1.1
-generated: "2024-04-09T12:30:29.319757861Z"
+generated: "2024-04-09T14:19:24.580081531Z"
