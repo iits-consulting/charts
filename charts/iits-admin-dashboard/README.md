@@ -122,6 +122,7 @@ iits-admin-dashboard:
 | deployment.resources.requests.memory | string | `"4Mi"` |  |
 | deployment.securityContext.allowPrivilegeEscalation | bool | `false` |  |
 | deployment.securityContext.runAsNonRoot | bool | `true` |  |
+| deployment.securityContext.runAsUser | int | `1001` |  |
 | deployment.volumeMounts[0].mountPath | string | `"/home/static"` |  |
 | deployment.volumeMounts[0].name | string | `"admin-dashboard-config"` |  |
 | deployment.volumes[0].configMap.name | string | `"admin-dashboard-config"` |  |
