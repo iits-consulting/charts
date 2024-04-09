@@ -56,6 +56,19 @@ entries:
     version: 0.1.0
   akhq:
   - apiVersion: v2
+    created: "2024-04-09T18:11:07.609616312Z"
+    dependencies:
+    - name: akhq
+      repository: https://akhq.io/
+      version: 0.3.1
+    description: Kafka GUI for Apache Kafka® to manage topics, topics data, consumers
+      group, schema registry, connect and more...
+    digest: 4521b13b3835470aa79321e67da22131252862040f35a3f14d5bd7b06c0c5081
+    name: akhq
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/akhq-1.1.0/akhq-1.1.0.tgz
+    version: 1.1.0
+  - apiVersion: v2
     created: "2023-09-18T08:53:09.697245243Z"
     dependencies:
     - name: akhq
@@ -4795,4 +4808,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/waf-cert-uploader-0.1.1/waf-cert-uploader-0.1.1.tgz
     version: 0.1.1
-generated: "2024-04-09T14:19:24.580081531Z"
+generated: "2024-04-09T18:11:07.861546104Z"
