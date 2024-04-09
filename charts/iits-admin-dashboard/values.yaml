@@ -183,7 +183,7 @@ deployment:
   #   drop:
   #   - ALL
   # readOnlyRootFilesystem: true
-  # runAsUser: 1000
+    runAsUser: 1001
 
   volumes:
     - name: admin-dashboard-config
