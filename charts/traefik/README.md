@@ -20,9 +20,10 @@ The traefik ingress controller with some additional resources and sane default v
 | defaultCert.issuerRef.name | string | `"letsencrypt"` |  |
 | ingress.annotations."cert-manager.io/cluster-issuer" | string | `"letsencrypt"` |  |
 | ingress.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
+| ingress.annotations."traefik.ingress.kubernetes.io/router.middlewares" | string | `"routing-oidc-forward-auth@kubernetescrd"` |  |
 | ingress.annotations."traefik.ingress.kubernetes.io/router.tls" | string | `"true"` |  |
 | ingress.defaultIngress.enabled | bool | `false` |  |
-| ingress.enabled | bool | `false` |  |
+| ingress.enabled | bool | `true` |  |
 | ingress.host | string | `nil` | Required, replace it with your host address |
 | ingress.hosts[0].host | string | `"{{.Values.ingress.host}}"` |  |
 | ingress.hosts[0].paths[0].backend.name | string | `"traefik-internal"` |  |
