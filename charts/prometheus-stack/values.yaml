@@ -21,6 +21,7 @@ prometheusStack:
         traefik.ingress.kubernetes.io/router.middlewares: routing-oidc-forward-auth@kubernetescrd
     grafana:
       enabled: true
+      className: "traefik"
       host: "{{$.Values.global.grafana.host}}"
       annotations:
         traefik.ingress.kubernetes.io/router.entrypoints: websecure
