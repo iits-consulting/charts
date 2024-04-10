@@ -16,36 +16,23 @@ prometheusStack:
       enabled: true
       host: "{{$.Values.global.prometheus.host}}"
       annotations:
-        cert-manager.io/cluster-issuer: letsencrypt
         traefik.ingress.kubernetes.io/router.entrypoints: websecure
         traefik.ingress.kubernetes.io/router.tls: "true"
         traefik.ingress.kubernetes.io/router.middlewares: routing-oidc-forward-auth@kubernetescrd
-      tls:
-        - hosts:
-            - "{{$.Values.global.prometheus.host}}"
     grafana:
       enabled: true
-      className: "traefik"
       host: "{{$.Values.global.grafana.host}}"
       annotations:
-        cert-manager.io/cluster-issuer: letsencrypt
         traefik.ingress.kubernetes.io/router.entrypoints: websecure
         traefik.ingress.kubernetes.io/router.tls: "true"
         traefik.ingress.kubernetes.io/router.middlewares: routing-oidc-forward-auth@kubernetescrd
-      tls:
-        - hosts:
-            - "{{$.Values.global.grafana.host}}"
     alertmanager:
       enabled: true
       host: "{{$.Values.global.alertmanager.host}}"
       annotations:
-        cert-manager.io/cluster-issuer: letsencrypt
         traefik.ingress.kubernetes.io/router.entrypoints: websecure
         traefik.ingress.kubernetes.io/router.tls: "true"
         traefik.ingress.kubernetes.io/router.middlewares: "{{.Release.Namespace}}-strip-prefix-{{ .Release.Name }}@kubernetescrd, routing-oidc-forward-auth@kubernetescrd"
-      tls:
-        - hosts:
-            - "{{$.Values.global.alertmanager.host}}"
   kubeProxy:
     enabled: false
   kubeScheduler:
