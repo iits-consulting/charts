@@ -5,5 +5,5 @@ dependencies:
     version: 0.3.1
 description: Kafka GUI for Apache Kafka® to manage topics, topics data, consumers group, schema registry, connect and more...
 name: akhq
-version: 1.1.0
+version: 1.2.0
 
