@@ -26,7 +26,7 @@ ingress:
   # -- Mandatory, replace it with your host address
   host:
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt
+    
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
     traefik.ingress.kubernetes.io/router.tls: "true"
     #namespace-name@kubernetescrd
