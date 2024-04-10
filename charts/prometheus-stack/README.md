@@ -1,6 +1,6 @@
 # prometheus-stack
 
-![Version: 56.22.0](https://img.shields.io/badge/Version-56.22.0-informational?style=flat-square)
+![Version: 56.22.1](https://img.shields.io/badge/Version-56.22.1-informational?style=flat-square)
 
 A complete monitoring/alerting stack with Grafana Prometheus Alertmanager
 
@@ -100,6 +100,7 @@ prometheus-stack:
 | prometheusStack.ingress.grafana.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
 | prometheusStack.ingress.grafana.annotations."traefik.ingress.kubernetes.io/router.middlewares" | string | `"routing-oidc-forward-auth@kubernetescrd"` |  |
 | prometheusStack.ingress.grafana.annotations."traefik.ingress.kubernetes.io/router.tls" | string | `"true"` |  |
+| prometheusStack.ingress.grafana.className | string | `"traefik"` |  |
 | prometheusStack.ingress.grafana.enabled | bool | `true` |  |
 | prometheusStack.ingress.grafana.host | string | `"{{$.Values.global.grafana.host}}"` |  |
 | prometheusStack.ingress.prometheus.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
