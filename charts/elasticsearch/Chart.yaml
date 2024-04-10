@@ -12,7 +12,22 @@ dependencies:
   name: filebeat
   repository: https://helm.elastic.co
   version: 8.5.1
-description: Awesome Logs
 name: elasticsearch
 version: 8.6.2
+description: |
+  Elasticsearch + filebeat + kibana with default common used indexes and Index Lifecycle Management.  
+  It comes also with a backup functionality.
+  
+  # Installing the Chart with iits ArgoCD
+
+  ## Register the Chart
+
+  ```yaml
+    elasticsearch:
+      namespace: monitoring
+      targetRevision: "8.6.2"
+      parameters:
+        ingress.host: "admin.{{.Values.projectValues.rootDomain}}"
+        backup.enabled: "false"
+  ```
 
