@@ -1,6 +1,6 @@
 # iits-ollama-fullstack
 
-![Version: 0.4.9](https://img.shields.io/badge/Version-0.4.9-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.5.0](https://img.shields.io/badge/Version-0.5.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 Setup private LLM RAG Cluster with (weaviate, Ollama & airbyte)
 
@@ -32,7 +32,7 @@ airbyte:
             - path: "/"
               pathType: "Prefix"
       annotations:
-        
+        cert-manager.io/cluster-issuer: letsencrypt
         traefik.ingress.kubernetes.io/router.entrypoints: websecure
         traefik.ingress.kubernetes.io/router.tls: "true"
   connector-builder-server:
@@ -64,7 +64,7 @@ ollama:
     host:
     traefikMiddlewareEnabled: "true"
     annotations:
-      
+      cert-manager.io/cluster-issuer: letsencrypt
       traefik.ingress.kubernetes.io/router.entrypoints: websecure
       traefik.ingress.kubernetes.io/router.tls: "true"
       traefik.ingress.kubernetes.io/router.middlewares: "{{.Release.Namespace}}-strip-prefix-ollama@kubernetescrd"
@@ -143,7 +143,7 @@ webui:
     enabled: true
     host:
     annotations:
-      
+      cert-manager.io/cluster-issuer: letsencrypt
       traefik.ingress.kubernetes.io/router.entrypoints: websecure
       traefik.ingress.kubernetes.io/router.tls: "true"
     hosts:
@@ -215,7 +215,6 @@ webui:
 |-----|------|---------|-------------|
 | airbyte.connector-builder-server.service.type | string | `"ClusterIP"` |  |
 | airbyte.fullnameOverride | string | `"airbyte"` |  |
-| airbyte.webapp.ingress.annotations."cert-manager.io/cluster-issuer" | string | `"letsencrypt"` |  |
 | airbyte.webapp.ingress.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
 | airbyte.webapp.ingress.annotations."traefik.ingress.kubernetes.io/router.tls" | string | `"true"` |  |
 | airbyte.webapp.ingress.enabled | bool | `true` |  |
@@ -227,7 +226,6 @@ webui:
 | ollama.image.repository | string | `"ollama/ollama"` |  |
 | ollama.image.tag | string | `""` |  |
 | ollama.imagePullSecrets | list | `[]` |  |
-| ollama.ingress.annotations."cert-manager.io/cluster-issuer" | string | `"letsencrypt"` |  |
 | ollama.ingress.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
 | ollama.ingress.annotations."traefik.ingress.kubernetes.io/router.middlewares" | string | `"{{.Release.Namespace}}-strip-prefix-ollama@kubernetescrd"` |  |
 | ollama.ingress.annotations."traefik.ingress.kubernetes.io/router.tls" | string | `"true"` |  |
@@ -236,8 +234,6 @@ webui:
 | ollama.ingress.hosts[0].host | string | `"{{.Values.ollama.ingress.host}}"` |  |
 | ollama.ingress.hosts[0].paths[0].path | string | `"/ollama"` |  |
 | ollama.ingress.hosts[0].paths[0].pathType | string | `"Prefix"` |  |
-| ollama.ingress.tls[0].hosts[0] | string | `"{{.Values.ollama.ingress.host}}"` |  |
-| ollama.ingress.tls[0].secretName | string | `"llm-cert"` |  |
 | ollama.ingress.traefikMiddlewareEnabled | string | `"true"` |  |
 | ollama.nameOverride | string | `""` |  |
 | ollama.ollama.gpu | object | `{"enabled":true,"number":1}` | If you want to use GPU, set it to true |
@@ -265,7 +261,6 @@ webui:
 | webui.image.repository | string | `"registry.gitlab.iits.tech/private/llm/ollama-ui"` |  |
 | webui.image.tag | string | `""` |  |
 | webui.imagePullSecrets | list | `[]` |  |
-| webui.ingress.annotations."cert-manager.io/cluster-issuer" | string | `"letsencrypt"` |  |
 | webui.ingress.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
 | webui.ingress.annotations."traefik.ingress.kubernetes.io/router.tls" | string | `"true"` |  |
 | webui.ingress.enabled | bool | `true` |  |
@@ -273,8 +268,6 @@ webui:
 | webui.ingress.hosts[0].host | string | `"{{.Values.webui.ingress.host}}"` |  |
 | webui.ingress.hosts[0].paths[0].path | string | `"/"` |  |
 | webui.ingress.hosts[0].paths[0].pathType | string | `"Prefix"` |  |
-| webui.ingress.tls[0].hosts[0] | string | `"{{.Values.webui.ingress.host}}"` |  |
-| webui.ingress.tls[0].secretName | string | `"ollama-cert"` |  |
 | webui.livenessProbe.enabled | bool | `true` |  |
 | webui.livenessProbe.failureThreshold | int | `6` |  |
 | webui.livenessProbe.initialDelaySeconds | int | `60` |  |
