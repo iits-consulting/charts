@@ -1,6 +1,6 @@
 # kyverno
 
-![Version: 1.3.2](https://img.shields.io/badge/Version-1.3.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 1.5.0](https://img.shields.io/badge/Version-1.5.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 This chart wraps kyverno and some additional components such as the policy reporter as well as
 IngressRoutes/Middlewares to allow usage of the Kyverno UI.
@@ -64,7 +64,6 @@ resource "helm_release" "iits_kyverno_policies" {
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| ingress.annotations."cert-manager.io/cluster-issuer" | string | `"letsencrypt"` |  |
 | ingress.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
 | ingress.annotations."traefik.ingress.kubernetes.io/router.middlewares" | string | `"{{.Release.Namespace}}-strip-prefix-{{ .Release.Name }}@kubernetescrd, routing-oidc-forward-auth@kubernetescrd"` |  |
 | ingress.annotations."traefik.ingress.kubernetes.io/router.tls" | string | `"true"` |  |
@@ -76,8 +75,6 @@ resource "helm_release" "iits_kyverno_policies" {
 | ingress.hosts[0].paths[0].path | string | `"/_nuxt"` |  |
 | ingress.hosts[0].paths[1].backend.name | string | `"{{include \"kyverno.fullname\" $}}-ui"` |  |
 | ingress.hosts[0].paths[1].path | string | `"/policies"` |  |
-| ingress.tls[0].hosts[0] | string | `"{{.Values.ingress.host}}"` |  |
-| ingress.tls[0].secretName | string | `"kyverno-cert"` |  |
 | kyverno.existingImagePullSecrets | list | `[]` |  |
 | kyverno.extraArgs[0] | string | `"--loggingFormat=text"` |  |
 | kyverno.extraArgs[1] | string | `"--exceptionNamespace={{ include \"kyverno.namespace\" . }}"` |  |
