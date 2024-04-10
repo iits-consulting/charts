@@ -1,6 +1,6 @@
 # prometheus-stack
 
-![Version: 56.21.0](https://img.shields.io/badge/Version-56.21.0-informational?style=flat-square)
+![Version: 56.22.0](https://img.shields.io/badge/Version-56.22.0-informational?style=flat-square)
 
 A complete monitoring/alerting stack with Grafana Prometheus Alertmanager
 
@@ -92,28 +92,21 @@ prometheus-stack:
 | prometheusStack.grafana."grafana.ini".server.serve_from_sub_path | bool | `true` |  |
 | prometheusStack.grafana.adminPassword | string | `nil` | Required |
 | prometheusStack.grafana.serviceMonitor.path | string | `"/grafana/metrics"` |  |
-| prometheusStack.ingress.alertmanager.annotations."cert-manager.io/cluster-issuer" | string | `"letsencrypt"` |  |
 | prometheusStack.ingress.alertmanager.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
 | prometheusStack.ingress.alertmanager.annotations."traefik.ingress.kubernetes.io/router.middlewares" | string | `"{{.Release.Namespace}}-strip-prefix-{{ .Release.Name }}@kubernetescrd, routing-oidc-forward-auth@kubernetescrd"` |  |
 | prometheusStack.ingress.alertmanager.annotations."traefik.ingress.kubernetes.io/router.tls" | string | `"true"` |  |
 | prometheusStack.ingress.alertmanager.enabled | bool | `true` |  |
 | prometheusStack.ingress.alertmanager.host | string | `"{{$.Values.global.alertmanager.host}}"` |  |
-| prometheusStack.ingress.alertmanager.tls[0].hosts[0] | string | `"{{$.Values.global.alertmanager.host}}"` |  |
-| prometheusStack.ingress.grafana.annotations."cert-manager.io/cluster-issuer" | string | `"letsencrypt"` |  |
 | prometheusStack.ingress.grafana.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
 | prometheusStack.ingress.grafana.annotations."traefik.ingress.kubernetes.io/router.middlewares" | string | `"routing-oidc-forward-auth@kubernetescrd"` |  |
 | prometheusStack.ingress.grafana.annotations."traefik.ingress.kubernetes.io/router.tls" | string | `"true"` |  |
-| prometheusStack.ingress.grafana.className | string | `"traefik"` |  |
 | prometheusStack.ingress.grafana.enabled | bool | `true` |  |
 | prometheusStack.ingress.grafana.host | string | `"{{$.Values.global.grafana.host}}"` |  |
-| prometheusStack.ingress.grafana.tls[0].hosts[0] | string | `"{{$.Values.global.grafana.host}}"` |  |
-| prometheusStack.ingress.prometheus.annotations."cert-manager.io/cluster-issuer" | string | `"letsencrypt"` |  |
 | prometheusStack.ingress.prometheus.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
 | prometheusStack.ingress.prometheus.annotations."traefik.ingress.kubernetes.io/router.middlewares" | string | `"routing-oidc-forward-auth@kubernetescrd"` |  |
 | prometheusStack.ingress.prometheus.annotations."traefik.ingress.kubernetes.io/router.tls" | string | `"true"` |  |
 | prometheusStack.ingress.prometheus.enabled | bool | `true` |  |
 | prometheusStack.ingress.prometheus.host | string | `"{{$.Values.global.prometheus.host}}"` |  |
-| prometheusStack.ingress.prometheus.tls[0].hosts[0] | string | `"{{$.Values.global.prometheus.host}}"` |  |
 | prometheusStack.kubeControllerManager.enabled | bool | `false` |  |
 | prometheusStack.kubeProxy.enabled | bool | `false` |  |
 | prometheusStack.kubeScheduler.enabled | bool | `false` |  |
