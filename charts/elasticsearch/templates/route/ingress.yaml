@@ -3,21 +3,21 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ include "elastic-stack.fullname" $ }}
+  name: {{ include "elasticsearch.fullname" $ }}
   {{- with .labels }}
     {{- toYaml . | nindent 4 }}
   {{- end }}
   {{- with .annotations }}
   annotations:
-    iits-consulting.chart-creator/version: 1.3.1
+    iits-consulting.chart-creator/version: 1.4.0
     {{- tpl (toYaml .) $ | nindent 4 }}
   {{- end }}
 spec:
   ingressClassName: {{ (include "ingressClassName" $) }}
 
   {{- if .defaultIngress.enabled }}
-  {{- if ne (.defaultIngress.tls).enabled "false" }}
-  {{- $certSecretName := (.defaultIngress.tls).secretName | default (printf "%s-%s" (include "elastic-stack.fullname" $) "cert")}}
+  {{- if ne (.defaultIngress.tls).enabled "true" }}
+  {{- $certSecretName := (.defaultIngress.tls).secretName | default (printf "%s-%s" (include "elasticsearch.fullname" $) "cert")}}
   tls:
     - hosts:
         - {{ tpl (toYaml .host) $ }}
@@ -34,7 +34,7 @@ spec:
                 {{- if (.defaultIngress.backend).name }}
                 name: {{ tpl (toYaml .defaultIngress.backend.name) $ }}
                 {{- else }}
-                name: {{ default (include "elastic-stack.fullname" $)}}
+                name: {{ default (include "elasticsearch.fullname" $)}}
                 {{- end}}
                 port:
                   {{- if ((.defaultIngress.backend).port).name }}
@@ -47,7 +47,7 @@ spec:
   {{- if .tls }}
   tls:
     {{- range .tls }}
-    {{- $certSecretName := .secretName | default (printf "%s-%s" (include "elastic-stack.fullname" $) "cert")}}
+    {{- $certSecretName := .secretName | default (printf "%s-%s" (include "elasticsearch.fullname" $) "cert")}}
     {{- if .hosts }}
     {{- range .hosts }}
     - hosts:
@@ -70,7 +70,7 @@ spec:
                 {{- if (.backend).name }}
                 name: {{ tpl (toYaml .backend.name) $ }}
                 {{- else }}
-                name: {{ default (include "elastic-stack.fullname" $)}}
+                name: {{ default (include "elasticsearch.fullname" $)}}
                 {{- end}}
                 port:
                   {{- if ((.backend).port).name }}

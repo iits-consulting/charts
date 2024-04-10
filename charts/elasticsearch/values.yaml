@@ -202,7 +202,7 @@ filebeat:
                     kubernetes.namespace: "auth"      
             - index: "not-defined-%{[agent.version]}-%{+yyyy.MM}"
       setup.kibana:
-        host: "elastic-stack-kibana:5601"
+        host: "elasticsearch-kibana:5601"
         protocol: "http"
 
 kibana:
@@ -302,7 +302,6 @@ ingress:
   # -- Required, replace it with your host address
   host:
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
     traefik.ingress.kubernetes.io/router.tls: "true"
     traefik.ingress.kubernetes.io/router.middlewares: "{{.Release.Namespace}}-strip-prefix-{{ .Release.Name }}@kubernetescrd, routing-oidc-forward-auth@kubernetescrd"
@@ -311,7 +310,8 @@ ingress:
     enabled: true
     ## Default values can be overriden
     #tls:
-    #  secretName: "elastic-stack.fullname"
+    #  enabled: "false"
+    #  secretName: "elasticsearch.fullname"
     path: "/kibana"
     #pathType: "Prefix"
     backend:
@@ -323,12 +323,12 @@ ingress:
   #tls:
   #  - hosts:
   #      - "{{.Values.ingress.host}}"
-  #    secretName: "elastic-stack-cert"
+  #    secretName: "elasticsearch-cert"
   #hosts:
   #  - host: "{{.Values.ingress.host}}"
   #    paths:
   #      - path: "/"
   #        backend:
-  #         name: "{{include "elastic-stack.fullname" $}}"
+  #         name: "{{include "elasticsearch.fullname" $}}"
   #         port:
-  #            name: "{{include "elastic-stack.fullname" $}}"
+  #            name: "{{include "elasticsearch.fullname" $}}"
