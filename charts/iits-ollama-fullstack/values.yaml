@@ -12,7 +12,6 @@ airbyte:
             - path: "/"
               pathType: "Prefix"
       annotations:
-        cert-manager.io/cluster-issuer: letsencrypt
         traefik.ingress.kubernetes.io/router.entrypoints: websecure
         traefik.ingress.kubernetes.io/router.tls: "true"
   connector-builder-server:
@@ -44,7 +43,6 @@ ollama:
     host:
     traefikMiddlewareEnabled: "true"
     annotations:
-      cert-manager.io/cluster-issuer: letsencrypt
       traefik.ingress.kubernetes.io/router.entrypoints: websecure
       traefik.ingress.kubernetes.io/router.tls: "true"
       traefik.ingress.kubernetes.io/router.middlewares: "{{.Release.Namespace}}-strip-prefix-ollama@kubernetescrd"
@@ -53,10 +51,6 @@ ollama:
         paths:
           - path: /ollama
             pathType: Prefix
-    tls:
-      - hosts:
-          - "{{.Values.ollama.ingress.host}}"
-        secretName: "llm-cert"
 
   ## Configure resource requests and limits
   ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
@@ -123,7 +117,6 @@ webui:
     enabled: true
     host:
     annotations:
-      cert-manager.io/cluster-issuer: letsencrypt
       traefik.ingress.kubernetes.io/router.entrypoints: websecure
       traefik.ingress.kubernetes.io/router.tls: "true"
     hosts:
@@ -131,10 +124,6 @@ webui:
         paths:
           - path: /
             pathType: Prefix
-    tls:
-      - hosts:
-          - "{{.Values.webui.ingress.host}}"
-        secretName: "ollama-cert"
 
   resources:
     requests:

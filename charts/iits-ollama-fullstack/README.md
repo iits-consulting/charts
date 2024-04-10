@@ -32,7 +32,7 @@ airbyte:
             - path: "/"
               pathType: "Prefix"
       annotations:
-        cert-manager.io/cluster-issuer: letsencrypt
+        
         traefik.ingress.kubernetes.io/router.entrypoints: websecure
         traefik.ingress.kubernetes.io/router.tls: "true"
   connector-builder-server:
@@ -64,7 +64,7 @@ ollama:
     host:
     traefikMiddlewareEnabled: "true"
     annotations:
-      cert-manager.io/cluster-issuer: letsencrypt
+      
       traefik.ingress.kubernetes.io/router.entrypoints: websecure
       traefik.ingress.kubernetes.io/router.tls: "true"
       traefik.ingress.kubernetes.io/router.middlewares: "{{.Release.Namespace}}-strip-prefix-ollama@kubernetescrd"
@@ -143,7 +143,7 @@ webui:
     enabled: true
     host:
     annotations:
-      cert-manager.io/cluster-issuer: letsencrypt
+      
       traefik.ingress.kubernetes.io/router.entrypoints: websecure
       traefik.ingress.kubernetes.io/router.tls: "true"
     hosts:
