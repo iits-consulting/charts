@@ -61,4 +61,4 @@ dependencies:
     version: 2.19.0
     condition: policy-reporter.install
 type: application
-version: 1.5.1
+version: 1.5.2
