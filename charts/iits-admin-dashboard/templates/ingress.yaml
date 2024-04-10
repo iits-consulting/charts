@@ -9,14 +9,14 @@ metadata:
   {{- end }}
   {{- with .annotations }}
   annotations:
-    iits-consulting.chart-creator/version: 1.2.1
+    iits-consulting.chart-creator/version: 1.4.0
     {{- tpl (toYaml .) $ | nindent 4 }}
   {{- end }}
 spec:
   ingressClassName: {{ (include "ingressClassName" $) }}
 
   {{- if .defaultIngress.enabled }}
-  {{- if ne (.defaultIngress.tls).enabled "false" }}
+  {{- if ne (.defaultIngress.tls).enabled "true" }}
   {{- $certSecretName := (.defaultIngress.tls).secretName | default (printf "%s-%s" (include "iits-admin-dashboard.fullname" $) "cert")}}
   tls:
     - hosts:

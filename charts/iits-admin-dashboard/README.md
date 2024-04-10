@@ -17,26 +17,6 @@ iits-admin-dashboard:
     ingress.host: "REPLACE_ME"
 ```
 
-## Installing the Chart with iits ArgoCD but with oidc-proxy-mode
-
-```yaml
-iits-admin-dashboard:
-  namespace: admin
-  repoURL: "https://charts.iits.tech"
-  targetRevision: "1.4.1"
-  valuesFile: ....
-
-  values.yaml:
-  ingress:
-    host: "admin.test.de"
-    defaultIngress:
-      tls:
-        enabled: "false"
-    annotations:
-      traefik.ingress.kubernetes.io/router.entrypoints: "after-proxy"
-      traefik.ingress.kubernetes.io/router.tls: "false"
-```
-
 ## Values
 
 | Key | Type | Default | Description |
