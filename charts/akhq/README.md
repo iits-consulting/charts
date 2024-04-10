@@ -1,6 +1,6 @@
 # akhq
 
-![Version: 1.1.0](https://img.shields.io/badge/Version-1.1.0-informational?style=flat-square)
+![Version: 1.2.0](https://img.shields.io/badge/Version-1.2.0-informational?style=flat-square)
 
 Kafka GUI for Apache Kafka® to manage topics, topics data, consumers group, schema registry, connect and more...
 
@@ -28,7 +28,6 @@ Kafka GUI for Apache Kafka® to manage topics, topics data, consumers group, sch
 | akhq.resources.requests.cpu | string | `"1m"` |  |
 | akhq.resources.requests.memory | string | `"400Mi"` |  |
 | akhq.secrets | string | `""` |  |
-| ingress.annotations."cert-manager.io/cluster-issuer" | string | `"letsencrypt"` |  |
 | ingress.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
 | ingress.annotations."traefik.ingress.kubernetes.io/router.middlewares" | string | `"routing-oidc-forward-auth@kubernetescrd"` |  |
 | ingress.annotations."traefik.ingress.kubernetes.io/router.tls" | string | `"true"` |  |
