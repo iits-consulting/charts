@@ -50,16 +50,6 @@ Selector labels
 app: {{ include "kyverno.name" . }}
 {{- end }}
 
-{{/*
-Create the name of the service account to use
-*/}}
-{{- define "kyverno.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create }}
-{{- default (include "kyverno.fullname" .) .Values.serviceAccount.name }}
-{{- else }}
-{{- default "default" .Values.serviceAccount.name }}
-{{- end }}
-{{- end }}
 
 {{- define "ingressClassName" -}}
 {{ (.Values.ingress).className | default "traefik" }}
