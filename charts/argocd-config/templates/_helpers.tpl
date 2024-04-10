@@ -35,7 +35,7 @@ Common labels
 */}}
 {{- define "argocd-config.labels" -}}
 helm.sh/chart: {{ include "argocd-config.chart" . }}
-iits-consulting.chart-creator/version: 1.0.10
+iits-consulting.chart-creator/version: 1.4.0
 {{ include "argocd-config.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
@@ -59,4 +59,8 @@ Create the name of the service account to use
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
+{{- end }}
+
+{{- define "ingressClassName" -}}
+{{ (.Values.ingress).className | default "traefik" }}
 {{- end }}
