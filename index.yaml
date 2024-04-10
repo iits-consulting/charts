@@ -3436,6 +3436,41 @@ entries:
     version: 1.0.0
   kyverno:
   - apiVersion: v2
+    created: "2024-04-10T16:51:24.429095582Z"
+    dependencies:
+    - name: kyverno
+      repository: https://kyverno.github.io/kyverno/
+      version: 2.7.2
+    - condition: policy-reporter.install
+      name: policy-reporter
+      repository: https://kyverno.github.io/policy-reporter
+      version: 2.19.0
+    description: 'This chart wraps kyverno and some additional components such as
+      the policy reporter as well as IngressRoutes/Middlewares to allow usage of the
+      Kyverno UI.  ## Usage  As kyverno enforces policies in the Kubernetes cluster
+      it makes sense to deploy it at the very beginning when setting up new infrastructure.
+      We usually deploy essential cluster resources up to ArgoCD via Terraform. An
+      example of how to deploy a complete Kyverno setup would be:  ``` resource "helm_release"
+      "kyverno" {   name                  = "kyverno"   repository            = "https://charts.iits.tech"   version               =
+      "1.1.0"   namespace             = "kyverno"   create_namespace      = true   wait                  =
+      true   atomic                = true   timeout               = 900 // 15 Minutes   render_subchart_notes
+      = true   dependency_update     = true   wait_for_jobs         = true   skip_crds             =
+      false # The entrypoint to your cluster highly depends on your local setup   values                =
+      [     yamlencode({       route = {         enabled    = true         entrypoint
+      = "after-proxy"       }     })   ] }  resource "helm_release" "iits_kyverno_policies"
+      {   wait_for_jobs         = true   depends_on            = [helm_release.kyverno]   name                  =
+      "iits-kyverno-policies"   repository            = "https://charts.iits.tech"   version               =
+      "1.0.0"   chart                 = "iits-kyverno-policies"   namespace             =
+      "kyverno"   create_namespace      = true   wait                  = true   atomic                =
+      true   timeout               = 900 // 15 Minutes   render_subchart_notes = true   dependency_update     =
+      true } ``` '
+    digest: 75bb2aef984d6bf9e22990d1cc74197ce796bd661b24de72843333479558e2f7
+    name: kyverno
+    type: application
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/kyverno-1.4.0/kyverno-1.4.0.tgz
+    version: 1.4.0
+  - apiVersion: v2
     created: "2024-02-09T08:28:10.307624652Z"
     dependencies:
     - name: kyverno
@@ -5028,4 +5063,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/waf-cert-uploader-0.1.1/waf-cert-uploader-0.1.1.tgz
     version: 0.1.1
-generated: "2024-04-10T16:48:50.122465319Z"
+generated: "2024-04-10T16:51:24.429454464Z"
