@@ -513,6 +513,15 @@ entries:
     version: 5.22.1-enable-crds
   argocd-config:
   - apiVersion: v2
+    created: "2024-04-10T16:48:50.121907681Z"
+    description: Basic argocd related configuration for bootstrapping the IITS project
+      infra
+    digest: a1fe5eecf6908de54662a845e5ea920193779a3a24f27014e5285b243294607b
+    name: argocd-config
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/argocd-config-0.7.0/argocd-config-0.7.0.tgz
+    version: 0.7.0
+  - apiVersion: v2
     created: "2024-02-06T13:33:05.83474787Z"
     description: Basic argocd related configuration for bootstrapping the IITS project
       infra
@@ -5019,4 +5028,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/waf-cert-uploader-0.1.1/waf-cert-uploader-0.1.1.tgz
     version: 0.1.1
-generated: "2024-04-10T16:22:22.998971474Z"
+generated: "2024-04-10T16:48:50.122465319Z"
