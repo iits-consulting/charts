@@ -1,6 +1,6 @@
 # iits-admin-dashboard
 
-![Version: 1.4.3](https://img.shields.io/badge/Version-1.4.3-informational?style=flat-square)
+![Version: 1.5.0](https://img.shields.io/badge/Version-1.5.0-informational?style=flat-square)
 
 This chart deploys a super simple webserver that provides a simple website containing links to a set
 of dashboards that are usually deployed in our infrastructure setup as well as some nifty external
@@ -15,6 +15,26 @@ iits-admin-dashboard:
   targetRevision: "1.4.1"
   parameters:
     ingress.host: "REPLACE_ME"
+```
+
+## Installing the Chart with iits ArgoCD but with oidc-proxy-mode
+
+```yaml
+iits-admin-dashboard:
+  namespace: admin
+  repoURL: "https://charts.iits.tech"
+  targetRevision: "1.4.1"
+  valuesFile: ....
+
+  values.yaml:
+  ingress:
+    host: "admin.test.de"
+    defaultIngress:
+      tls:
+        enabled: "false"
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: "after-proxy"
+      traefik.ingress.kubernetes.io/router.tls: "false"
 ```
 
 ## Values
@@ -107,7 +127,6 @@ iits-admin-dashboard:
 | deployment.volumeMounts[0].name | string | `"admin-dashboard-config"` |  |
 | deployment.volumes[0].configMap.name | string | `"admin-dashboard-config"` |  |
 | deployment.volumes[0].name | string | `"admin-dashboard-config"` |  |
-| ingress.annotations."cert-manager.io/cluster-issuer" | string | `"letsencrypt"` |  |
 | ingress.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
 | ingress.annotations."traefik.ingress.kubernetes.io/router.tls" | string | `"true"` |  |
 | ingress.defaultIngress.enabled | bool | `true` |  |

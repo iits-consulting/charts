@@ -2,7 +2,21 @@
 
 ![Version: 8.6.2](https://img.shields.io/badge/Version-8.6.2-informational?style=flat-square)
 
-Awesome Logs
+Elasticsearch + filebeat + kibana with default common used indexes and Index Lifecycle Management. 
+It comes also with a backup functionality.
+
+# Installing the Chart with iits ArgoCD
+
+## Register the Chart
+
+```yaml
+  elasticsearch:
+    namespace: monitoring
+    targetRevision: "8.6.2"
+    parameters:
+      ingress.host: "admin.{{.Values.projectValues.rootDomain}}"
+      backup.enabled: "false"
+```
 
 ## Requirements
 
