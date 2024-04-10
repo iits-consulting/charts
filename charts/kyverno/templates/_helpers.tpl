@@ -31,12 +31,35 @@ Create chart name and version as used by the chart label.
 {{- end }}
 
 {{/*
+Common labels
+*/}}
+{{- define "kyverno.labels" -}}
+helm.sh/chart: {{ include "kyverno.chart" . }}
+iits-consulting.chart-creator/version: 1.4.0
+{{ include "kyverno.selectorLabels" . }}
+{{- if .Chart.AppVersion }}
+app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+{{- end }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- end }}
+
+{{/*
 Selector labels
 */}}
 {{- define "kyverno.selectorLabels" -}}
 app: {{ include "kyverno.name" . }}
 {{- end }}
 
+{{/*
+Create the name of the service account to use
+*/}}
+{{- define "kyverno.serviceAccountName" -}}
+{{- if .Values.serviceAccount.create }}
+{{- default (include "kyverno.fullname" .) .Values.serviceAccount.name }}
+{{- else }}
+{{- default "default" .Values.serviceAccount.name }}
+{{- end }}
+{{- end }}
 
 {{- define "ingressClassName" -}}
 {{ (.Values.ingress).className | default "traefik" }}
