@@ -26,7 +26,6 @@ ingress:
   # -- Mandatory, replace it with your host address
   host:
   annotations:
-    
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
     traefik.ingress.kubernetes.io/router.tls: "true"
     #namespace-name@kubernetescrd
@@ -76,7 +75,6 @@ ingress:
 | gatekeeper.extraVolumes[0].name | string | `"oidc-forward-auth-no-permission-link"` |  |
 | gatekeeper.replicaCount | int | `1` |  |
 | gatekeeper.strategy.type | string | `"RollingUpdate"` |  |
-| ingress.annotations."cert-manager.io/cluster-issuer" | string | `"letsencrypt"` |  |
 | ingress.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
 | ingress.annotations."traefik.ingress.kubernetes.io/router.tls" | string | `"true"` |  |
 | ingress.defaultIngress.backend.name | string | `"{{$.Release.Name}}-gatekeeper"` |  |
