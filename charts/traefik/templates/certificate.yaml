@@ -1,0 +1,30 @@
+{{ with .Values.defaultCert }}
+{{ if eq .enabled true }}
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ include "traefik.fullname" $ }}
+  namespace: {{ template "traefik.namespace" $ }}
+  {{- with .labels }}
+     {{- toYaml . | nindent 4 }}
+   {{- end }}
+  {{- with .annotations }}
+  annotations:
+    iits-consulting.chart-creator/version: 1.0.10
+    {{- tpl (toYaml .) $ | nindent 4 }}
+  {{- end }}
+spec:
+  secretName: {{ .secretName | quote}}
+  dnsNames:
+  {{- range $val := .dnsNames }}
+    - {{ $val | quote }}
+  {{- end }}
+  issuerRef:
+    group: "cert-manager.io"
+    kind: "ClusterIssuer"
+    name: {{ .issuerName | quote }}
+  privateKey:
+    algorithm: "RSA"
+    size: 4096
+{{- end }}
+{{- end }}

@@ -1,7 +1,19 @@
-ingressClass: traefik
 clusterIssuer:
-  http:
+  # -- (boolean) Set this to false after testing, to use the production Server for LetsEncrypt
+  useStaging: true
+
+  # -- (string) Required, replace with the e-mails you want to receive the warnings
+  # You must replace this email address with your own.
+  # Let's Encrypt will use this to contact you about expiring
+  # certificates, and issues related to your account.
+  email:
+
+  http01:
+    enabled: true
     name: letsencrypt
-    email: "REPLACE_ME@some.de"
-cert-manager:
-  replicaCount: 2
+    ingressClass: traefik
+
+  dns01:
+    # -- Requires the chart 'https://github.com/akyriako/cert-manager-webhook-opentelekomcloud', not configured for other Cloud-Providers, use the projectfactory-terraform module 'cert-manager' for autoconfiguration
+    enabled: false
+    name: letsencrypt-dns
