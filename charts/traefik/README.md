@@ -1,6 +1,6 @@
 # traefik
 
-![Version: 21.3.1](https://img.shields.io/badge/Version-21.3.1-informational?style=flat-square) ![AppVersion: 10.22.0](https://img.shields.io/badge/AppVersion-10.22.0-informational?style=flat-square)
+![Version: 27.0.0](https://img.shields.io/badge/Version-27.0.0-informational?style=flat-square) ![AppVersion: 27.0.2](https://img.shields.io/badge/AppVersion-27.0.2-informational?style=flat-square)
 
 The traefik ingress controller with some additional resources and sane default values for IITS projects
 
@@ -8,32 +8,32 @@ The traefik ingress controller with some additional resources and sane default v
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://helm.traefik.io/traefik | traefik | 10.22.0 |
+| https://traefik.github.io/charts | traefik | 27.0.2 |
 
 ## Values
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| defaultCert.dnsNames.rootDomain | string | `nil` | Required |
+| defaultCert.dnsNames | array | `nil` | Required, set the domains you want to request, i.e.  dnsNames:  - "dev.example.com" # Required if you also want to serve on the "root" url  - "*.dev.example.com" # If you want wildcard certificates, you have to do an DNS01 Request for the certificate |
 | defaultCert.enabled | bool | `true` |  |
-| defaultCert.issuerRef.kind | string | `"ClusterIssuer"` |  |
-| defaultCert.issuerRef.name | string | `"letsencrypt"` |  |
-| ingress.annotations."cert-manager.io/issuer" | string | `"letsencrypt"` |  |
+| defaultCert.issuerName | string | `"letsencrypt"` | Defaults are 'letsencrypt' for HTTP01 and 'letsencrypt-dns' for DNS01 For wildcard-certificates you need to use the DNS01 Challenge |
+| defaultCert.secretName | string | `"traefik-default-secret"` |  |
 | ingress.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
 | ingress.annotations."traefik.ingress.kubernetes.io/router.tls" | string | `"true"` |  |
-| ingress.defaultIngress.enabled | bool | `false` |  |
+| ingress.className | string | `"traefik"` |  |
 | ingress.enabled | bool | `false` |  |
-| ingress.host | string | `nil` | Required, replace it with your host address |
-| ingress.hosts[0].host | string | `"{{.Values.ingress.host}}"` |  |
-| ingress.hosts[0].paths[0].backend.name | string | `"traefik-internal"` |  |
-| ingress.hosts[0].paths[0].backend.port.name | string | `"traefik"` |  |
-| ingress.hosts[0].paths[0].path | string | `"/api"` |  |
-| ingress.hosts[0].paths[1].backend.name | string | `"traefik-internal"` |  |
-| ingress.hosts[0].paths[1].backend.port.name | string | `"traefik"` |  |
-| ingress.hosts[0].paths[1].path | string | `"/dashboard"` |  |
-| ingress.tls[0].hosts[0] | string | `"{{.Values.ingress.host}}"` |  |
-| ingress.tls[0].secretName | string | `"traefik-default-cert"` |  |
+| ingress.host | string | `nil` | Required, insert where you want to serve the Traefik dashboards from. i.e.: host: "admin.example.com" |
+| ingress.rules[0].host | string | `"{{ .Values.ingress.host | required \"You need to set the ingress.host parameter\" }}"` |  |
+| ingress.rules[0].paths[0].backend.name | string | `"{{ include \"traefik.fullname\" $ }}-internal"` |  |
+| ingress.rules[0].paths[0].backend.port.name | string | `"traefik"` |  |
+| ingress.rules[0].paths[0].path | string | `"/api"` |  |
+| ingress.rules[0].paths[1].backend.name | string | `"{{ include \"traefik.fullname\" $ }}-internal"` |  |
+| ingress.rules[0].paths[1].backend.port.name | string | `"traefik"` |  |
+| ingress.rules[0].paths[1].path | string | `"/dashboard"` |  |
 | podMonitor.enabled | bool | `true` |  |
+| podMonitor.interval | string | `"10s"` |  |
+| podMonitor.path | string | `"/metrics"` |  |
+| podMonitor.port | string | `"metrics"` |  |
 | traefik.additionalArguments[0] | string | `"--ping"` |  |
 | traefik.deployment.replicas | int | `2` |  |
 | traefik.globalArguments[0] | string | `"--global.checknewversion"` |  |
@@ -43,14 +43,22 @@ The traefik ingress controller with some additional resources and sane default v
 | traefik.logs.access.format | string | `"json"` |  |
 | traefik.logs.general.format | string | `"json"` |  |
 | traefik.logs.general.level | string | `"INFO"` |  |
+| traefik.metrics.prometheus.service.enabled | bool | `true` |  |
+| traefik.metrics.prometheus.serviceMonitor.enabled | bool | `true` |  |
+| traefik.ports.traefik.expose.internal | bool | `true` |  |
+| traefik.ports.web.redirectTo.port | string | `"websecure"` |  |
 | traefik.providers.kubernetesCRD.allowCrossNamespace | bool | `true` |  |
 | traefik.providers.kubernetesCRD.allowExternalNameServices | bool | `true` |  |
 | traefik.providers.kubernetesCRD.enabled | bool | `true` |  |
 | traefik.providers.kubernetesIngress.allowExternalNameServices | bool | `true` |  |
 | traefik.providers.kubernetesIngress.enabled | bool | `true` |  |
 | traefik.providers.kubernetesIngress.publishedService.enabled | bool | `true` |  |
+| traefik.service.additionalServices.internal.labels.traefik-service-label | string | `"internal"` |  |
+| traefik.service.additionalServices.internal.type | string | `"ClusterIP"` |  |
 | traefik.service.spec.externalTrafficPolicy | string | `"Cluster"` |  |
 | traefik.service.type | string | `"LoadBalancer"` |  |
+| traefik.tlsOptions.default.minVersion | string | `"VersionTLS12"` |  |
+| traefik.tlsOptions.default.sniStrict | bool | `true` |  |
 
 ----------------------------------------------
 Autogenerated from chart metadata using [helm-docs v1.13.1](https://github.com/norwoodj/helm-docs/releases/v1.13.1)
