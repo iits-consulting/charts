@@ -1,30 +1,32 @@
+{{ with .Values.deployment }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "iits-admin-dashboard.fullname" . }}
+  name: {{ include "iits-admin-dashboard.fullname" $ }}
   {{- with .annotations }}
   annotations:
     iits-consulting.chart-creator/version: 1.0.10
+    htmlChecksum: {{ include (print $.Template.BasePath "/configmap.yaml") $ | sha256sum | quote }}
     {{- tpl (toYaml .) $ | nindent 4 }}
   {{- end }}
   labels:
-    {{- include "iits-admin-dashboard.labels" . | nindent 4 }}
+    {{- include "iits-admin-dashboard.labels" $ | nindent 4 }}
 spec:
-  replicas: {{ .Values.deployment.replicaCount }}
+  replicas: {{ .replicaCount }}
   revisionHistoryLimit: 3
   selector:
     matchLabels:
-      {{- include "iits-admin-dashboard.selectorLabels" . | nindent 6 }}
+      {{- include "iits-admin-dashboard.selectorLabels" $ | nindent 6 }}
   template:
     metadata:
-      {{- with .Values.deployment.podAnnotations }}
+      {{- with .podAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "iits-admin-dashboard.selectorLabels" . | nindent 8 }}
+        {{- include "iits-admin-dashboard.selectorLabels" $ | nindent 8 }}
     spec:
-      {{- if .Values.deployment.onePodForEachNode}}
+      {{- if eq .onePodForEachNode true }}
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -33,79 +35,84 @@ spec:
                   - key: "app"
                     operator: In
                     values:
-                      - {{ include "iits-admin-dashboard.fullname" . }}
+                      - {{ include "iits-admin-dashboard.fullname" $ }}
               topologyKey: "kubernetes.io/hostname"
       {{- end}}
-      {{- with .Values.deployment.imagePullSecrets }}
+      {{- with .imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "iits-admin-dashboard.serviceAccountName" . }}
-      {{- if .Values.deployment.podSecurityContext }}
+      serviceAccountName: {{ include "iits-admin-dashboard.serviceAccountName" $ }}
+      {{- if .podSecurityContext }}
       securityContext:
-        {{- toYaml .Values.deployment.podSecurityContext | nindent 8 }}
+        {{- toYaml .podSecurityContext | nindent 8 }}
       {{- end }}
       containers:
-        - name: {{ .Release.Name }}
-          {{- if .Values.deployment.securityContext }}
+        - name: "static-website"
+          {{- if .securityContext }}
           securityContext:
-            {{- toYaml .Values.deployment.securityContext | nindent 12 }}
+            {{- toYaml .securityContext | nindent 12 }}
           {{- end }}
-          image: "{{ tpl .Values.deployment.image.repository . }}:{{ .Values.deployment.image.tag }}"
-          imagePullPolicy: {{ .Values.deployment.image.pullPolicy }}
-          env:
-            {{- range $key, $value := .Values.deployment.env }}
-            - name: {{ printf "%s" $key | replace "." "_" | upper | quote }}
-              value: {{ tpl ($value | toString) $ | quote }}
-            {{- end }}
-          {{- if .Values.deployment.envSecretName}}
-          envFrom:
-            - secretRef:
-                name: {{.Values.deployment.envSecretName}}
-          {{- end }}
+          image: "lipanski/docker-static-website:{{ $.Chart.AppVersion }}"
+          imagePullPolicy: "IfNotPresent"
+
           ports:
-            {{- range $name,$values := .Values.deployment.ports }}
-            - name: {{$name }}
-              protocol: {{ ($values).protocol | default "TCP"}}
-              containerPort: {{($values).port | default 80 }}
-            {{- end }}
-          {{- with ((.Values.deployment).health).liveness }}
+            - name: "http"
+              protocol: "TCP"
+              containerPort: {{ .containerPort }}
+
           livenessProbe:
             httpGet:
-              path: {{ tpl .path $ | default "/" }}
-              port: {{ .port | default 80 }}
-            initialDelaySeconds: {{ .initialDelaySeconds | default 20 }}
-            periodSeconds: 5
-            failureThreshold: {{ .failureThreshold | default 5 }}
-          {{- end }}
-          {{- with ((.Values.deployment).health).readiness }}
+              path: "/"
+              port: {{ .containerPort }}
+            initialDelaySeconds: {{ .health.liveness.initialDelaySeconds }}
+            periodSeconds: {{ .health.liveness.periodSeconds }}
+            failureThreshold: {{ .health.liveness.failureThreshold }}
+
+
           readinessProbe:
             httpGet:
-              path: {{ tpl .path $ | default "/" }}
-              port: {{ .port | default 80 }}
-            initialDelaySeconds: {{ .initialDelaySeconds | default 20 }}
-            periodSeconds: 5
-            failureThreshold: {{ .failureThreshold | default 5 }}
-          {{- end }}
+              path: "/"
+              port: {{ .containerPort }}
+            initialDelaySeconds: {{ .health.readiness.initialDelaySeconds }}
+            periodSeconds: {{ .health.readiness.periodSeconds }}
+            failureThreshold: {{ .health.readiness.failureThreshold }}
+
+          startupProbe:
+            httpGet:
+              path: "/"
+              port: {{ .containerPort }}
+            initialDelaySeconds: {{ .health.startupProbe.initialDelaySeconds }}
+            periodSeconds: {{ .health.startupProbe.periodSeconds }}
+            failureThreshold: {{ .health.startupProbe.failureThreshold }}
+
           resources:
-            {{- toYaml .Values.deployment.resources | nindent 12 }}
-      {{- with .Values.deployment.volumeMounts }}
+            {{- toYaml .resources | nindent 12 }}
+
           volumeMounts:
-              {{- toYaml . | nindent 12 }}
-      {{- end }}
-      {{- with .Values.deployment.nodeSelector }}
+            - name: {{ include "iits-admin-dashboard.fullname" $ }}
+              mountPath: /home/static
+          {{- with .extraVolumeMounts }}
+                {{- toYaml . | nindent 8 }}
+          {{- end }}
+
+      {{- with .nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.deployment.affinity }}
+      {{- with .affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.deployment.tolerations }}
+      {{- with .tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.deployment.volumes }}
       volumes:
+        - name: {{ include "iits-admin-dashboard.fullname" $ }}
+          configMap:
+            name: {{ include "iits-admin-dashboard.fullname" $ }}
+      {{- with .extraVolumes }}
         {{- toYaml . | nindent 8 }}
       {{- end }}
+{{- end }}

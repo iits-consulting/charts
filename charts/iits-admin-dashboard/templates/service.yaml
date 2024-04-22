@@ -1,22 +1,26 @@
+{{ with .Values.service }}
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "iits-admin-dashboard.fullname" . }}
+  name: {{ include "iits-admin-dashboard.fullname" $ }}
   {{- with .annotations }}
   annotations:
     iits-consulting.chart-creator/version: 1.0.10
     {{- tpl (toYaml .) $ | nindent 4 }}
   {{- end }}
+  {{- with .labels }}
   labels:
-    {{- include "iits-admin-dashboard.labels" . | nindent 4 }}
+    {{- include "iits-admin-dashboard.labels" $ | nindent 4 }}
+    {{- tpl (toYaml .) $ | nindent 4 }}
+  {{- end }}
 spec:
-  type: {{ (.Values.service).serviceType | default "ClusterIP"}}
+  type: {{ .type }}
   ports:
-    {{- range $name,$values := .Values.service.ports }}
-    - targetPort: {{ ($values).targetPort | default 80 }}
-      name: {{ ($values).name | default $name }}
-      protocol: {{ ($values).protocol | default "TCP"}}
-      port: {{($values).port | default 80 }}
-    {{- end }}
+    - targetPort: "http"
+      name: "http"
+      protocol: "TCP"
+      port: {{ .port }}
+
   selector:
-    {{- include "iits-admin-dashboard.selectorLabels" . | nindent 4 }}
+    {{- include "iits-admin-dashboard.selectorLabels" $ | nindent 4 }}
+{{- end }}
