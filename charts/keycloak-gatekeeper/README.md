@@ -1,6 +1,6 @@
 # keycloak-gatekeeper
 
-![Version: 1.1.7](https://img.shields.io/badge/Version-1.1.7-informational?style=flat-square)
+![Version: 1.2.0](https://img.shields.io/badge/Version-1.2.0-informational?style=flat-square)
 
 keycloak-gatekeeper
 

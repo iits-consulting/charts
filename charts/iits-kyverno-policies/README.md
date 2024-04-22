@@ -1,6 +1,6 @@
 # iits-kyverno-policies
 
-![Version: 1.6.0](https://img.shields.io/badge/Version-1.6.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 1.7.0](https://img.shields.io/badge/Version-1.7.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 This chart wraps the upstream `kyverno-policies` chart and adds a few useful policies:
   - Verify all images are signed with cosign
@@ -12,7 +12,7 @@ This chart wraps the upstream `kyverno-policies` chart and adds a few useful pol
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://kyverno.github.io/kyverno/ | kyverno-policies | v2.7.2 |
+| https://kyverno.github.io/kyverno/ | kyverno-policies | v2.7.5 |
 
 ## Values
 
