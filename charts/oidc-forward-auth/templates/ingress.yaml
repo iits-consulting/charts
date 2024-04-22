@@ -13,73 +13,30 @@ metadata:
     {{- tpl (toYaml .) $ | nindent 4 }}
   {{- end }}
 spec:
-  ingressClassName: {{ (include "ingressClassName" $) }}
+  {{ if .className }}
+  ingressClassName: {{ .className }}
+  {{- end }}
 
-  {{- if .defaultIngress.enabled }}
-  {{- if ne (.defaultIngress.tls).enabled "true" }}
-  {{- $certSecretName := (.defaultIngress.tls).secretName | default (printf "%s-%s" (include "oidc-forward-auth.fullname" $) "cert")}}
   tls:
     - hosts:
+      {{- range .hosts }}
         - {{ tpl (toYaml .host) $ }}
-      secretName: {{ $certSecretName }}
-  {{- end }}
-  rules:
-    - host: {{ tpl (toYaml .host) $ }}
-      http:
-        paths:
-          - path: {{ .defaultIngress.path | default "/" }}
-            pathType: {{ .defaultIngress.pathType | default "Prefix"}}
-            backend:
-              service:
-                {{- if (.defaultIngress.backend).name }}
-                name: {{ tpl (toYaml .defaultIngress.backend.name) $ }}
-                {{- else }}
-                name: {{ default (include "oidc-forward-auth.fullname" $)}}
-                {{- end}}
-                port:
-                  {{- if ((.defaultIngress.backend).port).name }}
-                  name: {{ tpl (toYaml .defaultIngress.backend.port.name) $ }}
-                  {{- else }}
-                  name: "http"
-                  {{- end}}
-  {{- else }}
+      {{- end }}
 
-  {{- if .tls }}
-  tls:
-    {{- range .tls }}
-    {{- $certSecretName := .secretName | default (printf "%s-%s" (include "oidc-forward-auth.fullname" $) "cert")}}
-    {{- if .hosts }}
-    {{- range .hosts }}
-    - hosts:
-        - {{ tpl (toYaml .) $ }}
-      secretName: {{ $certSecretName }}
-    {{- end }}
-    {{- end }}
-    {{- end }}
-  {{- end }}
   rules:
       {{- range .hosts }}
     - host: {{ tpl (toYaml .host) $ }}
       http:
         paths:
             {{- range .paths }}
-          - path: {{ .path  }}
+          - path: {{ .path | quote }}
             pathType: {{ .pathType | default "Prefix"}}
             backend:
               service:
-                {{- if (.backend).name }}
-                name: {{ tpl (toYaml .backend.name) $ }}
-                {{- else }}
-                name: {{ default (include "oidc-forward-auth.fullname" $)}}
-                {{- end}}
+                name: {{ include "oidc-forward-auth.fullname" $ | quote }}
                 port:
-                  {{- if ((.backend).port).name }}
-                  name: {{ tpl (toYaml ((.backend).port).name) $ }}
-                  {{- else }}
-                  name: "http"
-                  {{- end}}
+                  name: "proxy"
             {{- end }}
       {{- end }}
   {{- end }}
-{{- end }}
 {{- end }}
