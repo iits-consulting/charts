@@ -93,7 +93,7 @@ spec:
             - name: {{ include "iits-admin-dashboard.fullname" $ }}
               mountPath: /home/static
           {{- with .extraVolumeMounts }}
-                {{- toYaml . | nindent 8 }}
+                {{- toYaml . | nindent 12 }}
           {{- end }}
 
       {{- with .nodeSelector }}
