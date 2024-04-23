@@ -332,3 +332,4 @@ ingress:
   #         name: "{{include "elasticsearch.fullname" $}}"
   #         port:
   #            name: "{{include "elasticsearch.fullname" $}}"
+
