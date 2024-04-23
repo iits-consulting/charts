@@ -1,0 +1,86 @@
+name: Check Charts
+
+on:
+  pull_request:
+    branches:
+      - '*'
+  push:
+    branches:
+      - "*"
+
+env:
+  HELM_VERSION: v3.14.4
+
+jobs:
+  find-charts:
+    name: Find Charts
+    runs-on: ubuntu-latest
+    outputs:
+      charts: "${{ steps.get-all-charts.outputs.charts }}"
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Echo changed files
+        id: get-all-charts
+        env:
+          ALL_CHARTS: false
+        run: |
+          echo charts="[$(ls -w 0 -Q -m charts/)]" >> $GITHUB_OUTPUT
+
+  check-charts:
+    name: Check
+    needs: find-charts
+    strategy:
+      matrix:
+        chart: ${{fromJSON(needs.find-charts.outputs.charts)}}
+    permissions:
+      contents: write
+      security-events: write
+      actions: read
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configure Git
+        run: |
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+
+      - name: Setup Helm
+        uses: azure/setup-helm@v4.2.0
+        with:
+          version: ${{ env.HELM_VERSION }}
+
+      - name: Create default trigy ignore files
+        run: |
+          ./create-trigy-ignore.sh
+
+      - name: Trivy Scan ${{ matrix.chart }}
+        uses: aquasecurity/trivy-action@0.19.0
+        with:
+          scan-type: 'config'
+          format: 'sarif'
+          scan-ref: 'charts/${{matrix.chart}}'
+          output: 'trivy-results.sarif'
+          severity: 'MEDIUM,HIGH,CRITICAL'
+          trivyignores: 'charts/${{matrix.chart}}/.trivyignore'
+
+      - name: Lint ${{ matrix.chart }}
+        run: |
+          helm dependency update charts/${{ matrix.chart }}
+          helm lint charts/${{ matrix.chart }} --strict
+
+      - name: KubeVal ${{ matrix.chart }}
+        run: |
+          helm plugin install https://github.com/instrumenta/helm-kubeval
+          helm -f kubeval-values.yaml kubeval --ignore-missing-schemas --api-versions networking.k8s.io/v1/IngressClass charts/${{ matrix.chart }}
+
+      - name: Upload Trivy scan results for ${{ matrix.chart }}
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: 'trivy-results.sarif'
+
