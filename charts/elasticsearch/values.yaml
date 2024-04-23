@@ -299,36 +299,26 @@ backup:
 
 ingress:
   enabled: true
+
   # -- Required, replace it with your host address
   host:
+
+  labels:
+
   annotations:
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
     traefik.ingress.kubernetes.io/router.tls: "true"
     traefik.ingress.kubernetes.io/router.middlewares: "{{.Release.Namespace}}-strip-prefix-{{ .Release.Name }}@kubernetescrd, routing-oidc-forward-auth@kubernetescrd"
-  # Creates default Ingress with tls and the given host from .Values.ingress.host
-  defaultIngress:
-    enabled: true
-    ## Default values can be overriden
-    #tls:
-    #  enabled: "false"
-    #  secretName: "elasticsearch.fullname"
-    path: "/kibana"
-    #pathType: "Prefix"
-    backend:
-      name: "{{.Release.Name}}-kibana" #tpl supported
-    #  port:
-    #    name: http #tpl supported
 
-  ## If you don't want to use the default Ingress, you can define it here on your own
-  #tls:
-  #  - hosts:
-  #      - "{{.Values.ingress.host}}"
-  #    secretName: "elasticsearch-cert"
-  #hosts:
-  #  - host: "{{.Values.ingress.host}}"
-  #    paths:
-  #      - path: "/"
-  #        backend:
-  #         name: "{{include "elasticsearch.fullname" $}}"
-  #         port:
-  #            name: "{{include "elasticsearch.fullname" $}}"
+  kibana:
+    rules:
+      - host: "{{.Values.ingress.host}}"
+        paths:
+          - path: "/kibana"
+
+  elasticsearch:
+    rules:
+      - host: "{{.Values.ingress.host}}"
+        paths:
+          - path: "/elasticsearch"
+
