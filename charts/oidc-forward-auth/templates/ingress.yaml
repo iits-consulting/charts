@@ -33,7 +33,7 @@ spec:
             pathType: {{ .pathType | default "Prefix"}}
             backend:
               service:
-                name: {{ include "gatekeeper.fullname" $ | quote}}
+                name: "{{ $.Release.Name}}-gatekeeper"
                 port:
                   name: "proxy"
             {{- end }}
