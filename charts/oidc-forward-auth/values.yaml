@@ -55,6 +55,6 @@ ingress:
     traefik.ingress.kubernetes.io/router.tls: "true"
 
   hosts:
-    - host: "{{.Values.ingress.host}}"
+    - host: "{{ .Values.ingress.host }}"
       paths:
         - path: "/oauth"

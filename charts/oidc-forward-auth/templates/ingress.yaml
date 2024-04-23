@@ -33,7 +33,7 @@ spec:
             pathType: {{ .pathType | default "Prefix"}}
             backend:
               service:
-                name: {{ include "oidc-forward-auth.fullname" $ | quote }}
+                name: {{ include "gatekeeper.fullname" $ | quote}}
                 port:
                   name: "proxy"
             {{- end }}
