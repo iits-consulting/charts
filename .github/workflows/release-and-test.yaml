@@ -22,7 +22,7 @@ jobs:
 
       - name: Get changed charts
         id: get_changed_charts
-        uses: tj-actions/changed-files@v35.9.1
+        uses: tj-actions/changed-files@v41.0.0
         with:
           json: true
           path: "./charts/"
