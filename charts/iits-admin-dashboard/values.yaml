@@ -18,7 +18,7 @@ defaultDashboard:
       imgAlt: "Traefik Dashboard"
     argocd:
       enabled: "true"
-      href: "argocd"
+      href: "argocd/auth/login"
       imgSrc: "argo.svg"
       imgAlt: "ArgoCD"
     grafana:
