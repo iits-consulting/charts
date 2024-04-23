@@ -117,6 +117,9 @@ serviceAccount:
 ingress:
   enabled: true
 
+  # -- Required, replace it with your host address
+  host:
+
   labels:
 
   annotations:
@@ -124,7 +127,7 @@ ingress:
     traefik.ingress.kubernetes.io/router.tls: "true"
 
   hosts:
-    - host: "{{.Values.ingress.host}}"
+    - host: "{{ .Values.ingress.host }}"
       paths:
         - path: "/"
           #pathType: "Prefix"
