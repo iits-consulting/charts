@@ -19,38 +19,25 @@ spec:
 
   tls:
     - hosts:
-      {{- range .hosts }}
         - {{ tpl (toYaml .host) $ }}
-      {{- end }}
 
   rules:
-      {{- range .kibana.rules }}
     - host: {{ tpl (toYaml .host) $ }}
       http:
         paths:
-            {{- range .paths }}
-          - path: {{ .path | quote }}
+          - path: {{ tpl (toYaml .paths.kibana) | quote }}
             pathType: {{ .pathType | default "Prefix"}}
             backend:
               service:
                 name: "{{ $.Release.Name }}-kibana"
                 port:
                   name: "http"
-            {{- end }}
-      {{- end }}
-      {{- range .elasticsearch.rules }}
-    - host: {{ tpl (toYaml .host) $ }}
-      http:
-        paths:
-            {{- range .paths }}
-          - path: {{ .path | quote }}
+          - path: {{ tpl (toYaml .paths.elasticsearch) | quote }}
             pathType: {{ .pathType | default "Prefix"}}
             backend:
               service:
                 name: "{{ $.Values.elasticsearch.clusterName }}-{{ $.Values.elasticsearch.nodeGroup }}"
                 port:
                   number: {{ $.Values.elasticsearch.httpPort }}
-            {{- end }}
-      {{- end }}
-  {{- end }}
+{{- end }}
 {{- end }}

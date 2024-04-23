@@ -310,15 +310,7 @@ ingress:
     traefik.ingress.kubernetes.io/router.tls: "true"
     traefik.ingress.kubernetes.io/router.middlewares: "{{.Release.Namespace}}-strip-prefix-{{ .Release.Name }}@kubernetescrd, routing-oidc-forward-auth@kubernetescrd"
 
-  kibana:
-    rules:
-      - host: "{{.Values.ingress.host}}"
-        paths:
-          - path: "/kibana"
-
-  elasticsearch:
-    rules:
-      - host: "{{.Values.ingress.host}}"
-        paths:
-          - path: "/elasticsearch"
+  paths:
+    kibana: "/kibana"
+    elasticsearch: "/elasticsearch"
 
