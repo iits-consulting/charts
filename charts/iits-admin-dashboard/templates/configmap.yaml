@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: admin-dashboard-config
+  name: {{ include "iits-admin-dashboard.fullname" $ }}
 data:
   index.html: |-
 {{- if empty .Values.website }}
-{{ tpl (.Files.Get "files/index.html") . | indent 4 }}
+{{ tpl (.Files.Get "files/index.html") $ | indent 4 }}
 {{- else }}
 {{ tpl (.Values.website) . | indent 4 }}
 {{- end }}

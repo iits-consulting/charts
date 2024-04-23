@@ -1,3 +1,6 @@
+nameOverride: ""
+fullnameOverride: ""
+
 defaultDashboard:
   logoSrc: "logo_white.svg"
   logoAlt: "IITS Consulting Logo"
@@ -15,7 +18,7 @@ defaultDashboard:
       imgAlt: "Traefik Dashboard"
     argocd:
       enabled: "true"
-      href: "argocd"
+      href: "argocd/auth/login"
       imgSrc: "argo.svg"
       imgAlt: "ArgoCD"
     grafana:
@@ -106,62 +109,37 @@ serviceAccount:
   # Specifies whether a service account should be created
   create: true
   # Annotations to add to the service account
-  annotations: {}
+  annotations: { }
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
   name: ""
 
 ingress:
   enabled: true
+
   # -- Required, replace it with your host address
   host:
-  annotations:
-    
-    traefik.ingress.kubernetes.io/router.entrypoints: websecure
-    traefik.ingress.kubernetes.io/router.tls: "true"
-  # Creates default Ingress with tls and the given host from .Values.ingress.host
-  defaultIngress:
-    enabled: true
-    ## Default values can be overriden
-    #tls:
-    #  enabled: true
-    #  secretName: "iits-admin-dashboard.fullname"
-    #path: "/"
-    #pathType: "Prefix"
-    #backend:
-    #  name: "iits-admin-dashboard.fullname" #tpl supported
-    #  port:
-    #    name: http #tpl supported
 
-  ## If you don't want to use the default Ingress, you can define it here on your own
-  #tls:
-  #  - hosts:
-  #      - "{{.Values.ingress.host}}"
-  #    secretName: "iits-admin-dashboard-cert"
-  #hosts:
-  #  - host: "{{.Values.ingress.host}}"
-  #    paths:
-  #      - path: "/"
-  #        backend:
-  #         name: "{{include "iits-admin-dashboard.fullname" $}}"
-  #         port:
-  #            name: "{{include "iits-admin-dashboard.fullname" $}}"
+  labels:
+
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+    traefik.ingress.kubernetes.io/router.tls: "true"
+
+  hosts:
+    - host: "{{ .Values.ingress.host }}"
+      paths:
+        - path: "/"
+          #pathType: "Prefix"
 
 
 deployment:
-  replicaCount: "2"
-
-  image:
-    repository: lipanski/docker-static-website
-    tag: 2.1.0
-    imagePullPolicy: "IfNotPresent"
+  replicaCount: 2
+  onePodForEachNode: false
 
   imagePullSecrets: [ ]
-  nameOverride: ""
-  fullnameOverride: ""
 
   annotations:
-    htmlChecksum: "{{ include (print $.Template.BasePath \"/configmap.yaml\") . | sha256sum }}"
 
   resources:
     requests:
@@ -179,58 +157,43 @@ deployment:
   securityContext:
     allowPrivilegeEscalation: false
     runAsNonRoot: true
-  # capabilities:
-  #   drop:
-  #   - ALL
-  # readOnlyRootFilesystem: true
+    capabilities:
+      drop:
+        - ALL
+    readOnlyRootFilesystem: true
     runAsUser: 1001
 
-  volumes:
-    - name: admin-dashboard-config
-      configMap:
-        name: admin-dashboard-config
-  volumeMounts:
-    - name: admin-dashboard-config
-      mountPath: /home/static
+  #nodeSelector:
+  #tolerations:
 
-  affinity: { }
+  extraVolumes: [ ]
+  extraVolumeMounts: [ ]
 
-  ports:
-    http:
-      port: 3000
+  #affinity:
+
+  containerPort: 3000
 
   health:
     startupProbe:
       path: "/"
-      # initialDelaySeconds: # defaults to 20
-      # periodSeconds: # defaults to 20
-      # failureThreshold: # defaults to 3
-      port: 3000
+      initialDelaySeconds: 20
+      periodSeconds: 20
+      failureThreshold: 3
+
     liveness:
       path: "/"
-      # initialDelaySeconds: # defaults to 20
-      # periodSeconds: # defaults to 20
-      # failureThreshold: # defaults to 3
-      port: 3000
+      initialDelaySeconds: 20
+      periodSeconds: 20
+      failureThreshold: 3
+
     readiness:
       path: "/"
-      # initialDelaySeconds: # defaults to 20
-      # periodSeconds: # defaults to 20
-      # failureThreshold: # defaults to 3
-      port: 3000
-
-  env:
-    MUH: "KUH"
-
-  #set the secret where to take env from
-  envFromSecret:
+      initialDelaySeconds: 20
+      periodSeconds: 20
+      failureThreshold: 3
 
 service:
-  ports:
-    http:
-      #These values are the default values, override them if necessary
-      targetPort: 3000
-      ## port name from above
-      #name: "http"
-      #protocol: TCP
-      #port: 80
+  annotations:
+  labels:
+  type: "ClusterIP"
+  port: 80
