@@ -1,6 +1,6 @@
 # iits-admin-dashboard
 
-![Version: 1.5.0](https://img.shields.io/badge/Version-1.5.0-informational?style=flat-square)
+![Version: 1.6.0](https://img.shields.io/badge/Version-1.6.0-informational?style=flat-square) ![AppVersion: 2.1.0](https://img.shields.io/badge/AppVersion-2.1.0-informational?style=flat-square)
 
 This chart deploys a super simple webserver that provides a simple website containing links to a set
 of dashboards that are usually deployed in our infrastructure setup as well as some nifty external
@@ -52,7 +52,7 @@ iits-admin-dashboard:
 | defaultDashboard.tiles.alertManager.imgAlt | string | `"Alertmanager"` |  |
 | defaultDashboard.tiles.alertManager.imgSrc | string | `"https://devopy.io/wp-content/uploads/2019/02/bell_260.svg"` |  |
 | defaultDashboard.tiles.argocd.enabled | string | `"true"` |  |
-| defaultDashboard.tiles.argocd.href | string | `"argocd"` |  |
+| defaultDashboard.tiles.argocd.href | string | `"argocd/auth/login"` |  |
 | defaultDashboard.tiles.argocd.imgAlt | string | `"ArgoCD"` |  |
 | defaultDashboard.tiles.argocd.imgSrc | string | `"argo.svg"` |  |
 | defaultDashboard.tiles.dashboard.enabled | string | `"true"` |  |
@@ -96,43 +96,49 @@ iits-admin-dashboard:
 | defaultDashboard.tiles.vault.imgAlt | string | `"Vault"` |  |
 | defaultDashboard.tiles.vault.imgSrc | string | `"https://www.drupal.org/files/project-images/Vault_VerticalLogo_FullColor.png"` |  |
 | defaultDashboard.title | string | `"Tech Admin Board"` |  |
-| deployment.affinity | object | `{}` |  |
-| deployment.annotations.htmlChecksum | string | `"{{ include (print $.Template.BasePath \"/configmap.yaml\") . | sha256sum }}"` |  |
-| deployment.env.MUH | string | `"KUH"` |  |
-| deployment.envFromSecret | string | `nil` |  |
-| deployment.fullnameOverride | string | `""` |  |
+| deployment.annotations | string | `nil` |  |
+| deployment.containerPort | int | `3000` |  |
+| deployment.extraVolumeMounts | list | `[]` |  |
+| deployment.extraVolumes | list | `[]` |  |
+| deployment.health.liveness.failureThreshold | int | `3` |  |
+| deployment.health.liveness.initialDelaySeconds | int | `20` |  |
 | deployment.health.liveness.path | string | `"/"` |  |
-| deployment.health.liveness.port | int | `3000` |  |
+| deployment.health.liveness.periodSeconds | int | `20` |  |
+| deployment.health.readiness.failureThreshold | int | `3` |  |
+| deployment.health.readiness.initialDelaySeconds | int | `20` |  |
 | deployment.health.readiness.path | string | `"/"` |  |
-| deployment.health.readiness.port | int | `3000` |  |
+| deployment.health.readiness.periodSeconds | int | `20` |  |
+| deployment.health.startupProbe.failureThreshold | int | `3` |  |
+| deployment.health.startupProbe.initialDelaySeconds | int | `20` |  |
 | deployment.health.startupProbe.path | string | `"/"` |  |
-| deployment.health.startupProbe.port | int | `3000` |  |
-| deployment.image.imagePullPolicy | string | `"IfNotPresent"` |  |
-| deployment.image.repository | string | `"lipanski/docker-static-website"` |  |
-| deployment.image.tag | string | `"2.1.0"` |  |
+| deployment.health.startupProbe.periodSeconds | int | `20` |  |
 | deployment.imagePullSecrets | list | `[]` |  |
-| deployment.nameOverride | string | `""` |  |
+| deployment.onePodForEachNode | bool | `false` |  |
 | deployment.podAnnotations | object | `{}` |  |
 | deployment.podSecurityContext | string | `nil` |  |
-| deployment.ports.http.port | int | `3000` |  |
-| deployment.replicaCount | string | `"2"` |  |
+| deployment.replicaCount | int | `2` |  |
 | deployment.resources.limits.cpu | string | `"10m"` |  |
 | deployment.resources.limits.memory | string | `"8Mi"` |  |
 | deployment.resources.requests.cpu | string | `"1m"` |  |
 | deployment.resources.requests.memory | string | `"4Mi"` |  |
 | deployment.securityContext.allowPrivilegeEscalation | bool | `false` |  |
+| deployment.securityContext.capabilities.drop[0] | string | `"ALL"` |  |
+| deployment.securityContext.readOnlyRootFilesystem | bool | `true` |  |
 | deployment.securityContext.runAsNonRoot | bool | `true` |  |
 | deployment.securityContext.runAsUser | int | `1001` |  |
-| deployment.volumeMounts[0].mountPath | string | `"/home/static"` |  |
-| deployment.volumeMounts[0].name | string | `"admin-dashboard-config"` |  |
-| deployment.volumes[0].configMap.name | string | `"admin-dashboard-config"` |  |
-| deployment.volumes[0].name | string | `"admin-dashboard-config"` |  |
+| fullnameOverride | string | `""` |  |
 | ingress.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
 | ingress.annotations."traefik.ingress.kubernetes.io/router.tls" | string | `"true"` |  |
-| ingress.defaultIngress.enabled | bool | `true` |  |
 | ingress.enabled | bool | `true` |  |
 | ingress.host | string | `nil` | Required, replace it with your host address |
-| service.ports.http.targetPort | int | `3000` |  |
+| ingress.hosts[0].host | string | `"{{ .Values.ingress.host }}"` |  |
+| ingress.hosts[0].paths[0].path | string | `"/"` |  |
+| ingress.labels | string | `nil` |  |
+| nameOverride | string | `""` |  |
+| service.annotations | string | `nil` |  |
+| service.labels | string | `nil` |  |
+| service.port | int | `80` |  |
+| service.type | string | `"ClusterIP"` |  |
 | serviceAccount.annotations | object | `{}` |  |
 | serviceAccount.create | bool | `true` |  |
 | serviceAccount.name | string | `""` |  |
