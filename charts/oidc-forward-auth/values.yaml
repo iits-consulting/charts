@@ -40,37 +40,21 @@ gatekeeper:
     resources:
       - require-any-role: true
         uri: /*
+
 ingress:
   enabled: true
+
+  # -- Optional, set the ingressClassName on the Ingress. If not defined the default IngressClass from the cluster is used.
+  #className: "traefik"
+
   # -- Required, replace it with your host address
   host:
-  annotations:
-    traefik.ingress.kubernetes.io/router.entrypoints: websecure
-    traefik.ingress.kubernetes.io/router.tls: "true"
-  # Creates default Ingress with tls and the given host from .Values.ingress.host
-  defaultIngress:
-    enabled: true
-    ## Default values can be overriden
-    #tls:
-    #  enabled: "false"
-    #  secretName: "oidc-forward-auth.fullname"
-    path: "/oauth"
-    #pathType: "Prefix"
-    backend:
-      name: "{{$.Release.Name}}-gatekeeper"
-      port:
-        name: "proxy"
 
-  ## If you don't want to use the default Ingress, you can define it here on your own
-  #tls:
-  #  - hosts:
-  #      - "{{.Values.ingress.host}}"
-  #    secretName: "oidc-forward-auth-cert"
-  #hosts:
-  #  - host: "{{.Values.ingress.host}}"
-  #    paths:
-  #      - path: "/"
-  #        backend:
-  #         name: "{{include "oidc-forward-auth.fullname" $}}"
-  #         port:
-  #            name: "{{include "oidc-forward-auth.fullname" $}}"
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+    traefik.ingress.kubernetes.io/router.tls: "true"
+
+  hosts:
+    - host: "{{ .Values.ingress.host }}"
+      paths:
+        - path: "/oauth"
