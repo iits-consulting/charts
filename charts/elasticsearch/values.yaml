@@ -210,12 +210,27 @@ kibana:
   replicas: 2
   image: "docker.elastic.co/kibana/kibana"
   imageTag: "8.5.1"
+  ingress:
+    enabled: true
+    className: traefik
+    pathtype: Prefix
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      traefik.ingress.kubernetes.io/router.tls: "true"
+      traefik.ingress.kubernetes.io/router.middlewares: routing-oidc-forward-auth@kubernetescrd
+    hosts:
+      - host:
+        paths:
+          - path: /kibana
+  healthCheckPath: '/kibana/app/kibana'
   kibanaConfig:
     kibana.yml: |
       server:
         name: kibana
         host: "localhost"
-        basePath: "/kibana"
+        basePath: "{{ index $.Values.ingress.hosts 0 "paths" 0 "path"}}"
+        publicBaseUrl: "https://{{ index $.Values.ingress.hosts 0 "host"}}{{ index $.Values.ingress.hosts 0 "paths" 0 "path"}}"
+        rewriteBasePath: true
       elasticsearch.hosts: [ "http://elasticsearch:9200" ]
       monitoring.ui.container.elasticsearch.enabled: true
       xpack:
@@ -296,21 +311,3 @@ backup:
       expireAfter: "15d"
       minCount: 5
       maxCount: 15
-
-ingress:
-  enabled: true
-
-  # -- Required, replace it with your host address
-  host:
-
-  labels:
-
-  annotations:
-    traefik.ingress.kubernetes.io/router.entrypoints: websecure
-    traefik.ingress.kubernetes.io/router.tls: "true"
-    traefik.ingress.kubernetes.io/router.middlewares: "{{.Release.Namespace}}-strip-prefix-{{ .Release.Name }}@kubernetescrd, routing-oidc-forward-auth@kubernetescrd"
-
-  paths:
-    kibana: "/kibana"
-    elasticsearch: "/elasticsearch"
-
