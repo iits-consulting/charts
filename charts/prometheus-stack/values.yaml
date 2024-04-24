@@ -1,39 +1,17 @@
 global:
-  prometheus:
-    # -- Required, replace it with your host address
+  ingress:
+    enabled: true
     host:
-  grafana:
-    # -- Required, replace it with your host address
-    host:
-  alertmanager:
-    # -- Required, replace it with your host address
-    host:
+    paths:
+      prometheus: /prometheus
+      grafana: /grafana
+      alertmanager: /alertmanager
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      traefik.ingress.kubernetes.io/router.tls: "true"
+      traefik.ingress.kubernetes.io/router.middlewares: routing-oidc-forward-auth@kubernetescrd
 
 prometheusStack:
-  #Config if you are behind an oauth proxy
-  ingress:
-    prometheus:
-      enabled: true
-      host: "{{$.Values.global.prometheus.host}}"
-      annotations:
-        traefik.ingress.kubernetes.io/router.entrypoints: websecure
-        traefik.ingress.kubernetes.io/router.tls: "true"
-        traefik.ingress.kubernetes.io/router.middlewares: routing-oidc-forward-auth@kubernetescrd
-    grafana:
-      enabled: true
-      className: "traefik"
-      host: "{{$.Values.global.grafana.host}}"
-      annotations:
-        traefik.ingress.kubernetes.io/router.entrypoints: websecure
-        traefik.ingress.kubernetes.io/router.tls: "true"
-        traefik.ingress.kubernetes.io/router.middlewares: routing-oidc-forward-auth@kubernetescrd
-    alertmanager:
-      enabled: true
-      host: "{{$.Values.global.alertmanager.host}}"
-      annotations:
-        traefik.ingress.kubernetes.io/router.entrypoints: websecure
-        traefik.ingress.kubernetes.io/router.tls: "true"
-        traefik.ingress.kubernetes.io/router.middlewares: "{{.Release.Namespace}}-strip-prefix-{{ .Release.Name }}@kubernetescrd, routing-oidc-forward-auth@kubernetescrd"
   kubeProxy:
     enabled: false
   kubeScheduler:
@@ -75,7 +53,7 @@ prometheusStack:
       time: true
   prometheus:
     prometheusSpec:
-      externalUrl: https://{{$.Values.global.prometheus.host}}/prometheus
+      externalUrl: https://{{$.Values.global.ingress.host}}{{$.Values.global.ingress.paths.prometheus}}
       serviceMonitorSelectorNilUsesHelmValues: false
       podMonitorSelectorNilUsesHelmValues: false
       probeSelectorNilUsesHelmValues: false
@@ -108,7 +86,7 @@ prometheusStack:
     grafana.ini:
       server:
         serve_from_sub_path: true
-        root_url: https://{{$.Values.global.grafana.host}}/grafana
+        root_url: https://{{$.Values.global.ingress.host}}{{$.Values.global.ingress.paths.grafana}}
       auth:
         disable_login_form: false
       auth.basic:
@@ -151,6 +129,7 @@ prometheusStack:
       templates:
         - /etc/alertmanager/config/*.tmpl
     alertmanagerSpec:
+      externalUrl: https://{{$.Values.global.ingress.host}}{{$.Values.global.ingress.paths.alertmanager}}
       routePrefix: "/alertmanager"
       resources:
         requests:
