@@ -3903,6 +3903,29 @@ entries:
     version: 1.0.0
   oidc-forward-auth:
   - apiVersion: v2
+    created: "2024-04-24T17:51:06.150616346Z"
+    dependencies:
+    - name: gatekeeper
+      repository: https://gogatekeeper.github.io/helm-gogatekeeper
+      version: 0.1.47
+    description: 'Forward Auth proxy with gogatekeeper. It replaces the old proxy
+      mechanism  ## Installing the Chart with iits ArgoCD  ```yaml charts:   oidc-forward-auth:     namespace:
+      routing     targetRevision: "1.0.0"     parameters:       gatekeeper.config.client-id:
+      "${vault:whatever/data/keycloak/keycloak_proxy_admin#client_id}"       gatekeeper.config.client-secret:
+      "${vault:whatever/data/keycloak/keycloak_proxy_admin#client_secret}"       gatekeeper.config.discovery-url:
+      "https://{{.Values.projectValues.authDomain}}/realms/{{.Values.projectValues.context}}"       ingress.host:
+      "my.protected.domain" ```  ## Then use it like this   ```yaml ingress:   enabled:
+      true   # -- Mandatory, replace it with your host address   host:    annotations:     traefik.ingress.kubernetes.io/router.entrypoints:
+      websecure     traefik.ingress.kubernetes.io/router.tls: "true"     #namespace-name@kubernetescrd     traefik.ingress.kubernetes.io/router.middlewares:
+      routing-oidc-forward-auth@kubernetescrd   # Creates default Ingress with tls
+      and the given host from .Values.ingress.host   defaultIngress:     enabled:
+      true ``` '
+    digest: aec15636381c27a4d2ca4566bd8be7a01c8d84e073c04d75f82ab4833762eb11
+    name: oidc-forward-auth
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/oidc-forward-auth-1.4.1/oidc-forward-auth-1.4.1.tgz
+    version: 1.4.1
+  - apiVersion: v2
     created: "2024-04-23T11:17:02.534164744Z"
     dependencies:
     - name: gatekeeper
@@ -5327,4 +5350,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/waf-cert-uploader-0.1.1/waf-cert-uploader-0.1.1.tgz
     version: 0.1.1
-generated: "2024-04-23T11:17:02.534650686Z"
+generated: "2024-04-24T17:51:06.151407538Z"
