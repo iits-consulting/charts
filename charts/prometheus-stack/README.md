@@ -1,6 +1,6 @@
 # prometheus-stack
 
-![Version: 56.22.1](https://img.shields.io/badge/Version-56.22.1-informational?style=flat-square)
+![Version: 58.2.2](https://img.shields.io/badge/Version-58.2.2-informational?style=flat-square)
 
 A complete monitoring/alerting stack with Grafana Prometheus Alertmanager
 
@@ -28,15 +28,21 @@ prometheus-stack:
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://prometheus-community.github.io/helm-charts | prometheusStack(kube-prometheus-stack) | 56.21.x |
+| https://prometheus-community.github.io/helm-charts | prometheusStack(kube-prometheus-stack) | 58.2.2 |
 
 ## Values
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| global.alertmanager.host | string | `nil` | Required, replace it with your host address |
-| global.grafana.host | string | `nil` | Required, replace it with your host address |
-| global.prometheus.host | string | `nil` | Required, replace it with your host address |
+| global.ingress.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
+| global.ingress.annotations."traefik.ingress.kubernetes.io/router.middlewares" | string | `"routing-oidc-forward-auth@kubernetescrd"` |  |
+| global.ingress.annotations."traefik.ingress.kubernetes.io/router.tls" | string | `"true"` |  |
+| global.ingress.enabled | bool | `true` |  |
+| global.ingress.host | string | `nil` |  |
+| global.ingress.paths.alertmanager | string | `"/alertmanager"` |  |
+| global.ingress.paths.grafana | string | `"/grafana"` |  |
+| global.ingress.paths.prometheus | string | `"/prometheus"` |  |
+| prometheusStack.alertmanager.alertmanagerSpec.externalUrl | string | `"https://{{$.Values.global.ingress.host}}{{$.Values.global.ingress.paths.alertmanager}}"` |  |
 | prometheusStack.alertmanager.alertmanagerSpec.resources.requests.cpu | string | `"5m"` |  |
 | prometheusStack.alertmanager.alertmanagerSpec.resources.requests.memory | string | `"100Mi"` |  |
 | prometheusStack.alertmanager.alertmanagerSpec.routePrefix | string | `"/alertmanager"` |  |
@@ -88,32 +94,16 @@ prometheus-stack:
 | prometheusStack.grafana."grafana.ini"."auth.basic".enabled | bool | `true` |  |
 | prometheusStack.grafana."grafana.ini".auth.disable_login_form | bool | `false` |  |
 | prometheusStack.grafana."grafana.ini".security.disable_initial_admin_creation | bool | `false` |  |
-| prometheusStack.grafana."grafana.ini".server.root_url | string | `"https://{{$.Values.global.grafana.host}}/grafana"` |  |
+| prometheusStack.grafana."grafana.ini".server.root_url | string | `"https://{{$.Values.global.ingress.host}}{{$.Values.global.ingress.paths.grafana}}"` |  |
 | prometheusStack.grafana."grafana.ini".server.serve_from_sub_path | bool | `true` |  |
 | prometheusStack.grafana.adminPassword | string | `nil` | Required |
 | prometheusStack.grafana.serviceMonitor.path | string | `"/grafana/metrics"` |  |
-| prometheusStack.ingress.alertmanager.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
-| prometheusStack.ingress.alertmanager.annotations."traefik.ingress.kubernetes.io/router.middlewares" | string | `"{{.Release.Namespace}}-strip-prefix-{{ .Release.Name }}@kubernetescrd, routing-oidc-forward-auth@kubernetescrd"` |  |
-| prometheusStack.ingress.alertmanager.annotations."traefik.ingress.kubernetes.io/router.tls" | string | `"true"` |  |
-| prometheusStack.ingress.alertmanager.enabled | bool | `true` |  |
-| prometheusStack.ingress.alertmanager.host | string | `"{{$.Values.global.alertmanager.host}}"` |  |
-| prometheusStack.ingress.grafana.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
-| prometheusStack.ingress.grafana.annotations."traefik.ingress.kubernetes.io/router.middlewares" | string | `"routing-oidc-forward-auth@kubernetescrd"` |  |
-| prometheusStack.ingress.grafana.annotations."traefik.ingress.kubernetes.io/router.tls" | string | `"true"` |  |
-| prometheusStack.ingress.grafana.className | string | `"traefik"` |  |
-| prometheusStack.ingress.grafana.enabled | bool | `true` |  |
-| prometheusStack.ingress.grafana.host | string | `"{{$.Values.global.grafana.host}}"` |  |
-| prometheusStack.ingress.prometheus.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
-| prometheusStack.ingress.prometheus.annotations."traefik.ingress.kubernetes.io/router.middlewares" | string | `"routing-oidc-forward-auth@kubernetescrd"` |  |
-| prometheusStack.ingress.prometheus.annotations."traefik.ingress.kubernetes.io/router.tls" | string | `"true"` |  |
-| prometheusStack.ingress.prometheus.enabled | bool | `true` |  |
-| prometheusStack.ingress.prometheus.host | string | `"{{$.Values.global.prometheus.host}}"` |  |
 | prometheusStack.kubeControllerManager.enabled | bool | `false` |  |
 | prometheusStack.kubeProxy.enabled | bool | `false` |  |
 | prometheusStack.kubeScheduler.enabled | bool | `false` |  |
 | prometheusStack.kubelet.enabled | bool | `true` |  |
 | prometheusStack.nameOverride | string | `"prometheus-stack"` |  |
-| prometheusStack.prometheus.prometheusSpec.externalUrl | string | `"https://{{$.Values.global.prometheus.host}}/prometheus"` |  |
+| prometheusStack.prometheus.prometheusSpec.externalUrl | string | `"https://{{$.Values.global.ingress.host}}{{$.Values.global.ingress.paths.prometheus}}"` |  |
 | prometheusStack.prometheus.prometheusSpec.podMonitorSelector | string | `nil` |  |
 | prometheusStack.prometheus.prometheusSpec.podMonitorSelectorNilUsesHelmValues | bool | `false` |  |
 | prometheusStack.prometheus.prometheusSpec.probeSelectorNilUsesHelmValues | bool | `false` |  |
