@@ -1108,6 +1108,31 @@ entries:
     version: 7.17.3-cce-volumes
   elasticsearch:
   - apiVersion: v2
+    created: "2024-04-25T15:27:42.725143194Z"
+    dependencies:
+    - condition: elasticsearch.enabled
+      name: elasticsearch
+      repository: https://helm.elastic.co
+      version: 8.5.1
+    - condition: kibana.enabled
+      name: kibana
+      repository: https://helm.elastic.co
+      version: 7.17.3
+    - condition: filebeat.enabled
+      name: filebeat
+      repository: https://helm.elastic.co
+      version: 8.5.1
+    description: 'Elasticsearch + filebeat + kibana with default common used indexes
+      and Index Lifecycle Management.   It comes also with a backup functionality.  #
+      Installing the Chart with iits ArgoCD  ## Register the Chart  ```yaml   elasticsearch:     namespace:
+      monitoring     targetRevision: "8.6.2"     parameters:       ingress.host: "admin.{{.Values.projectValues.rootDomain}}"       backup.enabled:
+      "false" ``` '
+    digest: 6951512754bfa1366822a6f7b66de768a32bc8e949afd09b62ffa59236966cf9
+    name: elasticsearch
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/elasticsearch-8.8.0/elasticsearch-8.8.0.tgz
+    version: 8.8.0
+  - apiVersion: v2
     created: "2024-04-10T16:18:53.921723902Z"
     dependencies:
     - condition: elasticsearch.enabled
@@ -5350,4 +5375,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/waf-cert-uploader-0.1.1/waf-cert-uploader-0.1.1.tgz
     version: 0.1.1
-generated: "2024-04-24T17:51:06.151407538Z"
+generated: "2024-04-25T15:27:42.726193907Z"
