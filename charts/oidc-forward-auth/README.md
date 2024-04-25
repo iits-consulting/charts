@@ -1,6 +1,6 @@
 # oidc-forward-auth
 
-![Version: 1.3.0](https://img.shields.io/badge/Version-1.3.0-informational?style=flat-square)
+![Version: 1.4.1](https://img.shields.io/badge/Version-1.4.1-informational?style=flat-square)
 
 Forward Auth proxy with gogatekeeper. It replaces the old proxy mechanism
 
@@ -39,7 +39,7 @@ ingress:
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://gogatekeeper.github.io/helm-gogatekeeper | gatekeeper | 0.1.33 |
+| https://gogatekeeper.github.io/helm-gogatekeeper | gatekeeper | 0.1.47 |
 
 ## Values
 

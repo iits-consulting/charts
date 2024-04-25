@@ -1,6 +1,6 @@
 # elasticsearch
 
-![Version: 8.7.0](https://img.shields.io/badge/Version-8.7.0-informational?style=flat-square)
+![Version: 8.8.0](https://img.shields.io/badge/Version-8.8.0-informational?style=flat-square)
 
 Elasticsearch + filebeat + kibana with default common used indexes and Index Lifecycle Management. 
 It comes also with a backup functionality.
@@ -97,18 +97,19 @@ It comes also with a backup functionality.
 | indexPatternInit.indices.not-defined.timestampField | string | `"@timestamp"` |  |
 | indexPatternInit.indices.traefik-and-keycloak-proxy.timestampField | string | `"@timestamp"` |  |
 | indexPatternInit.indices.vault.timestampField | string | `"@timestamp"` |  |
-| ingress.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
-| ingress.annotations."traefik.ingress.kubernetes.io/router.middlewares" | string | `"{{.Release.Namespace}}-strip-prefix-{{ .Release.Name }}@kubernetescrd, routing-oidc-forward-auth@kubernetescrd"` |  |
-| ingress.annotations."traefik.ingress.kubernetes.io/router.tls" | string | `"true"` |  |
-| ingress.defaultIngress.backend.name | string | `"{{.Release.Name}}-kibana"` |  |
-| ingress.defaultIngress.enabled | bool | `true` |  |
-| ingress.defaultIngress.path | string | `"/kibana"` |  |
-| ingress.enabled | bool | `true` |  |
-| ingress.host | string | `nil` | Required, replace it with your host address |
 | kibana.enabled | bool | `true` |  |
+| kibana.healthCheckPath | string | `"/kibana/app/kibana"` |  |
 | kibana.image | string | `"docker.elastic.co/kibana/kibana"` |  |
 | kibana.imageTag | string | `"8.5.1"` |  |
-| kibana.kibanaConfig."kibana.yml" | string | `"server:\n  name: kibana\n  host: \"localhost\"\n  basePath: \"/kibana\"\nelasticsearch.hosts: [ \"http://elasticsearch:9200\" ]\nmonitoring.ui.container.elasticsearch.enabled: true\nxpack:\n  reporting:\n    csv.maxSizeBytes: 1048576000\n    queue.timeout: 1800000\n    kibanaServer.hostname: localhost\n    encryptionKey: \"2r6QH87Y3tJP9JkNqaM!w9&zQBO6p&M%\"\n  security.encryptionKey: \"2r6QH87Y3tJP9JkNqaM!w9&zQBO6p&M%\"\n  encryptedSavedObjects.encryptionKey: \"2r6QH87Y3tJP9JkNqaM!w9&zQBO6p&M%\"\n"` |  |
+| kibana.ingress.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
+| kibana.ingress.annotations."traefik.ingress.kubernetes.io/router.middlewares" | string | `"routing-oidc-forward-auth@kubernetescrd"` |  |
+| kibana.ingress.annotations."traefik.ingress.kubernetes.io/router.tls" | string | `"true"` |  |
+| kibana.ingress.className | string | `"traefik"` |  |
+| kibana.ingress.enabled | bool | `true` |  |
+| kibana.ingress.hosts[0].host | string | `nil` |  |
+| kibana.ingress.hosts[0].paths[0].path | string | `"/kibana"` |  |
+| kibana.ingress.pathtype | string | `"Prefix"` |  |
+| kibana.kibanaConfig."kibana.yml" | string | `"server:\n  name: kibana\n  host: \"localhost\"\n  basePath: \"{{ index $.Values.ingress.hosts 0 \"paths\" 0 \"path\"}}\"\n  publicBaseUrl: \"https://{{ index $.Values.ingress.hosts 0 \"host\"}}{{ index $.Values.ingress.hosts 0 \"paths\" 0 \"path\"}}\"\n  rewriteBasePath: true\nelasticsearch.hosts: [ \"http://elasticsearch:9200\" ]\nmonitoring.ui.container.elasticsearch.enabled: true\nxpack:\n  reporting:\n    csv.maxSizeBytes: 1048576000\n    queue.timeout: 1800000\n    kibanaServer.hostname: localhost\n    encryptionKey: \"2r6QH87Y3tJP9JkNqaM!w9&zQBO6p&M%\"\n  security.encryptionKey: \"2r6QH87Y3tJP9JkNqaM!w9&zQBO6p&M%\"\n  encryptedSavedObjects.encryptionKey: \"2r6QH87Y3tJP9JkNqaM!w9&zQBO6p&M%\"\n"` |  |
 | kibana.replicas | int | `2` |  |
 | kibana.service.annotations | object | `{}` |  |
 | kibana.service.port | int | `5601` |  |
