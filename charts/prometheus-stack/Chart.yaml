@@ -3,7 +3,7 @@ dependencies:
   - alias: prometheusStack
     name: kube-prometheus-stack
     repository: https://prometheus-community.github.io/helm-charts
-    version: 56.21.x
+    version: 58.2.2
 description: |
   A complete monitoring/alerting stack with Grafana Prometheus Alertmanager
   
@@ -27,4 +27,4 @@ description: |
       prometheusStack.grafana.adminPassword: "REPLACE_ME"
   ```
 name: prometheus-stack
-version: 56.22.1
+version: 58.2.2
