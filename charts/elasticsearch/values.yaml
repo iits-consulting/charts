@@ -210,12 +210,27 @@ kibana:
   replicas: 2
   image: "docker.elastic.co/kibana/kibana"
   imageTag: "8.5.1"
+  ingress:
+    enabled: true
+    className: traefik
+    pathtype: Prefix
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      traefik.ingress.kubernetes.io/router.tls: "true"
+      traefik.ingress.kubernetes.io/router.middlewares: routing-oidc-forward-auth@kubernetescrd
+    hosts:
+      - host:
+        paths:
+          - path: /kibana
+  healthCheckPath: '/kibana/app/kibana'
   kibanaConfig:
     kibana.yml: |
       server:
         name: kibana
         host: "localhost"
-        basePath: "/kibana"
+        basePath: "{{ index $.Values.ingress.hosts 0 "paths" 0 "path"}}"
+        publicBaseUrl: "https://{{ index $.Values.ingress.hosts 0 "host"}}{{ index $.Values.ingress.hosts 0 "paths" 0 "path"}}"
+        rewriteBasePath: true
       elasticsearch.hosts: [ "http://elasticsearch:9200" ]
       monitoring.ui.container.elasticsearch.enabled: true
       xpack:
@@ -296,39 +311,3 @@ backup:
       expireAfter: "15d"
       minCount: 5
       maxCount: 15
-
-ingress:
-  enabled: true
-  # -- Required, replace it with your host address
-  host:
-  annotations:
-    traefik.ingress.kubernetes.io/router.entrypoints: websecure
-    traefik.ingress.kubernetes.io/router.tls: "true"
-    traefik.ingress.kubernetes.io/router.middlewares: "{{.Release.Namespace}}-strip-prefix-{{ .Release.Name }}@kubernetescrd, routing-oidc-forward-auth@kubernetescrd"
-  # Creates default Ingress with tls and the given host from .Values.ingress.host
-  defaultIngress:
-    enabled: true
-    ## Default values can be overriden
-    #tls:
-    #  enabled: "false"
-    #  secretName: "elasticsearch.fullname"
-    path: "/kibana"
-    #pathType: "Prefix"
-    backend:
-      name: "{{.Release.Name}}-kibana" #tpl supported
-    #  port:
-    #    name: http #tpl supported
-
-  ## If you don't want to use the default Ingress, you can define it here on your own
-  #tls:
-  #  - hosts:
-  #      - "{{.Values.ingress.host}}"
-  #    secretName: "elasticsearch-cert"
-  #hosts:
-  #  - host: "{{.Values.ingress.host}}"
-  #    paths:
-  #      - path: "/"
-  #        backend:
-  #         name: "{{include "elasticsearch.fullname" $}}"
-  #         port:
-  #            name: "{{include "elasticsearch.fullname" $}}"
