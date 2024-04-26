@@ -1,6 +1,6 @@
 # otc-nextcloud
 
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![AppVersion: 25.0.2](https://img.shields.io/badge/AppVersion-25.0.2-informational?style=flat-square)
+![Version: 0.1.1](https://img.shields.io/badge/Version-0.1.1-informational?style=flat-square) ![AppVersion: 25.0.2](https://img.shields.io/badge/AppVersion-25.0.2-informational?style=flat-square)
 
 nextcloud with S3 storage
 
@@ -144,7 +144,7 @@ charts:
 | nextcloud.nextcloud.extraEnv[3].name | string | `"S3_BUCKET_URL"` |  |
 | nextcloud.nextcloud.extraEnv[3].valueFrom.secretKeyRef.key | string | `"S3_BUCKET_URL"` |  |
 | nextcloud.nextcloud.extraEnv[3].valueFrom.secretKeyRef.name | string | `"nextcloud-storage-secrets"` |  |
-| nextcloud.nextcloud.host | string | `nil` | Required, replace it with your host address |
+| nextcloud.nextcloud.host | string | `"REPLACE_ME"` | Required, replace it with your host address |
 | nextcloud.phpClientHttpsFix.enabled | bool | `true` |  |
 | nextcloudStorage.s3.S3_BUCKET_NAME | string | `"REPLACE_ME"` | Required |
 | nextcloudStorage.s3.S3_BUCKET_URL | string | `"REPLACE_ME"` | Required |
