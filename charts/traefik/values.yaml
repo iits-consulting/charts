@@ -14,15 +14,8 @@ traefik:
     replicas: 2
 
   service:
-    type: LoadBalancer
     spec:
       externalTrafficPolicy: Cluster
-
-    additionalServices:
-      internal:
-        type: ClusterIP
-        labels:
-          traefik-service-label: internal
 
   providers:
     kubernetesCRD:
@@ -40,18 +33,17 @@ traefik:
     isDefaultClass: true
 
   ports:
-    traefik:
-      expose:
-        internal: true
-
     web:
       redirectTo:
         port: websecure
 
   tlsOptions:
     default:
-      sniStrict: true
-      minVersion: VersionTLS12
+      minVersion: VersionTLS13
+  tlsStore:
+    default:
+      defaultCertificate:
+        secretName: "traefik-default-cert"
 
   metrics:
     prometheus:
@@ -59,10 +51,22 @@ traefik:
         enabled: true
       service:
         enabled: true
+  ingressRoute:
+    dashboard:
+      entryPoints:
+        - traefik
+        - websecure
+      middlewares:
+        - name: admin-forward-auth
+          namespace: routing
+    healthcheck:
+      enabled: true
+      entryPoints:
+        - traefik
+        - websecure
 
 defaultCert:
   enabled: true
-
   # -- (array) Required, set the domains you want to request, i.e.
   #  dnsNames:
   #  - "dev.example.com" # Required if you also want to serve on the "root" url
@@ -71,40 +75,7 @@ defaultCert:
 
   # -- Defaults are 'letsencrypt' for HTTP01 and 'letsencrypt-dns' for DNS01
   # For wildcard-certificates you need to use the DNS01 Challenge
-  issuerName: "letsencrypt"
-
-  # Name of the secret, to which cert-manager syncs the certificate
-  secretName: "traefik-default-secret"
-
-ingress:
-  # Just enable it if you set up forward auth
-  enabled: false
-
-  # -- Required, insert where you want to serve the Traefik dashboards from.
-  # i.e.:
-  # host: "admin.example.com"
-  host:
-
-  className: "traefik"
-
-  # Annotations for the Ingress-Resource
-  annotations:
-    traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-    traefik.ingress.kubernetes.io/router.tls: "true"
-
-  rules:
-    - host: "{{ .Values.ingress.host | required \"You need to set the ingress.host parameter\" }}"
-      paths:
-        - path: "/api"
-          backend:
-            name: "{{ include \"traefik.fullname\" $ }}-internal"
-            port:
-              name: traefik
-        - path: "/dashboard"
-          backend:
-            name: "{{ include \"traefik.fullname\" $ }}-internal"
-            port:
-              name: traefik
+  issuerName: "letsencrypt-dns"
 
 podMonitor:
   enabled: true

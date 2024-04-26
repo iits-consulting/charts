@@ -14,7 +14,7 @@ metadata:
     {{- tpl (toYaml .) $ | nindent 4 }}
   {{- end }}
 spec:
-  secretName: {{ .secretName | quote}}
+  secretName: {{ $.Values.traefik.tlsStore.default.defaultCertificate.secretName | quote}}
   dnsNames:
   {{- range $val := .dnsNames }}
     - {{ $val | quote }}
