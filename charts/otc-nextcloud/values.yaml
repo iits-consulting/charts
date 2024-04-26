@@ -37,7 +37,7 @@ nextcloud:
 
   nextcloud:
     # -- Required, replace it with your host address
-    host:
+    host: "REPLACE_ME"
     extraEnv:
       - name: S3_BUCKET_NAME
         valueFrom:
