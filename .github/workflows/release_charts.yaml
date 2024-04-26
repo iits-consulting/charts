@@ -34,7 +34,7 @@ jobs:
     needs: check-charts
     strategy:
       matrix:
-        chart: ${{fromJSON(needs.find-charts.outputs.changed_charts)}}
+        chart: ${{fromJSON(needs.find-charts.outputs.charts)}}
     permissions:
       contents: write
       security-events: write
