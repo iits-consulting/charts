@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: argocd-oidc
+  labels:
+    app.kubernetes.io/part-of: argocd
+type: Opaque
+# Setting a blank data again will wipe admin password/key/cert
+stringData:
+  oidcURL: "{{ .Values.oidcURL }}"
+  clientID: "{{ .Values.clientID }}"
+  clientSecret: "{{ .Values.clientSecret }}"

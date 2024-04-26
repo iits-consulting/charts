@@ -1,0 +1,4 @@
+apiVersion: v2
+description: Secrets for ArgoCD configuration
+name: argocd-oidc
+version: 0.1.0
