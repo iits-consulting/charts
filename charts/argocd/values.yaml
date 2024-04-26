@@ -1,61 +1,52 @@
 argo-cd:
-  global:
-    # -- Required, which domain do you want to serve argocd from? i.e. admin.example.com (ignoring path)
-    domain: "SET_BY_TERRAFORM"
+  fullnameOverride: "argocd"
+
   controller:
-    replicas: 2
-    env:
+    replicaCount: 2
+    extraEnvVars:
       - name: "TZ"
         value: "Europe/Berlin"
-      - name: "ARGOCD_GPG_ENABLED"
-        value: "false"
     logFormat: "json"
-  crds:
-    install: true
+    resourcesPreset: "medium"
   dex:
-    env:
-      - name: "TZ"
-        value: "Europe/Berlin"
-      - name: "ARGOCD_GPG_ENABLED"
-        value: "false"
-    logFormat: "json"
+    enabled: false
   notifications:
     enabled: false
   repoServer:
-    env:
+    extraEnvVars:
       - name: "TZ"
         value: "Europe/Berlin"
-      - name: "ARGOCD_GPG_ENABLED"
-        value: "false"
     logFormat: "json"
+    resourcesPreset: "small"
     containerSecurityContext:
       seccompProfile:
         type: Unconfined
   server:
     ingress:
       enabled: true
+      hostname: "SET_BY_TERRAFORM"
       annotations:
         traefik.ingress.kubernetes.io/router.entrypoints: websecure
         traefik.ingress.kubernetes.io/router.tls: "true"
       path: "/argocd"
-    env:
+    extraEnvVars:
       - name: "TZ"
         value: "Europe/Berlin"
-      - name: "ARGOCD_GPG_ENABLED"
-        value: "false"
+      - name: "ARGOCD_SERVER_ROOTPATH"
+        value: "{{ .Values.server.ingress.path }}"
+      - name: "ARGOCD_SERVER_BASEHREF"
+        value: "{{ .Values.server.ingress.path }}"
     logFormat: json
+    insecure: true
 
-  configs:
-    rbac:
-      create: true
-      policy.csv: |
-        g, ARGOCD-ADMIN, role:admin
-        g, SYSTEM-ADMINISTRATOR, role:admin
+    config:
+      url: "https://{{ .Values.server.ingress.hostname }}{{ .Values.server.ingress.path }}"
+
       oidc.config: |
         name: OIDC
-        issuer: $ARGOCD_OIDC_URL
-        clientID: $ARGOCD_OIDC_CLIENT_ID
-        clientSecret: $ARGOCD_OIDC_CLIENT_SECRET
+        issuer: $argocd-oidc:oidcURL
+        clientID: $argocd-oidc:clientID
+        clientSecret: $argocd-oidc:clientSecret
         requestedScopes:
           - openid
           - profile
@@ -64,7 +55,7 @@ argo-cd:
         requestedIDTokenClaims:
           groups:
             essential: true
-    cm:
+
       resource.customizations: |
         # Ignores .data changes of all secrets with a vaultInjectionChecksum annotation
         argoproj.io/Application:
@@ -97,15 +88,15 @@ argo-cd:
             hs = {}
             hs.status = "Healthy"
             return hs
-    params:
-      server.basehref: "/argocd"
-      server.rootpath: "/argocd"
 
-    secret:
-      extra:
-        ARGOCD_OIDC_URL: "SET_BY_TERRAFORM"
-        ARGOCD_OIDC_CLIENT_ID: "SET_BY_TERRAFORM"
-        ARGOCD_OIDC_CLIENT_SECRET: "SET_BY_TERRAFORM"
+  config:
+    rbac:
+      policy.csv: |
+        g, ARGOCD-ADMIN, role:admin
+        g, SYSTEM-ADMINISTRATOR, role:admin
+
+# Please use argocd-secret chart instead if you are using keycloak deployed in the same stage to avoid cyclic dependencies.
+#    secret:
 
 # -- List of projects which you want to bootstrap
 projects:
