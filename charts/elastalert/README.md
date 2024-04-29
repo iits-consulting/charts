@@ -1,6 +1,6 @@
 # elastalert
 
-![Version: 0.1.1](https://img.shields.io/badge/Version-0.1.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.2.0](https://img.shields.io/badge/Version-0.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 Wrapper chart for elastalert2 with custom rules to kickstart IITS projects
 
@@ -21,7 +21,7 @@ elastalert:
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://jertel.github.io/elastalert2 | elastalert2 | 2.11.0 |
+| https://jertel.github.io/elastalert2/ | elastalert2 | 2.17.0 |
 
 ## Values
 
@@ -39,21 +39,12 @@ elastalert:
 | customRules.alerting.argoCD.realert.minutes | int | `30` |  |
 | customRules.alerting.argoCD.slack_alert_fields[0].title | string | `"Stage"` |  |
 | customRules.alerting.argoCD.slack_alert_fields[0].value | string | `"labels.stage"` |  |
-| customRules.alerting.argoCD.slack_alert_fields[1].title | string | `"App"` |  |
-| customRules.alerting.argoCD.slack_alert_fields[1].value | string | `"kubernetes.labels.app"` |  |
+| customRules.alerting.argoCD.slack_alert_fields[1].title | string | `"Component"` |  |
+| customRules.alerting.argoCD.slack_alert_fields[1].value | string | `"kubernetes.labels.app_kubernetes_io/component"` |  |
 | customRules.alerting.argoCD.slack_alert_fields[2].title | string | `"Pod"` |  |
 | customRules.alerting.argoCD.slack_alert_fields[2].value | string | `"kubernetes.pod.name"` |  |
 | customRules.alerting.argoCD.slack_alert_fields[3].title | string | `"Message"` |  |
 | customRules.alerting.argoCD.slack_alert_fields[3].value | string | `"message"` |  |
-| customRules.alerting.argoCD.slack_alert_fields[4].title | string | `"upstream_addr"` |  |
-| customRules.alerting.argoCD.slack_alert_fields[4].value | string | `"upstream_addr"` |  |
-| customRules.alerting.argoCD.slack_alert_fields[5].short | bool | `true` |  |
-| customRules.alerting.argoCD.slack_alert_fields[5].title | string | `"Request Id"` |  |
-| customRules.alerting.argoCD.slack_alert_fields[5].value | string | `"requestId"` |  |
-| customRules.alerting.argoCD.slack_alert_fields[6].title | string | `"Stacktrace"` |  |
-| customRules.alerting.argoCD.slack_alert_fields[6].value | string | `"stacktrace"` |  |
-| customRules.alerting.argoCD.slack_alert_fields[7].title | string | `"User"` |  |
-| customRules.alerting.argoCD.slack_alert_fields[7].value | string | `"user"` |  |
 | customRules.alerting.argoCD.slack_title | string | `"ArgoCD Error"` |  |
 | customRules.alerting.argoCD.slack_webhook_url | string | `"{{ $.Values.customRules.slack.webhookUrl }}"` |  |
 | customRules.alerting.argoCD.type | string | `"any"` |  |
@@ -120,28 +111,19 @@ elastalert:
 | customRules.alerting.kyverno.alert_text_type | string | `"aggregation_summary_only"` |  |
 | customRules.alerting.kyverno.exponential_realert.days | int | `3` |  |
 | customRules.alerting.kyverno.fields[0] | string | `"message"` |  |
-| customRules.alerting.kyverno.filter[0].query_string.query | string | `"message: \"validation failed\" OR  message: \"error\""` |  |
+| customRules.alerting.kyverno.filter[0].query_string.query | string | `"message: \"validation failed\" OR message: \"policy validation errors\""` |  |
 | customRules.alerting.kyverno.index | string | `"kyverno*"` |  |
 | customRules.alerting.kyverno.name | string | `"Kyverno Error"` |  |
 | customRules.alerting.kyverno.query_key | string | `"message"` |  |
 | customRules.alerting.kyverno.realert.minutes | int | `30` |  |
 | customRules.alerting.kyverno.slack_alert_fields[0].title | string | `"Stage"` |  |
 | customRules.alerting.kyverno.slack_alert_fields[0].value | string | `"labels.stage"` |  |
-| customRules.alerting.kyverno.slack_alert_fields[1].title | string | `"App"` |  |
-| customRules.alerting.kyverno.slack_alert_fields[1].value | string | `"kubernetes.labels.app"` |  |
+| customRules.alerting.kyverno.slack_alert_fields[1].title | string | `"Component"` |  |
+| customRules.alerting.kyverno.slack_alert_fields[1].value | string | `"kubernetes.labels.app_kubernetes_io/component"` |  |
 | customRules.alerting.kyverno.slack_alert_fields[2].title | string | `"Pod"` |  |
 | customRules.alerting.kyverno.slack_alert_fields[2].value | string | `"kubernetes.pod.name"` |  |
 | customRules.alerting.kyverno.slack_alert_fields[3].title | string | `"Message"` |  |
 | customRules.alerting.kyverno.slack_alert_fields[3].value | string | `"message"` |  |
-| customRules.alerting.kyverno.slack_alert_fields[4].title | string | `"upstream_addr"` |  |
-| customRules.alerting.kyverno.slack_alert_fields[4].value | string | `"upstream_addr"` |  |
-| customRules.alerting.kyverno.slack_alert_fields[5].short | bool | `true` |  |
-| customRules.alerting.kyverno.slack_alert_fields[5].title | string | `"Request Id"` |  |
-| customRules.alerting.kyverno.slack_alert_fields[5].value | string | `"requestId"` |  |
-| customRules.alerting.kyverno.slack_alert_fields[6].title | string | `"Stacktrace"` |  |
-| customRules.alerting.kyverno.slack_alert_fields[6].value | string | `"stacktrace"` |  |
-| customRules.alerting.kyverno.slack_alert_fields[7].title | string | `"User"` |  |
-| customRules.alerting.kyverno.slack_alert_fields[7].value | string | `"user"` |  |
 | customRules.alerting.kyverno.slack_title | string | `"Kyverno Error"` |  |
 | customRules.alerting.kyverno.slack_webhook_url | string | `"{{ $.Values.customRules.slack.webhookUrl }}"` |  |
 | customRules.alerting.kyverno.type | string | `"any"` |  |
@@ -150,7 +132,7 @@ elastalert:
 | customRules.alerting.vaultInjection.alert_text_type | string | `"aggregation_summary_only"` |  |
 | customRules.alerting.vaultInjection.exponential_realert.days | int | `3` |  |
 | customRules.alerting.vaultInjection.fields[0] | string | `"msg"` |  |
-| customRules.alerting.vaultInjection.filter[0].query_string.query | string | `"level: error"` |  |
+| customRules.alerting.vaultInjection.filter[0].eql | string | `"any where message like~ \"\\\\[ERROR\\\\]\""` |  |
 | customRules.alerting.vaultInjection.index | string | `"vault*"` |  |
 | customRules.alerting.vaultInjection.name | string | `"Vault Injection Error"` |  |
 | customRules.alerting.vaultInjection.query_key | string | `"msg"` |  |
