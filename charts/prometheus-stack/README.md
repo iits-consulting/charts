@@ -1,6 +1,6 @@
 # prometheus-stack
 
-![Version: 58.2.2](https://img.shields.io/badge/Version-58.2.2-informational?style=flat-square)
+![Version: 58.2.3](https://img.shields.io/badge/Version-58.2.3-informational?style=flat-square)
 
 A complete monitoring/alerting stack with Grafana Prometheus Alertmanager
 
@@ -67,6 +67,7 @@ prometheus-stack:
 | prometheusStack.alertmanager.config.templates[0] | string | `"/etc/alertmanager/config/*.tmpl"` |  |
 | prometheusStack.defaultRules.create | bool | `true` |  |
 | prometheusStack.defaultRules.disabled.InfoInhibitor | bool | `true` |  |
+| prometheusStack.defaultRules.disabled.KubeClientCertificateExpiration | bool | `true` |  |
 | prometheusStack.defaultRules.disabled.KubeletDown | bool | `true` |  |
 | prometheusStack.defaultRules.disabled.NodeClockNotSynchronising | bool | `true` |  |
 | prometheusStack.defaultRules.rules.alertmanager | bool | `true` |  |
