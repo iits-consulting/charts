@@ -16,9 +16,9 @@ description: |
   ```
 
 name: elastalert
-version: 0.1.1
+version: 0.2.0
 dependencies:
-  - name: "elastalert2"
-    repository: "https://jertel.github.io/elastalert2"
-    version: 2.11.0
+  - name: elastalert2
+    repository: https://jertel.github.io/elastalert2/
+    version: 2.17.0
 type: application

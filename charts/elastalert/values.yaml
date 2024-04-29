@@ -37,21 +37,12 @@ customRules:
       slack_alert_fields:
         - title: Stage
           value: labels.stage
-        - title: App
-          value: kubernetes.labels.app
+        - title: Component
+          value: kubernetes.labels.app_kubernetes_io/component
         - title: Pod
           value: kubernetes.pod.name
         - title: Message
           value: message
-        - title: upstream_addr
-          value: upstream_addr
-        - title: Request Id
-          value: requestId
-          short: true
-        - title: Stacktrace
-          value: stacktrace
-        - title: User
-          value: user
     botKube:
       name: Botkube Error
       index: botkube*
@@ -103,8 +94,7 @@ customRules:
       alert:
         - "slack"
       filter:
-        - query_string:
-            query: "level: error"
+        - eql: any where message like~ "\\[ERROR\\]"
       slack_title: Vault Injection Error
       slack_webhook_url: "{{ $.Values.customRules.slack.webhookUrl }}"
       slack_alert_fields:
@@ -133,27 +123,18 @@ customRules:
         - "slack"
       filter:
         - query_string:
-            query: "message: \"validation failed\" OR  message: \"error\""
+            query: "message: \"validation failed\" OR message: \"policy validation errors\""
       slack_title: Kyverno Error
       slack_webhook_url: "{{ $.Values.customRules.slack.webhookUrl }}"
       slack_alert_fields:
         - title: Stage
           value: labels.stage
-        - title: App
-          value: kubernetes.labels.app
+        - title: Component
+          value: kubernetes.labels.app_kubernetes_io/component
         - title: Pod
           value: kubernetes.pod.name
         - title: Message
           value: message
-        - title: upstream_addr
-          value: upstream_addr
-        - title: Request Id
-          value: requestId
-          short: true
-        - title: Stacktrace
-          value: stacktrace
-        - title: User
-          value: user
     kafkaTopicCreatedNotification:
         name: Kafka Topic Notification
         index: kafka*
