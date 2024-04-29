@@ -1,44 +1,103 @@
 argo-cd:
+  fullnameOverride: "argocd"
+
   controller:
-    replicas: 2
-    env:
+    replicaCount: 2
+    extraEnvVars:
       - name: "TZ"
         value: "Europe/Berlin"
-      - name: "ARGOCD_GPG_ENABLED"
-        value: "false"
     logFormat: "json"
-  crds:
-    install: "true"
+    resourcesPreset: "medium"
   dex:
-    env:
-      - name: "TZ"
-        value: "Europe/Berlin"
-      - name: "ARGOCD_GPG_ENABLED"
-        value: "false"
-    logFormat: "json"
+    enabled: false
   notifications:
-    enabled: "false"
+    enabled: false
   repoServer:
-    env:
+    extraEnvVars:
       - name: "TZ"
         value: "Europe/Berlin"
-      - name: "ARGOCD_GPG_ENABLED"
-        value: "false"
     logFormat: "json"
+    resourcesPreset: "small"
     containerSecurityContext:
       seccompProfile:
         type: Unconfined
   server:
-    env:
+    ingress:
+      enabled: true
+      hostname: "SET_BY_TERRAFORM"
+      annotations:
+        traefik.ingress.kubernetes.io/router.entrypoints: websecure
+        traefik.ingress.kubernetes.io/router.tls: "true"
+      path: "/argocd"
+    extraEnvVars:
       - name: "TZ"
         value: "Europe/Berlin"
-      - name: "ARGOCD_GPG_ENABLED"
-        value: "false"
-    extraArgs:
-      - "--insecure"
-      - "--rootpath=/argocd"
-      - "--basehref=/argocd"
+      - name: "ARGOCD_SERVER_ROOTPATH"
+        value: "{{ .Values.server.ingress.path }}"
+      - name: "ARGOCD_SERVER_BASEHREF"
+        value: "{{ .Values.server.ingress.path }}"
     logFormat: json
+    insecure: true
+
+    config:
+      url: "https://{{ .Values.server.ingress.hostname }}{{ .Values.server.ingress.path }}"
+
+      oidc.config: |
+        name: OIDC
+        issuer: $argocd-oidc:oidcURL
+        clientID: $argocd-oidc:clientID
+        clientSecret: $argocd-oidc:clientSecret
+        requestedScopes:
+          - openid
+          - profile
+          - email
+          - groups
+        requestedIDTokenClaims:
+          groups:
+            essential: true
+
+      resource.customizations: |
+        # Ignores .data changes of all secrets with a vaultInjectionChecksum annotation
+        argoproj.io/Application:
+         ignoreDifferences: |
+            jqPathExpressions:
+              - '. | select(.metadata.annotations.parametersChecksum) | .spec.source.helm'
+              - '. | select(.metadata.annotations.valueFileChecksum) | .spec.source.helm'
+        # Ignores caBundle and template changes of the following resources
+        admissionregistration.k8s.io/MutatingWebhookConfiguration:
+          ignoreDifferences: |
+            jqPathExpressions:
+              - .metadata.annotations.template
+              - '.webhooks'
+        apiextensions.k8s.io/CustomResourceDefinition:
+          ignoreDifferences: |
+            jqPathExpressions:
+              - .spec.conversion.webhookClientConfig.caBundle
+        admissionregistration.k8s.io/ValidatingWebhookConfiguration:
+          ignoreDifferences: |
+            jqPathExpressions:
+              - .metadata.annotations.template
+              - '.webhooks[]?.clientConfig.caBundle'
+              - '.webhooks'
+        cert-manager.io/Certificate:
+          ignoreDifferences: |
+            jqPathExpressions:
+              - .spec.duration
+        networking.k8s.io/Ingress:
+          health.lua: |
+            hs = {}
+            hs.status = "Healthy"
+            return hs
+
+  config:
+    rbac:
+      policy.csv: |
+        g, ARGOCD-ADMIN, role:admin
+        g, SYSTEM-ADMINISTRATOR, role:admin
+
+# Please use argocd-secret chart instead if you are using keycloak deployed in the same stage to avoid cyclic dependencies.
+#    secret:
+
 # -- List of projects which you want to bootstrap
 projects:
 ## bootstraps infrastructure related charts like traefik, elastic-stack...

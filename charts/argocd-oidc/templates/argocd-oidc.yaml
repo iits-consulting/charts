@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: argocd-oidc
+  labels:
+    app.kubernetes.io/part-of: argocd
+type: Opaque
+stringData:
+  oidcURL: {{ .Values.oidcURL | quote }}
+  clientID: {{ .Values.clientID | quote }}
+  clientSecret: {{ .Values.clientSecret | quote }}

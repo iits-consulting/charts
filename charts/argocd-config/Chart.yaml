@@ -1,4 +1,0 @@
-apiVersion: v2
-description: Basic argocd related configuration for bootstrapping the IITS project infra
-name: argocd-config
-version: 0.7.0

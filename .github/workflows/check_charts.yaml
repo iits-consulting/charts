@@ -73,10 +73,10 @@ jobs:
           helm dependency update charts/${{ matrix.chart }}
           helm lint charts/${{ matrix.chart }} --strict
 
-      - name: KubeVal ${{ matrix.chart }}
+      - name: KubeConform ${{ matrix.chart }}
         run: |
-          helm plugin install https://github.com/instrumenta/helm-kubeval
-          helm -f kubeval-values.yaml kubeval --ignore-missing-schemas --api-versions networking.k8s.io/v1/IngressClass charts/${{ matrix.chart }}
+          helm plugin install https://github.com/jtyr/kubeconform-helm
+          helm -f kubeconform-values.yaml kubeconform --schema-location charts/crds/crds --ignore-missing-schemas --summary charts/${{ matrix.chart }}
 
       - name: Upload Trivy scan results for ${{ matrix.chart }}
         uses: github/codeql-action/upload-sarif@v3
