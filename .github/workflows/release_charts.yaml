@@ -13,7 +13,7 @@ jobs:
     name: Find Charts
     runs-on: ubuntu-latest
     outputs:
-      charts: "${{ steps.get_changed_charts.outputs.all_changed_files }}"
+      charts: "${{ steps.get_changed_charts.outputs.all_changed_files || '[]' }}"
     steps:
       - uses: actions/checkout@v4
 
