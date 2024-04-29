@@ -76,7 +76,7 @@ jobs:
       - name: KubeConform ${{ matrix.chart }}
         run: |
           helm plugin install https://github.com/jtyr/kubeconform-helm
-          helm -f kubeval-values.yaml kubeconform --ignore-missing-schemas --summary charts/${{ matrix.chart }}
+          helm -f kubeconform-values.yaml kubeconform --schema-location charts/crds/crds --ignore-missing-schemas --summary charts/${{ matrix.chart }}
 
       - name: Upload Trivy scan results for ${{ matrix.chart }}
         uses: github/codeql-action/upload-sarif@v3
