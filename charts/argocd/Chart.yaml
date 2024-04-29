@@ -28,7 +28,7 @@ description: |
               stage        = var.stage
               # Example values which are handed down to the project. Like this you can give over informations from terraform to argocd
               traefikElbId = module.terraform_secrets_from_encrypted_s3_bucket.secrets["elb_id"]
-              adminDomain  = "admin.${var.domain_name}"
+              rootDomain  = var.domain_name
             }
 
             git = {

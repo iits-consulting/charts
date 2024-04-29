@@ -12,7 +12,7 @@ resource "helm_release" "argocd" {
   name                  = "argocd"
   repository            = "https://charts.iits.tech"
   chart                 = "argocd"
-  version               = "5.30.1-fix-proj-generation"
+  version               = "16.0.0"
   namespace             = "argocd"
   create_namespace      = true
   wait                  = true
@@ -30,7 +30,7 @@ resource "helm_release" "argocd" {
             stage        = var.stage
             # Example values which are handed down to the project. Like this you can give over informations from terraform to argocd
             traefikElbId = module.terraform_secrets_from_encrypted_s3_bucket.secrets["elb_id"]
-            adminDomain  = "admin.${var.domain_name}"
+            adminDomain  = var.domain_name
           }
 
           git = {

@@ -1,3 +1,0 @@
-public.ecr.aws/docker/library/redis:7.2.4-alpine
-quay.io/argoproj/argocd:v2.10.7
-ghcr.io/dexidp/dex:v2.38.0

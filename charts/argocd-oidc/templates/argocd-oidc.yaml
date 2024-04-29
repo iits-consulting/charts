@@ -5,8 +5,7 @@ metadata:
   labels:
     app.kubernetes.io/part-of: argocd
 type: Opaque
-# Setting a blank data again will wipe admin password/key/cert
 stringData:
-  oidcURL: "{{ .Values.oidcURL }}"
-  clientID: "{{ .Values.clientID }}"
-  clientSecret: "{{ .Values.clientSecret }}"
+  oidcURL: {{ .Values.oidcURL | quote }}
+  clientID: {{ .Values.clientID | quote }}
+  clientSecret: {{ .Values.clientSecret | quote }}
