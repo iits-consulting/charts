@@ -184,6 +184,34 @@ entries:
     version: 0.3.1-fix-probes
   argocd:
   - apiVersion: v2
+    created: "2024-04-29T17:54:05.503072751Z"
+    dependencies:
+    - name: argo-cd
+      repository: https://charts.bitnami.com/bitnami
+      version: 6.0.12
+    description: 'This chart is used to bootstrap a Kubernetes cluster with `argocd`.
+      You can use this chart to deploy `argocd` through tools like `terraform`.  Usage
+      example:  ```hcl resource "helm_release" "argocd" {   name                  =
+      "argocd"   repository            = "https://charts.iits.tech"   chart                 =
+      "argocd"   version               = "5.30.1-fix-proj-generation"   namespace             =
+      "argocd"   create_namespace      = true   wait                  = true   atomic                =
+      true   timeout               = 900 // 15 Minutes   render_subchart_notes = true   dependency_update     =
+      true   wait_for_jobs         = true   values                = [     yamlencode({       projects
+      = {         infrastructure-charts = {           projectValues = {             #
+      Set this to enable stage $STAGE-values.yaml             stage        = var.stage             #
+      Example values which are handed down to the project. Like this you can give
+      over informations from terraform to argocd             traefikElbId = module.terraform_secrets_from_encrypted_s3_bucket.secrets["elb_id"]             rootDomain  =
+      var.domain_name           }            git = {             password = var.git_token             repoUrl  =
+      "https://github.com/iits-consulting/otc-infrastructure-charts-template"           }         }       }     }     )   ]
+      } ```  In the project https://github.com/iits-consulting/otc-infrastructure-charts-template
+      it expects a helm chart named infrastructure-charts and will install everything
+      from there. '
+    digest: 5d86a8c8a7b76ea332edb4fefda64352d54915a7f1b59b1f76d5edac7610ce26
+    name: argocd
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/argocd-16.0.0/argocd-16.0.0.tgz
+    version: 16.0.0
+  - apiVersion: v2
     created: "2023-07-21T08:55:16.373920538Z"
     dependencies:
     - name: argo-cd
@@ -300,18 +328,6 @@ entries:
     - https://github.com/iits-consulting/charts/releases/download/argocd-5.30.1-repo-server-fix/argocd-5.30.1-repo-server-fix.tgz
     version: 5.30.1-repo-server-fix
   - apiVersion: v2
-    created: "2023-05-10T10:46:05.529433176Z"
-    dependencies:
-    - name: argo-cd
-      repository: https://argoproj.github.io/argo-helm
-      version: 5.30.1
-    description: argocd bootstrap
-    digest: ef94350e24afccbb2792834c09d953c61c0b1c4112058b12e64bc202631cfbf6
-    name: argocd
-    urls:
-    - https://github.com/iits-consulting/charts/releases/download/argocd-5.30.1-fix-proj-generation/argocd-5.30.1-fix-proj-generation.tgz
-    version: 5.30.1-fix-proj-generation
-  - apiVersion: v2
     created: "2023-05-17T07:20:06.803582276Z"
     dependencies:
     - name: argo-cd
@@ -375,6 +391,18 @@ entries:
       version: 5.30.1
     description: argocd bootstrap
     digest: 2cd6a536ab62fa1c89a756e5bf225e9403db9fbb1b6d6c10e7e796c646c61eb6
+    name: argocd
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/argocd-5.30.1-fix-proj-generation/argocd-5.30.1-fix-proj-generation.tgz
+    version: 5.30.1-fix-proj-generation
+  - apiVersion: v2
+    created: "2023-05-10T10:46:05.529433176Z"
+    dependencies:
+    - name: argo-cd
+      repository: https://argoproj.github.io/argo-helm
+      version: 5.30.1
+    description: argocd bootstrap
+    digest: ef94350e24afccbb2792834c09d953c61c0b1c4112058b12e64bc202631cfbf6
     name: argocd
     urls:
     - https://github.com/iits-consulting/charts/releases/download/argocd-5.30.1-fix-proj-generation/argocd-5.30.1-fix-proj-generation.tgz
@@ -589,7 +617,27 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/argocd-config-0.2.4-multiple-upload/argocd-config-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
+  argocd-oidc:
+  - apiVersion: v2
+    created: "2024-04-29T17:54:05.638766716Z"
+    description: Secrets for ArgoCD configuration
+    digest: 22cce46190de7dedb19d6ab73736b1238e3851fe56a851b3a9eba3ded702d4eb
+    name: argocd-oidc
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/argocd-oidc-0.1.0/argocd-oidc-0.1.0.tgz
+    version: 0.1.0
   basic-auth-forward-auth:
+  - apiVersion: v2
+    created: "2024-04-29T17:54:05.783216135Z"
+    description: 'For workshop we use this chart to establish a basic auth forward
+      auth. OIDC forward auth would be to complicated to implement. But since we use
+      the name "oidc-forward-auth" inside every ingress annotation as a middleware
+      we named the basic auth middleware also like this. '
+    digest: 732a16e66c49687a53a76b4cb0ba84312c74e2cad468d4ab35ca02fd2514d024
+    name: basic-auth-forward-auth
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/basic-auth-forward-auth-0.2.0/basic-auth-forward-auth-0.2.0.tgz
+    version: 0.2.0
   - apiVersion: v2
     created: "2024-04-09T14:19:24.265419347Z"
     description: 'For workshop we use this chart to establish a basic auth forward
@@ -711,6 +759,23 @@ entries:
     version: 2.0.2
   cert-manager:
   - apiVersion: v2
+    created: "2024-04-29T17:54:05.918269716Z"
+    dependencies:
+    - name: cert-manager
+      repository: https://charts.jetstack.io
+      version: 1.14.5
+    - condition: clusterIssuers.otcDNS.enabled
+      name: cert-manager-webhook-opentelekomcloud
+      repository: https://iits-consulting.github.io/cert-manager-webhook-opentelekomcloud
+      version: v0.1.4
+    description: Wrapper chart for cert-manager. Deploys a ClusterIssuer resource
+      to bootstrap Let's encrypt cert generation
+    digest: dd7e937f9363e2dee3a5c9aa75940dad820fdc85db99fc810974f28ca74224cc
+    name: cert-manager
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/cert-manager-1.14.4/cert-manager-1.14.4.tgz
+    version: 1.14.4
+  - apiVersion: v2
     created: "2024-04-09T18:14:26.300468111Z"
     dependencies:
     - name: cert-manager
@@ -762,6 +827,18 @@ entries:
     - https://github.com/iits-consulting/charts/releases/download/cert-manager-0.2.3/cert-manager-0.2.3.tgz
     version: 0.2.3
   crds:
+  - apiVersion: v2
+    created: "2024-04-29T17:54:06.067421378Z"
+    description: 'This chart deploys common `CustomResourceDefinitions` for iits-consulting
+      only projects. With this we avoid a typical catch-22, e.g. where you can not
+      use `traefik` `IngressRoute` before you deploy `traefik` and such. You could
+      also use sync-waves and other mechanism, but it creates a lot of complexity
+      and a huge dependency graph. '
+    digest: 785b6c4f11beccf4a878c0ac776c42cd1f03f2cb83ea14df58c7abc3a18aadc8
+    name: crds
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/crds-1.8.0/crds-1.8.0.tgz
+    version: 1.8.0
   - apiVersion: v2
     created: "2024-04-10T17:24:46.331045537Z"
     description: 'This chart deploys common `CustomResourceDefinitions` for iits-consulting
@@ -3315,6 +3392,21 @@ entries:
     version: 0.2.5
   kasm:
   - apiVersion: v2
+    created: "2024-04-29T17:54:06.310301613Z"
+    description: '# Description  This is just a Proof of Concept for KASM. Don''t
+      use it for production.  ## Installing the Chart with iits ArgoCD ```yaml kasm:   namespace:
+      kasm   repoURL: "https://charts.iits.tech"   targetRevision: "0.2.2"   parameters:     services.firstuser.extraEnv.VNC_PW:
+      "REPLACE_ME"     services.firstuser.ingressRoute.domain: "REPLACE_ME" ```  ##
+      Dependencies  This services needs to be installed upfront  - traefik - cert-manager   ##
+      How to add a new instance  Just duplicate the firstuser part inside values.yaml
+      and rename it '
+    digest: 6aaa02f74eaf2ec7418db0f8dc87537ad3db4d781ca131264cb49a20593ba2eb
+    name: kasm
+    type: application
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/kasm-0.4.0/kasm-0.4.0.tgz
+    version: 0.4.0
+  - apiVersion: v2
     created: "2024-04-08T20:09:13.392495134Z"
     description: '# Description  This is just a Proof of Concept for KASM. Don''t
       use it for production.  ## Installing the Chart with iits ArgoCD ```yaml kasm:   namespace:
@@ -4134,6 +4226,36 @@ entries:
     version: 1.0.0
   ollama:
   - apiVersion: v2
+    created: "2024-04-29T17:54:06.424078746Z"
+    description: 'Get up and running with large language models locally.  ## Installing
+      the Chart with iits ArgoCD  ```yaml   ollama:     namespace: ollama     repoURL:
+      "https://charts.my-domain.com"     targetRevision: "0.7.4"     valueFile: "value-files/ollama/values.yaml"
+      ```   value-files/ollama/values.yaml  ```yaml ollama:   ollama:     gpu:       enabled:
+      "true"   ingress:     host: "ollama.my-domain.com"     annotations:       #
+      Adds the oidc proxy upfront       traefik.ingress.kubernetes.io/router.middlewares:
+      "ollama-oidc-forward-auth-ollama@kubernetescrd, ollama-strip-prefix-ollama@kubernetescrd"
+      webui:   env:     OLLAMA_API_BASE_URL: "https://ollama.my-domain.com/api"   ingress:     annotations:       #
+      Adds the oidc proxy upfront       traefik.ingress.kubernetes.io/router.middlewares:
+      "ollama-oidc-forward-auth-ollama@kubernetescrd"     host: "ollama.my-domain.com"
+      middleware:   env:     OLLAMA_URL: "http://ollama:11434"     WEAVIATE_URL: "http://weaviate:80"   ingress:     annotations:       #
+      Adds the oidc proxy upfront       traefik.ingress.kubernetes.io/router.middlewares:
+      "ollama-oidc-forward-auth-ollama@kubernetescrd"     host: "ollama.my-domain.com"
+      ``` '
+    digest: 417428b563078a5fa9629b9965fb5a04af9b58a55ea878d08c05a506bf806f11
+    home: https://ollama.ai/
+    icon: https://ollama.ai/public/ollama.png
+    keywords:
+    - ai
+    - llm
+    - llama
+    - mistral
+    kubeVersion: ^1.16.0-0
+    name: ollama
+    type: application
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/ollama-0.8.0/ollama-0.8.0.tgz
+    version: 0.8.0
+  - apiVersion: v2
     created: "2024-02-27T19:25:46.919791135Z"
     description: 'Get up and running with large language models locally.  ## Installing
       the Chart with iits ArgoCD  ```yaml   ollama:     namespace: ollama     repoURL:
@@ -4583,6 +4705,51 @@ entries:
     - https://github.com/iits-consulting/charts/releases/download/otc-botkube-0.1.0/otc-botkube-0.1.0.tgz
     version: 0.1.0
   otc-nextcloud:
+  - apiVersion: v2
+    appVersion: 25.0.2
+    created: "2024-04-29T17:54:06.548468778Z"
+    dependencies:
+    - name: nextcloud
+      repository: https://nextcloud.github.io/helm/
+      version: 3.4.0
+    description: 'nextcloud with S3 storage  ## Installing the Chart on OTC  ### Database  First
+      you need to create the RDS (postgres) database like this:  ```terraform module
+      "postgres" {   source  = "registry.terraform.io/iits-consulting/project-factory/opentelekomcloud//modules/rds"   version
+      = "5.2.1"   tags    = local.tags   name    = "${var.context}-${var.stage}-database"    vpc_id                =
+      module.vpc.vpc.id   subnet_id             = module.vpc.subnets["database-subnet"].id   db_type               =
+      var.db_config.db_type   db_availability_zones = var.availability_zones   db_version            =
+      var.db_config.db_version   db_cpus               = var.db_config.db_cpus   db_memory             =
+      var.db_config.db_memory   db_high_availability  = var.db_config.db_high_availability   db_parameters
+      = {     timezone        = "Europe/Berlin"     max_connections = 1000   }   sg_allowed_cidr
+      = [local.vpc_cidr] }  module "private_dns" {   source  = "registry.terraform.io/iits-consulting/project-factory/opentelekomcloud//modules/private_dns"   version
+      = "5.2.1"   domain  = "vpc.private"   a_records = {     postgres   = [module.postgres.db_private_ip]   }   vpc_id
+      = module.vpc.vpc.id }  # You need also a restricted obs like this: https://github.com/iits-consulting/terraform-opentelekomcloud-project-factory/tree/master/modules/obs_restricted   ```  After
+      that go to terraform kubernetes and initialize the database like this:  ```terraform  locals
+      {   # List all databases you want to create   databases = toset([     "nextcloud",   ])
+      }  module "db-init" {   source          = "registry.terraform.io/iits-consulting/db-init/kubernetes"   database_engine
+      = "postgres"   database_root_credentials = {     username = module.terraform_secrets_from_encrypted_s3_bucket.secrets["postgres_root_username"]     password
+      = module.terraform_secrets_from_encrypted_s3_bucket.secrets["postgres_root_password"]     address  =
+      module.terraform_secrets_from_encrypted_s3_bucket.secrets["postgres_addr"]   }   initdb_script
+      = templatefile("./initdb.sql", { #Path to the SQL Script     databases = [for
+      database in local.databases : {# This populates variables set inside the initdb.sql
+      script       name     = database       username = database       password =
+      random_password.database_passwords[database].result     }]   })   pod_config
+      = {     namespace = "database"     namespace_create = true     name             =
+      "db-init"     image            = "alpine:3.15.5"     annotations      = {}     labels
+      = {       "app.kubernetes.io/instance" = "alpine"       "app.kubernetes.io/name"     =
+      "db-init"     }   } }https://github.com/iits-consulting/terraform-opentelekomcloud-project-factory/tree/master/modules/obs_restricted  ```  ###
+      Deployment example  ```yaml charts:   otc-nextcloud:     targetRevision: "0.1.0"     repoURL:
+      "https://charts.iits.tech"     namespace: nextcloud     parameters:       ingressRoute.domain:
+      "nextcloud.{{.Values.projectValues.rootDomain}}"        nextcloud.externalDatabase.password:
+      "REPLACE_ME"       nextcloud.externalDatabase.host: "REPLACE_ME"       nextcloud.externalDatabase.user:
+      "REPLACE_ME"       nextcloud.externalDatabase.port: "REPLACE_ME"        nextcloudStorage.s3.S3_BUCKET_NAME:
+      "REPLACE_ME"       nextcloudStorage.s3.S3_PUBLIC_KEY: "REPLACE_ME"       nextcloudStorage.s3.S3_SECRET_KEY:
+      "REPLACE_ME"       nextcloudStorage.s3.S3_BUCKET_URL: "REPLACE_ME"  ``` '
+    digest: c57bcaea6181b4fe2771726a5f18c5c81c42d16e24d2f4d267e38556d31ff496
+    name: otc-nextcloud
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/otc-nextcloud-0.2.0/otc-nextcloud-0.2.0.tgz
+    version: 0.2.0
   - apiVersion: v2
     appVersion: 25.0.2
     created: "2024-04-29T15:14:30.075152754Z"
@@ -5148,6 +5315,20 @@ entries:
     version: 1.0.0
   traefik:
   - apiVersion: v2
+    appVersion: 27.0.2
+    created: "2024-04-29T17:54:06.678709788Z"
+    dependencies:
+    - name: traefik
+      repository: https://traefik.github.io/charts
+      version: 27.0.2
+    description: The traefik ingress controller with some additional resources and
+      sane default values for IITS projects
+    digest: 60415134c6f24aa56a936ea87e159bd74db8ef75e312153cf73275fe03aa0f26
+    name: traefik
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/traefik-27.0.0/traefik-27.0.0.tgz
+    version: 27.0.0
+  - apiVersion: v2
     appVersion: 10.22.0
     created: "2024-04-09T18:14:26.621094032Z"
     dependencies:
@@ -5302,20 +5483,6 @@ entries:
     version: 10.22.0-internal-svc
   - apiVersion: v2
     appVersion: 10.22.0
-    created: "2023-05-30T09:25:34.845433906Z"
-    dependencies:
-    - name: traefik
-      repository: https://helm.traefik.io/traefik
-      version: 10.22.0
-    description: The traefik ingress controller with some additional resources and
-      sane default values for IITS projects
-    digest: 4e92e92c42807fcf86e14ba7862f76eb97f27c4b86d2859ec1b8f73aecb2f146
-    name: traefik
-    urls:
-    - https://github.com/iits-consulting/charts/releases/download/traefik-10.22.0-https-redirect/traefik-10.22.0-https-redirect.tgz
-    version: 10.22.0-https-redirect
-  - apiVersion: v2
-    appVersion: 10.22.0
     created: "2023-05-25T10:46:19.001980409Z"
     dependencies:
     - name: traefik
@@ -5324,6 +5491,20 @@ entries:
     description: The traefik ingress controller with some additional resources and
       sane default values for IITS projects
     digest: 544b7cd570ed0934c435dfe1e91dd845a1a4e9752ae73ac07b6e0b81736d3e3d
+    name: traefik
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/traefik-10.22.0-https-redirect/traefik-10.22.0-https-redirect.tgz
+    version: 10.22.0-https-redirect
+  - apiVersion: v2
+    appVersion: 10.22.0
+    created: "2023-05-30T09:25:34.845433906Z"
+    dependencies:
+    - name: traefik
+      repository: https://helm.traefik.io/traefik
+      version: 10.22.0
+    description: The traefik ingress controller with some additional resources and
+      sane default values for IITS projects
+    digest: 4e92e92c42807fcf86e14ba7862f76eb97f27c4b86d2859ec1b8f73aecb2f146
     name: traefik
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-10.22.0-https-redirect/traefik-10.22.0-https-redirect.tgz
@@ -5424,19 +5605,6 @@ entries:
     version: 10.22.0-after-proxy-v2
   - apiVersion: v2
     appVersion: 9.11.0
-    created: "2023-05-02T15:27:52.620109569Z"
-    dependencies:
-    - name: traefik
-      repository: https://helm.traefik.io/traefik
-      version: 10.22.0
-    description: traefik
-    digest: 911dbd31780545a921ee4f7ca99f1858552c4e1ccdfeb667cc64eabfa6ea9b6a
-    name: traefik
-    urls:
-    - https://github.com/iits-consulting/charts/releases/download/traefik-10.22.0-after-proxy/traefik-10.22.0-after-proxy.tgz
-    version: 10.22.0-after-proxy
-  - apiVersion: v2
-    appVersion: 9.11.0
     created: "2023-05-02T14:04:42.889108694Z"
     dependencies:
     - name: traefik
@@ -5444,6 +5612,19 @@ entries:
       version: 10.22.0
     description: traefik
     digest: c7fe177d7ca92ae8f13d47978f81f220062bde2abe4c2329cd540261eab2d9e8
+    name: traefik
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/traefik-10.22.0-after-proxy/traefik-10.22.0-after-proxy.tgz
+    version: 10.22.0-after-proxy
+  - apiVersion: v2
+    appVersion: 9.11.0
+    created: "2023-05-02T15:27:52.620109569Z"
+    dependencies:
+    - name: traefik
+      repository: https://helm.traefik.io/traefik
+      version: 10.22.0
+    description: traefik
+    digest: 911dbd31780545a921ee4f7ca99f1858552c4e1ccdfeb667cc64eabfa6ea9b6a
     name: traefik
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-10.22.0-after-proxy/traefik-10.22.0-after-proxy.tgz
@@ -5498,4 +5679,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/waf-cert-uploader-0.1.1/waf-cert-uploader-0.1.1.tgz
     version: 0.1.1
-generated: "2024-04-29T16:44:12.123875076Z"
+generated: "2024-04-29T17:54:06.679519395Z"
