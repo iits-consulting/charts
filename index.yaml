@@ -861,6 +861,23 @@ entries:
     version: 0.1.0
   elastalert:
   - apiVersion: v2
+    created: "2024-04-29T16:44:11.693347611Z"
+    dependencies:
+    - name: elastalert2
+      repository: https://jertel.github.io/elastalert2/
+      version: 2.17.0
+    description: 'Wrapper chart for elastalert2 with custom rules to kickstart IITS
+      projects  ## Installing the Chart with iits ArgoCD  ```yaml elastalert:   namespace:
+      monitoring   repoURL: "https://charts.iits.tech"   targetRevision: "0.1.1"   #
+      If you need custom rules   valueFile: "value-files/elastalert/values.yaml"   parameters:     customRules.slack.webhookUrl:
+      "${vault:mySecretPath/data/common/slack#webhookUrl}" ``` '
+    digest: c6a88e28bf8876a2ed7da60d01ab73751750352aa9f56fabbc53448da0f51756
+    name: elastalert
+    type: application
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/elastalert-0.2.0/elastalert-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
     created: "2023-06-05T15:27:50.854954147Z"
     dependencies:
     - name: elastalert2
@@ -5481,4 +5498,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/waf-cert-uploader-0.1.1/waf-cert-uploader-0.1.1.tgz
     version: 0.1.1
-generated: "2024-04-29T16:38:20.683058203Z"
+generated: "2024-04-29T16:44:12.123875076Z"
