@@ -1,5 +1,5 @@
-{{- if (eq (include "ingressClassName" .) "traefik") }}
-apiVersion: traefik.containo.us/v1alpha1
+{{- if (eq (index .Values.ingress.enabled) true) }}
+apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
   name: strip-prefix-{{ .Release.Name }}

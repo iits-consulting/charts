@@ -1,3 +1,46 @@
+kyverno:
+  features:
+    logging:
+      format: text
+    policyExceptions:
+      namespace: 'kyverno'
+
+  admissionController:
+    serviceMonitor:
+      enabled: true
+
+  backgroundController:
+    serviceMonitor:
+      enabled: true
+
+  cleanupController:
+    serviceMonitor:
+      enabled: true
+
+  reportsController:
+    serviceMonitor:
+      enabled: true
+
+  grafana:
+    enabled: true
+
+  crds:
+    install: false
+
+  existingImagePullSecrets: []
+
+
+policy-reporter:
+  install: true
+
+  kyvernoPlugin:
+    enabled: true
+  ui:
+    enabled: true
+    plugins:
+      kyverno: true
+
+
 kyverno-policies:
   autogenControllers: none
   # -- Whether to install the default policies for kyverno
@@ -234,7 +277,7 @@ disallowUnspecifiedDockerRegistries:
 enforceSecurityContext:
 
   # -- Enable or disable the policy globally
-  enabled: true
+  enabled: false
 
   # -- The name of the policy
   name: enforce-security-context
@@ -249,7 +292,7 @@ enforceSecurityContext:
     - "kube-system"
 
 autoInjectDockerPullSecrets:
-  enabled: false
+  enabled: true
   # -- Auto gen rules for pod controllers. See https://kyverno.io/docs/writing-policies/autogen/
   autogenControllers: none
   secrets:
@@ -264,13 +307,19 @@ autoInjectDockerPullSecrets:
 #      registryUrl: "myregistry"
 #      registryWildcard: "*"
 
-# If the annotation autoInjectPublicIP is set to true it will auto inject the given public ip
-autoInjectPublicIpIntoDnsendpoints:
-  # -- Enable or disable the policy globally
-  enabled: false
-  # -- The name of the policy
-  name: auto-inject-public-ip-into-dns-endpoints
+ingress:
+  enabled: true
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    traefik.ingress.kubernetes.io/router.middlewares: "routing-oidc-forward-auth@kubernetescrd, {{ .Release.Namespace }}-strip-prefix-{{ .Release.Name }}@kubernetescrd"
 
-  # -- The public ip / EIP
-  publicIP:
+  # --(String) Required, set the domain you want to serve the UI from
+  host:
+
+  rules:
+    - host: "{{ .Values.ingress.host }}"
+      paths:
+        - path: "/policies"
+        - path: "/_nuxt"
 
