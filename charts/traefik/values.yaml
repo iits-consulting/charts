@@ -12,10 +12,11 @@ traefik:
       enabled: false
   deployment:
     replicas: 2
+
   service:
-    type: LoadBalancer
     spec:
       externalTrafficPolicy: Cluster
+
   providers:
     kubernetesCRD:
       enabled: true
@@ -26,67 +27,60 @@ traefik:
       allowExternalNameServices: true
       publishedService:
         enabled: true
+
   ingressClass:
     enabled: true
     isDefaultClass: true
 
+  ports:
+    web:
+      redirectTo:
+        port: websecure
+
+  tlsOptions:
+    default:
+      minVersion: VersionTLS13
+  tlsStore:
+    default:
+      defaultCertificate:
+        secretName: "traefik-default-cert"
+
+  metrics:
+    prometheus:
+      serviceMonitor:
+        enabled: true
+      service:
+        enabled: true
+  ingressRoute:
+    dashboard:
+      entryPoints:
+        - traefik
+        - websecure
+      middlewares:
+        - name: admin-forward-auth
+          namespace: routing
+    healthcheck:
+      enabled: true
+      entryPoints:
+        - traefik
+        - websecure
+
 defaultCert:
   enabled: true
+  # -- (array) Required, set the domains you want to request, i.e.
+  #  dnsNames:
+  #  - "dev.example.com" # Required if you also want to serve on the "root" url
+  #  - "*.dev.example.com" # If you want wildcard certificates, you have to do an DNS01 Request for the certificate
   dnsNames:
-    # -- Required
-    rootDomain:
-    #adminDomain:
-  issuerRef:
-    kind: ClusterIssuer
-    name: letsencrypt
 
-ingress:
-  # Just enable it if you set up forward auth
-  enabled: true
-  # -- Required, replace it with your host address
-  host:
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt
-    traefik.ingress.kubernetes.io/router.entrypoints: websecure
-    traefik.ingress.kubernetes.io/router.tls: "true"
-    traefik.ingress.kubernetes.io/router.middlewares: routing-oidc-forward-auth@kubernetescrd
-  # Creates default Ingress with tls and the given host from .Values.ingress.host
-  defaultIngress:
-    enabled: false
-    ## Default values can be overriden
-    #tls:
-    #  secretName: "traefik.fullname"
-    #path: "/"
-    #pathType: "Prefix"
-    #backend:
-    #  name: "traefik.fullname" #tpl supported
-    #  port:
-    #    name: http #tpl supported
-
-  # If you don't want to use the default Ingress, you can define it here on your own
-  tls:
-    - hosts:
-        - "{{.Values.ingress.host}}"
-      secretName: "traefik-default-cert"
-  hosts:
-    - host: "{{.Values.ingress.host}}"
-      paths:
-        - path: "/api"
-          backend:
-           name: traefik-internal
-           port:
-              name: traefik
-        - path: "/dashboard"
-          backend:
-            name: traefik-internal
-            port:
-              name: traefik
+  # -- Defaults are 'letsencrypt' for HTTP01 and 'letsencrypt-dns' for DNS01
+  # For wildcard-certificates you need to use the DNS01 Challenge
+  issuerName: "letsencrypt-dns"
 
 podMonitor:
   enabled: true
-  # Default values, override them if necessary
   #labels: {}
   #annotations: {}
-  #port: "metrics"
-  #interval: "10s"
-  #path: "/metrics"
+  port: "metrics"
+  interval: "10s"
+  path: "/metrics"

@@ -1,0 +1,1 @@
+docker.io/traefik:v2.11.2

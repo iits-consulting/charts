@@ -1,6 +1,6 @@
 apiVersion: v2
 name: basic-auth-forward-auth
-version: 0.1.0
+version: 0.2.0
 description: |
   For workshop we use this chart to establish a basic auth forward auth.
   OIDC forward auth would be to complicated to implement.

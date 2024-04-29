@@ -1,7 +1,27 @@
-ingressClass: traefik
-clusterIssuer:
-  http:
-    name: letsencrypt
-    email: "REPLACE_ME@some.de"
 cert-manager:
-  replicaCount: 2
+  extraArgs:
+
+
+cert-manager-webhook-opentelekomcloud:
+  groupName: acme.opentelekomcloud.com
+# Create base clusterissuers with most frequently used configuration
+clusterIssuers:
+  # -- (string) Required, replace with the e-mails you want to receive the warnings
+  # You must replace this email address with your own.
+  # Let's Encrypt will use this to contact you about expiring
+  # certificates, and issues related to your account.
+  email:
+  http:
+    enabled: true
+    name: letsencrypt
+    ingressClass: traefik
+    server: https://acme-v02.api.letsencrypt.org/directory
+
+  # -- Only available for OTC
+  otcDNS:
+    enabled: true
+    name: letsencrypt-dns
+    server: https://acme-v02.api.letsencrypt.org/directory
+    region: eu-de
+    accessKey: ""
+    secretKey: ""

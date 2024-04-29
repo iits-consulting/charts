@@ -1,0 +1,31 @@
+{{ if eq .Values.clusterIssuers.otcDNS.enabled true }}
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: {{.Values.clusterIssuers.otcDNS.name}}
+spec:
+  acme:
+    # You must replace this email address with your own.
+    # Let's Encrypt will use this to contact you about expiring
+    # certificates, and issues related to your account.
+    email: {{ .Values.clusterIssuers.email }}
+    server: {{ .Values.clusterIssuers.otcDNS.server }}
+    privateKeySecretRef:
+      # Secret resource that will be used to store the account's private key.
+      name: {{.Values.clusterIssuers.otcDNS.name}}
+
+    solvers:
+      # Add a DNS01 Resolver so you can add wildcard certificates
+      - dns01:
+          webhook:
+            groupName: {{ index .Values "cert-manager-webhook-opentelekomcloud" "groupName" }}
+            solverName: opentelekomcloud
+            config:
+              region: {{ .Values.clusterIssuers.otcDNS.region }}
+              accessKeySecretRef:
+                name: {{ .Release.Name }}-otc-dns-creds
+                key: accessKey
+              secretKeySecretRef:
+                name: {{ .Release.Name }}-otc-dns-creds
+                key: secretKey
+{{ end }}

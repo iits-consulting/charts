@@ -1,6 +1,0 @@
-apiVersion: v1
-data:
-  forbidden.html: <html><head><meta http-equiv='refresh' content='0; URL=https://{{.Values.ingressRoute.domain}}/no-permission'></head></html>
-kind: ConfigMap
-metadata:
-  name: {{ .Release.Name }}-no-permission-link
