@@ -11,7 +11,6 @@ env:
 jobs:
   release-charts:
     name: Release
-    needs: find-charts
     permissions:
       contents: write
       security-events: write
