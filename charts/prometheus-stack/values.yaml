@@ -25,6 +25,7 @@ prometheusStack:
   defaultRules:
     create: true
     disabled:
+      KubeClientCertificateExpiration: true
       NodeClockNotSynchronising: true #CCE does not give access to that
       KubeletDown: true  #CCE does not give access to that
       InfoInhibitor: true #It is spamming
