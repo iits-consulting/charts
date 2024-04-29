@@ -39,3 +39,4 @@ dependencies:
   - name: gatekeeper
     repository: https://gogatekeeper.github.io/helm-gogatekeeper
     version: 0.1.47
+

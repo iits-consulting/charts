@@ -13,7 +13,7 @@ jobs:
     name: Find Charts
     runs-on: ubuntu-latest
     outputs:
-      charts: "${{ steps.get_changed_charts.outputs.all_changed_files || '[]' }}"
+      charts: "${{ steps.get_changed_charts.outputs.all_changed_files }}"
     steps:
       - uses: actions/checkout@v4
 
@@ -21,7 +21,7 @@ jobs:
         id: get_changed_charts
         uses: tj-actions/changed-files@v44
         with:
-          json: true
+          matrix: true
           path: "./charts/"
           diff_relative: true
           dir_names_max_depth: 1
@@ -34,7 +34,7 @@ jobs:
     needs: find-charts
     strategy:
       matrix:
-        chart: ${{fromJSON(needs.find-charts.outputs.charts)}}
+        chart: ${{ fromJSON(needs.find-charts.outputs.charts) }}
     permissions:
       contents: write
       security-events: write
