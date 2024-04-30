@@ -47,6 +47,7 @@ description: |
   named infrastructure-charts and will install everything from there.
 
 name: argocd
+appVersion: 2.10.7
 version: 16.1.0
 dependencies:
   - name: argo-cd

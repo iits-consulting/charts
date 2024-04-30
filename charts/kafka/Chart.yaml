@@ -8,3 +8,4 @@ description: |
   This chart wraps the `kafka` chart from bitnami and defines a few sensible defaults.
 name: kafka
 version: 22.2.0
+appVersion: 22.1.5

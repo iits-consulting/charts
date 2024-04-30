@@ -28,3 +28,4 @@ description: |
   ```
 name: prometheus-stack
 version: 58.3.0
+appVersion: 58.2.2

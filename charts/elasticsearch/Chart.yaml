@@ -14,6 +14,7 @@ dependencies:
   version: 8.5.1
 name: elasticsearch
 version: 8.9.0
+appVersion: 8.5.1
 description: |
   Elasticsearch + filebeat + kibana with default common used indexes and Index Lifecycle Management.  
   It comes also with a backup functionality.
