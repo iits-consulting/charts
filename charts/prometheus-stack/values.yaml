@@ -136,3 +136,8 @@ prometheusStack:
         requests:
           memory: "100Mi"
           cpu: "5m"
+
+# Kyverno Policy Exception
+policyException:
+  enabled: true
+  namespace: "kyverno"

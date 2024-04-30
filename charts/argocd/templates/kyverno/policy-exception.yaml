@@ -1,7 +1,10 @@
+{{ with .Values.policyException }}
+{{ if .enabled }}
 apiVersion: kyverno.io/v2
 kind: PolicyException
 metadata:
-  name: argocd
+  name: argocd-repo-server
+  namespace: {{ .namespace }}
   annotations:
     "helm.sh/hook": pre-install,pre-upgrade
     "helm.sh/hook-weight": "-5"
@@ -20,13 +23,15 @@ spec:
         - add-pod-security-context
   match:
     any:
-      # Exclude argocd-repo-server otherwise this error occurs:  getaddrinfo() thread failed to start
+      # Exclude argocd-repo-server, otherwise this error occurs: "getaddrinfo() thread failed to start"
       - resources:
           kinds:
             - Deployment
             - ReplicaSet
             - Pod
           namespaces:
-            - argocd
+            - {{ $.Release.Namespace }}
           names:
             - argocd-repo-server*
+{{- end }}
+{{- end }}

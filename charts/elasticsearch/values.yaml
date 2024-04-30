@@ -311,3 +311,8 @@ backup:
       expireAfter: "15d"
       minCount: 5
       maxCount: 15
+
+# Kyverno Policy Exception
+policyException:
+  enabled: true
+  namespace: "kyverno"

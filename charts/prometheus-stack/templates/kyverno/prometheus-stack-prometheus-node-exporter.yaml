@@ -1,7 +1,10 @@
+{{ with .Values.policyException }}
+{{ if .enabled }}
 apiVersion: kyverno.io/v2
 kind: PolicyException
 metadata:
   name: prometheus-stack-prometheus-node-exporter
+  namespace: {{ .namespace }}
   annotations:
     "helm.sh/hook": pre-install,pre-upgrade
     "helm.sh/hook-weight": "-5"
@@ -29,14 +32,10 @@ spec:
       - resources:
           kinds:
             - DaemonSet
-          namespaces:
-            - monitoring
-          names:
-            - prometheus-stack-prometheus-node-exporter
-      - resources:
-          kinds:
             - Pod
-          namespaces:
-            - monitoring
-          names:
+          name:
             - prometheus-stack-prometheus-node-exporter*
+          namespaces:
+            - {{ $.Release.Namespace }}
+{{- end }}
+{{- end }}
