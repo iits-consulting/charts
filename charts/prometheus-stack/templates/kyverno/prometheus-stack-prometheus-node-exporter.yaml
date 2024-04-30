@@ -33,7 +33,7 @@ spec:
           kinds:
             - DaemonSet
             - Pod
-          name:
+          names:
             - prometheus-stack-prometheus-node-exporter*
           namespaces:
             - {{ $.Release.Namespace }}
