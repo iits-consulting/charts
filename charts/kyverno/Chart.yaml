@@ -1,7 +1,11 @@
 apiVersion: v2
 name: kyverno
 description: |
-  This chart wraps the upstream `kyverno` chart.
+  This chart wraps the upstream `kyverno` and `kyverno-policies` chart and adds a few useful policies:
+    - Verify all images are signed with cosign
+    - Verify all images come from allowed image repositories
+    - Replace the complete registry reference with a custom one
+    - Prepend the image reference with a custom prefix, useful for e.g. pull-through caches
 dependencies:
   - name: "kyverno"
     repository: "https://kyverno.github.io/kyverno/"
@@ -9,6 +13,10 @@ dependencies:
   - name: "policy-reporter"
     repository: "https://kyverno.github.io/policy-reporter"
     version: 2.22.5
+    condition: policy-reporter.install
+  - name: "kyverno-policies"
+    repository: "https://kyverno.github.io/kyverno/"
+    version: 3.2.0
 type: application
 version: 2.0.0
 appVersion: 3.2.0
