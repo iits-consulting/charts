@@ -1,6 +1,6 @@
 # iits-admin-dashboard
 
-![Version: 1.6.0](https://img.shields.io/badge/Version-1.6.0-informational?style=flat-square) ![AppVersion: 2.1.0](https://img.shields.io/badge/AppVersion-2.1.0-informational?style=flat-square)
+![Version: 1.7.0](https://img.shields.io/badge/Version-1.7.0-informational?style=flat-square) ![AppVersion: 2.1.0](https://img.shields.io/badge/AppVersion-2.1.0-informational?style=flat-square)
 
 This chart deploys a super simple webserver that provides a simple website containing links to a set
 of dashboards that are usually deployed in our infrastructure setup as well as some nifty external
@@ -12,29 +12,9 @@ tools.
 iits-admin-dashboard:
   namespace: admin
   repoURL: "https://charts.iits.tech"
-  targetRevision: "1.4.1"
+  targetRevision: "1.7.0"
   parameters:
     ingress.host: "REPLACE_ME"
-```
-
-## Installing the Chart with iits ArgoCD but with oidc-proxy-mode
-
-```yaml
-iits-admin-dashboard:
-  namespace: admin
-  repoURL: "https://charts.iits.tech"
-  targetRevision: "1.4.1"
-  valuesFile: ....
-
-  values.yaml:
-  ingress:
-    host: "admin.test.de"
-    defaultIngress:
-      tls:
-        enabled: "false"
-    annotations:
-      traefik.ingress.kubernetes.io/router.entrypoints: "after-proxy"
-      traefik.ingress.kubernetes.io/router.tls: "false"
 ```
 
 ## Values
@@ -42,15 +22,15 @@ iits-admin-dashboard:
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | defaultDashboard.logoAlt | string | `"IITS Consulting Logo"` |  |
-| defaultDashboard.logoSrc | string | `"logo_white.svg"` |  |
+| defaultDashboard.logoSrc | string | `"iits-logo.svg"` |  |
 | defaultDashboard.tiles.akhq.enabled | string | `"true"` |  |
 | defaultDashboard.tiles.akhq.href | string | `"akhq/ui/"` |  |
 | defaultDashboard.tiles.akhq.imgAlt | string | `"akhq (kafka headquarter)"` |  |
-| defaultDashboard.tiles.akhq.imgSrc | string | `"https://cdn.icon-icons.com/icons2/2699/PNG/512/apache_kafka_vertical_logo_icon_169585.png"` |  |
+| defaultDashboard.tiles.akhq.imgSrc | string | `"kafka.png"` |  |
 | defaultDashboard.tiles.alertManager.enabled | string | `"true"` |  |
 | defaultDashboard.tiles.alertManager.href | string | `"/alertmanager"` |  |
 | defaultDashboard.tiles.alertManager.imgAlt | string | `"Alertmanager"` |  |
-| defaultDashboard.tiles.alertManager.imgSrc | string | `"https://devopy.io/wp-content/uploads/2019/02/bell_260.svg"` |  |
+| defaultDashboard.tiles.alertManager.imgSrc | string | `"definitly_not_alertmanager.png"` |  |
 | defaultDashboard.tiles.argocd.enabled | string | `"true"` |  |
 | defaultDashboard.tiles.argocd.href | string | `"argocd/auth/login"` |  |
 | defaultDashboard.tiles.argocd.imgAlt | string | `"ArgoCD"` |  |
@@ -58,60 +38,60 @@ iits-admin-dashboard:
 | defaultDashboard.tiles.dashboard.enabled | string | `"true"` |  |
 | defaultDashboard.tiles.dashboard.href | string | `"dashboard/"` |  |
 | defaultDashboard.tiles.dashboard.imgAlt | string | `"Traefik Dashboard"` |  |
-| defaultDashboard.tiles.dashboard.imgSrc | string | `"https://raw.githubusercontent.com/docker-library/docs/a6cc2c5f4bc6658168f2a0abbb0307acaefff80e/traefik/logo.png"` |  |
+| defaultDashboard.tiles.dashboard.imgSrc | string | `"traefik.png"` |  |
 | defaultDashboard.tiles.elasticsearch.enabled | string | `"true"` |  |
 | defaultDashboard.tiles.elasticsearch.href | string | `"elasticsearch"` |  |
 | defaultDashboard.tiles.elasticsearch.imgAlt | string | `"Elasticsearch"` |  |
-| defaultDashboard.tiles.elasticsearch.imgSrc | string | `"https://iconape.com/wp-content/png_logo_vector/elasticsearch-logo.png"` |  |
+| defaultDashboard.tiles.elasticsearch.imgSrc | string | `"elasticsearch.png"` |  |
 | defaultDashboard.tiles.grafana.enabled | string | `"true"` |  |
 | defaultDashboard.tiles.grafana.href | string | `"grafana/login/generic_oauth"` |  |
 | defaultDashboard.tiles.grafana.imgAlt | string | `"Grafana"` |  |
-| defaultDashboard.tiles.grafana.imgSrc | string | `"https://seekicon.com/free-icon-download/grafana_2.png"` |  |
+| defaultDashboard.tiles.grafana.imgSrc | string | `"definitly_not_grafana.png"` |  |
 | defaultDashboard.tiles.keycloak.enabled | string | `"true"` |  |
 | defaultDashboard.tiles.keycloak.href | string | `"keycloak/"` |  |
 | defaultDashboard.tiles.keycloak.imgAlt | string | `"Keycloak"` |  |
-| defaultDashboard.tiles.keycloak.imgSrc | string | `"https://www.quellwerke.de/fileadmin/Technologie_Logos/keycloak.png"` |  |
+| defaultDashboard.tiles.keycloak.imgSrc | string | `"keycloak.png"` |  |
 | defaultDashboard.tiles.kibana.enabled | string | `"true"` |  |
 | defaultDashboard.tiles.kibana.href | string | `"kibana/app/discover"` |  |
 | defaultDashboard.tiles.kibana.imgAlt | string | `"Kibana"` |  |
-| defaultDashboard.tiles.kibana.imgSrc | string | `"https://cdn.iconscout.com/icon/free/png-512/elastic-1-283281.png"` |  |
+| defaultDashboard.tiles.kibana.imgSrc | string | `"definitly_not_kibana.svg"` |  |
 | defaultDashboard.tiles.kyverno.enabled | string | `"true"` |  |
 | defaultDashboard.tiles.kyverno.href | string | `"policies"` |  |
 | defaultDashboard.tiles.kyverno.imgAlt | string | `"Kyverno"` |  |
-| defaultDashboard.tiles.kyverno.imgSrc | string | `"https://cdn.shopify.com/s/files/1/1300/8977/collections/kyverno_480x480.png"` |  |
+| defaultDashboard.tiles.kyverno.imgSrc | string | `"kyverno.png"` |  |
 | defaultDashboard.tiles.logout.enabled | string | `"true"` |  |
 | defaultDashboard.tiles.logout.href | string | `"/logout"` |  |
 | defaultDashboard.tiles.logout.imgAlt | string | `"Logout"` |  |
-| defaultDashboard.tiles.logout.imgSrc | string | `"https://www.nicepng.com/png/detail/518-5189122_logout-transparent-logout-button-icon.png"` |  |
+| defaultDashboard.tiles.logout.imgSrc | string | `"logout.png"` |  |
 | defaultDashboard.tiles.otc.enabled | string | `"true"` |  |
 | defaultDashboard.tiles.otc.href | string | `"otcOIDC/"` |  |
 | defaultDashboard.tiles.otc.imgAlt | string | `"OTC"` |  |
-| defaultDashboard.tiles.otc.imgSrc | string | `"https://upload.wikimedia.org/wikipedia/commons/7/75/Otc-logo.png"` |  |
+| defaultDashboard.tiles.otc.imgSrc | string | `"otc-logo.png"` |  |
 | defaultDashboard.tiles.prometheus.enabled | string | `"true"` |  |
 | defaultDashboard.tiles.prometheus.href | string | `"prometheus"` |  |
 | defaultDashboard.tiles.prometheus.imgAlt | string | `"Prometheus"` |  |
-| defaultDashboard.tiles.prometheus.imgSrc | string | `"https://www.logolynx.com/images/logolynx/8b/8b0c91b14fb1da0270f0c5ed3d69fac4.jpeg"` |  |
+| defaultDashboard.tiles.prometheus.imgSrc | string | `"definitly_not_prometheus.svg"` |  |
 | defaultDashboard.tiles.vault.enabled | string | `"true"` |  |
 | defaultDashboard.tiles.vault.href | string | `"vault/"` |  |
 | defaultDashboard.tiles.vault.imgAlt | string | `"Vault"` |  |
-| defaultDashboard.tiles.vault.imgSrc | string | `"https://www.drupal.org/files/project-images/Vault_VerticalLogo_FullColor.png"` |  |
+| defaultDashboard.tiles.vault.imgSrc | string | `"vault.png"` |  |
 | defaultDashboard.title | string | `"Tech Admin Board"` |  |
 | deployment.annotations | string | `nil` |  |
 | deployment.containerPort | int | `3000` |  |
 | deployment.extraVolumeMounts | list | `[]` |  |
 | deployment.extraVolumes | list | `[]` |  |
 | deployment.health.liveness.failureThreshold | int | `3` |  |
-| deployment.health.liveness.initialDelaySeconds | int | `20` |  |
+| deployment.health.liveness.initialDelaySeconds | int | `5` |  |
 | deployment.health.liveness.path | string | `"/"` |  |
 | deployment.health.liveness.periodSeconds | int | `20` |  |
 | deployment.health.readiness.failureThreshold | int | `3` |  |
-| deployment.health.readiness.initialDelaySeconds | int | `20` |  |
+| deployment.health.readiness.initialDelaySeconds | int | `5` |  |
 | deployment.health.readiness.path | string | `"/"` |  |
 | deployment.health.readiness.periodSeconds | int | `20` |  |
 | deployment.health.startupProbe.failureThreshold | int | `3` |  |
-| deployment.health.startupProbe.initialDelaySeconds | int | `20` |  |
+| deployment.health.startupProbe.initialDelaySeconds | int | `5` |  |
 | deployment.health.startupProbe.path | string | `"/"` |  |
-| deployment.health.startupProbe.periodSeconds | int | `20` |  |
+| deployment.health.startupProbe.periodSeconds | int | `5` |  |
 | deployment.imagePullSecrets | list | `[]` |  |
 | deployment.onePodForEachNode | bool | `false` |  |
 | deployment.podAnnotations | object | `{}` |  |
