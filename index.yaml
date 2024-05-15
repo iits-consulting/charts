@@ -1338,6 +1338,20 @@ entries:
   iits-admin-dashboard:
   - apiVersion: v2
     appVersion: 2.1.0
+    created: "2024-05-15T16:20:26.208992846Z"
+    description: 'This chart deploys a super simple webserver that provides a simple
+      website containing links to a set of dashboards that are usually deployed in
+      our infrastructure setup as well as some nifty external tools.  ## Installing
+      the Chart with iits ArgoCD  ```yaml iits-admin-dashboard:   namespace: admin   repoURL:
+      "https://charts.iits.tech"   targetRevision: "1.7.0"   parameters:     ingress.host:
+      "REPLACE_ME" ``` '
+    digest: 3ba7e88f578d6e5a9dcc6dc38e09e5f657a9bc66b26a6afe83f08ddd739c71e2
+    name: iits-admin-dashboard
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/iits-admin-dashboard-1.7.0/iits-admin-dashboard-1.7.0.tgz
+    version: 1.7.0
+  - apiVersion: v2
+    appVersion: 2.1.0
     created: "2024-04-23T09:45:39.1889541Z"
     description: 'This chart deploys a super simple webserver that provides a simple
       website containing links to a set of dashboards that are usually deployed in
@@ -5679,4 +5693,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/waf-cert-uploader-0.1.1/waf-cert-uploader-0.1.1.tgz
     version: 0.1.1
-generated: "2024-04-29T17:54:06.679519395Z"
+generated: "2024-05-15T16:20:26.210331402Z"
