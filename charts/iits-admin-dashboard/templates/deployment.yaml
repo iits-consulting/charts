@@ -92,6 +92,7 @@ spec:
           volumeMounts:
             - name: {{ include "iits-admin-dashboard.fullname" $ }}
               mountPath: /home/static
+              readOnly: true
           {{- with .extraVolumeMounts }}
                 {{- toYaml . | nindent 12 }}
           {{- end }}
@@ -110,8 +111,20 @@ spec:
       {{- end }}
       volumes:
         - name: {{ include "iits-admin-dashboard.fullname" $ }}
-          configMap:
-            name: {{ include "iits-admin-dashboard.fullname" $ }}
+          projected:
+            sources:
+              - configMap:
+                  name: {{ include "iits-admin-dashboard.fullname" $ }}
+                            {{- $images := $.Files.Glob "images/*" }}
+      {{- range $path, $fileContents := $images }}
+        {{- $name := regexReplaceAll "(^.*/)(.*)$" $path "${2}" }}
+        {{- $name_clean := regexReplaceAll "(.*)\\.(png|svg)$" $name "${1}" | replace "_" "-" }}
+              - configMap:
+                  name: {{ printf "%s-%s" $.Release.Name $name_clean | trunc 63 | trimSuffix "-" }}
+                  items:
+                    - key: {{ $name }}
+                      path: {{ $name }}
+      {{- end }}
       {{- with .extraVolumes }}
         {{- toYaml . | nindent 8 }}
       {{- end }}
