@@ -1,15 +1,13 @@
 {{- $images := .Files.Glob "images/*" }}
-apiVersion: v1
-kind: ConfigMapList
-items:
 {{- range $path, $fileContents := $images }}
+---
   {{- $name := regexReplaceAll "(^.*/)(.*)$" $path "${2}" }}
   {{- $name_clean := regexReplaceAll "(.*)\\.(png|svg)$" $name "${1}" | replace "_" "-" }}
-  - apiVersion: v1
-    kind: ConfigMap
-    metadata:
-      name: {{ printf "%s-%s" $.Release.Name $name_clean | trunc 63 | trimSuffix "-" }}
-    binaryData:
-      {{ $name }}: |-
-      {{ $.Files.Get $path | b64enc | indent 8 }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ printf "%s-%s" $.Release.Name $name_clean | trunc 63 | trimSuffix "-" }}
+binaryData:
+  {{ $name }}: |-
+  {{ $.Files.Get $path | b64enc | indent 4 }}
 {{- end }}
