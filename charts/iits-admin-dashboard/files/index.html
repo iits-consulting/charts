@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ .Values.defaultDashboard.title }}</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Link the new CSS file -->
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
@@ -17,7 +17,7 @@
         {{- range .Values.defaultDashboard.tiles }}
         {{- if ne .enabled "false" }}
         <a href="{{ .href }}" class="tile" target="_blank">
-            <img src="{{ .imgSrc }}" alt="{{ .imgAlt }}">
+            <img src="{{ .imgSrc }}" alt="{{ .imgAlt }}" title="{{ .imgAlt }}">
         </a>
         {{- end }}
         {{- end }}
