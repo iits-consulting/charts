@@ -52,7 +52,7 @@ named infrastructure-charts and will install everything from there.
 
 | Repository | Name | Version |
 |------------|------|---------|
-| oci://registry-1.docker.io/bitnamicharts | argo-cd | 6.0.12 |
+| https://charts.bitnami.com/bitnami | argo-cd | 6.0.12 |
 
 ## Values
 

@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ .Values.defaultDashboard.title }}</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Link the new CSS file -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="favicon_32.png" sizes="32x32">
+    <link rel="icon" href="favicon_192.png" sizes="192x192">
 </head>
 
 <body>
@@ -16,8 +18,8 @@
     <div class="tiles">
         {{- range .Values.defaultDashboard.tiles }}
         {{- if ne .enabled "false" }}
-        <a href="{{ .href }}" class="tile" target="_blank">
-            <img src="{{ .imgSrc }}" alt="{{ .imgAlt }}">
+        <a href="{{ .href }}" class="tile cs-shadow" target="_blank">
+            <img src="{{ .imgSrc }}" alt="{{ .imgAlt }}" title="{{ .imgAlt }}">
         </a>
         {{- end }}
         {{- end }}
