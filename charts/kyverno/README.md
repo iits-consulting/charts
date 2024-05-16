@@ -1,8 +1,8 @@
-# iits-kyverno-policies
+# kyverno
 
-![Version: 1.6.0](https://img.shields.io/badge/Version-1.6.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 2.0.0](https://img.shields.io/badge/Version-2.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 3.2.0](https://img.shields.io/badge/AppVersion-3.2.0-informational?style=flat-square)
 
-This chart wraps the upstream `kyverno-policies` chart and adds a few useful policies:
+This chart wraps the upstream `kyverno` and `kyverno-policies` chart and adds a few useful policies:
   - Verify all images are signed with cosign
   - Verify all images come from allowed image repositories
   - Replace the complete registry reference with a custom one
@@ -12,18 +12,17 @@ This chart wraps the upstream `kyverno-policies` chart and adds a few useful pol
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://kyverno.github.io/kyverno/ | kyverno-policies | v2.7.2 |
+| https://kyverno.github.io/kyverno/ | kyverno | 3.2.0 |
+| https://kyverno.github.io/kyverno/ | kyverno-policies | 3.2.0 |
+| https://kyverno.github.io/policy-reporter | policy-reporter | 2.22.5 |
 
 ## Values
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | autoInjectDockerPullSecrets.autogenControllers | string | `"none"` | Auto gen rules for pod controllers. See https://kyverno.io/docs/writing-policies/autogen/ |
-| autoInjectDockerPullSecrets.enabled | bool | `false` |  |
+| autoInjectDockerPullSecrets.enabled | bool | `true` |  |
 | autoInjectDockerPullSecrets.secrets | string | `nil` |  |
-| autoInjectPublicIpIntoDnsendpoints.enabled | bool | `false` | Enable or disable the policy globally |
-| autoInjectPublicIpIntoDnsendpoints.name | string | `"auto-inject-public-ip-into-dns-endpoints"` | The name of the policy |
-| autoInjectPublicIpIntoDnsendpoints.publicIP | string | `nil` | The public ip / EIP |
 | disallowUnsignedImages.autogenControllers | string | `"none"` | Auto gen rules for pod controllers. See https://kyverno.io/docs/writing-policies/autogen/ |
 | disallowUnsignedImages.background | bool | `true` | Also check already existing containers. See https://kyverno.io/docs/writing-policies/background/ |
 | disallowUnsignedImages.enabled | bool | `false` | Enable or disable the policy globally |
@@ -39,9 +38,17 @@ This chart wraps the upstream `kyverno-policies` chart and adds a few useful pol
 | disallowUnspecifiedDockerRegistries.registryUrls | list | `["mysecure-registry/common-signed-docker-images/*"]` | List of allowed registries. Wildcards are supported. For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards |
 | disallowUnspecifiedDockerRegistries.validationAction | string | `"Enforce"` | How policy violation should be handled. Use either `enforce` or `audit`. See https://kyverno.io/docs/writing-policies/validate/ for details If a policy is violated and the action is "enforce", then the ressource will not be allowed to be created. On the other the `audit` action allows the ressource but reports this incident. |
 | enforceSecurityContext.autogenControllers | string | `"none"` | Auto gen rules for pod controllers. See https://kyverno.io/docs/writing-policies/autogen/ |
-| enforceSecurityContext.enabled | bool | `true` | Enable or disable the policy globally |
+| enforceSecurityContext.enabled | bool | `false` | Enable or disable the policy globally |
 | enforceSecurityContext.excludeNamespaces | list | `["kube-system"]` | Exclude the policy on the given list of namespaces Wildcards are supported. For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards |
 | enforceSecurityContext.name | string | `"enforce-security-context"` | The name of the policy |
+| ingress.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
+| ingress.annotations."traefik.ingress.kubernetes.io/router.middlewares" | string | `"routing-oidc-forward-auth@kubernetescrd, {{ .Release.Namespace }}-strip-prefix-{{ .Release.Name }}@kubernetescrd"` |  |
+| ingress.annotations."traefik.ingress.kubernetes.io/router.tls" | string | `"true"` |  |
+| ingress.enabled | bool | `true` |  |
+| ingress.host | String | `nil` | Required, set the domain you want to serve the UI from |
+| ingress.rules[0].host | string | `"{{ .Values.ingress.host }}"` |  |
+| ingress.rules[0].paths[0].path | string | `"/policies"` |  |
+| ingress.rules[0].paths[1].path | string | `"/_nuxt"` |  |
 | kyverno-policies.autogenControllers | string | `"none"` |  |
 | kyverno-policies.install | bool | `true` | Whether to install the default policies for kyverno |
 | kyverno-policies.podSecurityStandard | string | `"restricted"` | The pod security standarcd as defined in https://kyverno.io/policies/pod-security. |
@@ -86,6 +93,28 @@ This chart wraps the upstream `kyverno-policies` chart and adds a few useful pol
 | kyverno-policies.policyExclude.restrict-volume-types.any[0].resources.kinds[1] | string | `"ReplicaSet"` |  |
 | kyverno-policies.policyExclude.restrict-volume-types.any[0].resources.kinds[2] | string | `"Pod"` |  |
 | kyverno-policies.policyExclude.restrict-volume-types.any[0].resources.namespaces[0] | string | `"kube-system"` |  |
+| kyverno.admissionController.replicas | int | `2` |  |
+| kyverno.admissionController.serviceMonitor.enabled | bool | `true` |  |
+| kyverno.backgroundController.rbac.clusterRole.extraResources[0].apiGroups[0] | string | `""` |  |
+| kyverno.backgroundController.rbac.clusterRole.extraResources[0].resources[0] | string | `"pods"` |  |
+| kyverno.backgroundController.rbac.clusterRole.extraResources[0].verbs[0] | string | `"create"` |  |
+| kyverno.backgroundController.rbac.clusterRole.extraResources[0].verbs[1] | string | `"update"` |  |
+| kyverno.backgroundController.rbac.clusterRole.extraResources[0].verbs[2] | string | `"delete"` |  |
+| kyverno.backgroundController.rbac.clusterRole.extraResources[0].verbs[3] | string | `"patch"` |  |
+| kyverno.backgroundController.resources.limits.memory | string | `"1Gi"` |  |
+| kyverno.backgroundController.resources.requests.cpu | string | `"300m"` |  |
+| kyverno.backgroundController.resources.requests.memory | string | `"512Mi"` |  |
+| kyverno.backgroundController.serviceMonitor.enabled | bool | `true` |  |
+| kyverno.cleanupController.serviceMonitor.enabled | bool | `true` |  |
+| kyverno.crds.install | bool | `false` |  |
+| kyverno.existingImagePullSecrets | list | `[]` |  |
+| kyverno.features.logging.format | string | `"text"` |  |
+| kyverno.grafana.enabled | bool | `true` |  |
+| kyverno.reportsController.serviceMonitor.enabled | bool | `true` |  |
+| policy-reporter.install | bool | `true` |  |
+| policy-reporter.kyvernoPlugin.enabled | bool | `true` |  |
+| policy-reporter.ui.enabled | bool | `true` |  |
+| policy-reporter.ui.plugins.kyverno | bool | `true` |  |
 | prependCustomImageRegistry.autogenControllers | string | `"none"` | Auto gen rules for pod controllers. See https://kyverno.io/docs/writing-policies/autogen/ |
 | prependCustomImageRegistry.enabled | bool | `false` | Enable or disable the policy globally |
 | prependCustomImageRegistry.excludeNamespaces | list | `[]` | Exclude the policy on the given list of namespaces Wildcards are supported. For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards |

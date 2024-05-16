@@ -1,6 +1,6 @@
 # prometheus-stack
 
-![Version: 58.2.3](https://img.shields.io/badge/Version-58.2.3-informational?style=flat-square)
+![Version: 58.3.0](https://img.shields.io/badge/Version-58.3.0-informational?style=flat-square) ![AppVersion: 58.2.2](https://img.shields.io/badge/AppVersion-58.2.2-informational?style=flat-square)
 
 A complete monitoring/alerting stack with Grafana Prometheus Alertmanager
 
@@ -42,6 +42,7 @@ prometheus-stack:
 | global.ingress.paths.alertmanager | string | `"/alertmanager"` |  |
 | global.ingress.paths.grafana | string | `"/grafana"` |  |
 | global.ingress.paths.prometheus | string | `"/prometheus"` |  |
+| policyException.enabled | bool | `true` |  |
 | prometheusStack.alertmanager.alertmanagerSpec.externalUrl | string | `"https://{{$.Values.global.ingress.host}}{{$.Values.global.ingress.paths.alertmanager}}"` |  |
 | prometheusStack.alertmanager.alertmanagerSpec.resources.requests.cpu | string | `"5m"` |  |
 | prometheusStack.alertmanager.alertmanagerSpec.resources.requests.memory | string | `"100Mi"` |  |
@@ -65,6 +66,7 @@ prometheus-stack:
 | prometheusStack.alertmanager.config.route.routes[1].continue | bool | `true` |  |
 | prometheusStack.alertmanager.config.route.routes[1].receiver | string | `"slack"` |  |
 | prometheusStack.alertmanager.config.templates[0] | string | `"/etc/alertmanager/config/*.tmpl"` |  |
+| prometheusStack.crds.enabled | bool | `false` |  |
 | prometheusStack.defaultRules.create | bool | `true` |  |
 | prometheusStack.defaultRules.disabled.InfoInhibitor | bool | `true` |  |
 | prometheusStack.defaultRules.disabled.KubeClientCertificateExpiration | bool | `true` |  |

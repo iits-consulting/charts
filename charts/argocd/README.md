@@ -1,6 +1,6 @@
 # argocd
 
-![Version: 16.0.0](https://img.shields.io/badge/Version-16.0.0-informational?style=flat-square)
+![Version: 16.1.0](https://img.shields.io/badge/Version-16.1.0-informational?style=flat-square) ![AppVersion: 2.10.7](https://img.shields.io/badge/AppVersion-2.10.7-informational?style=flat-square)
 
 This chart is used to bootstrap a Kubernetes cluster with `argocd`.
 You can use this chart to deploy `argocd` through tools like `terraform`.
@@ -88,6 +88,7 @@ named infrastructure-charts and will install everything from there.
 | argo-cd.server.ingress.path | string | `"/argocd"` |  |
 | argo-cd.server.insecure | bool | `true` |  |
 | argo-cd.server.logFormat | string | `"json"` |  |
+| policyException.enabled | bool | `true` |  |
 | projects | string | `nil` | List of projects which you want to bootstrap |
 
 ----------------------------------------------
