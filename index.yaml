@@ -184,6 +184,35 @@ entries:
     version: 0.3.1-fix-probes
   argocd:
   - apiVersion: v2
+    appVersion: 2.10.7
+    created: "2024-05-16T16:57:58.219964659Z"
+    dependencies:
+    - name: argo-cd
+      repository: https://charts.bitnami.com/bitnami
+      version: 6.0.12
+    description: 'This chart is used to bootstrap a Kubernetes cluster with `argocd`.
+      You can use this chart to deploy `argocd` through tools like `terraform`.  Usage
+      example:  ```hcl resource "helm_release" "argocd" {   name                  =
+      "argocd"   repository            = "https://charts.iits.tech"   chart                 =
+      "argocd"   version               = "5.30.1-fix-proj-generation"   namespace             =
+      "argocd"   create_namespace      = true   wait                  = true   atomic                =
+      true   timeout               = 900 // 15 Minutes   render_subchart_notes = true   dependency_update     =
+      true   wait_for_jobs         = true   values                = [     yamlencode({       projects
+      = {         infrastructure-charts = {           projectValues = {             #
+      Set this to enable stage $STAGE-values.yaml             stage        = var.stage             #
+      Example values which are handed down to the project. Like this you can give
+      over informations from terraform to argocd             traefikElbId = module.terraform_secrets_from_encrypted_s3_bucket.secrets["elb_id"]             rootDomain  =
+      var.domain_name           }            git = {             password = var.git_token             repoUrl  =
+      "https://github.com/iits-consulting/otc-infrastructure-charts-template"           }         }       }     }     )   ]
+      } ```  In the project https://github.com/iits-consulting/otc-infrastructure-charts-template
+      it expects a helm chart named infrastructure-charts and will install everything
+      from there. '
+    digest: 0a5b89f0934a8e47f305388afc06d82274c3b7fb05dbf3a842d7a15801970d9b
+    name: argocd
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/argocd-16.1.0/argocd-16.1.0.tgz
+    version: 16.1.0
+  - apiVersion: v2
     created: "2024-04-29T17:54:05.503072751Z"
     dependencies:
     - name: argo-cd
@@ -328,29 +357,13 @@ entries:
     - https://github.com/iits-consulting/charts/releases/download/argocd-5.30.1-repo-server-fix/argocd-5.30.1-repo-server-fix.tgz
     version: 5.30.1-repo-server-fix
   - apiVersion: v2
-    created: "2023-05-17T07:20:06.803582276Z"
+    created: "2023-05-16T07:01:59.004319496Z"
     dependencies:
     - name: argo-cd
       repository: https://argoproj.github.io/argo-helm
       version: 5.30.1
-    description: 'This chart is used to bootstrap a Kubernetes cluster with `argocd`.
-      You can use this chart to deploy `argocd` through tools like `terraform`.  Usage
-      example:  ```hcl resource "helm_release" "argocd" {   name                  =
-      "argocd"   repository            = "https://charts.iits.tech"   chart                 =
-      "argocd"   version               = "5.30.1-fix-proj-generation"   namespace             =
-      "argocd"   create_namespace      = true   wait                  = true   atomic                =
-      true   timeout               = 900 // 15 Minutes   render_subchart_notes = true   dependency_update     =
-      true   wait_for_jobs         = true   values                = [     yamlencode({       projects
-      = {         infrastructure-charts = {           projectValues = {             #
-      Set this to enable stage $STAGE-values.yaml             stage        = var.stage             #
-      Example values which are handed down to the project. Like this you can give
-      over informations from terraform to argocd             traefikElbId = module.terraform_secrets_from_encrypted_s3_bucket.secrets["elb_id"]             adminDomain  =
-      "admin.${var.domain_name}"           }            git = {             password
-      = var.git_token             repoUrl  = "https://github.com/iits-consulting/otc-infrastructure-charts-template"           }         }       }     }     )   ]
-      } ```  In the project https://github.com/iits-consulting/otc-infrastructure-charts-template
-      it expects a helm chart named infrastructure-charts and will install everything
-      from there. '
-    digest: c699204889460d0a8b50ed00f780a83112aaf38bec5d5b2e8bf9950b4e610f66
+    description: argocd bootstrap
+    digest: 2cd6a536ab62fa1c89a756e5bf225e9403db9fbb1b6d6c10e7e796c646c61eb6
     name: argocd
     urls:
     - https://github.com/iits-consulting/charts/releases/download/argocd-5.30.1-fix-proj-generation/argocd-5.30.1-fix-proj-generation.tgz
@@ -384,18 +397,6 @@ entries:
     - https://github.com/iits-consulting/charts/releases/download/argocd-5.30.1-fix-proj-generation/argocd-5.30.1-fix-proj-generation.tgz
     version: 5.30.1-fix-proj-generation
   - apiVersion: v2
-    created: "2023-05-16T07:01:59.004319496Z"
-    dependencies:
-    - name: argo-cd
-      repository: https://argoproj.github.io/argo-helm
-      version: 5.30.1
-    description: argocd bootstrap
-    digest: 2cd6a536ab62fa1c89a756e5bf225e9403db9fbb1b6d6c10e7e796c646c61eb6
-    name: argocd
-    urls:
-    - https://github.com/iits-consulting/charts/releases/download/argocd-5.30.1-fix-proj-generation/argocd-5.30.1-fix-proj-generation.tgz
-    version: 5.30.1-fix-proj-generation
-  - apiVersion: v2
     created: "2023-05-10T10:46:05.529433176Z"
     dependencies:
     - name: argo-cd
@@ -403,6 +404,34 @@ entries:
       version: 5.30.1
     description: argocd bootstrap
     digest: ef94350e24afccbb2792834c09d953c61c0b1c4112058b12e64bc202631cfbf6
+    name: argocd
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/argocd-5.30.1-fix-proj-generation/argocd-5.30.1-fix-proj-generation.tgz
+    version: 5.30.1-fix-proj-generation
+  - apiVersion: v2
+    created: "2023-05-17T07:20:06.803582276Z"
+    dependencies:
+    - name: argo-cd
+      repository: https://argoproj.github.io/argo-helm
+      version: 5.30.1
+    description: 'This chart is used to bootstrap a Kubernetes cluster with `argocd`.
+      You can use this chart to deploy `argocd` through tools like `terraform`.  Usage
+      example:  ```hcl resource "helm_release" "argocd" {   name                  =
+      "argocd"   repository            = "https://charts.iits.tech"   chart                 =
+      "argocd"   version               = "5.30.1-fix-proj-generation"   namespace             =
+      "argocd"   create_namespace      = true   wait                  = true   atomic                =
+      true   timeout               = 900 // 15 Minutes   render_subchart_notes = true   dependency_update     =
+      true   wait_for_jobs         = true   values                = [     yamlencode({       projects
+      = {         infrastructure-charts = {           projectValues = {             #
+      Set this to enable stage $STAGE-values.yaml             stage        = var.stage             #
+      Example values which are handed down to the project. Like this you can give
+      over informations from terraform to argocd             traefikElbId = module.terraform_secrets_from_encrypted_s3_bucket.secrets["elb_id"]             adminDomain  =
+      "admin.${var.domain_name}"           }            git = {             password
+      = var.git_token             repoUrl  = "https://github.com/iits-consulting/otc-infrastructure-charts-template"           }         }       }     }     )   ]
+      } ```  In the project https://github.com/iits-consulting/otc-infrastructure-charts-template
+      it expects a helm chart named infrastructure-charts and will install everything
+      from there. '
+    digest: c699204889460d0a8b50ed00f780a83112aaf38bec5d5b2e8bf9950b4e610f66
     name: argocd
     urls:
     - https://github.com/iits-consulting/charts/releases/download/argocd-5.30.1-fix-proj-generation/argocd-5.30.1-fix-proj-generation.tgz
@@ -1201,6 +1230,32 @@ entries:
     - https://github.com/iits-consulting/charts/releases/download/elastic-stack-7.17.3-cce-volumes/elastic-stack-7.17.3-cce-volumes.tgz
     version: 7.17.3-cce-volumes
   elasticsearch:
+  - apiVersion: v2
+    appVersion: 8.5.1
+    created: "2024-05-16T16:57:58.343806717Z"
+    dependencies:
+    - condition: elasticsearch.enabled
+      name: elasticsearch
+      repository: https://helm.elastic.co
+      version: 8.5.1
+    - condition: kibana.enabled
+      name: kibana
+      repository: https://helm.elastic.co
+      version: 7.17.3
+    - condition: filebeat.enabled
+      name: filebeat
+      repository: https://helm.elastic.co
+      version: 8.5.1
+    description: 'Elasticsearch + filebeat + kibana with default common used indexes
+      and Index Lifecycle Management.   It comes also with a backup functionality.  #
+      Installing the Chart with iits ArgoCD  ## Register the Chart  ```yaml   elasticsearch:     namespace:
+      monitoring     targetRevision: "8.6.2"     parameters:       ingress.host: "admin.{{.Values.projectValues.rootDomain}}"       backup.enabled:
+      "false" ``` '
+    digest: f45e4b6ff17ca43bfbbba0ae33959a3b287df5dd862ee5154882db4caa6aaa71
+    name: elasticsearch
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/elasticsearch-8.9.0/elasticsearch-8.9.0.tgz
+    version: 8.9.0
   - apiVersion: v2
     created: "2024-04-25T15:27:42.725143194Z"
     dependencies:
@@ -3333,6 +3388,22 @@ entries:
     version: 0.1.1
   kafka:
   - apiVersion: v2
+    appVersion: 22.1.5
+    created: "2024-05-16T16:57:58.482142204Z"
+    dependencies:
+    - name: kafka
+      repository: https://charts.bitnami.com/bitnami
+      version: 22.1.5
+    description: 'Apache Kafka is an open-source distributed event streaming platform
+      used by thousands of companies for high-performance data pipelines, streaming
+      analytics, data integration, and mission-critical applications. This chart wraps
+      the `kafka` chart from bitnami and defines a few sensible defaults. '
+    digest: cc76951e33faacbfc06ff01f6c5bdce752db64d04ff956b226de0839903ba4fd
+    name: kafka
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/kafka-22.2.0/kafka-22.2.0.tgz
+    version: 22.2.0
+  - apiVersion: v2
     created: "2024-02-06T13:33:07.265758992Z"
     dependencies:
     - name: kafka
@@ -3681,6 +3752,31 @@ entries:
     - https://github.com/iits-consulting/charts/releases/download/keycloak-gatekeeper-1.0.0/keycloak-gatekeeper-1.0.0.tgz
     version: 1.0.0
   kyverno:
+  - apiVersion: v2
+    appVersion: 3.2.0
+    created: "2024-05-16T16:57:58.644494755Z"
+    dependencies:
+    - name: kyverno
+      repository: https://kyverno.github.io/kyverno/
+      version: 3.2.0
+    - condition: policy-reporter.install
+      name: policy-reporter
+      repository: https://kyverno.github.io/policy-reporter
+      version: 2.22.5
+    - name: kyverno-policies
+      repository: https://kyverno.github.io/kyverno/
+      version: 3.2.0
+    description: 'This chart wraps the upstream `kyverno` and `kyverno-policies` chart
+      and adds a few useful policies:   - Verify all images are signed with cosign   -
+      Verify all images come from allowed image repositories   - Replace the complete
+      registry reference with a custom one   - Prepend the image reference with a
+      custom prefix, useful for e.g. pull-through caches '
+    digest: a9dbfe9944b6af2a8ce588cd76eb8c05cb6f0294263079b8b52f1ed921c05fc6
+    name: kyverno
+    type: application
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/kyverno-2.0.0/kyverno-2.0.0.tgz
+    version: 2.0.0
   - apiVersion: v2
     created: "2024-04-10T17:12:09.905646527Z"
     dependencies:
@@ -4860,6 +4956,26 @@ entries:
     version: 1.0.0
   prometheus-stack:
   - apiVersion: v2
+    appVersion: 58.2.2
+    created: "2024-05-16T16:57:58.805446045Z"
+    dependencies:
+    - alias: prometheusStack
+      name: kube-prometheus-stack
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 58.2.2
+    description: 'A complete monitoring/alerting stack with Grafana Prometheus Alertmanager  ##
+      Installing the Chart with iits ArgoCD  ```yaml prometheus-stack:   namespace:
+      monitoring   repoURL: "https://charts.iits.tech"   targetRevision: "43.2.0"   ignoreDifferences:     -
+      jsonPointers:         - /imagePullSecrets       kind: ServiceAccount   syncOptions:     -
+      ServerSideApply=true   parameters:     global.alertmanager.host: "admin.{{.Values.projectValues.rootDomain}}"     global.prometheus.host:
+      "admin.{{.Values.projectValues.rootDomain}}"     global.grafana.host: "admin.{{.Values.projectValues.rootDomain}}"     prometheusStack.grafana.adminPassword:
+      "REPLACE_ME" ``` '
+    digest: c50affd0ced237b2a3cc34dc6cde8fe402d10268495a8aafdd546a58e7866e27
+    name: prometheus-stack
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/prometheus-stack-58.3.0/prometheus-stack-58.3.0.tgz
+    version: 58.3.0
+  - apiVersion: v2
     created: "2024-04-29T16:38:20.682497986Z"
     dependencies:
     - alias: prometheusStack
@@ -5693,4 +5809,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/waf-cert-uploader-0.1.1/waf-cert-uploader-0.1.1.tgz
     version: 0.1.1
-generated: "2024-05-15T16:20:26.210331402Z"
+generated: "2024-05-16T16:57:58.806037349Z"
