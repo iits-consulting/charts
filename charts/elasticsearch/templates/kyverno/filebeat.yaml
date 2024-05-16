@@ -1,7 +1,9 @@
-apiVersion: kyverno.io/v2alpha1
+{{ with .Values.policyException }}
+{{ if .enabled }}
+apiVersion: kyverno.io/v2
 kind: PolicyException
 metadata:
-  name: trivy
+  name: filebeat
   annotations:
     "helm.sh/hook": pre-install,pre-upgrade
     "helm.sh/hook-weight": "-5"
@@ -37,5 +39,10 @@ spec:
       - resources:
           kinds:
             - Pod
+            - DaemonSet
+          names:
+            - {{ $.Release.Name }}-filebeat*
           namespaces:
-            - trivy
+            - {{ $.Release.Namespace }}
+{{- end }}
+{{- end }}

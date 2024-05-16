@@ -1,0 +1,42 @@
+{{- with .Values.ingress }}
+{{- if .enabled }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "kyverno.fullname" $ }}
+  {{- with .labels }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .annotations }}
+  annotations:
+    iits-consulting.chart-creator/version: 1.4.0
+    {{- tpl (toYaml .) $ | nindent 4 }}
+  {{- end }}
+spec:
+  {{ if .className }}
+  ingressClassName: {{ .className }}
+    {{- end }}
+
+  tls:
+    - hosts:
+        {{- range .rules }}
+        - {{ tpl (toYaml .host) $ }}
+        {{- end }}
+
+  rules:
+        {{- range .rules }}
+    - host: {{ tpl (toYaml .host) $ }}
+      http:
+        paths:
+              {{- range .paths }}
+          - path: {{ .path | quote }}
+            pathType: {{ .pathType | default "Prefix"}}
+            backend:
+              service:
+                name: "{{ $.Release.Name }}-ui"
+                port:
+                  name: "http"
+              {{- end }}
+        {{- end }}
+    {{- end }}
+{{- end }}

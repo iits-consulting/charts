@@ -1,4 +1,6 @@
-apiVersion: kyverno.io/v2alpha1
+{{ with .Values.policyException }}
+{{ if .enabled }}
+apiVersion: kyverno.io/v2
 kind: PolicyException
 metadata:
   name: prometheus-stack-prometheus-node-exporter
@@ -29,14 +31,10 @@ spec:
       - resources:
           kinds:
             - DaemonSet
-          namespaces:
-            - monitoring
-          names:
-            - prometheus-stack-prometheus-node-exporter
-      - resources:
-          kinds:
             - Pod
-          namespaces:
-            - monitoring
           names:
             - prometheus-stack-prometheus-node-exporter*
+          namespaces:
+            - {{ $.Release.Namespace }}
+{{- end }}
+{{- end }}

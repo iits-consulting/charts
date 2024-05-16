@@ -2,7 +2,10 @@ kafka:
   replicaCount: 3
   maxMessageBytes: _52428800
   autoCreateTopicsEnable: true
-  deleteTopicEnable: false #this has to be disabled to get rid of autoCreateTopicsEnable, which should not be enabled on production. At the moment we cannot delete it, since auto creation happened for some topics
+
+  #this has to be disabled to get rid of autoCreateTopicsEnable, which should not be enabled on production.
+  deleteTopicEnable: false
+
   metrics:
     serviceMonitor:
       enabled: true
@@ -12,5 +15,10 @@ kafka:
       enabled: true
     jmx:
       enabled: true
+
   persistence:
     size: 30G
+
+# Kyverno Policy Exception
+policyException:
+  enabled: true

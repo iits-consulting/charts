@@ -132,3 +132,7 @@ projects:
 #
 #    # defaults to *
 #    allowedUrls:
+
+# Kyverno Policy Exception
+policyException:
+  enabled: true
