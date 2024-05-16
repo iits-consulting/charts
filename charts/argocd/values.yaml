@@ -136,4 +136,3 @@ projects:
 # Kyverno Policy Exception
 policyException:
   enabled: true
-  namespace: "kyverno"

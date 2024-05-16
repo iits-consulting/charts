@@ -3,7 +3,8 @@ kyverno:
     logging:
       format: text
     policyExceptions:
-      namespace: 'kyverno'
+      # Monitor policy-exceptions of all namespaces
+      enabled: false
 
   admissionController:
     replicas: 2
