@@ -2,10 +2,6 @@ kyverno:
   features:
     logging:
       format: text
-    policyExceptions:
-      # Monitor policy-exceptions of all namespaces
-      enabled: false
-
   admissionController:
     replicas: 2
     serviceMonitor:
@@ -45,7 +41,7 @@ kyverno:
     enabled: true
 
   crds:
-    install: true
+    install: false
 
   existingImagePullSecrets: []
 

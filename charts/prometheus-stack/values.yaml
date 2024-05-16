@@ -19,6 +19,10 @@ prometheusStack:
   kubelet:
     enabled: true
   nameOverride: prometheus-stack
+
+  crds:
+    enabled: false
+
   kubeControllerManager:
     enabled: false
 
