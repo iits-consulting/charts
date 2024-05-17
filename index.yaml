@@ -5446,6 +5446,20 @@ entries:
   traefik:
   - apiVersion: v2
     appVersion: 27.0.2
+    created: "2024-05-17T14:28:34.872530001Z"
+    dependencies:
+    - name: traefik
+      repository: https://traefik.github.io/charts
+      version: 27.0.2
+    description: The traefik ingress controller with some additional resources and
+      sane default values for IITS projects
+    digest: cfb69742e47111d50c6059e764ecf1d26d2421b5ae735250afa493d671c580a6
+    name: traefik
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/traefik-27.0.1/traefik-27.0.1.tgz
+    version: 27.0.1
+  - apiVersion: v2
+    appVersion: 27.0.2
     created: "2024-04-29T17:54:06.678709788Z"
     dependencies:
     - name: traefik
@@ -5735,19 +5749,6 @@ entries:
     version: 10.22.0-after-proxy-v2
   - apiVersion: v2
     appVersion: 9.11.0
-    created: "2023-05-02T14:04:42.889108694Z"
-    dependencies:
-    - name: traefik
-      repository: https://helm.traefik.io/traefik
-      version: 10.22.0
-    description: traefik
-    digest: c7fe177d7ca92ae8f13d47978f81f220062bde2abe4c2329cd540261eab2d9e8
-    name: traefik
-    urls:
-    - https://github.com/iits-consulting/charts/releases/download/traefik-10.22.0-after-proxy/traefik-10.22.0-after-proxy.tgz
-    version: 10.22.0-after-proxy
-  - apiVersion: v2
-    appVersion: 9.11.0
     created: "2023-05-02T15:27:52.620109569Z"
     dependencies:
     - name: traefik
@@ -5755,6 +5756,19 @@ entries:
       version: 10.22.0
     description: traefik
     digest: 911dbd31780545a921ee4f7ca99f1858552c4e1ccdfeb667cc64eabfa6ea9b6a
+    name: traefik
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/traefik-10.22.0-after-proxy/traefik-10.22.0-after-proxy.tgz
+    version: 10.22.0-after-proxy
+  - apiVersion: v2
+    appVersion: 9.11.0
+    created: "2023-05-02T14:04:42.889108694Z"
+    dependencies:
+    - name: traefik
+      repository: https://helm.traefik.io/traefik
+      version: 10.22.0
+    description: traefik
+    digest: c7fe177d7ca92ae8f13d47978f81f220062bde2abe4c2329cd540261eab2d9e8
     name: traefik
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-10.22.0-after-proxy/traefik-10.22.0-after-proxy.tgz
@@ -5809,4 +5823,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/waf-cert-uploader-0.1.1/waf-cert-uploader-0.1.1.tgz
     version: 0.1.1
-generated: "2024-05-16T16:57:58.806037349Z"
+generated: "2024-05-17T14:28:34.873258357Z"
