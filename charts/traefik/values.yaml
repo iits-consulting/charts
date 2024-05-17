@@ -57,7 +57,7 @@ traefik:
         - traefik
         - websecure
       middlewares:
-        - name: admin-forward-auth
+        - name: oidc-forward-auth
           namespace: routing
     healthcheck:
       enabled: true
