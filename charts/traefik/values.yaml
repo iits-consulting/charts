@@ -51,6 +51,7 @@ traefik:
         enabled: true
       service:
         enabled: true
+
   ingressRoute:
     dashboard:
       entryPoints:
@@ -59,8 +60,12 @@ traefik:
       middlewares:
         - name: oidc-forward-auth
           namespace: routing
+
     healthcheck:
-      enabled: true
+      # If you want external uptime checks, this is the flag you would have to enable.
+      # If you enabled this, you will expose /ping !without! Authentication.
+      # While not dangerous on its own, we want the unsecured exposing of any path being a conscious decision and not done implicitly.
+      enabled: false
       entryPoints:
         - traefik
         - websecure
