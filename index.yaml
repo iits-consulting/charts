@@ -3754,6 +3754,31 @@ entries:
   kyverno:
   - apiVersion: v2
     appVersion: 3.2.0
+    created: "2024-05-19T16:44:19.588653605Z"
+    dependencies:
+    - name: kyverno
+      repository: https://kyverno.github.io/kyverno/
+      version: 3.2.0
+    - condition: policy-reporter.install
+      name: policy-reporter
+      repository: https://kyverno.github.io/policy-reporter
+      version: 2.22.5
+    - name: kyverno-policies
+      repository: https://kyverno.github.io/kyverno/
+      version: 3.2.0
+    description: 'This chart wraps the upstream `kyverno` and `kyverno-policies` chart
+      and adds a few useful policies:   - Verify all images are signed with cosign   -
+      Verify all images come from allowed image repositories   - Replace the complete
+      registry reference with a custom one   - Prepend the image reference with a
+      custom prefix, useful for e.g. pull-through caches '
+    digest: 7d5b6a40ecf25a2b57847e4200d22aa3bb374f77b1ef5fc1d8923c3b03a81c57
+    name: kyverno
+    type: application
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/kyverno-2.0.1/kyverno-2.0.1.tgz
+    version: 2.0.1
+  - apiVersion: v2
+    appVersion: 3.2.0
     created: "2024-05-16T16:57:58.644494755Z"
     dependencies:
     - name: kyverno
@@ -5446,6 +5471,20 @@ entries:
   traefik:
   - apiVersion: v2
     appVersion: 27.0.2
+    created: "2024-05-19T16:44:19.789180627Z"
+    dependencies:
+    - name: traefik
+      repository: https://traefik.github.io/charts
+      version: 27.0.2
+    description: The traefik ingress controller with some additional resources and
+      sane default values for IITS projects
+    digest: b8907d4c52c40a4c988d7ce0785aed9f09ce7f5d630526234b773bd3b0f73e0d
+    name: traefik
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/traefik-27.0.2/traefik-27.0.2.tgz
+    version: 27.0.2
+  - apiVersion: v2
+    appVersion: 27.0.2
     created: "2024-05-17T14:28:34.872530001Z"
     dependencies:
     - name: traefik
@@ -5627,20 +5666,6 @@ entries:
     version: 10.22.0-internal-svc
   - apiVersion: v2
     appVersion: 10.22.0
-    created: "2023-05-25T10:46:19.001980409Z"
-    dependencies:
-    - name: traefik
-      repository: https://helm.traefik.io/traefik
-      version: 10.22.0
-    description: The traefik ingress controller with some additional resources and
-      sane default values for IITS projects
-    digest: 544b7cd570ed0934c435dfe1e91dd845a1a4e9752ae73ac07b6e0b81736d3e3d
-    name: traefik
-    urls:
-    - https://github.com/iits-consulting/charts/releases/download/traefik-10.22.0-https-redirect/traefik-10.22.0-https-redirect.tgz
-    version: 10.22.0-https-redirect
-  - apiVersion: v2
-    appVersion: 10.22.0
     created: "2023-05-30T09:25:34.845433906Z"
     dependencies:
     - name: traefik
@@ -5649,6 +5674,20 @@ entries:
     description: The traefik ingress controller with some additional resources and
       sane default values for IITS projects
     digest: 4e92e92c42807fcf86e14ba7862f76eb97f27c4b86d2859ec1b8f73aecb2f146
+    name: traefik
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/traefik-10.22.0-https-redirect/traefik-10.22.0-https-redirect.tgz
+    version: 10.22.0-https-redirect
+  - apiVersion: v2
+    appVersion: 10.22.0
+    created: "2023-05-25T10:46:19.001980409Z"
+    dependencies:
+    - name: traefik
+      repository: https://helm.traefik.io/traefik
+      version: 10.22.0
+    description: The traefik ingress controller with some additional resources and
+      sane default values for IITS projects
+    digest: 544b7cd570ed0934c435dfe1e91dd845a1a4e9752ae73ac07b6e0b81736d3e3d
     name: traefik
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-10.22.0-https-redirect/traefik-10.22.0-https-redirect.tgz
@@ -5749,19 +5788,6 @@ entries:
     version: 10.22.0-after-proxy-v2
   - apiVersion: v2
     appVersion: 9.11.0
-    created: "2023-05-02T15:27:52.620109569Z"
-    dependencies:
-    - name: traefik
-      repository: https://helm.traefik.io/traefik
-      version: 10.22.0
-    description: traefik
-    digest: 911dbd31780545a921ee4f7ca99f1858552c4e1ccdfeb667cc64eabfa6ea9b6a
-    name: traefik
-    urls:
-    - https://github.com/iits-consulting/charts/releases/download/traefik-10.22.0-after-proxy/traefik-10.22.0-after-proxy.tgz
-    version: 10.22.0-after-proxy
-  - apiVersion: v2
-    appVersion: 9.11.0
     created: "2023-05-02T14:04:42.889108694Z"
     dependencies:
     - name: traefik
@@ -5769,6 +5795,19 @@ entries:
       version: 10.22.0
     description: traefik
     digest: c7fe177d7ca92ae8f13d47978f81f220062bde2abe4c2329cd540261eab2d9e8
+    name: traefik
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/traefik-10.22.0-after-proxy/traefik-10.22.0-after-proxy.tgz
+    version: 10.22.0-after-proxy
+  - apiVersion: v2
+    appVersion: 9.11.0
+    created: "2023-05-02T15:27:52.620109569Z"
+    dependencies:
+    - name: traefik
+      repository: https://helm.traefik.io/traefik
+      version: 10.22.0
+    description: traefik
+    digest: 911dbd31780545a921ee4f7ca99f1858552c4e1ccdfeb667cc64eabfa6ea9b6a
     name: traefik
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-10.22.0-after-proxy/traefik-10.22.0-after-proxy.tgz
@@ -5823,4 +5862,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/waf-cert-uploader-0.1.1/waf-cert-uploader-0.1.1.tgz
     version: 0.1.1
-generated: "2024-05-17T14:28:34.873258357Z"
+generated: "2024-05-19T16:44:19.78982203Z"
