@@ -1,6 +1,6 @@
 # traefik
 
-![Version: 27.0.1](https://img.shields.io/badge/Version-27.0.1-informational?style=flat-square) ![AppVersion: 27.0.2](https://img.shields.io/badge/AppVersion-27.0.2-informational?style=flat-square)
+![Version: 27.0.2](https://img.shields.io/badge/Version-27.0.2-informational?style=flat-square) ![AppVersion: 27.0.2](https://img.shields.io/badge/AppVersion-27.0.2-informational?style=flat-square)
 
 The traefik ingress controller with some additional resources and sane default values for IITS projects
 
@@ -30,7 +30,7 @@ The traefik ingress controller with some additional resources and sane default v
 | traefik.ingressRoute.dashboard.entryPoints[1] | string | `"websecure"` |  |
 | traefik.ingressRoute.dashboard.middlewares[0].name | string | `"oidc-forward-auth"` |  |
 | traefik.ingressRoute.dashboard.middlewares[0].namespace | string | `"routing"` |  |
-| traefik.ingressRoute.healthcheck.enabled | bool | `true` |  |
+| traefik.ingressRoute.healthcheck.enabled | bool | `false` |  |
 | traefik.ingressRoute.healthcheck.entryPoints[0] | string | `"traefik"` |  |
 | traefik.ingressRoute.healthcheck.entryPoints[1] | string | `"websecure"` |  |
 | traefik.logs.access.enabled | bool | `false` |  |
