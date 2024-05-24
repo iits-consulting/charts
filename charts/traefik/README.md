@@ -1,6 +1,6 @@
 # traefik
 
-![Version: 27.0.2](https://img.shields.io/badge/Version-27.0.2-informational?style=flat-square) ![AppVersion: 27.0.2](https://img.shields.io/badge/AppVersion-27.0.2-informational?style=flat-square)
+![Version: 28.1.0](https://img.shields.io/badge/Version-28.1.0-informational?style=flat-square) ![AppVersion: 3.0.1](https://img.shields.io/badge/AppVersion-3.0.1-informational?style=flat-square)
 
 The traefik ingress controller with some additional resources and sane default values for IITS projects
 
@@ -8,7 +8,7 @@ The traefik ingress controller with some additional resources and sane default v
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://traefik.github.io/charts | traefik | 27.0.2 |
+| https://traefik.github.io/charts | traefik | 28.1.0 |
 
 ## Values
 
@@ -39,7 +39,6 @@ The traefik ingress controller with some additional resources and sane default v
 | traefik.logs.general.level | string | `"INFO"` |  |
 | traefik.metrics.prometheus.service.enabled | bool | `true` |  |
 | traefik.metrics.prometheus.serviceMonitor.enabled | bool | `true` |  |
-| traefik.ports.web.redirectTo.port | string | `"websecure"` |  |
 | traefik.providers.kubernetesCRD.allowCrossNamespace | bool | `true` |  |
 | traefik.providers.kubernetesCRD.allowExternalNameServices | bool | `true` |  |
 | traefik.providers.kubernetesCRD.enabled | bool | `true` |  |
