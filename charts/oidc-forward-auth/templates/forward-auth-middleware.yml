@@ -9,3 +9,5 @@ spec:
       - "Accept"
       - "Authorization"
       - "Cookie"
+    authResponseHeaders:
+      - "Authorization"
