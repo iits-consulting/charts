@@ -1,9 +1,19 @@
 gatekeeper:
   replicaCount: 2
-  automountServiceAccountToken: true
 
   strategy:
     type: "RollingUpdate"
+
+  resources:
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 10m
+      memory: 16Mi
+
+  livenessProbe:
+    enabled: true
 
   config:
 
