@@ -38,6 +38,9 @@ gatekeeper:
     # adds the authorization header to the proxy request
     enable-authorization-header: true
 
+    # indicates we should redirect to the identity provider for logging out. By default: /oauth/logout
+    enable-logout-redirect: true
+
     # enables the handling of the refresh tokens
     enable-refresh-tokens: false
 
@@ -70,9 +73,6 @@ gatekeeper:
 
     # preserve the host header of the proxied request in the upstream request
     preserve-host: true
-
-    # indicates we should redirect to the identity provider for logging out. By default: /oauth/logout
-    enable-logout-redirect: true
 
     # the server read timeout on the http server
     server-read-timeout: 10s
