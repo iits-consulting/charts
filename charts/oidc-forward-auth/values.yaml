@@ -36,13 +36,13 @@ gatekeeper:
     no-redirects: false
 
     # adds the authorization header to the proxy request
-    enable-authorization-header: true
+    enable-authorization-header: false
 
     # indicates we should redirect to the identity provider for logging out. By default: /oauth/logout
     enable-logout-redirect: true
 
     # enables the handling of the refresh tokens
-    enable-refresh-tokens: false
+    enable-refresh-tokens: true
 
     # enables the token authentication header X-Auth-Token to upstream
     enable-token-header: false
@@ -84,6 +84,21 @@ gatekeeper:
     resources:
       - require-any-role: true
         uri: /*
+
+# possible fields: https://doc.traefik.io/traefik/middlewares/http/forwardauth/
+middleware:
+  address: "http://{{ include \"oidc-forward-auth.fullname\" $ }}-gatekeeper.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.gatekeeper.service.proxy.port }}"
+  authRequestHeaders:
+    - "Accept"
+    - "Authorization"
+    - "Cookie"
+
+  authResponseHeaders:
+    - "Authorization"
+
+  addAuthCookiesToResponse:
+    - "kc-access"
+    - "kc-state"
 
 ingress:
   enabled: true
