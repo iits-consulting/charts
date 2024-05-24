@@ -32,14 +32,10 @@ traefik:
     enabled: true
     isDefaultClass: true
 
-  ports:
-    web:
-      redirectTo:
-        port: websecure
-
   tlsOptions:
     default:
       minVersion: VersionTLS13
+
   tlsStore:
     default:
       defaultCertificate:
