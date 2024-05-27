@@ -3,9 +3,4 @@ kind: Middleware
 metadata:
   name: {{ include "oidc-forward-auth.fullname" $ }}
 spec:
-  forwardAuth:
-    address: http://{{ include "oidc-forward-auth.fullname" $ }}-gatekeeper.{{.Release.Namespace}}.svc.cluster.local:{{.Values.gatekeeper.service.proxy.port}}
-    authRequestHeaders:
-      - "Accept"
-      - "Authorization"
-      - "Cookie"
+  forwardAuth: {{ tpl (toYaml .Values.middleware) $ | nindent 6 }}
