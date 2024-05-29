@@ -170,37 +170,7 @@ filebeat:
         hosts: '["${ELASTICSEARCH_HOSTS:elasticsearch-master:9200}"]'
         protocol: http
         indices:
-            - index: "traefik-and-keycloak-proxy-%{[agent.version]}-%{+yyyy.MM}"
-              when:
-                or:
-                 - equals:
-                    kubernetes.namespace: "routing"
-            - index: "vault-%{[agent.version]}-%{+yyyy.MM}"
-              when:
-                and:
-                - equals:
-                   kubernetes.namespace: "vault"
-            - index: "argocd-%{[agent.version]}-%{+yyyy.MM.DD}"
-              when:
-                or:
-                 - equals:
-                    kubernetes.namespace: "argocd"
-            - index: "elastalert-%{[agent.version]}-%{+yyyy.MM.DD}"
-              when:
-                or:
-                 - equals:
-                    kubernetes.container.name: "elastalert2"
-            - index: "kyverno-%{[agent.version]}-%{+yyyy.MM.DD}"
-              when:
-                or:
-                 - equals:
-                    kubernetes.namespace: "kyverno"
-            - index: "auth-%{[agent.version]}-%{+yyyy.MM.DD}"
-              when:
-                or:
-                 - equals:
-                    kubernetes.namespace: "auth"      
-            - index: "not-defined-%{[agent.version]}-%{+yyyy.MM}"
+            - index: "%{[kubernetes.namespace]:not-defined}-%{[agent.version]}-%{+yyyy.MM}"             
       setup.kibana:
         host: "elasticsearch-kibana:5601"
         protocol: "http"
@@ -252,19 +222,21 @@ indexPatternInit:
     repository: docker.io/curlimages/curl
     tag: 7.82.0
   indices:
-    botkube:
-      timestampField: "Timestamp"
-    traefik-and-keycloak-proxy:
-      timestampField: "@timestamp"
-    vault:
+    admin:
       timestampField: "@timestamp"
     argocd:
       timestampField: "@timestamp"
     auth:
       timestampField: "@timestamp"
-    elastalert:
+    cert-manager:
       timestampField: "@timestamp"
     kyverno:
+      timestampField: "@timestamp"
+    monitoring:
+      timestampField: "@timestamp"
+    routing:
+      timestampField: "@timestamp"
+    vault:
       timestampField: "@timestamp"
     not-defined:
       timestampField: "@timestamp"
@@ -276,15 +248,15 @@ ilm:
   policies:
     long:
       #business apps and security relevant logs
-      indexPatterns: [ "vault*" ]
+      indexPatterns: [ "auth*", "vault*" ]
       coldAfter: 32d
       deleteAfter: 365d
     medium:
-      indexPatterns: [ "not-defined*", "traefik-and-keycloak-proxy*", "auth*" ]
+      indexPatterns: [ "cert-manager*", "routing*", "not-defined*" ]
       coldAfter: 32d
       deleteAfter: 90d
     short:
-      indexPatterns: [ "elastalert*", "argocd*", "kyverno*" ]
+      indexPatterns: [ "admin*", "argocd*", "kyverno*", "monitoring*" ]
       coldAfter: 2d
       deleteAfter: 14d
 
