@@ -13,7 +13,7 @@ dependencies:
   repository: https://helm.elastic.co
   version: 8.5.1
 name: elasticsearch
-version: 8.9.0
+version: 8.9.1
 appVersion: 8.5.1
 description: |
   Elasticsearch + filebeat + kibana with default common used indexes and Index Lifecycle Management.  
