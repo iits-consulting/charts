@@ -4410,6 +4410,36 @@ entries:
     version: 1.0.0
   ollama:
   - apiVersion: v2
+    created: "2024-06-03T10:26:04.609715839Z"
+    description: 'Get up and running with large language models locally.  ## Installing
+      the Chart with iits ArgoCD  ```yaml   ollama:     namespace: ollama     repoURL:
+      "https://charts.my-domain.com"     targetRevision: "0.7.4"     valueFile: "value-files/ollama/values.yaml"
+      ```   value-files/ollama/values.yaml  ```yaml ollama:   ollama:     gpu:       enabled:
+      "true"   ingress:     host: "ollama.my-domain.com"     annotations:       #
+      Adds the oidc proxy upfront       traefik.ingress.kubernetes.io/router.middlewares:
+      "ollama-oidc-forward-auth-ollama@kubernetescrd, ollama-strip-prefix-ollama@kubernetescrd"
+      webui:   env:     OLLAMA_API_BASE_URL: "https://ollama.my-domain.com/api"   ingress:     annotations:       #
+      Adds the oidc proxy upfront       traefik.ingress.kubernetes.io/router.middlewares:
+      "ollama-oidc-forward-auth-ollama@kubernetescrd"     host: "ollama.my-domain.com"
+      middleware:   env:     OLLAMA_URL: "http://ollama:11434"     WEAVIATE_URL: "http://weaviate:80"   ingress:     annotations:       #
+      Adds the oidc proxy upfront       traefik.ingress.kubernetes.io/router.middlewares:
+      "ollama-oidc-forward-auth-ollama@kubernetescrd"     host: "ollama.my-domain.com"
+      ``` '
+    digest: e0978267e9b2a08144b41cc6e52cedb580a2e2c26f503db69a4f9807aad969c3
+    home: https://ollama.ai/
+    icon: https://ollama.ai/public/ollama.png
+    keywords:
+    - ai
+    - llm
+    - llama
+    - mistral
+    kubeVersion: ^1.16.0-0
+    name: ollama
+    type: application
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/ollama-0.8.2/ollama-0.8.2.tgz
+    version: 0.8.2
+  - apiVersion: v2
     created: "2024-04-29T17:54:06.424078746Z"
     description: 'Get up and running with large language models locally.  ## Installing
       the Chart with iits ArgoCD  ```yaml   ollama:     namespace: ollama     repoURL:
@@ -5925,4 +5955,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/waf-cert-uploader-0.1.1/waf-cert-uploader-0.1.1.tgz
     version: 0.1.1
-generated: "2024-05-29T16:09:52.360737264Z"
+generated: "2024-06-03T10:26:04.610255595Z"
