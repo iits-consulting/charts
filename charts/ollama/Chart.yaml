@@ -45,7 +45,7 @@ description: |
       host: "ollama.my-domain.com"
   ```
 type: application
-version: 0.8.0
+version: 0.8.2
 kubeVersion: "^1.16.0-0"
 home: https://ollama.ai/
 icon: https://ollama.ai/public/ollama.png
