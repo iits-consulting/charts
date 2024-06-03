@@ -1,6 +1,6 @@
 # ollama
 
-![Version: 0.8.0](https://img.shields.io/badge/Version-0.8.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.8.2](https://img.shields.io/badge/Version-0.8.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 Get up and running with large language models locally.
 
@@ -55,46 +55,6 @@ Kubernetes: `^1.16.0-0`
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| middleware.deployment.affinity | object | `{}` |  |
-| middleware.deployment.env.OLLAMA_URL | string | `"http://ollama:11434"` |  |
-| middleware.deployment.env.OPENAI_API_TOKEN | string | `""` |  |
-| middleware.deployment.env.WEAVIATE_URL | string | `"http://weaviate:80"` |  |
-| middleware.deployment.envFromSecret | string | `nil` |  |
-| middleware.deployment.fullnameOverride | string | `""` |  |
-| middleware.deployment.health.liveness.path | string | `"/middleware/api/chat/health"` |  |
-| middleware.deployment.health.liveness.port | int | `8000` |  |
-| middleware.deployment.health.readiness.path | string | `"/middleware/api/chat/health"` |  |
-| middleware.deployment.health.readiness.port | int | `8000` |  |
-| middleware.deployment.image.pullPolicy | string | `"IfNotPresent"` |  |
-| middleware.deployment.image.repository | string | `"registry.gitlab.iits.tech/private/llm/llm-middleware"` |  |
-| middleware.deployment.image.tag | string | `""` |  |
-| middleware.deployment.imagePullSecrets | list | `[]` |  |
-| middleware.deployment.nameOverride | string | `""` |  |
-| middleware.deployment.podAnnotations | object | `{}` |  |
-| middleware.deployment.podSecurityContext | string | `nil` |  |
-| middleware.deployment.ports.http.port | int | `8000` |  |
-| middleware.deployment.replicaCount | string | `"1"` |  |
-| middleware.deployment.resources.limits.cpu | string | `"2000m"` |  |
-| middleware.deployment.resources.limits.memory | string | `"2Gi"` |  |
-| middleware.deployment.resources.requests.cpu | string | `"500m"` |  |
-| middleware.deployment.resources.requests.memory | string | `"512Mi"` |  |
-| middleware.deployment.securityContext | string | `nil` |  |
-| middleware.deployment.volumeMounts | object | `{}` |  |
-| middleware.deployment.volumes | object | `{}` |  |
-| middleware.ingress.annotations."cert-manager.io/cluster-issuer" | string | `"letsencrypt"` |  |
-| middleware.ingress.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
-| middleware.ingress.annotations."traefik.ingress.kubernetes.io/router.tls" | string | `"true"` |  |
-| middleware.ingress.defaultIngress.backend.port.name | string | `"http"` |  |
-| middleware.ingress.defaultIngress.enabled | bool | `true` |  |
-| middleware.ingress.defaultIngress.path | string | `"/middleware"` |  |
-| middleware.ingress.defaultIngress.tls.secretName | string | `"llm-cert"` |  |
-| middleware.ingress.enabled | bool | `true` |  |
-| middleware.ingress.host | string | `"llm.iits.tech"` |  |
-| middleware.service.ports.http.port | int | `8000` |  |
-| middleware.service.ports.http.targetPort | int | `8000` |  |
-| middleware.serviceAccount.annotations | object | `{}` |  |
-| middleware.serviceAccount.create | bool | `true` |  |
-| middleware.serviceAccount.name | string | `""` |  |
 | ollama.affinity | object | `{}` |  |
 | ollama.autoscaling.enabled | bool | `false` |  |
 | ollama.autoscaling.maxReplicas | int | `100` |  |
@@ -105,18 +65,14 @@ Kubernetes: `^1.16.0-0`
 | ollama.fullnameOverride | string | `""` |  |
 | ollama.image.pullPolicy | string | `"IfNotPresent"` |  |
 | ollama.image.repository | string | `"ollama/ollama"` |  |
-| ollama.image.tag | string | `""` |  |
+| ollama.image.tag | string | `"0.1.39"` |  |
 | ollama.imagePullSecrets | list | `[]` |  |
-| ollama.ingress.annotations."cert-manager.io/cluster-issuer" | string | `"letsencrypt"` |  |
 | ollama.ingress.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
-| ollama.ingress.annotations."traefik.ingress.kubernetes.io/router.middlewares" | string | `"{{.Release.Namespace}}-strip-prefix-ollama@kubernetescrd"` |  |
 | ollama.ingress.annotations."traefik.ingress.kubernetes.io/router.tls" | string | `"true"` |  |
 | ollama.ingress.enabled | bool | `true` |  |
 | ollama.ingress.host | string | `nil` | Required, replace it with your host address |
 | ollama.ingress.hosts[0].host | string | `"{{.Values.ollama.ingress.host}}"` |  |
-| ollama.ingress.hosts[0].paths[0].path | string | `"/ollama"` |  |
-| ollama.ingress.tls[0].hosts[0] | string | `"{{.Values.ollama.ingress.host}}"` |  |
-| ollama.ingress.tls[0].secretName | string | `"llm-cert"` |  |
+| ollama.ingress.hosts[0].paths[0].path | string | `"/"` |  |
 | ollama.ingress.traefikMiddlewareEnabled | string | `"true"` |  |
 | ollama.livenessProbe.enabled | bool | `true` |  |
 | ollama.livenessProbe.failureThreshold | int | `6` |  |
@@ -168,23 +124,19 @@ Kubernetes: `^1.16.0-0`
 | webui.autoscaling.maxReplicas | int | `100` |  |
 | webui.autoscaling.minReplicas | int | `1` |  |
 | webui.autoscaling.targetCPUUtilizationPercentage | int | `80` |  |
-| webui.env.MIDDLEWARE_API_BASE_URL | string | `"https://{{$.Values.webui.ingress.host}}/middleware/api"` |  |
-| webui.env.OLLAMA_API_BASE_URL | string | `"https://{{$.Values.webui.ingress.host}}/ollama/api"` |  |
+| webui.env.OLLAMA_BASE_URL | string | `"https://ollama.{{$.Values.webui.ingress.host}}"` |  |
 | webui.envSecretName | string | `nil` |  |
 | webui.fullnameOverride | string | `"ollama-webui"` |  |
 | webui.image.pullPolicy | string | `"IfNotPresent"` |  |
-| webui.image.repository | string | `"registry.gitlab.iits.tech/private/llm/ollama-ui"` |  |
-| webui.image.tag | string | `""` |  |
+| webui.image.repository | string | `"ghcr.io/open-webui/open-webui"` |  |
+| webui.image.tag | string | `"0.1.125"` |  |
 | webui.imagePullSecrets | list | `[]` |  |
-| webui.ingress.annotations."cert-manager.io/cluster-issuer" | string | `"letsencrypt"` |  |
 | webui.ingress.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
 | webui.ingress.annotations."traefik.ingress.kubernetes.io/router.tls" | string | `"true"` |  |
 | webui.ingress.enabled | bool | `true` |  |
 | webui.ingress.host | string | `nil` | Required, replace it with your host address |
 | webui.ingress.hosts[0].host | string | `"{{.Values.webui.ingress.host}}"` |  |
 | webui.ingress.hosts[0].paths[0].path | string | `"/"` |  |
-| webui.ingress.tls[0].hosts[0] | string | `"{{.Values.webui.ingress.host}}"` |  |
-| webui.ingress.tls[0].secretName | string | `"ollama-cert"` |  |
 | webui.livenessProbe.enabled | bool | `true` |  |
 | webui.livenessProbe.failureThreshold | int | `6` |  |
 | webui.livenessProbe.initialDelaySeconds | int | `60` |  |
