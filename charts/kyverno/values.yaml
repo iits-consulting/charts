@@ -191,9 +191,6 @@ replaceImageRegistry:
   # -- Enable or disable the policy globally
   enabled: false
 
-  # -- Check already existing as well containers. See also https://kyverno.io/docs/writing-policies/background/
-  background: true
-
   # -- Auto gen rules for pod controllers. See https://kyverno.io/docs/writing-policies/autogen/
   autogenControllers: none
 
@@ -201,12 +198,10 @@ replaceImageRegistry:
   name: replace-image-registry
 
   # -- source regex for matching it. Needs to be golang compatible
-  sourceRegex: "'.*(.*)/'"
+  sourceRegex: "'^(.*/)?(.*:?.*)$'"
 
   # -- the target image repository
   target: "mysecure-registry/common-signed-docker-images"
-
-  validationFailureAction: "Audit"
 
   # -- Excludes images from the replacement. Wildcard * is supported
   excludeRegistries:
@@ -248,6 +243,7 @@ disallowUnsignedImages:
   # -- List of image definitions and the associated public key used for signing.
   imagesAndPublicKeyPairs:
     - image: "*"
+      #pullSecret:
       key: |-
         -----BEGIN PUBLIC KEY-----
         MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEXzV8f2YUEmXF176k//uSmgEEZoKb
@@ -276,7 +272,7 @@ disallowUnspecifiedDockerRegistries:
 
   # -- List of allowed registries. Wildcards are supported.
   # For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards
-  registryUrls:
+  allowedRegistries:
     - "mysecure-registry/common-signed-docker-images/*"
 
   # -- How policy violation should be handled. Use either `enforce` or `audit`. See https://kyverno.io/docs/writing-policies/validate/ for details

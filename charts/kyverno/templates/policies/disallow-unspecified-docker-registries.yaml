@@ -24,11 +24,20 @@ spec:
               kinds:
                 - Pod
       validate:
-        message: "Unknown image registries. image={{`{{ request.object.spec.containers[*].image }}`}},podName={{`{{ request.object.spec.containers[*].name }}`}}"
+        message: >-
+          Unknown image registries. Expected images to match: {{ join " | " .allowedRegistries | quote}}.
+          Found:
+            ephemeralContainers={{`{{ request.object.spec.ephemeralContainers[*].image }}`}},
+            initContainers={{`{{ request.object.spec.initContainers[*].image }}`}},
+            containers={{`{{ request.object.spec.containers[*].image }}`}}
         pattern:
           spec:
+            =(ephemeralContainers):
+              - image: {{ join " | " .allowedRegistries | quote}}
+            =(initContainers):
+              - image: {{ join " | " .allowedRegistries | quote}}
             containers:
-              - image: {{ join " | " .registryUrls | quote}}
+              - image: {{ join " | " .allowedRegistries | quote}}
       exclude:
         any:
           - resources:

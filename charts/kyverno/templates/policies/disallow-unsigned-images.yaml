@@ -31,11 +31,18 @@ spec:
               {{- end }}
       verifyImages:
       {{- range .imagesAndPublicKeyPairs }}
-        - imageReferences:
+        - count: 1
+          imageReferences:
             - {{ .image | quote}}
+          {{ if .pullSecret }}
+          imageRegistryCredentials:
+            secrets:
+              - {{ .pullSecret }}
+          {{- end }}
+          mutateDigest: false
+          requireDigest: false
           attestors:
-            - count: 1
-              entries:
+            - entries:
                 - keys:
                     publicKeys: |-
 {{ .key | indent 22 }}

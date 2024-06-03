@@ -24,8 +24,7 @@ metadata:
       Note that this mutates Pods directly and not their controllers. It can be changed if desired but
       if so may need to not match on Pods.
 spec:
-  background: {{.background}}
-  validationFailureAction: {{.validationFailureAction}}
+  background: true
   rules:
     - name: {{ .name }}
       match:
@@ -47,7 +46,7 @@ spec:
               spec:
                 containers:
                   - name: "{{`{{ element.name }}`}}"
-                    image: "{{`{{ regex_replace_all_literal(`}}{{ .sourceRegex }}{{ `, '{{element.image}}', '` }}{{ .target | trimSuffix "/" }}/{{`' )}}`}}"
+                    image: "{{ `{{ regex_replace_all(` }} {{ .sourceRegex }} {{ `, '{{ element.image }}', '` }}{{ .target | trimSuffix "/" }}{{ `/$2' )}}` }}"
     - name: {{ .name }}-initcontainers
       match:
         any:
@@ -73,7 +72,7 @@ spec:
               spec:
                 initContainers:
                   - name: "{{`{{ element.name }}`}}"
-                    image: "{{`{{ regex_replace_all_literal(`}}{{.sourceRegex}}{{`, '{{element.image}}', '`}}{{.target | trimSuffix "/"}}/{{`' )}}`}}"
+                    image: "{{ `{{ regex_replace_all(` }} {{ .sourceRegex }} {{ `, '{{ element.image }}', '` }}{{ .target | trimSuffix "/" }}{{ `/$2' )}}` }}"
 
 ---
 {{- end }}

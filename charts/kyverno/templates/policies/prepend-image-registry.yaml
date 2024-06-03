@@ -24,72 +24,60 @@ metadata:
       Note that this mutates Pods directly and not their controllers. It can be changed if desired but
       if so may need to not match on Pods.
 spec:
-  background: false
+  background: true
   rules:
-  - name: prepend-registry-containers
-    match:
-      any:
-      - resources:
-          kinds:
-          - Pod
-    exclude:
-      resources:
-        namespaces:
+    - name: prepend-registry-containers
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+      exclude:
+        resources:
+          namespaces:
           {{- range .excludeNamespaces }}
             - {{ . }}
           {{- end }}
-    preconditions:
-      all:
-      - key: "{{ `{{request.operation || 'BACKGROUND'}}` }}"
-        operator: AnyIn
-        value:
-        - CREATE
-        - UPDATE
-    mutate:
-      foreach:
-      - list: "request.object.spec.containers"
-        patchStrategicMerge:
-          spec:
-            containers:
-            - name: "{{ `{{ element.name }}` }}"
-              image: "{{ .registry | trimSuffix "/" }}/{{ `{{ images.containers.\"{{element.name}}\".registry}}/{{ images.containers.\"{{element.name}}\".path}}:{{images.containers.\"{{element.name}}\".tag}}`}}"
-        preconditions:
-          all:
+      mutate:
+        foreach:
+          - list: "request.object.spec.containers"
+            patchStrategicMerge:
+              spec:
+                containers:
+                  - name: "{{ `{{ element.name }}` }}"
+                    image: "{{ .registry | trimSuffix "/" }}/{{ `{{ images.containers.\"{{element.name}}\".registry}}/{{ images.containers.\"{{element.name}}\".path}}:{{images.containers.\"{{element.name}}\".tag}}`}}"
+            preconditions:
+              all:
           {{- range $excludeRegistry := .excludeRegistries}}
-          - key: "{{`{{element.image}}`}}"
-            operator: NotEquals
-            value: "{{$excludeRegistry}}"
+                - key: "{{`{{element.image}}`}}"
+                  operator: NotEquals
+                  value: "{{$excludeRegistry}}"
           {{- end }}
-  - name: prepend-registry-initcontainers
-    match:
-      any:
-      - resources:
-          kinds:
-          - Pod
-    preconditions:
-      all:
-      - key: "{{ `{{request.operation || 'BACKGROUND'}}` }}"
-        operator: AnyIn
-        value:
-        - CREATE
-        - UPDATE
-      - key: "{{ `{{ request.object.spec.initContainers[] || '' | length(@) }} `}}"
-        operator: GreaterThanOrEquals
-        value: 1
-    mutate:
-      foreach:
-      - list: "request.object.spec.initContainers"
-        patchStrategicMerge:
-          spec:
-            initContainers:
-            - name: "{{ `{{ element.name }}` }}"
-              image: "{{ .registry | trimSuffix "/" }}/{{ `{{ images.containers.\"{{element.name}}\".registry}}/{{ images.containers.\"{{element.name}}\".path}}:{{images.containers.\"{{element.name}}\".tag}}`}}"
-        preconditions:
-          all:
+    - name: prepend-registry-initcontainers
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+      preconditions:
+        all:
+          - key: "{{ `{{ request.object.spec.initContainers[] || '' | length(@) }} `}}"
+            operator: GreaterThanOrEquals
+            value: 1
+      mutate:
+        foreach:
+          - list: "request.object.spec.initContainers"
+            patchStrategicMerge:
+              spec:
+                initContainers:
+                  - name: "{{ `{{ element.name }}` }}"
+                    image: "{{ .registry | trimSuffix "/" }}/{{ `{{ images.containers.\"{{element.name}}\".registry}}/{{ images.containers.\"{{element.name}}\".path}}:{{images.containers.\"{{element.name}}\".tag}}`}}"
+            preconditions:
+              all:
           {{- range $excludeRegistry := .excludeRegistries}}
-          - key: "{{`{{element.image}}`}}"
-            operator: NotEquals
-            value: "{{$excludeRegistry}}"
+                - key: "{{`{{element.image}}`}}"
+                  operator: NotEquals
+                  value: "{{$excludeRegistry}}"
           {{- end }}
 ---
 {{- end }}
