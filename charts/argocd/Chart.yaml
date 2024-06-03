@@ -10,7 +10,7 @@ description: |
     name                  = "argocd"
     repository            = "https://charts.iits.tech"
     chart                 = "argocd"
-    version               = "5.30.1-fix-proj-generation"
+    version               = "16.2.0"
     namespace             = "argocd"
     create_namespace      = true
     wait                  = true
@@ -24,10 +24,9 @@ description: |
         projects = {
           infrastructure-charts = {
             projectValues = {
-              # Set this to enable stage $STAGE-values.yaml
+              # Set this to enable stage values-$STAGE.yaml
               stage        = var.stage
               # Example values which are handed down to the project. Like this you can give over informations from terraform to argocd
-              traefikElbId = module.terraform_secrets_from_encrypted_s3_bucket.secrets["elb_id"]
               rootDomain  = var.domain_name
             }
 
@@ -47,9 +46,9 @@ description: |
   named infrastructure-charts and will install everything from there.
 
 name: argocd
-appVersion: 2.10.7
-version: 16.1.0
+appVersion: 2.11.2
+version: 16.2.0
 dependencies:
   - name: argo-cd
     repository: https://charts.bitnami.com/bitnami
-    version: 6.0.12
+    version: 6.4.0
