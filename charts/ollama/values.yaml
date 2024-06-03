@@ -9,7 +9,7 @@ ollama:
     repository: ollama/ollama
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
-    tag: ""
+    tag: "0.1.39"
 
   imagePullSecrets: []
   nameOverride: ""
@@ -62,18 +62,12 @@ ollama:
     host:
     traefikMiddlewareEnabled: "true"
     annotations:
-      cert-manager.io/cluster-issuer: letsencrypt
       traefik.ingress.kubernetes.io/router.entrypoints: websecure
       traefik.ingress.kubernetes.io/router.tls: "true"
-      traefik.ingress.kubernetes.io/router.middlewares: "{{.Release.Namespace}}-strip-prefix-ollama@kubernetescrd"
     hosts:
       - host: "{{.Values.ollama.ingress.host}}"
         paths:
-          - path: /ollama
-    tls:
-      - hosts:
-          - "{{.Values.ollama.ingress.host}}"
-        secretName: "llm-cert"
+          - path: /
 
   ## Configure resource requests and limits
   ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
@@ -207,10 +201,10 @@ webui:
   replicaCount: 1
 
   image:
-    repository: "registry.gitlab.iits.tech/private/llm/ollama-ui"
+    repository: "ghcr.io/open-webui/open-webui"
     pullPolicy: IfNotPresent
     # Overrides the image tag whose default is the chart appVersion.
-    tag: ""
+    tag: "0.1.125"
 
   imagePullSecrets: []
   nameOverride: ""
@@ -246,8 +240,7 @@ webui:
     port: 8080
 
   env:
-    OLLAMA_API_BASE_URL: "https://{{$.Values.webui.ingress.host}}/ollama/api"
-    MIDDLEWARE_API_BASE_URL: "https://{{$.Values.webui.ingress.host}}/middleware/api"
+    OLLAMA_BASE_URL: "https://ollama.{{$.Values.webui.ingress.host}}"
 
   #set the secret where to take env from
   envSecretName:
@@ -257,17 +250,12 @@ webui:
     # -- Required, replace it with your host address
     host:
     annotations:
-      cert-manager.io/cluster-issuer: letsencrypt
       traefik.ingress.kubernetes.io/router.entrypoints: websecure
       traefik.ingress.kubernetes.io/router.tls: "true"
     hosts:
       - host: "{{.Values.webui.ingress.host}}"
         paths:
           - path: /
-    tls:
-      - hosts:
-          - "{{.Values.webui.ingress.host}}"
-        secretName: "ollama-cert"
 
   ## Configure resource requests and limits
   ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
@@ -343,123 +331,3 @@ webui:
   tolerations: []
 
   affinity: {}
-
-middleware:
-  deployment:
-    replicaCount: "1"
-
-    image:
-      repository: "registry.gitlab.iits.tech/private/llm/llm-middleware"
-      pullPolicy: IfNotPresent
-      tag: ""
-
-    imagePullSecrets: [ ]
-    nameOverride: ""
-    fullnameOverride: ""
-
-    podAnnotations: { }
-
-    podSecurityContext:
-    # fsGroup: 2000
-
-    securityContext:
-    # capabilities:
-    #   drop:
-    #   - ALL
-    # readOnlyRootFilesystem: true
-    # runAsNonRoot: true
-    # runAsUser: 1000
-
-    volumes: { }
-    volumeMounts: { }
-
-    affinity: { }
-
-    ports:
-      http:
-        port: 8000
-
-    health:
-      liveness:
-        path: "/middleware/api/chat/health"
-        # initialDelaySeconds: # defaults to 20
-        # periodSeconds: # defaults to 20
-        # failureThreshold: # defaults to 3
-        port: 8000 # defaults to 80
-      readiness:
-        path: "/middleware/api/chat/health"
-        # initialDelaySeconds: # defaults to 20
-        # periodSeconds: # defaults to 20
-        # failureThreshold: # defaults to 3
-        port: 8000 # defaults to 80
-
-    resources:
-      requests:
-        memory: "512Mi"
-        cpu: "500m"
-      limits:
-        memory: "2Gi"
-        cpu: "2000m"
-
-    env:
-      OLLAMA_URL: "http://ollama:11434"
-      WEAVIATE_URL: "http://weaviate:80"
-      OPENAI_API_TOKEN: ""
-
-    #set the secret where to take env from
-    envFromSecret:
-
-  ingress:
-    enabled: true
-    host: "llm.iits.tech"
-    annotations:
-      cert-manager.io/cluster-issuer: letsencrypt
-      traefik.ingress.kubernetes.io/router.entrypoints: websecure
-      traefik.ingress.kubernetes.io/router.tls: "true"
-    # Creates default Ingress with tls and the given host from .Values.ingress.host
-    defaultIngress:
-      enabled: true
-      ## Default values can be overriden
-      tls:
-        secretName: "llm-cert"
-      path: "/middleware"
-      #pathType: "Prefix"
-      backend:
-        #  name: "llm-middleware.fullname" #tpl supported
-        port:
-          name: "http" #tpl supported
-
-    ## If you don't want to use the default Ingress, you can define it here on your own
-    #tls:
-    #  - hosts:
-    #      - "{{.Values.ingress.host}}"
-    #    secretName: "llm-middleware-cert"
-    #hosts:
-    #  - host: "{{.Values.ingress.host}}"
-    #    paths:
-    #      - path: "/"
-    #        backend:
-    #         name: "{{include "llm-middleware.fullname" $}}"
-    #         port:
-    #            name: "{{include "llm-middleware.fullname" $}}"
-
-
-  service:
-    ports:
-      http:
-        #These values are the default values, override them if necessary
-        targetPort: 8000
-        ## port name from above
-        #name: "http"
-        #protocol: TCP
-        port: 8000
-
-  serviceAccount:
-    # Specifies whether a service account should be created
-    create: true
-    # Annotations to add to the service account
-    annotations: {}
-    # The name of the service account to use.
-    # If not set and create is true, a name is generated using the fullname template
-    name: ""
-
