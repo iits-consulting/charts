@@ -216,7 +216,7 @@ disallowUnsignedImages:
   enabled: false
 
   # -- Also check already existing containers. See https://kyverno.io/docs/writing-policies/background/
-  background: true
+  background: false
 
   # -- Auto gen rules for pod controllers. See https://kyverno.io/docs/writing-policies/autogen/
   autogenControllers: none
@@ -228,6 +228,9 @@ disallowUnsignedImages:
   # If a policy is violated and the action is "enforce", then the ressource will not be allowed
   # to be created. On the other the `audit` action allows the ressource but reports this incident.
   validationAction: "Enforce"
+
+  # kyverno - webhookTimeoutSeconds
+  timeout: "30"
 
   # A list of images and public key pairs.
   #
@@ -247,6 +250,7 @@ disallowUnsignedImages:
   imagesAndPublicKeyPairs:
     - image: "*"
       #pullSecret:
+      ignoreTransparencyLog: true
       key: |-
         -----BEGIN PUBLIC KEY-----
         MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEXzV8f2YUEmXF176k//uSmgEEZoKb
@@ -257,7 +261,7 @@ disallowUnsignedImages:
   # Wildcards are supported.
   # For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards
   excludeNamespaces:
-    - "kube-system"
+    #- namespace
 
 # Only allow images coming from a specific list of registries
 disallowUnspecifiedDockerRegistries:

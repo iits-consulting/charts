@@ -14,7 +14,9 @@ metadata:
       Images needs to be signed with a specific private cosign key
 spec:
   validationFailureAction: {{ .validationAction }}
-  background: {{.background}}
+  background: {{ .background }}
+  webhookTimeoutSeconds: {{ .timeout }}
+  failurePolicy: Fail
   rules:
     - name: "{{ .name }}-rule"
       match:
@@ -22,13 +24,15 @@ spec:
           - resources:
               kinds:
                 - Pod
+      {{- with .excludeNamespaces}}
       exclude:
         any:
           - resources:
               namespaces:
-              {{- range .excludeNamespaces }}
+              {{- range . }}
                 - {{ . }}
               {{- end }}
+        {{- end }}
       verifyImages:
       {{- range .imagesAndPublicKeyPairs }}
         - count: 1
@@ -39,13 +43,15 @@ spec:
             secrets:
               - {{ .pullSecret }}
           {{- end }}
-          mutateDigest: false
-          requireDigest: false
+          mutateDigest: true
+          requireDigest: true
           attestors:
             - entries:
                 - keys:
                     publicKeys: |-
 {{ .key | indent 22 }}
+                    rekor:
+                      ignoreTlog: {{ .ignoreTransparencyLog | default true }}
       {{- end }}
 {{ end }}
 {{ end }}
