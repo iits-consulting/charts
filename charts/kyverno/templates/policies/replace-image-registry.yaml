@@ -24,6 +24,7 @@ metadata:
       Note that this mutates Pods directly and not their controllers. It can be changed if desired but
       if so may need to not match on Pods.
 spec:
+  generateExistingOnPolicyUpdate: false
   background: true
   rules:
     - name: {{ .name }}
@@ -43,6 +44,9 @@ spec:
                   value: "{{$excludeRegistry}}"
                 {{- end }}
             patchStrategicMerge:
+              metadata:
+                annotations:
+                  +(clusterpolicies.kyverno.io/{{ .name }}): "Replaced the containers image registry with {{ .target }}"
               spec:
                 containers:
                   - name: "{{`{{ element.name }}`}}"
@@ -69,6 +73,9 @@ spec:
                   value: "{{$excludeRegistry}}"
                 {{- end }}
             patchStrategicMerge:
+              metadata:
+                annotations:
+                  +(clusterpolicies.kyverno.io/{{ .name }}-initcontainers): "Replaced the initContainers image registry with {{ .target }}"
               spec:
                 initContainers:
                   - name: "{{`{{ element.name }}`}}"

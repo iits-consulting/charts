@@ -42,6 +42,9 @@ spec:
         foreach:
           - list: "request.object.spec.containers"
             patchStrategicMerge:
+              metadata:
+                annotations:
+                  +(clusterpolicies.kyverno.io/prepend-registry-containers): "Prepended the containers image with {{ .registry }}"
               spec:
                 containers:
                   - name: "{{ `{{ element.name }}` }}"
@@ -68,6 +71,9 @@ spec:
         foreach:
           - list: "request.object.spec.initContainers"
             patchStrategicMerge:
+              metadata:
+                annotations:
+                  +(clusterpolicies.kyverno.io/prepend-registry-containers): "Prepended the initContainers image with {{ .registry }}"
               spec:
                 initContainers:
                   - name: "{{ `{{ element.name }}` }}"

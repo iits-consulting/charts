@@ -23,13 +23,16 @@ spec:
       exclude:
         resources:
           namespaces:
-              {{- range .excludeNamespaces }}
+           {{- range .excludeNamespaces }}
             - {{ . }}
-              {{- end }}
+           {{- end }}
       mutate:
         foreach:
           - list: "request.object.spec.containers[]"
             patchStrategicMerge:
+              metadata:
+                annotations:
+                  +(clusterpolicies.kyverno.io/add-pod-security-context): Added securityContext to pod, container and initContainer
               spec:
                 securityContext:
                   +(runAsNonRoot): true

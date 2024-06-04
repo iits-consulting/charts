@@ -2,6 +2,9 @@ kyverno:
   features:
     logging:
       format: text
+  config:
+    excludeKyvernoNamespace: false
+
   admissionController:
     replicas: 2
     serviceMonitor:
@@ -318,6 +321,14 @@ autoInjectDockerPullSecrets:
 #      password: "token or password"
 #      registryUrl: "myregistry"
 #      registryWildcard: "*"
+
+disallowEmptyIngressHost:
+  enabled: true
+
+  exemptions:
+    #- name: ingressname
+    #  namespace: namespace
+
 
 ingress:
   enabled: true
