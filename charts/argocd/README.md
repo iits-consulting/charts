@@ -1,6 +1,6 @@
 # argocd
 
-![Version: 16.1.0](https://img.shields.io/badge/Version-16.1.0-informational?style=flat-square) ![AppVersion: 2.10.7](https://img.shields.io/badge/AppVersion-2.10.7-informational?style=flat-square)
+![Version: 16.2.0](https://img.shields.io/badge/Version-16.2.0-informational?style=flat-square) ![AppVersion: 2.11.2](https://img.shields.io/badge/AppVersion-2.11.2-informational?style=flat-square)
 
 This chart is used to bootstrap a Kubernetes cluster with `argocd`.
 You can use this chart to deploy `argocd` through tools like `terraform`.
@@ -12,7 +12,7 @@ resource "helm_release" "argocd" {
   name                  = "argocd"
   repository            = "https://charts.iits.tech"
   chart                 = "argocd"
-  version               = "5.30.1-fix-proj-generation"
+  version               = "16.2.0"
   namespace             = "argocd"
   create_namespace      = true
   wait                  = true
@@ -26,10 +26,9 @@ resource "helm_release" "argocd" {
       projects = {
         infrastructure-charts = {
           projectValues = {
-            # Set this to enable stage $STAGE-values.yaml
+            # Set this to enable stage values-$STAGE.yaml
             stage        = var.stage
             # Example values which are handed down to the project. Like this you can give over informations from terraform to argocd
-            traefikElbId = module.terraform_secrets_from_encrypted_s3_bucket.secrets["elb_id"]
             rootDomain  = var.domain_name
           }
 
@@ -52,7 +51,7 @@ named infrastructure-charts and will install everything from there.
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://charts.bitnami.com/bitnami | argo-cd | 6.0.12 |
+| https://charts.bitnami.com/bitnami | argo-cd | 6.4.0 |
 
 ## Values
 

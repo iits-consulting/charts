@@ -1,6 +1,6 @@
 # traefik
 
-![Version: 28.1.0](https://img.shields.io/badge/Version-28.1.0-informational?style=flat-square) ![AppVersion: 3.0.1](https://img.shields.io/badge/AppVersion-3.0.1-informational?style=flat-square)
+![Version: 28.2.0](https://img.shields.io/badge/Version-28.2.0-informational?style=flat-square) ![AppVersion: v3.0.1](https://img.shields.io/badge/AppVersion-v3.0.1-informational?style=flat-square)
 
 The traefik ingress controller with some additional resources and sane default values for IITS projects
 
@@ -8,7 +8,7 @@ The traefik ingress controller with some additional resources and sane default v
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://traefik.github.io/charts | traefik | 28.1.0 |
+| https://traefik.github.io/charts | traefik | 28.2.0 |
 
 ## Values
 

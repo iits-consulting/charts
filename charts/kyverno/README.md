@@ -1,6 +1,6 @@
 # kyverno
 
-![Version: 2.0.1](https://img.shields.io/badge/Version-2.0.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 3.2.0](https://img.shields.io/badge/AppVersion-3.2.0-informational?style=flat-square)
+![Version: 2.1.0](https://img.shields.io/badge/Version-2.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 3.2.4](https://img.shields.io/badge/AppVersion-3.2.4-informational?style=flat-square)
 
 This chart wraps the upstream `kyverno` and `kyverno-policies` chart and adds a few useful policies:
   - Verify all images are signed with cosign
@@ -12,9 +12,9 @@ This chart wraps the upstream `kyverno` and `kyverno-policies` chart and adds a 
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://kyverno.github.io/kyverno/ | kyverno | 3.2.0 |
-| https://kyverno.github.io/kyverno/ | kyverno-policies | 3.2.0 |
-| https://kyverno.github.io/policy-reporter | policy-reporter | 2.22.5 |
+| https://kyverno.github.io/kyverno/ | kyverno | 3.2.4 |
+| https://kyverno.github.io/kyverno/ | kyverno-policies | 3.2.3 |
+| https://kyverno.github.io/policy-reporter | policy-reporter | 2.23.1 |
 
 ## Values
 
@@ -23,19 +23,22 @@ This chart wraps the upstream `kyverno` and `kyverno-policies` chart and adds a 
 | autoInjectDockerPullSecrets.autogenControllers | string | `"none"` | Auto gen rules for pod controllers. See https://kyverno.io/docs/writing-policies/autogen/ |
 | autoInjectDockerPullSecrets.enabled | bool | `true` |  |
 | autoInjectDockerPullSecrets.secrets | string | `nil` |  |
+| disallowEmptyIngressHost.enabled | bool | `true` |  |
+| disallowEmptyIngressHost.exemptions | string | `nil` |  |
 | disallowUnsignedImages.autogenControllers | string | `"none"` | Auto gen rules for pod controllers. See https://kyverno.io/docs/writing-policies/autogen/ |
-| disallowUnsignedImages.background | bool | `true` | Also check already existing containers. See https://kyverno.io/docs/writing-policies/background/ |
+| disallowUnsignedImages.background | bool | `false` | Also check already existing containers. See https://kyverno.io/docs/writing-policies/background/ |
 | disallowUnsignedImages.enabled | bool | `false` | Enable or disable the policy globally |
-| disallowUnsignedImages.excludeNamespaces | list | `["kube-system"]` | Exclude the policy on the given list of namespaces Wildcards are supported. For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards |
-| disallowUnsignedImages.imagesAndPublicKeyPairs | list | `[{"image":"*","key":"-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEXzV8f2YUEmXF176k//uSmgEEZoKb\ng2b7+PuoKjfaYVw3HTAE2Z4ak5ZNNq5HF8G1cRt3P713MyuIXiNKP6v2Nw==\n-----END PUBLIC KEY-----"}]` | List of image definitions and the associated public key used for signing. |
+| disallowUnsignedImages.excludeNamespaces | string | `nil` | Exclude the policy on the given list of namespaces Wildcards are supported. For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards |
+| disallowUnsignedImages.imagesAndPublicKeyPairs | list | `[{"ignoreTransparencyLog":true,"image":"*","key":"-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEXzV8f2YUEmXF176k//uSmgEEZoKb\ng2b7+PuoKjfaYVw3HTAE2Z4ak5ZNNq5HF8G1cRt3P713MyuIXiNKP6v2Nw==\n-----END PUBLIC KEY-----"}]` | List of image definitions and the associated public key used for signing. |
 | disallowUnsignedImages.name | string | `"disallow-unsigned-images"` | The name of the policy |
+| disallowUnsignedImages.timeout | string | `"30"` |  |
 | disallowUnsignedImages.validationAction | string | `"Enforce"` | How policy violation should be handled. Use either `enforce` or `audit`. See https://kyverno.io/docs/writing-policies/validate/ for details If a policy is violated and the action is "enforce", then the ressource will not be allowed to be created. On the other the `audit` action allows the ressource but reports this incident. |
+| disallowUnspecifiedDockerRegistries.allowedRegistries | list | `["mysecure-registry/common-signed-docker-images/*"]` | List of allowed registries. Wildcards are supported. For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards |
 | disallowUnspecifiedDockerRegistries.autogenControllers | string | `"none"` | Auto gen rules for pod controllers. See https://kyverno.io/docs/writing-policies/autogen/ |
 | disallowUnspecifiedDockerRegistries.background | bool | `true` | Also check already existing containers. See https://kyverno.io/docs/writing-policies/background/ |
 | disallowUnspecifiedDockerRegistries.enabled | bool | `false` | Enable or disable the policy globally |
 | disallowUnspecifiedDockerRegistries.excludeNamespaces | list | `["kube-system"]` | Exclude the policy on the given list of namespaces Wildcards are supported. For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards |
 | disallowUnspecifiedDockerRegistries.name | string | `"disallow-unspecified-docker-registries"` | The name of the policy |
-| disallowUnspecifiedDockerRegistries.registryUrls | list | `["mysecure-registry/common-signed-docker-images/*"]` | List of allowed registries. Wildcards are supported. For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards |
 | disallowUnspecifiedDockerRegistries.validationAction | string | `"Enforce"` | How policy violation should be handled. Use either `enforce` or `audit`. See https://kyverno.io/docs/writing-policies/validate/ for details If a policy is violated and the action is "enforce", then the ressource will not be allowed to be created. On the other the `audit` action allows the ressource but reports this incident. |
 | enforceSecurityContext.autogenControllers | string | `"none"` | Auto gen rules for pod controllers. See https://kyverno.io/docs/writing-policies/autogen/ |
 | enforceSecurityContext.enabled | bool | `false` | Enable or disable the policy globally |
@@ -106,6 +109,7 @@ This chart wraps the upstream `kyverno` and `kyverno-policies` chart and adds a 
 | kyverno.backgroundController.resources.requests.memory | string | `"512Mi"` |  |
 | kyverno.backgroundController.serviceMonitor.enabled | bool | `true` |  |
 | kyverno.cleanupController.serviceMonitor.enabled | bool | `true` |  |
+| kyverno.config.excludeKyvernoNamespace | bool | `false` |  |
 | kyverno.crds.install | bool | `false` |  |
 | kyverno.existingImagePullSecrets | list | `[]` |  |
 | kyverno.features.logging.format | string | `"text"` |  |
@@ -122,13 +126,11 @@ This chart wraps the upstream `kyverno` and `kyverno-policies` chart and adds a 
 | prependCustomImageRegistry.name | string | `"prepend-image-registry"` | The name of the policy |
 | prependCustomImageRegistry.registry | string | `"mysecure-registry.example.com"` | the target image repository that should be prepended |
 | replaceImageRegistry.autogenControllers | string | `"none"` | Auto gen rules for pod controllers. See https://kyverno.io/docs/writing-policies/autogen/ |
-| replaceImageRegistry.background | bool | `true` | Check already existing as well containers. See also https://kyverno.io/docs/writing-policies/background/ |
 | replaceImageRegistry.enabled | bool | `false` | Enable or disable the policy globally |
 | replaceImageRegistry.excludeRegistries | list | `["docker.io/something/*"]` | Excludes images from the replacement. Wildcard * is supported |
 | replaceImageRegistry.name | string | `"replace-image-registry"` | The name of the policy |
-| replaceImageRegistry.sourceRegex | string | `"'.*(.*)/'"` | source regex for matching it. Needs to be golang compatible |
+| replaceImageRegistry.sourceRegex | string | `"'^(.*/)?(.*:?.*)$'"` | source regex for matching it. Needs to be golang compatible |
 | replaceImageRegistry.target | string | `"mysecure-registry/common-signed-docker-images"` | the target image repository |
-| replaceImageRegistry.validationFailureAction | string | `"Audit"` |  |
 
 ----------------------------------------------
 Autogenerated from chart metadata using [helm-docs v1.13.1](https://github.com/norwoodj/helm-docs/releases/v1.13.1)
