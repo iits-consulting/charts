@@ -1,0 +1,30 @@
+{{ if eq .Values.clusterIssuers.otcDNS.enabled true }}
+apiVersion: kyverno.io/v2
+kind: PolicyException
+metadata:
+  name: cert-manager-webhook
+spec:
+  exceptions:
+    - policyName: restrict-seccomp-strict
+      ruleNames:
+        - check-seccomp-strict
+        - autogen-check-seccomp-strict
+    - policyName: restrict-seccomp
+      ruleNames:
+        - check-seccomp
+        - autogen-check-seccomp
+    - policyName: enforce-security-context
+      ruleNames:
+        - add-pod-security-context
+  match:
+    any:
+      - resources:
+          kinds:
+            - Deployment
+            - ReplicaSet
+            - Pod
+          names:
+            - '*cert-manager-webhook-opentelekomcloud*'
+          namespaces:
+            - cert-manager
+{{- end }}
