@@ -24,7 +24,7 @@ metadata:
       Note that this mutates Pods directly and not their controllers. It can be changed if desired but
       if so may need to not match on Pods.
 spec:
-  background: true
+  background: false
   rules:
     - name: prepend-registry-containers
       match:

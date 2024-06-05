@@ -35,8 +35,7 @@ spec:
         {{- end }}
       verifyImages:
       {{- range .imagesAndPublicKeyPairs }}
-        - count: 1
-          imageReferences:
+        - imageReferences:
             - {{ .image | quote}}
           {{ if .pullSecret }}
           imageRegistryCredentials:
