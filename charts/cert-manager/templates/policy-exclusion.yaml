@@ -1,4 +1,5 @@
-{{ if eq .Values.clusterIssuers.otcDNS.enabled true }}
+{{ with .Values.policyException }}
+{{ if tpl .enabled $ | toString | eq "true" }}
 apiVersion: kyverno.io/v2
 kind: PolicyException
 metadata:
@@ -27,4 +28,5 @@ spec:
             - '*cert-manager-webhook-opentelekomcloud*'
           namespaces:
             - cert-manager
+{{- end }}
 {{- end }}

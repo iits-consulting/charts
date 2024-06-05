@@ -25,3 +25,8 @@ clusterIssuers:
     region: eu-de
     accessKey: ""
     secretKey: ""
+
+
+policyException:
+  # Only enabled if clusterIssuers.otcDNS.enabled is also true
+  enabled: "{{ .Values.clusterIssuers.otcDNS.enabled }}"
