@@ -9,4 +9,4 @@ dependencies:
     condition: clusterIssuers.otcDNS.enabled
 name: cert-manager
 description: Wrapper chart for cert-manager. Deploys a ClusterIssuer resource to bootstrap Let's encrypt cert generation
-version: 1.14.4
+version: 1.14.5
