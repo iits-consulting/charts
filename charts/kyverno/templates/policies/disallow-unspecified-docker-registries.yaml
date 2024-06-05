@@ -27,13 +27,10 @@ spec:
         message: >-
           Unknown image registries. Expected images to match: {{ join " | " .allowedRegistries | quote}}.
           Found:
-            ephemeralContainers={{`{{ request.object.spec.ephemeralContainers[*].image }}`}},
             initContainers={{`{{ request.object.spec.initContainers[*].image }}`}},
             containers={{`{{ request.object.spec.containers[*].image }}`}}
         pattern:
           spec:
-            =(ephemeralContainers):
-              - image: {{ join " | " .allowedRegistries | quote}}
             =(initContainers):
               - image: {{ join " | " .allowedRegistries | quote}}
             containers:
