@@ -279,7 +279,7 @@ disallowUnspecifiedDockerRegistries:
 
   # -- List of allowed registries. Wildcards are supported.
   # For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards
-  registryUrls:
+  allowedRegistries:
     - "mysecure-registry/common-signed-docker-images/*"
 
   # -- How policy violation should be handled. Use either `enforce` or `audit`. See https://kyverno.io/docs/writing-policies/validate/ for details
