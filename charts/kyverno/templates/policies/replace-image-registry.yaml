@@ -25,7 +25,7 @@ metadata:
       if so may need to not match on Pods.
 spec:
   generateExistingOnPolicyUpdate: false
-  background: true
+  background: false
   rules:
     - name: {{ .name }}
       match:
