@@ -2,6 +2,9 @@ kyverno:
   features:
     logging:
       format: text
+  config:
+    excludeKyvernoNamespace: false
+
   admissionController:
     replicas: 2
     serviceMonitor:
@@ -191,9 +194,6 @@ replaceImageRegistry:
   # -- Enable or disable the policy globally
   enabled: false
 
-  # -- Check already existing as well containers. See also https://kyverno.io/docs/writing-policies/background/
-  background: true
-
   # -- Auto gen rules for pod controllers. See https://kyverno.io/docs/writing-policies/autogen/
   autogenControllers: none
 
@@ -201,12 +201,10 @@ replaceImageRegistry:
   name: replace-image-registry
 
   # -- source regex for matching it. Needs to be golang compatible
-  sourceRegex: "'.*(.*)/'"
+  sourceRegex: "'^(.*/)?(.*:?.*)$'"
 
   # -- the target image repository
   target: "mysecure-registry/common-signed-docker-images"
-
-  validationFailureAction: "Audit"
 
   # -- Excludes images from the replacement. Wildcard * is supported
   excludeRegistries:
@@ -218,7 +216,7 @@ disallowUnsignedImages:
   enabled: false
 
   # -- Also check already existing containers. See https://kyverno.io/docs/writing-policies/background/
-  background: true
+  background: false
 
   # -- Auto gen rules for pod controllers. See https://kyverno.io/docs/writing-policies/autogen/
   autogenControllers: none
@@ -230,6 +228,9 @@ disallowUnsignedImages:
   # If a policy is violated and the action is "enforce", then the ressource will not be allowed
   # to be created. On the other the `audit` action allows the ressource but reports this incident.
   validationAction: "Enforce"
+
+  # kyverno - webhookTimeoutSeconds
+  timeout: "30"
 
   # A list of images and public key pairs.
   #
@@ -248,6 +249,8 @@ disallowUnsignedImages:
   # -- List of image definitions and the associated public key used for signing.
   imagesAndPublicKeyPairs:
     - image: "*"
+      #pullSecret:
+      ignoreTransparencyLog: true
       key: |-
         -----BEGIN PUBLIC KEY-----
         MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEXzV8f2YUEmXF176k//uSmgEEZoKb
@@ -258,7 +261,7 @@ disallowUnsignedImages:
   # Wildcards are supported.
   # For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards
   excludeNamespaces:
-    - "kube-system"
+    #- namespace
 
 # Only allow images coming from a specific list of registries
 disallowUnspecifiedDockerRegistries:
@@ -276,7 +279,7 @@ disallowUnspecifiedDockerRegistries:
 
   # -- List of allowed registries. Wildcards are supported.
   # For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards
-  registryUrls:
+  allowedRegistries:
     - "mysecure-registry/common-signed-docker-images/*"
 
   # -- How policy violation should be handled. Use either `enforce` or `audit`. See https://kyverno.io/docs/writing-policies/validate/ for details
@@ -322,6 +325,14 @@ autoInjectDockerPullSecrets:
 #      password: "token or password"
 #      registryUrl: "myregistry"
 #      registryWildcard: "*"
+
+disallowEmptyIngressHost:
+  enabled: true
+
+  exemptions:
+    #- name: ingressname
+    #  namespace: namespace
+
 
 ingress:
   enabled: true

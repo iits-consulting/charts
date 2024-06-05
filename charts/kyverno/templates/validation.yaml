@@ -1,0 +1,3 @@
+{{ if .Values.disallowUnspecifiedDockerRegistries.registryUrls }}
+    {{ fail "disallowUnspecifiedDockerRegistries: registryUrls was renamed to allowedRegistries" }}
+{{ end }}
