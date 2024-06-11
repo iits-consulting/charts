@@ -4,9 +4,9 @@ dependencies:
   version: 8.5.1
 - name: kibana
   repository: https://helm.elastic.co
-  version: 7.17.3
+  version: 8.5.1
 - name: filebeat
   repository: https://helm.elastic.co
   version: 8.5.1
-digest: sha256:893ac8f7eee398140e48f9cf8536ccf6c4a119204d78f9cda5b2ed890dcf4657
-generated: "2024-04-23T15:06:40.917495+02:00"
+digest: sha256:92d7441aa3d259f19fee75256e7e2fd82edcabfe7d707a305cce53cd225a12b1
+generated: "2024-06-11T16:56:19.073445919+02:00"
