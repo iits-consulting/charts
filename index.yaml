@@ -1277,6 +1277,29 @@ entries:
   elasticsearch:
   - apiVersion: v2
     appVersion: 8.5.1
+    created: "2024-06-11T17:02:04.673012711Z"
+    dependencies:
+    - condition: elasticsearch.enabled
+      name: elasticsearch
+      repository: https://helm.elastic.co
+      version: 8.5.1
+    - condition: kibana.enabled
+      name: kibana
+      repository: https://helm.elastic.co
+      version: 7.17.3
+    - condition: filebeat.enabled
+      name: filebeat
+      repository: https://helm.elastic.co
+      version: 8.5.1
+    description: 'Elasticsearch + filebeat + kibana with default common used indexes
+      and Index Lifecycle Management.   It comes also with a backup functionality. '
+    digest: de20bcd01391a9472e625b3c4f5f52bd5a609ce3c73531cecb3a27cfc3e9883e
+    name: elasticsearch
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/elasticsearch-8.9.3/elasticsearch-8.9.3.tgz
+    version: 8.9.3
+  - apiVersion: v2
+    appVersion: 8.5.1
     created: "2024-06-11T14:57:41.712368902Z"
     dependencies:
     - condition: elasticsearch.enabled
@@ -6062,4 +6085,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/waf-cert-uploader-0.1.1/waf-cert-uploader-0.1.1.tgz
     version: 0.1.1
-generated: "2024-06-11T14:57:41.712840595Z"
+generated: "2024-06-11T17:02:04.673498701Z"
