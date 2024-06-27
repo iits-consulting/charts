@@ -7,7 +7,7 @@ spec:
     - web
   routes:
     - kind: Rule
-      match: HostRegexp(`{host:.+}`)
+      match: HostRegexp(`.+`)
       middlewares:
         - name: https-redirect
           namespace: {{.Release.Namespace}}
