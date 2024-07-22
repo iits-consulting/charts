@@ -19,8 +19,14 @@ spec:
       {{- include "iits-admin-dashboard.selectorLabels" $ | nindent 6 }}
   template:
     metadata:
-      {{- with .podAnnotations }}
       annotations:
+        {{- range $path, $_ :=  $.Files.Glob  "files/*" }}
+        checksum/{{ base $path }}: {{ $.Files.Get $path | sha256sum }}
+        {{- end }}
+        {{- range $path, $_ :=  $.Files.Glob  "images/*" }}
+        checksum/{{ base $path }}: {{ $.Files.Get $path | sha256sum }}
+        {{- end }}
+      {{- with .podAnnotations }}
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
