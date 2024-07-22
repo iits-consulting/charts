@@ -1,6 +1,6 @@
 apiVersion: v2
 name: iits-admin-dashboard
-version: 1.7.0
+version: 1.7.1
 appVersion: 2.1.0
 description: |
   This chart deploys a super simple webserver that provides a simple website containing links to a set
@@ -13,7 +13,7 @@ description: |
   iits-admin-dashboard:
     namespace: admin
     repoURL: "https://charts.iits.tech"
-    targetRevision: "1.7.0"
+    targetRevision: "1.7.1"
     parameters:
       ingress.host: "REPLACE_ME"
   ```
