@@ -36,9 +36,8 @@ argo-cd:
       - name: "TZ"
         value: "Europe/Berlin"
       - name: "ARGOCD_SERVER_ROOTPATH"
-        value: "{{ .Values.server.ingress.path }}"
-      - name: "ARGOCD_SERVER_BASEHREF"
-        value: "{{ .Values.server.ingress.path }}"
+        value: "{{ if (.Values.server.ingress.path | eq \"/\" | not) }}{{ .Values.server.ingress.path   }}{{ end }}"
+
     logFormat: json
     insecure: true
 
