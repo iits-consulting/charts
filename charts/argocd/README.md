@@ -71,6 +71,7 @@ named infrastructure-charts and will install everything from there.
 | argo-cd.repoServer.extraEnvVars[0].name | string | `"TZ"` |  |
 | argo-cd.repoServer.extraEnvVars[0].value | string | `"Europe/Berlin"` |  |
 | argo-cd.repoServer.logFormat | string | `"json"` |  |
+| argo-cd.repoServer.replicaCount | int | `2` |  |
 | argo-cd.repoServer.resourcesPreset | string | `"small"` |  |
 | argo-cd.server.config."oidc.config" | string | `"name: OIDC\nissuer: $argocd-oidc:oidcURL\nclientID: $argocd-oidc:clientID\nclientSecret: $argocd-oidc:clientSecret\nrequestedScopes:\n  - openid\n  - profile\n  - email\n  - groups\nrequestedIDTokenClaims:\n  groups:\n    essential: true\n"` |  |
 | argo-cd.server.config."resource.customizations" | string | `"# Ignores .data changes of all secrets with a vaultInjectionChecksum annotation\nargoproj.io/Application:\n ignoreDifferences: |\n    jqPathExpressions:\n      - '. | select(.metadata.annotations.parametersChecksum) | .spec.source.helm'\n      - '. | select(.metadata.annotations.valueFileChecksum) | .spec.source.helm'\n# Ignores caBundle and template changes of the following resources\nadmissionregistration.k8s.io/MutatingWebhookConfiguration:\n  ignoreDifferences: |\n    jqPathExpressions:\n      - .metadata.annotations.template\n      - '.webhooks'\napiextensions.k8s.io/CustomResourceDefinition:\n  ignoreDifferences: |\n    jqPathExpressions:\n      - .spec.conversion.webhookClientConfig.caBundle\nadmissionregistration.k8s.io/ValidatingWebhookConfiguration:\n  ignoreDifferences: |\n    jqPathExpressions:\n      - .metadata.annotations.template\n      - '.webhooks[]?.clientConfig.caBundle'\n      - '.webhooks'\ncert-manager.io/Certificate:\n  ignoreDifferences: |\n    jqPathExpressions:\n      - .spec.duration\nnetworking.k8s.io/Ingress:\n  health.lua: |\n    hs = {}\n    hs.status = \"Healthy\"\n    return hs\n"` |  |
@@ -88,6 +89,7 @@ named infrastructure-charts and will install everything from there.
 | argo-cd.server.ingress.path | string | `"/argocd"` |  |
 | argo-cd.server.insecure | bool | `true` |  |
 | argo-cd.server.logFormat | string | `"json"` |  |
+| argo-cd.server.replicaCount | int | `2` |  |
 | policyException.enabled | bool | `true` |  |
 | projects | string | `nil` | List of projects which you want to bootstrap |
 
