@@ -50,6 +50,7 @@ traefik:
 
   ingressRoute:
     dashboard:
+      enabled: true
       entryPoints:
         - traefik
         - websecure
@@ -85,3 +86,4 @@ podMonitor:
   port: "metrics"
   interval: "10s"
   path: "/metrics"
+
