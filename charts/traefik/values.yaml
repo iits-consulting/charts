@@ -86,3 +86,4 @@ podMonitor:
   port: "metrics"
   interval: "10s"
   path: "/metrics"
+
