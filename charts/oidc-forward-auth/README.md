@@ -39,7 +39,7 @@ ingress:
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://gogatekeeper.github.io/helm-gogatekeeper | gatekeeper | 0.1.48 |
+| https://gogatekeeper.github.io/helm-gogatekeeper | gatekeeper | 0.1.49 |
 
 ## Values
 
