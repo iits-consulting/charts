@@ -60,6 +60,7 @@ named infrastructure-charts and will install everything from there.
 | argo-cd.config.rbac."policy.csv" | string | `"g, ARGOCD-ADMIN, role:admin\ng, SYSTEM-ADMINISTRATOR, role:admin\n"` |  |
 | argo-cd.controller.extraEnvVars[0].name | string | `"TZ"` |  |
 | argo-cd.controller.extraEnvVars[0].value | string | `"Europe/Berlin"` |  |
+| argo-cd.controller.kind | string | `"StatefulSet"` |  |
 | argo-cd.controller.logFormat | string | `"json"` |  |
 | argo-cd.controller.replicaCount | int | `2` |  |
 | argo-cd.controller.resourcesPreset | string | `"medium"` |  |
