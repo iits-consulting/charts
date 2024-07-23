@@ -3,7 +3,6 @@ apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
   name: {{ $projectName }}
-  # project needs to be installed after the crds
 spec:
   sourceRepos:
     - {{ $project.git.repoUrl }}
