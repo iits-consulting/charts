@@ -14,6 +14,7 @@ argo-cd:
   notifications:
     enabled: false
   repoServer:
+    replicaCount: 2
     extraEnvVars:
       - name: "TZ"
         value: "Europe/Berlin"
@@ -23,6 +24,7 @@ argo-cd:
       seccompProfile:
         type: Unconfined
   server:
+    replicaCount: 2
     ingress:
       enabled: true
       hostname: "SET_BY_TERRAFORM"
