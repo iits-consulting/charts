@@ -50,6 +50,7 @@ traefik:
 
   ingressRoute:
     dashboard:
+      enabled: true
       entryPoints:
         - traefik
         - websecure

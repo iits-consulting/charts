@@ -1,9 +1,9 @@
 apiVersion: v2
-appVersion: v3.0.1
+appVersion: v3.1.0
 dependencies:
   - name: traefik
-    repository: https://traefik.github.io/charts
-    version: 28.2.0
+    repository: oci://ghcr.io/traefik/helm
+    version: 29.0.1
 description: The traefik ingress controller with some additional resources and sane default values for IITS projects
 name: traefik
-version: 28.2.0
+version: 29.0.1
