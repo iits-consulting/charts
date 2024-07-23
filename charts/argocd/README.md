@@ -79,9 +79,7 @@ named infrastructure-charts and will install everything from there.
 | argo-cd.server.extraEnvVars[0].name | string | `"TZ"` |  |
 | argo-cd.server.extraEnvVars[0].value | string | `"Europe/Berlin"` |  |
 | argo-cd.server.extraEnvVars[1].name | string | `"ARGOCD_SERVER_ROOTPATH"` |  |
-| argo-cd.server.extraEnvVars[1].value | string | `"{{ .Values.server.ingress.path }}"` |  |
-| argo-cd.server.extraEnvVars[2].name | string | `"ARGOCD_SERVER_BASEHREF"` |  |
-| argo-cd.server.extraEnvVars[2].value | string | `"{{ .Values.server.ingress.path }}"` |  |
+| argo-cd.server.extraEnvVars[1].value | string | `"{{ if (.Values.server.ingress.path | eq \"/\" | not) }}{{ .Values.server.ingress.path   }}{{ end }}"` |  |
 | argo-cd.server.ingress.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
 | argo-cd.server.ingress.annotations."traefik.ingress.kubernetes.io/router.tls" | string | `"true"` |  |
 | argo-cd.server.ingress.enabled | bool | `true` |  |
