@@ -1,5 +1,5 @@
 apiVersion: v2
-appVersion: v3.1.0
+appVersion: v3.0.4
 dependencies:
   - name: traefik
     repository: oci://ghcr.io/traefik/helm
