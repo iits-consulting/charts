@@ -2,6 +2,7 @@ argo-cd:
   fullnameOverride: "argocd"
 
   controller:
+    kind: StatefulSet
     replicaCount: 2
     extraEnvVars:
       - name: "TZ"
