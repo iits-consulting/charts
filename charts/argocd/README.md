@@ -1,6 +1,6 @@
 # argocd
 
-![Version: 16.3.0](https://img.shields.io/badge/Version-16.3.0-informational?style=flat-square) ![AppVersion: 2.11.5](https://img.shields.io/badge/AppVersion-2.11.5-informational?style=flat-square)
+![Version: 16.2.1](https://img.shields.io/badge/Version-16.2.1-informational?style=flat-square) ![AppVersion: 2.11.7](https://img.shields.io/badge/AppVersion-2.11.7-informational?style=flat-square)
 
 This chart is used to bootstrap a Kubernetes cluster with `argocd`.
 You can use this chart to deploy `argocd` through tools like `terraform`.
@@ -51,7 +51,7 @@ named infrastructure-charts and will install everything from there.
 
 | Repository | Name | Version |
 |------------|------|---------|
-| oci://registry-1.docker.io/bitnamicharts | argo-cd | 6.6.3 |
+| oci://registry-1.docker.io/bitnamicharts | argo-cd | 6.6.7 |
 
 ## Values
 
