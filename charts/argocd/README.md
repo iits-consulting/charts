@@ -21,6 +21,10 @@ resource "helm_release" "argocd" {
   render_subchart_notes = true
   dependency_update     = true
   wait_for_jobs         = true
+  set_sensitive {
+    name  = "projects.app-charts.git.password"
+    value = var.git_token
+  }
   values                = [
     yamlencode({
       projects = {
@@ -28,12 +32,10 @@ resource "helm_release" "argocd" {
           projectValues = {
             # Set this to enable stage values-$STAGE.yaml
             stage        = var.stage
-            # Example values which are handed down to the project. Like this you can give over informations from terraform to argocd
+            # Example values which are handed down to the project. Like this you can give over information from terraform to argo-cd
             rootDomain  = var.domain_name
           }
-
           git = {
-            password = var.git_token
             repoUrl  = "https://github.com/iits-consulting/otc-infrastructure-charts-template"
           }
         }
