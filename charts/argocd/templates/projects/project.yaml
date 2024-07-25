@@ -16,6 +16,10 @@ spec:
   destinations:
     - namespace: '*'
       server: 'https://kubernetes.default.svc'
+  syncWindows:
+  {{- range $syncWindow := default $.Values.global.syncWindow $project.syncWindow }}
+    - {{ (tpl (toYaml $syncWindow) $) | nindent 6 -}}
+  {{ end }}
   clusterResourceWhitelist:
     - group: '*'
       kind: '*'
