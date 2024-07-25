@@ -90,6 +90,10 @@ named infrastructure-charts and will install everything from there.
 | argo-cd.server.insecure | bool | `true` |  |
 | argo-cd.server.logFormat | string | `"json"` |  |
 | argo-cd.server.replicaCount | int | `2` |  |
+| global.syncWindow[0].duration | string | `"24h"` |  |
+| global.syncWindow[0].kind | string | `"allow"` |  |
+| global.syncWindow[0].manualSync | bool | `true` |  |
+| global.syncWindow[0].schedule | string | `"* * * * *"` |  |
 | policyException.enabled | bool | `true` |  |
 | projects | string | `nil` | List of projects which you want to bootstrap |
 
