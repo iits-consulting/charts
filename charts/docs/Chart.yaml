@@ -1,0 +1,6 @@
+apiVersion: v2
+name: docs
+description: Documentation for our Fixed Price Projects
+type: application
+version: 0.1.0
+appVersion: "1.16.0"
