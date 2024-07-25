@@ -6,6 +6,7 @@ on:
       - "*"
     paths:
       - 'charts/**/values.yaml'
+      - 'charts/**/Chart.yaml'
       - 'charts/README.md.gotmpl'
       - '.github/workflows/update_documentation.yaml'
 

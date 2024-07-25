@@ -1,7 +1,15 @@
+global:
+  syncWindow:
+  - kind: allow
+    schedule: '* * * * *'
+    manualSync: true
+    duration: 24h
+
 argo-cd:
   fullnameOverride: "argocd"
 
   controller:
+    kind: StatefulSet
     replicaCount: 2
     extraEnvVars:
       - name: "TZ"
@@ -13,6 +21,7 @@ argo-cd:
   notifications:
     enabled: false
   repoServer:
+    replicaCount: 2
     extraEnvVars:
       - name: "TZ"
         value: "Europe/Berlin"
@@ -22,6 +31,7 @@ argo-cd:
       seccompProfile:
         type: Unconfined
   server:
+    replicaCount: 2
     ingress:
       enabled: true
       hostname: "SET_BY_TERRAFORM"
@@ -32,10 +42,15 @@ argo-cd:
     extraEnvVars:
       - name: "TZ"
         value: "Europe/Berlin"
+
+      # There is no need to specify ARGOCD_SERVER_BASEHREF, as that would only change the UI path, which is done by setting ARGOCD_SERVER_ROOTPATH
+      # ARGOCD_SERVER_BASEHREF changes UI path only
+      # ARGOCD_SERVER_ROOTPATH changes UI + API path
       - name: "ARGOCD_SERVER_ROOTPATH"
-        value: "{{ .Values.server.ingress.path }}"
-      - name: "ARGOCD_SERVER_BASEHREF"
-        value: "{{ .Values.server.ingress.path }}"
+        # If we are serving on the root '/' this variable needs to be either non-existent or empty for the argo-server to respond properly.
+        # Relevant if you want to serve argo on a dedicated sub-domain i.e. argo.example.com
+        value: "{{ $path := .Values.server.ingress.path }}{{ if ($path | ne \"/\") }}{{ $path }}{{ end }}"
+
     logFormat: json
     insecure: true
 
@@ -100,9 +115,9 @@ argo-cd:
 
 # -- List of projects which you want to bootstrap
 projects:
-## bootstraps infrastructure related charts like traefik, elastic-stack...
+#  # bootstraps infrastructure related charts like traefik, elastic-stack...
 #  infrastructure-charts:
-## values which are handed over to the infrastructure-charts project like this you can for example give over information from terraform to argocd
+#    # values which are handed over to the infrastructure-charts project like this you can for example give over information from terraform to argocd
 #    projectValues:
 #      # Set this to enable stage values.yaml
 #      stage:
@@ -132,6 +147,14 @@ projects:
 #
 #    # defaults to *
 #    allowedUrls:
+#
+#    syncWindow:
+#      - kind: deny
+#        schedule: '0 0 * * *'
+#        duration: 23h
+#      - kind: allow
+#        schedule: '0 23 * * *'
+#        duration: 1h
 
 # Kyverno Policy Exception
 policyException:

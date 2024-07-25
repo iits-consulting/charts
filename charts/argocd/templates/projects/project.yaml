@@ -3,10 +3,6 @@ apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
   name: {{ $projectName }}
-  # project needs to be installed after the crds
-  annotations:
-    "helm.sh/hook": post-install,post-upgrade
-    "helm.sh/hook-weight": "-5"
 spec:
   sourceRepos:
     - {{ $project.git.repoUrl }}
@@ -20,6 +16,10 @@ spec:
   destinations:
     - namespace: '*'
       server: 'https://kubernetes.default.svc'
+  syncWindows:
+  {{- range $syncWindow := default $.Values.global.syncWindow $project.syncWindow }}
+    - {{ (tpl (toYaml $syncWindow) $) | nindent 6 -}}
+  {{ end }}
   clusterResourceWhitelist:
     - group: '*'
       kind: '*'

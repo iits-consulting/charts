@@ -31,7 +31,6 @@ spec:
           namespaces:
             - {{ $.Release.Namespace }}
           names:
-
             - argocd-repo-server*
 {{- end }}
 {{- end }}
