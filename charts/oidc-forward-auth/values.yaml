@@ -15,6 +15,9 @@ gatekeeper:
   livenessProbe:
     enabled: true
 
+  image:
+    tag: 2.14.0
+
   config:
 
     # -- Required: client id used to authenticate to the oauth service
@@ -95,10 +98,7 @@ middleware:
 
   authResponseHeaders:
     - "Authorization"
-
-  addAuthCookiesToResponse:
-    - "kc-access"
-    - "kc-state"
+    - "Set-Cookie"
 
 ingress:
   enabled: true
