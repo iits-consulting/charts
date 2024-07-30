@@ -34,7 +34,7 @@ description: |
       enabled: true
   ```
 name: oidc-forward-auth
-version: 1.6.0
+version: 1.6.1
 dependencies:
   - name: gatekeeper
     repository: https://gogatekeeper.github.io/helm-gogatekeeper
