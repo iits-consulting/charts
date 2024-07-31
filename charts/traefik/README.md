@@ -1,6 +1,6 @@
 # traefik
 
-![Version: 29.0.1](https://img.shields.io/badge/Version-29.0.1-informational?style=flat-square) ![AppVersion: v3.0.4](https://img.shields.io/badge/AppVersion-v3.0.4-informational?style=flat-square)
+![Version: 30.0.0](https://img.shields.io/badge/Version-30.0.0-informational?style=flat-square) ![AppVersion: v3.1.1](https://img.shields.io/badge/AppVersion-v3.1.1-informational?style=flat-square)
 
 The traefik ingress controller with some additional resources and sane default values for IITS projects.
 Always read the [Changelog](Changelog.md) for information about possible migrations.
@@ -9,7 +9,7 @@ Always read the [Changelog](Changelog.md) for information about possible migrati
 
 | Repository | Name | Version |
 |------------|------|---------|
-| oci://ghcr.io/traefik/helm | traefik | 29.0.1 |
+| oci://ghcr.io/traefik/helm | traefik | 30.0.2 |
 
 ## Values
 
@@ -25,6 +25,7 @@ Always read the [Changelog](Changelog.md) for information about possible migrati
 | traefik.additionalArguments[0] | string | `"--ping"` |  |
 | traefik.deployment.replicas | int | `2` |  |
 | traefik.globalArguments[0] | string | `"--global.checknewversion"` |  |
+| traefik.image.tag | string | `"v3.1.1"` |  |
 | traefik.ingressClass.enabled | bool | `true` |  |
 | traefik.ingressClass.isDefaultClass | bool | `true` |  |
 | traefik.ingressRoute.dashboard.enabled | bool | `true` |  |
