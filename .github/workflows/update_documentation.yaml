@@ -3,7 +3,7 @@ name: Update helm chart README files
 on:
   push:
     branches:
-      - "*"
+      - "**"
     paths:
       - 'charts/**/values.yaml'
       - 'charts/**/Chart.yaml'

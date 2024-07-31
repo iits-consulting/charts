@@ -3,10 +3,10 @@ name: Check Charts
 on:
   pull_request:
     branches:
-      - '*'
+      - '**'
   push:
     branches:
-      - "*"
+      - 'main'
 
 env:
   HELM_VERSION: v3.14.4

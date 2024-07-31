@@ -1,4 +1,13 @@
 
+## 29.x -> 30.0.0
+
+- Updates to traefik 3.1.1
+  - There were breaking changes in the configuration of the gateway in the base chart. 
+  - If you use it, check the [Release Notes](https://github.com/traefik/traefik-helm-chart/releases/tag/v30.0.0) of traefik for the relevant changes.
+  - If you use a custom RBAC see the [Migration Guide](https://doc.traefik.io/traefik/v3.1/migration/v3/#v30-to-v31) for relevant migrations.
+
+***
+
 ## 28.2.x -> 29.0.1
 
 ⚠️ **Important Information** ⚠️
