@@ -1,17 +1,9 @@
 name: Update helm chart README files
 
 on:
-  pull_request:
-    branches:
-      - '*'
-    paths:
-      - 'charts/**/values.yaml'
-      - 'charts/**/Chart.yaml'
-      - 'charts/README.md.gotmpl'
-      - '.github/workflows/update_documentation.yaml'
   push:
     branches:
-      - "*"
+      - "**"
     paths:
       - 'charts/**/values.yaml'
       - 'charts/**/Chart.yaml'
