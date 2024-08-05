@@ -140,6 +140,20 @@ prometheusStack:
         requests:
           memory: "100Mi"
           cpu: "5m"
+    additionalRules:
+      enabled: false
+      groups: []
+#      - name: sensors
+#        rules:
+#          - alert: MissingData
+#            annotations:
+#              description: ""
+#              summary: ""
+#            expr: >
+#              sum() <= 0
+#            for: 5m
+#            labels:
+#              severity: warning
 
 # Kyverno Policy Exception
 policyException:

@@ -43,6 +43,8 @@ prometheus-stack:
 | global.ingress.paths.grafana | string | `"/grafana"` |  |
 | global.ingress.paths.prometheus | string | `"/prometheus"` |  |
 | policyException.enabled | bool | `true` |  |
+| prometheusStack.alertmanager.additionalRules.enabled | bool | `false` |  |
+| prometheusStack.alertmanager.additionalRules.groups | list | `[]` |  |
 | prometheusStack.alertmanager.alertmanagerSpec.externalUrl | string | `"https://{{$.Values.global.ingress.host}}{{$.Values.global.ingress.paths.alertmanager}}"` |  |
 | prometheusStack.alertmanager.alertmanagerSpec.resources.requests.cpu | string | `"5m"` |  |
 | prometheusStack.alertmanager.alertmanagerSpec.resources.requests.memory | string | `"100Mi"` |  |

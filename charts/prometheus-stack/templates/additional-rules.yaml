@@ -1,0 +1,12 @@
+{{- if .Values.prometheusStack.alertmanager.additionalRules.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: {{ printf "%s-%s" (include "kube-prometheus-stack.fullname" .) "prom-rules" | trunc 63 | trimSuffix "-" }}
+  namespace: {{ template "kube-prometheus-stack.namespace" . }}
+spec:
+  groups:
+    {{- range .Values.prometheusStack.alertmanager.additionalRules.groups }}
+      {{- toYaml . | nindent 4 }}
+    {{- end }}
+{{- end }}
