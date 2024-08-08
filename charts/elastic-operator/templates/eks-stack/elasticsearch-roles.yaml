@@ -1,0 +1,13 @@
+{{- range $roleName, $roleDescription := .Values.auth.roles }}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ $.Release.Name }}-role-{{ kebabcase $roleName }}
+type: Opaque
+stringData:
+  roles.yml: |-
+    {{ $roleName }}:
+{{ $roleDescription | toYaml | indent 6 }}
+
+---
+{{ end }}

@@ -1,0 +1,36 @@
+{{- if .Values.cce }}
+{{- range $i, $volume := .Values.cce.elasticsearch.volumes }}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  labels:
+    failure-domain.beta.kubernetes.io/region: {{ $.Values.cce.elasticsearch.region }}
+    failure-domain.beta.kubernetes.io/zone: {{ $volume.az }}
+    pv-dedicated-for: {{ $.Release.Namespace }}-{{ $.Release.Name }}
+  name: elasticsearch-{{ $i }}
+spec:
+  # claimRef is used as a method to bind the auto-generated pvc by the operator
+  #   to the specific volumes generated here
+  #   be aware that if a volume was already bound once, claimRef has to be cleaned up (uid, resourceVersion)
+  claimRef:
+    namespace: {{ $.Release.Namespace }}
+    kind: PersistentVolumeClaim
+    name: elasticsearch-data-{{ $.Release.Name }}-es-default-{{ $i }}
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: {{ $.Values.elasticsearch.volumeSize }}
+  csi:
+    driver: disk.csi.everest.io
+    fsType: ext4
+    volumeAttributes:
+      everest.io/disk-mode: SCSI
+      everest.io/disk-volume-type: {{ $.Values.cce.elasticsearch.volumeType }}
+      storage.kubernetes.io/csiProvisionerIdentity: everest-csi-provisioner
+      everest.io/crypt-key-id: {{ $volume.kmsId }}
+    volumeHandle: {{ $volume.id }}
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: {{ $.Values.cce.elasticsearch.storageClassName }}
+---
+{{- end }}
+{{- end }}

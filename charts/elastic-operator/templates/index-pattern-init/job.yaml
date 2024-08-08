@@ -1,0 +1,68 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{.Release.Name}}-index-pattern-init
+  annotations:
+    helm.sh/hook: post-install,post-upgrade
+    helm.sh/hook-weight: "-5"
+    checksum/config: {{ include (print $.Template.BasePath "/index-pattern-init/config.yaml") . | sha256sum | substr 0 50 }}
+spec:
+  backoffLimit: 0
+  parallelism: 1
+  completions: 1
+  template:
+    metadata:
+      name: {{.Release.Name}}-jobcommand
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: {{.Release.Name}}-index-pattern-init
+          image: {{ .Values.indexPatternInit.image.repository }}:{{ .Values.indexPatternInit.image.tag }}
+          imagePullPolicy: IfNotPresent
+          command: [ '/bin/sh', '-c' ]
+          args: [ "/index-pattern-init-config/index-pattern-init.sh" ]
+          env:
+            - name: ELASTICSEARCH_USERNAME
+              value: elastic
+            - name: ELASTICSEARCH_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: elastic
+                  name: {{ .Release.Name }}-es-elastic-user
+            - name: KIBANA_ENDPOINT
+              value: {{ .Release.Name }}-kb-http:5601
+          volumeMounts:
+            - name: index-pattern-init-config
+              mountPath: /index-pattern-init-config
+            - name: kibana-certificate
+              mountPath: /kb-cert
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            privileged: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            seccompProfile:
+              type: RuntimeDefault
+            runAsUser: {{ .Values.indexPatternInit.image.userId }}
+      volumes:
+        - name: index-pattern-init-config
+          configMap:
+            name: {{.Release.Name}}-index-pattern-init-config
+            defaultMode: 0755
+        - name: kibana-certificate
+          secret:
+            secretName: {{ .Release.Name }}-kb-http-certs-public
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+          - ALL
+        privileged: false
+        readOnlyRootFilesystem: true
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+        runAsUser: {{ .Values.indexPatternInit.image.userId }}
