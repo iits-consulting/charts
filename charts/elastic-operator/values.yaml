@@ -1,0 +1,473 @@
+#cce:
+#  elasticsearch:
+#    region: "eu-de"
+#    storageClassName: "ssd-encrypted"
+#    volumeType: "SSD"
+#    volumes:
+# -- Required
+#      - id:
+# -- Required
+#        az:
+# -- Required
+#        kmsId:
+# -- Required
+#      - id:
+# -- Required
+#        az:
+# -- Required
+#        kmsId:
+
+# aks:
+#  elasticsearch:
+#    volumeNamePrefix: REPLACE_ME"
+
+ingress:
+  kibana:
+    enabled: true
+    # -- Required, if enabled
+    host: "REPLACE_ME"
+    path: /kibana
+    className: traefik
+    labels:
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+      traefik.ingress.kubernetes.io/router.tls: "true"
+      traefik.ingress.kubernetes.io/router.middlewares: "routing-oidc-forward-auth@kubernetescrd"
+  elasticsearch:
+    enabled: false
+    # -- Required, if enabled
+    host: "REPLACE_ME"
+    path: /elasticsearch
+    className: traefik
+    labels:
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+      traefik.ingress.kubernetes.io/router.tls: "true"
+      traefik.ingress.kubernetes.io/router.middlewares: "routing-oidc-forward-auth@kubernetescrd"
+
+auth:
+  users:
+    custom_filebeat:
+      # if you provide an existing password, generatePasswords should be disabled
+      existingPassword: ""
+      roles:
+        - custom_filebeat
+    custom_kibana_guest:
+      # if you provide an existing password, generatePasswords should be disabled
+      existingPassword: ""
+      roles:
+        - viewer
+    custom_elastalert:
+      # if you provide an existing password, generatePasswords should be disabled
+      existingPassword: ""
+      roles:
+        - custom_elastalert
+  roles:
+    # see: https://www.elastic.co/guide/en/beats/filebeat/current/feature-roles.html
+    custom_filebeat:
+      cluster:
+        - monitor
+        - read_pipeline
+        - manage_ilm
+        - manage_ingest_pipelines
+        - manage_index_templates
+      indices:
+        - names:
+            - "*"
+          privileges:
+            - monitor
+            - create_index
+            - create_doc
+            - view_index_metadata
+            - manage_follow_index
+    # see: https://elastalert2.readthedocs.io/en/latest/elasticsearch_security_privileges.html
+    custom_elastalert:
+      cluster:
+        - monitor
+      indices:
+        - names:
+          - "elastalert*"
+          privileges:
+            - all
+        - names:
+          - "*"
+          privileges:
+            - read
+            - monitor
+            - view_index_metadata
+
+elasticsearch:
+  enabled: true
+  volumeSize: 200G
+  version: 8.17.1
+  nodeCount: 2
+  config:
+    node:
+      store:
+        allow_mmap: false
+    http:
+      max_header_size: 16kb
+    cluster:
+      max_shards_per_node: 30000
+  extraSecureSettings: []
+  javaOpts: "-Xmx6g -Xms6g -Dlog4j2.formatMsgNoLookups=true"
+  resources:
+    requests:
+      cpu: "200m"
+      memory: "6G"
+    limits:
+      cpu: "1000m"
+      memory: "8G"
+  podTemplateSpec:
+    containers:
+    - name: elasticsearch
+      resources:
+        requests:
+          cpu: "{{ .Values.elasticsearch.resources.requests.cpu }}"
+          memory: "{{ .Values.elasticsearch.resources.requests.memory }}"
+        limits:
+          cpu: "{{ .Values.elasticsearch.resources.limits.cpu }}"
+          memory: "{{ .Values.elasticsearch.resources.limits.memory }}"
+      env:
+      - name: ES_JAVA_OPTS
+        value: "{{ .Values.elasticsearch.javaOpts }}"
+
+filebeat:
+  enabled: true
+  version: 8.17.1
+  autodiscover:
+    providers:
+      - type: kubernetes
+        hints.enabled: true
+        hints.default_config:
+          type: container
+          paths:
+            - /var/log/containers/*${data.container.id}.log
+        node: ${NODE_NAME}
+  # default processors
+  processors:
+    - add_kubernetes_metadata: {}
+    - decode_json_fields:
+        when:
+            has_fields: ["message"]
+        fields: ["message"]
+        target: ""
+        overwrite_keys: true
+    - decode_json_fields:
+        when:
+            has_fields: ["msg"]
+        fields: ["msg"]
+        target: ""
+        overwrite_keys: true
+    - add_labels:
+        labels:
+          stage: ${STAGE:dev}
+    - drop_event:
+        when:
+          or:
+          - equals:
+              kubernetes.labels:
+                "common.k8s.elastic.co/type": "elasticsearch"
+          - equals:
+              kubernetes.labels:
+                "common.k8s.elastic.co/type": "beat"
+          - equals:
+              kubernetes.labels:
+                "common.k8s.elastic.co/type": "kibana"
+          - equals:
+              kubernetes.labels.app: "grafana"
+          - equals:
+              kubernetes.labels.app: "prometheus-stack-operator"
+          - equals:
+              kubernetes.labels.app: "botkube"
+          - equals:
+              kubernetes.labels.app: "prometheus"
+          - equals:
+              msg: "no session found in request, redirecting for authorization"
+          - equals:
+              kubernetes.container.name: "kube-state-metrics"
+          - equals:
+              kubernetes.container.name: "traefik-admin-dashboard"
+          - equals:
+              kubernetes.container.name: portal
+          - equals:
+              kubernetes.container.name: repo-server
+          - equals:
+              kubernetes.container.name: argocd-notifications-controller
+          - equals:
+              kubernetes.container.name: application-controller
+          - equals:
+              kubernetes.namespace: kube-system
+          - equals:
+              kubernetes.labels.component: registry
+          - equals:
+              RequestPath: "/ping"
+          - equals:
+              RouterName: "kibana@file"
+          - equals:
+              message: "200 OK: GET - /public/api/health"
+          - contains:
+              message: "vault-sealed-check\" does not have associated TTL"
+          - contains:
+              message: "Error while renaming Node ID"
+          - contains:
+              message: "pkg/mod/k8s.io/client-go@v0.17.0/tools/cache/reflector.go:108"
+          # NGINX Ingress
+          - contains:
+              message: "TCP 200 0 0"
+          # Vault logs
+          - equals:
+              auth.metadata.role_name: gitlab
+          - equals:
+              auth.metadata.role_name: banzai-webhook-role
+          - equals:
+              app: vault-secrets-webhook
+          - contains:
+              message: "agent.server: member joined, marking health alive:"
+  # add additional processors without overwriting the default ones  (they will get appended)
+  extraProcessors: []
+  # default indices
+  indices:
+    - index: "%{[kubernetes.namespace]:not-defined}-%{[agent.version]}-%{+yyyy.MM}"
+  # add additional indices without overwriting the default ones (they will get prepended)
+  extraIndices: []
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "100M"
+    limits:
+      cpu: "400m"
+      memory: "500M"
+  readinessProbe:
+    failureThreshold: 50
+    initialDelaySeconds: 20
+    periodSeconds: 30
+    timeoutSeconds: 10
+  env:
+    - name: NODE_NAME
+      valueFrom:
+        fieldRef:
+          apiVersion: v1
+          fieldPath: spec.nodeName
+    - name: ELASTICSEARCH_USERNAME
+      valueFrom:
+        secretKeyRef:
+          key: username
+          name: "{{ .Release.Name }}-user-custom-filebeat"
+    - name: ELASTICSEARCH_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          key: password
+          name: "{{ .Release.Name }}-user-custom-filebeat"
+  # -- example: Setup stage name
+  # - name: STAGE
+  #   value: "REPLACE_ME"
+  extraEnv: []
+  volumes:
+    # for otc: https://docs.otc.t-systems.com/cloud-container-engine/umn/nodes/node_o_and_m/differences_between_cce_node_mountpath_configurations_and_community_native_configurations.html
+    - name: varlibcontainerdcontainerlogs
+      hostPath:
+        path: /var/lib/containerd/container_logs
+    # for kubernetes native, like /var/log/pods or /var/log/containers
+    - name: varlog
+      hostPath:
+        path: /var/log
+        type: ''
+  extraVolumes: []
+  volumeMounts:
+    - name: varlibcontainerdcontainerlogs
+      mountPath: /var/lib/containerd/container_logs
+      readOnly: true
+    - mountPath: /var/log
+      name: varlog
+      readOnly: true
+  extraVolumeMounts: []
+  tolerations: []
+
+kibana:
+  enabled: true
+  version: 8.17.1
+  config:
+    server:
+      basePath: "{{ .Values.ingress.kibana.path }}"
+      publicBaseUrl: "https://{{ .Values.ingress.kibana.host }}{{ .Values.ingress.kibana.path }}"
+      rewriteBasePath: true
+    monitoring:
+      ui:
+        enabled: true
+        container:
+          elasticsearch:
+            enabled: true
+    xpack:
+      reporting:
+        csv:
+          maxSizeBytes: 1048576000
+        queue:
+          timeout: 1800000
+      security:
+        authc:
+          providers: # allow login as anonymous user into kibana, using anonymous user of elasticsearch
+            anonymous:
+              anonymous1:
+                order: 0
+                credentials:
+                  username: '${ANONYMOUS_USERNAME}'
+                  password: '${ANONYMOUS_PASSWORD}'
+            basic:
+              basic1:
+                order: 1
+  podTemplateSpec:
+    securityContext:
+      seccompProfile:
+        type: RuntimeDefault
+    containers:
+      - name: kibana
+        env:
+          - name: ANONYMOUS_USERNAME
+            valueFrom:
+              secretKeyRef:
+                key: username
+                name: "{{ .Release.Name }}-user-custom-kibana-guest"
+          - name: ANONYMOUS_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: password
+                name: "{{ .Release.Name }}-user-custom-kibana-guest"
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsNonRoot: true
+          runAsUser: 1000
+          capabilities:
+            drop:
+            - ALL
+          seccompProfile:
+            type: RuntimeDefault
+    initContainers:
+      - name: elastic-internal-init
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsNonRoot: true
+          runAsUser: 1000
+          capabilities:
+            drop:
+            - ALL
+          seccompProfile:
+            type: RuntimeDefault
+
+indexPatternInit:
+  image:
+    repository: docker.io/curlimages/curl
+    tag: 8.11.1
+    userId: 100
+  tolerations: []
+  nodeSelector: {}
+  indices:
+    admin:
+      timestampField: "@timestamp"
+    argocd:
+      timestampField: "@timestamp"
+    auth:
+      timestampField: "@timestamp"
+    cert-manager:
+      timestampField: "@timestamp"
+    kyverno:
+      timestampField: "@timestamp"
+    monitoring:
+      timestampField: "@timestamp"
+    routing:
+      timestampField: "@timestamp"
+    vault:
+      timestampField: "@timestamp"
+    not-defined:
+      timestampField: "@timestamp"
+
+ilm:
+  image:
+    repository: docker.io/curlimages/curl
+    tag: 8.11.1
+    userId: 100
+  tolerations: []
+  nodeSelector: {}
+  policies:
+    long:
+      #business apps and security relevant logs
+      indexPatterns: [ "auth*", "vault*" ]
+      coldAfter: 32d
+      deleteAfter: 365d
+    medium:
+      indexPatterns: [ "cert-manager*", "routing*", "not-defined*" ]
+      coldAfter: 32d
+      deleteAfter: 90d
+    short:
+      indexPatterns: [ "admin*", "argocd*", "kyverno*", "monitoring*" ]
+      coldAfter: 2d
+      deleteAfter: 14d
+
+generatePasswords:
+  enabled: true
+  image:
+    repository: docker.io/bitnami/kubectl
+    tag: 1.32.1
+    userId: 100
+  tolerations: []
+  nodeSelector: {}
+  secrets:
+    - name: "{{ .Release.Name }}-user-custom-kibana-guest"
+      key: password
+      #length: 32
+    - name: "{{ .Release.Name }}-user-custom-filebeat"
+      key: password
+      #length: 32
+    - name: "{{ .Release.Name }}-user-custom-elastalert"
+      key: password
+      #length: 32
+
+backup:
+  enabled: false
+  image:
+    repository: docker.io/curlimages/curl
+    tag: 8.11.1
+    userId: 100
+  tolerations: []
+  nodeSelector: {}
+  repoName: "elastic-backups"
+  # -- for Azure blob storage use "azure"
+  repoType: "s3"
+
+  secureSettings:
+    # # S3 compatible / OTC
+    # # -- Required
+    # access_key: "REPLACE_ME"
+    # # -- Required
+    # secret_key: "REPLACE_ME"
+
+    # # Azure blob storage
+    # # -- Required
+    # account: "REPLACE_ME"
+    # # -- Required (alternative for key)
+    # sas_token: "REPLACE_ME"
+    # # -- Required (alternative for sas_token)
+    # key: "REPLACE_ME"
+
+  repositorySettings:
+    # # S3 compatible / OTC
+    # # -- Required
+    # endpoint: "https://obs.eu-de.otc.t-systems.com"
+    # # -- Required
+    # bucket: "REPLACE_ME"
+
+    # # Azure blob storage
+    # container: "REPLACE_ME"
+
+  policy:
+    name: "nightly-backup"
+    schedule: "0 0 0 * * ?"
+    # indices can also be set to a list such as [ "data-*", "important" ]
+    indices: [ "*" ]
+    retention:
+      expireAfter: "15d"
+      minCount: 5
+      maxCount: 15
+
+policyException:
+  enabled: true

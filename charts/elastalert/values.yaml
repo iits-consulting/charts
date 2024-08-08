@@ -9,6 +9,24 @@ elastalert2:
     - vaultInjection
     - kyverno
     - kafkaTopicCreatedNotification
+  # -- Exemplary Configuration for elastic-operator:
+  # elasticsearch:
+  #   # needs to be in the same namespaces as elastic stack if used like this
+  #   host: elastic-operator-es-http
+  #   useSsl: "True"
+  #   caCerts: "/certs/tls.crt"
+  #   certsVolumes:
+  #     - name: elasticsearch-certs
+  #       secret:
+  #         defaultMode: 420
+  #         secretName: elastic-operator-es-http-certs-public
+  #   certsVolumeMounts:
+  #     - name: elasticsearch-certs
+  #       mountPath: /certs
+  #       readOnly: true
+  #   credentialsSecret: elastic-operator-user-custom-elastalert
+  #   credentialsSecretUsernameKey: username
+  #   credentialsSecretPasswordKey: password
 customRules:
   slack:
     # -- Required
