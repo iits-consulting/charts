@@ -1,0 +1,46 @@
+{{- if .Values.backup.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{.Release.Name}}-backup-config
+data:
+  configure-backup.sh: |
+    #!/bin/sh
+    set -eu
+
+    endpoint="https://{{ .Release.Name }}-es-http:9200"
+
+    echo -e "\nINFO: Creating {{ $.Values.backup.repoType}} snapshot repository {{ .Values.backup.repoName }}"
+    curl -u "$ELASTICSEARCH_USERNAME:$ELASTICSEARCH_PASSWORD" --cacert /es-cert/ca.crt -s -X PUT --header 'Content-Type: application/json' ${endpoint}/_snapshot/{{ .Values.backup.repoName }} --data-binary @- << EOF
+
+      {
+        "type": "{{ .Values.backup.repoType }}",
+        "settings": {{ .Values.backup.repositorySettings | toJson }}
+      }
+    EOF
+
+    echo -e "\nINFO: {{ .Values.backup.repoType }} snapshot repository {{ .Values.backup.repoName }} created!"
+
+    echo -e "\nINFO: Creating SLM policy {{ .Values.backup.policy.name }}"
+    curl -u "$ELASTICSEARCH_USERNAME:$ELASTICSEARCH_PASSWORD" --cacert /es-cert/ca.crt -s -X PUT --header 'Content-Type: application/json' ${endpoint}/_slm/policy/{{ .Values.backup.policy.name }} --data-binary @- << EOF
+
+
+      {
+        "schedule": "{{ .Values.backup.policy.schedule }}",
+        "name": "<{{ .Values.backup.policy.name }}-{now/d}>",
+        "repository": "{{ .Values.backup.repoName }}",
+        "config": {
+          "indices": {{.Values.backup.policy.indices | toJson }},
+          "ignore_unavailable": false,
+          "include_global_state": true
+        },
+        "retention": {
+          "expire_after": "{{ .Values.backup.policy.retention.expireAfter }}",
+          "min_count": {{ .Values.backup.policy.retention.minCount }},
+          "max_count": {{ .Values.backup.policy.retention.maxCount }}
+        }
+      }
+    EOF
+
+    echo -e "\nINFO: SLM policy {{ .Values.backup.policy.name }} created!"
+{{- end }}

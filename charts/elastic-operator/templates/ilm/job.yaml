@@ -1,0 +1,67 @@
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{.Release.Name}}-ilm-init
+  annotations:
+    helm.sh/hook: post-install,post-upgrade
+    helm.sh/hook-weight: "-5"
+    checksum/config: {{ include (print $.Template.BasePath "/ilm/config.yaml") . | sha256sum | substr 0 50 }}
+spec:
+  backoffLimit: 0
+  parallelism: 1
+  completions: 1
+  template:
+    metadata:
+      name: {{.Release.Name}}-jobcommand
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: {{.Release.Name}}-ilm-init
+          image: {{ .Values.ilm.image.repository }}:{{ .Values.ilm.image.tag }}
+          imagePullPolicy: IfNotPresent
+          command: ['/bin/sh', '-c']
+          args: ["/ilm-config/configure-ilm.sh"]
+          env:
+            - name: ELASTICSEARCH_USERNAME
+              value: elastic
+            - name: ELASTICSEARCH_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: elastic
+                  name: {{ .Release.Name }}-es-elastic-user
+          volumeMounts:
+            - name: ilm-config
+              mountPath: /ilm-config
+            - name: elasticsearch-certificate
+              mountPath: /es-cert
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            privileged: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            seccompProfile:
+              type: RuntimeDefault
+            runAsUser: {{ .Values.indexPatternInit.image.userId }}
+      volumes:
+        - name: ilm-config
+          configMap:
+            name: {{.Release.Name}}-ilm-config
+            defaultMode: 0755
+        - name: elasticsearch-certificate
+          secret:
+            secretName: {{ .Release.Name }}-es-http-certs-public
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+          - ALL
+        privileged: false
+        readOnlyRootFilesystem: true
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+        runAsUser: {{ .Values.ilm.image.userId }}

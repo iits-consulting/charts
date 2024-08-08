@@ -1,0 +1,45 @@
+{{ if .Values.elasticsearch.enabled }}
+
+apiVersion: elasticsearch.k8s.elastic.co/v1
+kind: Elasticsearch
+metadata:
+  name: {{ .Release.Name }}
+  annotations:
+    eck.k8s.elastic.co/license: basic
+spec:
+  version: {{ .Values.elasticsearch.version }}
+  http:
+    service:
+      metadata:
+        annotations:
+          traefik.ingress.kubernetes.io/service.serverstransport: "{{ $.Release.Namespace }}-{{ $.Release.Name }}-elasticsearch@kubernetescrd"
+          traefik.ingress.kubernetes.io/service.passhostheader: "true"
+          traefik.ingress.kubernetes.io/service.serversscheme: "https"
+  secureSettings:
+    - secretName: "{{ .Release.Name }}-backup-secure-settings"
+{{- range $extraSetting := .Values.elasticsearch.extraSecureSettings }}
+    - secretName: {{ $extraSetting }}
+{{- end }}
+  nodeSets:
+  - name: default
+    count: {{ .Values.elasticsearch.nodeCount }}
+
+    config:
+{{ .Values.elasticsearch.config | toYaml | indent 6 }}
+    podTemplate:
+      spec:
+        containers:
+        - name: elasticsearch
+          resources:
+{{ .Values.elasticsearch.resources | toYaml | indent 12 }}
+          env:
+          - name: JAVA_OPTS
+            value: {{ .Values.elasticsearch.javaOpts | quote }}
+    volumeClaimTemplates:
+{{- if .Values.cce }}
+      - {{ include "template.otcPVC" $ |  indent 8 | trim }}
+{{ else }}
+      - {{ include "template.regularPVC" $ | indent 8 | trim }}
+{{ end }}
+
+{{ end }}

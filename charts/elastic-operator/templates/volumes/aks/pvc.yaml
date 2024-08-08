@@ -1,0 +1,18 @@
+{{- if .Values.aks }}
+{{- range $i  := until (.Values.elasticsearch.nodeCount | int) }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: elasticsearch-data-{{ $.Release.Name }}-es-default-{{ $i }}
+  annotations:
+    argocd.argoproj.io/sync-wave: “-5”
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ $.Values.elasticsearch.volumeSize }}
+  storageClassName: {{ $.Values.aks.elasticsearch.storageClassName }}
+---
+{{- end }}
+{{- end }}

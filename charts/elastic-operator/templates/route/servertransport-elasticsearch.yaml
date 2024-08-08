@@ -1,0 +1,8 @@
+apiVersion: traefik.io/v1alpha1
+kind: ServersTransport
+metadata:
+  name: {{ .Release.Name }}-elasticsearch
+spec:
+  serverName: {{ .Release.Name }}-es-http
+  rootCAsSecrets:
+    - {{ .Release.Name }}-es-http-certs-public

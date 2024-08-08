@@ -1,0 +1,97 @@
+{{ if .Values.filebeat.enabled }}
+
+apiVersion: beat.k8s.elastic.co/v1beta1
+kind: Beat
+metadata:
+  name: {{ .Release.Name }}
+spec:
+  type: filebeat
+  version: {{ .Values.filebeat.version }}
+  elasticsearchRef:
+    name: {{ .Release.Name }}
+  kibanaRef:
+    name: {{ .Release.Name }}
+  config:
+    filebeat:
+      autodiscover:
+{{ .Values.filebeat.autodiscover | toYaml | indent 8 }}
+    processors:
+{{ concat .Values.filebeat.processors .Values.filebeat.extraProcessors | toYaml | indent 6 }}
+    output.elasticsearch:
+      username: '${ELASTICSEARCH_USERNAME}'
+      password: '${ELASTICSEARCH_PASSWORD}'
+      indices:
+{{ concat .Values.filebeat.extraIndices .Values.filebeat.indices | toYaml | indent 8}}
+  daemonSet:
+    podTemplate:
+      spec:
+        # needed for autodiscover
+        # see: https://github.com/elastic/cloud-on-k8s/blob/5937685b9085a5b185dde3d31ad50ccb5cdc034b/config/recipes/beats/filebeat_autodiscover.yaml
+        serviceAccountName: {{ .Release.Name }}-filebeat
+        automountServiceAccountToken: true
+        terminationGracePeriodSeconds: 30
+        dnsPolicy: ClusterFirstWithHostNet
+        hostNetwork: true
+        securityContext:
+          runAsUser: 0
+        tolerations:
+{{ .Values.filebeat.tolerations | toYaml | indent 10 }}
+        containers:
+        - name: filebeat
+          resources:
+{{ .Values.filebeat.resources | toYaml | indent 12}}
+          env:
+          - name: POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+          - name: NODE_NAME
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: spec.nodeName
+          - name: ELASTICSEARCH_USERNAME
+            value: elastic
+          - name: ELASTICSEARCH_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: elastic
+                name: {{ .Release.Name }}-es-elastic-user
+{{ .Values.filebeat.extraEnvs | toYaml | indent 10 }}
+          volumeMounts:
+          - name: varlibcontainerdcontainerlogs
+            mountPath: /var/lib/containerd/container_logs
+          - mountPath: /var/lib/docker/containers
+            name: varlibdockercontainers
+            readOnly: true
+          - mountPath: /var/log
+            name: varlog
+            readOnly: true
+          - mountPath: /var/run/docker.sock
+            name: varrundockersock
+            readOnly: true
+{{ if .Values.filebeat.extraVolumeMounts }}
+{{ .Values.filebeat.extraVolumeMounts | toYaml | indent 10 }}
+{{- end }}
+        volumes:
+        - name: varlibcontainerdcontainerlogs
+          hostPath:
+            path: /var/lib/containerd/container_logs
+        - name: varlibdockercontainers
+          hostPath:
+            path: /var/lib/docker/containers
+            type: ''
+        - name: varlog
+          hostPath:
+            path: /var/log
+            type: ''
+        - name: varrundockersock
+          hostPath:
+            path: /var/run/docker.sock
+            type: ''
+{{ if .Values.filebeat.extraVolumes }}
+{{ .Values.filebeat.extraVolumes | toYaml | indent 8 }}
+{{- end -}}
+
+{{ end }}
