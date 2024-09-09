@@ -1,6 +1,9 @@
 cert-manager:
-  extraArgs:
-
+  extraArgs: [ ]
+  prometheus:
+    enabled: true
+    servicemonitor:
+      enabled: true
 
 cert-manager-webhook-opentelekomcloud:
   groupName: acme.opentelekomcloud.com
