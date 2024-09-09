@@ -10,7 +10,7 @@ description: |
     name                  = "argocd"
     repository            = "https://charts.iits.tech"
     chart                 = "argocd"
-    version               = "16.2.1"
+    version               = "16.3.0"
     namespace             = "argocd"
     create_namespace      = true
     wait                  = true
@@ -48,9 +48,9 @@ description: |
   named infrastructure-charts and will install everything from there.
 
 name: argocd
-appVersion: 2.11.7
-version: 16.2.1
+appVersion: 2.13.2
+version: 16.3.0
 dependencies:
   - name: argo-cd
     repository: oci://registry-1.docker.io/bitnamicharts
-    version: 6.6.7
+    version: 7.0.10
