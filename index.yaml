@@ -5771,6 +5771,21 @@ entries:
     version: 1.0.0
   traefik:
   - apiVersion: v2
+    appVersion: v3.1.2
+    created: "2024-09-09T10:42:37.753841445Z"
+    dependencies:
+    - name: traefik
+      repository: oci://ghcr.io/traefik/helm
+      version: 31.0.0
+    description: 'The traefik ingress controller with some additional resources and
+      sane default values for IITS projects.  Always read the [Changelog](Changelog.md)
+      for information about possible migrations. '
+    digest: 6931be892a7508f69ba814db3f98a070485adf8da7db95b2cdf008cfcac7159a
+    name: traefik
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/traefik-31.0.0/traefik-31.0.0.tgz
+    version: 31.0.0
+  - apiVersion: v2
     appVersion: v3.1.1
     created: "2024-07-31T12:30:16.219135803Z"
     dependencies:
@@ -5969,34 +5984,6 @@ entries:
     version: 10.22.0
   - apiVersion: v2
     appVersion: 10.22.0
-    created: "2023-06-05T13:56:30.859491629Z"
-    dependencies:
-    - name: traefik
-      repository: https://helm.traefik.io/traefik
-      version: 10.22.0
-    description: The traefik ingress controller with some additional resources and
-      sane default values for IITS projects
-    digest: 813943df3ee16c6cc66bb5f52ffd886a85a6d59ee3db4abfb8390618b8e75d65
-    name: traefik
-    urls:
-    - https://github.com/iits-consulting/charts/releases/download/traefik-10.22.0-internal-svc/traefik-10.22.0-internal-svc.tgz
-    version: 10.22.0-internal-svc
-  - apiVersion: v2
-    appVersion: 10.22.0
-    created: "2023-07-06T10:42:57.126233149Z"
-    dependencies:
-    - name: traefik
-      repository: https://helm.traefik.io/traefik
-      version: 10.22.0
-    description: The traefik ingress controller with some additional resources and
-      sane default values for IITS projects
-    digest: c394496f3f01a5ebee6547874317b6a52fbef08f9d65b8bfb9be085a711717d3
-    name: traefik
-    urls:
-    - https://github.com/iits-consulting/charts/releases/download/traefik-10.22.0-internal-svc/traefik-10.22.0-internal-svc.tgz
-    version: 10.22.0-internal-svc
-  - apiVersion: v2
-    appVersion: 10.22.0
     created: "2023-06-05T15:27:51.211737249Z"
     dependencies:
     - name: traefik
@@ -6011,6 +5998,20 @@ entries:
     version: 10.22.0-internal-svc
   - apiVersion: v2
     appVersion: 10.22.0
+    created: "2023-06-05T13:56:30.859491629Z"
+    dependencies:
+    - name: traefik
+      repository: https://helm.traefik.io/traefik
+      version: 10.22.0
+    description: The traefik ingress controller with some additional resources and
+      sane default values for IITS projects
+    digest: 813943df3ee16c6cc66bb5f52ffd886a85a6d59ee3db4abfb8390618b8e75d65
+    name: traefik
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/traefik-10.22.0-internal-svc/traefik-10.22.0-internal-svc.tgz
+    version: 10.22.0-internal-svc
+  - apiVersion: v2
+    appVersion: 10.22.0
     created: "2023-06-05T15:23:39.341522145Z"
     dependencies:
     - name: traefik
@@ -6019,6 +6020,20 @@ entries:
     description: The traefik ingress controller with some additional resources and
       sane default values for IITS projects
     digest: 5deda0ad170782a7918aafacb06f8a42de5baf977d85f3cd5d3aef065edc6338
+    name: traefik
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/traefik-10.22.0-internal-svc/traefik-10.22.0-internal-svc.tgz
+    version: 10.22.0-internal-svc
+  - apiVersion: v2
+    appVersion: 10.22.0
+    created: "2023-07-06T10:42:57.126233149Z"
+    dependencies:
+    - name: traefik
+      repository: https://helm.traefik.io/traefik
+      version: 10.22.0
+    description: The traefik ingress controller with some additional resources and
+      sane default values for IITS projects
+    digest: c394496f3f01a5ebee6547874317b6a52fbef08f9d65b8bfb9be085a711717d3
     name: traefik
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-10.22.0-internal-svc/traefik-10.22.0-internal-svc.tgz
@@ -6221,4 +6236,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/waf-cert-uploader-0.1.1/waf-cert-uploader-0.1.1.tgz
     version: 0.1.1
-generated: "2024-09-09T09:41:35.471205376Z"
+generated: "2024-09-09T10:42:37.754538375Z"
