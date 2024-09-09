@@ -30,6 +30,6 @@ spec:
           names:
             - '*cert-manager-webhook-opentelekomcloud*'
           namespaces:
-            - cert-manager
+            - {{ $.Release.Namespace }}
 {{- end }}
 {{- end }}
