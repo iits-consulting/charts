@@ -5242,6 +5242,26 @@ entries:
     version: 1.0.0
   prometheus-stack:
   - apiVersion: v2
+    appVersion: 62.6.0
+    created: "2024-09-09T09:41:35.470547759Z"
+    dependencies:
+    - alias: prometheusStack
+      name: kube-prometheus-stack
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 62.6.0
+    description: 'A complete monitoring/alerting stack with Grafana Prometheus Alertmanager  ##
+      Installing the Chart with iits ArgoCD  ```yaml prometheus-stack:   namespace:
+      monitoring   repoURL: "https://charts.iits.tech"   targetRevision: "62.6.0"   ignoreDifferences:     -
+      jsonPointers:         - /imagePullSecrets       kind: ServiceAccount   syncOptions:     -
+      ServerSideApply=true   parameters:     global.alertmanager.host: "admin.{{.Values.projectValues.rootDomain}}"     global.prometheus.host:
+      "admin.{{.Values.projectValues.rootDomain}}"     global.grafana.host: "admin.{{.Values.projectValues.rootDomain}}"     prometheusStack.grafana.adminPassword:
+      "REPLACE_ME" ``` '
+    digest: 01b384d324cb3102c602527db0dbf9bb7e2f2fb198353bbeecc7ab3f54877aef
+    name: prometheus-stack
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/prometheus-stack-62.6.0/prometheus-stack-62.6.0.tgz
+    version: 62.6.0
+  - apiVersion: v2
     appVersion: 58.2.2
     created: "2024-08-05T14:41:58.379475681Z"
     dependencies:
@@ -6201,4 +6221,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/waf-cert-uploader-0.1.1/waf-cert-uploader-0.1.1.tgz
     version: 0.1.1
-generated: "2024-08-05T14:41:58.379952639Z"
+generated: "2024-09-09T09:41:35.471205376Z"
