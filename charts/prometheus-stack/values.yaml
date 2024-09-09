@@ -68,8 +68,7 @@ prometheusStack:
           memory: "2255Mi"
           cpu: "60m"
 
-      # Depends on how many metrics & applications you are tracking, but we average out at about 5-6GB per 10 days
-      retention: 365d
+      retention: 1y # 365 days
 
       storageSpec:
         volumeClaimTemplate:
@@ -77,6 +76,7 @@ prometheusStack:
             accessModes: [ "ReadWriteOnce" ]
             resources:
               requests:
+                # Depends on how many metrics & applications you are tracking, but we average out at about 5-6GB per 10 days
                 storage: 250G
   prometheusOperator:
     enabled: true
