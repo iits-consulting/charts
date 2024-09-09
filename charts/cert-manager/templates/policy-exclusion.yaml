@@ -4,6 +4,9 @@ apiVersion: kyverno.io/v2
 kind: PolicyException
 metadata:
   name: cert-manager-webhook
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-weight": "-5"
 spec:
   exceptions:
     - policyName: restrict-seccomp-strict
@@ -27,6 +30,6 @@ spec:
           names:
             - '*cert-manager-webhook-opentelekomcloud*'
           namespaces:
-            - cert-manager
+            - {{ $.Release.Namespace }}
 {{- end }}
 {{- end }}

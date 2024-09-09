@@ -1,5 +1,23 @@
 cert-manager:
   extraArgs:
+    - --logging-format=json
+
+  cainjector:
+    extraArgs:
+      - --logging-format=json
+
+  webhook:
+    extraArgs:
+      - --logging-format=json
+
+  startupapicheck:
+    extraArgs:
+      - --logging-format=json
+
+  prometheus:
+    enabled: true
+    servicemonitor:
+      enabled: true
 
 
 cert-manager-webhook-opentelekomcloud:

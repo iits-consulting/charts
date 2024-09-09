@@ -1,6 +1,6 @@
 # cert-manager
 
-![Version: 1.14.5](https://img.shields.io/badge/Version-1.14.5-informational?style=flat-square)
+![Version: 1.15.3](https://img.shields.io/badge/Version-1.15.3-informational?style=flat-square)
 
 Wrapper chart for cert-manager. Deploys a ClusterIssuer resource to bootstrap Let's encrypt cert generation
 
@@ -8,7 +8,7 @@ Wrapper chart for cert-manager. Deploys a ClusterIssuer resource to bootstrap Le
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://charts.jetstack.io | cert-manager | 1.14.5 |
+| https://charts.jetstack.io | cert-manager | v1.15.3 |
 | https://iits-consulting.github.io/cert-manager-webhook-opentelekomcloud | cert-manager-webhook-opentelekomcloud | v0.1.4 |
 
 ## Values
@@ -16,7 +16,12 @@ Wrapper chart for cert-manager. Deploys a ClusterIssuer resource to bootstrap Le
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | cert-manager-webhook-opentelekomcloud.groupName | string | `"acme.opentelekomcloud.com"` |  |
-| cert-manager.extraArgs | string | `nil` |  |
+| cert-manager.cainjector.extraArgs[0] | string | `"--logging-format=json"` |  |
+| cert-manager.extraArgs[0] | string | `"--logging-format=json"` |  |
+| cert-manager.prometheus.enabled | bool | `true` |  |
+| cert-manager.prometheus.servicemonitor.enabled | bool | `true` |  |
+| cert-manager.startupapicheck.extraArgs[0] | string | `"--logging-format=json"` |  |
+| cert-manager.webhook.extraArgs[0] | string | `"--logging-format=json"` |  |
 | clusterIssuers.email | string | `nil` | Required, replace with the e-mails you want to receive the warnings You must replace this email address with your own. Let's Encrypt will use this to contact you about expiring certificates, and issues related to your account. |
 | clusterIssuers.http.enabled | bool | `true` |  |
 | clusterIssuers.http.ingressClass | string | `"traefik"` |  |
