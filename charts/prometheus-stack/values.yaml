@@ -55,26 +55,29 @@ prometheusStack:
       node: true
       prometheus: true
       prometheusOperator: true
-      time: true
   prometheus:
     prometheusSpec:
       externalUrl: https://{{$.Values.global.ingress.host}}{{$.Values.global.ingress.paths.prometheus}}
       serviceMonitorSelectorNilUsesHelmValues: false
       podMonitorSelectorNilUsesHelmValues: false
       probeSelectorNilUsesHelmValues: false
-      podMonitorSelector: null
+      podMonitorSelector: { }
       routePrefix: "/prometheus"
       resources:
         requests:
           memory: "2255Mi"
           cpu: "60m"
+
+      retention: 1y # 365 days
+
       storageSpec:
         volumeClaimTemplate:
           spec:
             accessModes: [ "ReadWriteOnce" ]
             resources:
               requests:
-                storage: 30G
+                # Depends on how many metrics & applications you are tracking, but we average out at about 5-6GB per 10 days
+                storage: 250G
   prometheusOperator:
     enabled: true
     tls:
@@ -142,7 +145,7 @@ prometheusStack:
           cpu: "5m"
     additionalRules:
       enabled: false
-      groups: []
+      groups: [ ]
 #      - name: sensors
 #        rules:
 #          - alert: MissingData
