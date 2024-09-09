@@ -1,4 +1,11 @@
 
+## 30.x -> 31.0.0
+
+- Updates to traefik 3.1.2
+  - There were changes in the CRDs of the gateway in the base chart. 
+  - If you use it, check the [Release Notes](https://github.com/traefik/traefik-helm-chart/releases/tag/v31.0.0) of traefik for the relevant changes.
+
+***
 ## 29.x -> 30.0.0
 
 - Updates to traefik 3.1.1
