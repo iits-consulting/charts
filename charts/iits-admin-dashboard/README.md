@@ -106,7 +106,6 @@ iits-admin-dashboard:
 | deployment.securityContext.readOnlyRootFilesystem | bool | `true` |  |
 | deployment.securityContext.runAsNonRoot | bool | `true` |  |
 | deployment.securityContext.runAsUser | int | `1001` |  |
-| deployment.securityContext.seccompProfile.type | string | `"RuntimeDefault"` |  |
 | fullnameOverride | string | `""` |  |
 | ingress.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
 | ingress.annotations."traefik.ingress.kubernetes.io/router.tls" | string | `"true"` |  |
