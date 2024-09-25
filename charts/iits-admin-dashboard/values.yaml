@@ -162,6 +162,8 @@ deployment:
         - ALL
     readOnlyRootFilesystem: true
     runAsUser: 1001
+    seccompProfile:
+      type: RuntimeDefault
 
   #nodeSelector:
   #tolerations:
