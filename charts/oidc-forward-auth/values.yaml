@@ -18,6 +18,11 @@ gatekeeper:
   image:
     tag: 2.14.0
 
+  containerSecurityContext:
+    allowPrivilegeEscalation: false
+    seccompProfile:
+      type: RuntimeDefault
+
   config:
 
     # -- Required: client id used to authenticate to the oauth service
