@@ -68,6 +68,8 @@ ingress:
 | gatekeeper.config.resources[0].uri | string | `"/*"` |  |
 | gatekeeper.config.server-read-timeout | string | `"10s"` |  |
 | gatekeeper.config.server-write-timeout | string | `"10s"` |  |
+| gatekeeper.containerSecurityContext.allowPrivilegeEscalation | bool | `false` |  |
+| gatekeeper.containerSecurityContext.seccompProfile.type | string | `"RuntimeDefault"` |  |
 | gatekeeper.image.tag | string | `"2.14.0"` |  |
 | gatekeeper.livenessProbe.enabled | bool | `true` |  |
 | gatekeeper.replicaCount | int | `2` |  |
