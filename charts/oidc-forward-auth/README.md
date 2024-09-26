@@ -1,6 +1,6 @@
 # oidc-forward-auth
 
-![Version: 1.6.1](https://img.shields.io/badge/Version-1.6.1-informational?style=flat-square)
+![Version: 1.6.2](https://img.shields.io/badge/Version-1.6.2-informational?style=flat-square)
 
 Forward Auth proxy with gogatekeeper. It replaces the old proxy mechanism
 
