@@ -1,0 +1,343 @@
+#cce:
+#  elasticsearch:
+#    region: "eu-de"
+#    storageClassName: "ssd-encrypted"
+#    volumeType: "SSD"
+#    volumes:
+# -- Required
+#      - id:
+# -- Required
+#        az:
+# -- Required
+#        kmsId:
+# -- Required
+#      - id:
+# -- Required
+#        az:
+# -- Required
+#        kmsId:
+
+# aks:
+#  elasticsearch:
+#    storageClassName: "REPLACE_ME"
+
+ingress:
+  enabled:
+    kibana: true
+    elasticsearch: false
+
+  className: traefik
+
+  labels:
+
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    traefik.ingress.kubernetes.io/router.middlewares: "routing-admin-forward-auth@kubernetescrd, {{ $.Release.Namespace }}-remove-authorization-header-{{ $.Release.Name }}@kubernetescrd, {{ $.Release.Namespace }}-strip-prefix-{{ $.Release.Name }}@kubernetescrd"
+
+  # -- Required
+  host: "REPLACE_ME"
+
+elasticsearch:
+  enabled: true
+  volumeSize: 200G
+  version: 8.14.3
+  nodeCount: 2
+  config:
+    node:
+      store:
+        allow_mmap: false
+    # network:
+    #   host: 0.0.0.0 # WHY? #### UNSUPPORTED!
+    http:
+      max_header_size: 16kb # WHY?
+    cluster:
+      # name: "docker-cluster" # WHY? #### UNSUPPORTED!
+      max_shards_per_node: 30000 # WHY?
+    xpack:
+      security:
+        authc:
+          anonymous: # allow usage of elasticsearch without user credentials as superuser
+            authz_exception: true
+            roles: 'superuser,kibana_admin,kibana_system'
+            username: anonymous_user
+  resources:
+    requests:
+      cpu: "200m"
+      memory: "6G"
+    limits:
+      cpu: "1000m"
+      memory: "8G"
+  javaOpts: "-Xmx6g -Xms6g -Dlog4j2.formatMsgNoLookups=true"
+  extraSecureSettings: []
+
+filebeat:
+  enabled: true
+  version: 8.14.3
+  autodiscover:
+    providers:
+      - type: kubernetes
+        hints.enabled: true
+        hints.default_config:
+          type: container
+          paths:
+            - /var/log/containers/*${data.container.id}.log
+        node: ${NODE_NAME}
+  # default processors
+  processors:
+    - add_kubernetes_metadata: {}
+    - decode_json_fields:
+        when:
+            has_fields: ["message"]
+        fields: ["message"]
+        target: ""
+        overwrite_keys: true
+    - decode_json_fields:
+        when:
+            has_fields: ["msg"]
+        fields: ["msg"]
+        target: ""
+        overwrite_keys: true
+    - add_labels:
+        labels:
+          stage: ${STAGE}
+    - drop_event:
+        when:
+          or:
+          - equals:
+              kubernetes.labels:
+                "common.k8s.elastic.co/type": "elasticsearch"
+          - equals:
+              kubernetes.labels:
+                "common.k8s.elastic.co/type": "beat"
+          - equals:
+              kubernetes.labels:
+                "common.k8s.elastic.co/type": "kibana"
+          - equals:
+              kubernetes.labels.app: "grafana"
+          - equals:
+              kubernetes.labels.app: "prometheus-stack-operator"
+          - equals:
+              kubernetes.labels.app: "botkube"
+          - equals:
+              kubernetes.labels.app: "prometheus"
+          - equals:
+              msg: "no session found in request, redirecting for authorization"
+          - equals:
+              kubernetes.container.name: "kube-state-metrics"
+          - equals:
+              kubernetes.container.name: "traefik-admin-dashboard"
+          - equals:
+              kubernetes.container.name: portal
+          - equals:
+              kubernetes.container.name: repo-server
+          - equals:
+              kubernetes.container.name: argocd-notifications-controller
+          - equals:
+              kubernetes.container.name: application-controller
+          - equals:
+              kubernetes.namespace: kube-system
+          - equals:
+              kubernetes.labels.component: registry
+          - equals:
+              RequestPath: "/ping"
+          - equals:
+              RouterName: "kibana@file"
+          - equals:
+              message: "200 OK: GET - /public/api/health"
+          - contains:
+              message: "vault-sealed-check\" does not have associated TTL"
+          - contains:
+              message: "Error while renaming Node ID"
+          - contains:
+              message: "pkg/mod/k8s.io/client-go@v0.17.0/tools/cache/reflector.go:108"
+          # NGINX Ingress
+          - contains:
+              message: "TCP 200 0 0"
+          # Vault logs
+          - equals:
+              auth.metadata.role_name: gitlab
+          - equals:
+              auth.metadata.role_name: banzai-webhook-role
+          - equals:
+              app: vault-secrets-webhook
+          - contains:
+              message: "agent.server: member joined, marking health alive:"
+  # add additional processors without overwriting the default ones  (they will get appended)
+  extraProcessors: []
+  # default indices
+  indices:
+    - index: "traefik-and-keycloak-proxy-%{[agent.version]}-%{+yyyy.MM}"
+      when:
+        equals:
+          kubernetes.namespace: "routing"
+    - index: "vault-%{[agent.version]}-%{+yyyy.MM}"
+      when:
+        equals:
+            kubernetes.namespace: "vault"
+    - index: "argocd-%{[agent.version]}-%{+yyyy.MM.DD}"
+      when:
+        equals:
+          kubernetes.namespace: "argocd"
+    - index: "elastalert-%{[agent.version]}-%{+yyyy.MM.DD}"
+      when:
+        equals:
+          kubernetes.container.name: "elastalert2"
+    - index: "kyverno-%{[agent.version]}-%{+yyyy.MM.DD}"
+      when:
+        equals:
+          kubernetes.namespace: "kyverno"
+    - index: "auth-%{[agent.version]}-%{+yyyy.MM.DD}"
+      when:
+        equals:
+          kubernetes.namespace: "auth"
+    - index: "not-defined-%{[agent.version]}-%{+yyyy.MM}"
+  # add additional indices without overwriting the default ones (they will get prepended)
+  extraIndices: []
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "100M"
+    limits:
+      cpu: "400m"
+      memory: "500M"
+  readinessProbe:
+    failureThreshold: 50
+    initialDelaySeconds: 20
+    periodSeconds: 30
+    timeoutSeconds: 10
+  extraEnvs:
+    - name: STAGE
+      value: "REPLACE_ME"
+  extraVolumes: []
+  extraVolumeMounts: []
+  tolerations: []
+
+kibana:
+  enabled: true
+  version: 8.14.3
+  config:
+    server:
+      basePath: /kibana
+      rewriteBasePath: false
+    monitoring:
+      ui:
+        enabled: true
+        container:
+          elasticsearch:
+            enabled: true
+    xpack:
+      reporting:
+        csv:
+          maxSizeBytes: 1048576000
+        queue:
+          timeout: 1800000
+      security:
+        authc:
+          providers: # allow login as anonymous user into kibana, using anonymous user of elasticsearch
+            anonymous:
+              anonymous1:
+                order: 0
+                credentials: elasticsearch_anonymous_user
+            basic:
+              basic1:
+                order: 1
+
+ilm:
+  image:
+    repository: docker.io/curlimages/curl
+    tag: 8.5.0
+    userId: 100
+  policies:
+    long:
+      #business apps and security relevant logs
+      indexPatterns: [ "vault*" ]
+      coldAfter: 32d
+      deleteAfter: 365d
+    medium:
+      indexPatterns: [ "not-defined*", "traefik-and-keycloak-proxy*", "auth*" ]
+      coldAfter: 32d
+      deleteAfter: 90d
+    short:
+      indexPatterns: [ "elastalert*", "argocd*", "kyverno*" ]
+      coldAfter: 2d
+      deleteAfter: 14d
+
+indexPatternInit:
+  image:
+    repository: docker.io/curlimages/curl
+    tag: 8.5.0
+    userId: 100
+  indices:
+    botkube:
+      index: "botkube*"
+      timestampField: "Timestamp"
+    traefik-and-keycloak-proxy:
+      index: "traefik-and-keycloak-proxy*"
+      timestampField: "@timestamp"
+    vault:
+      index: "vault*"
+      timestampField: "@timestamp"
+    argocd:
+      index: "argocd*"
+      timestampField: "@timestamp"
+    auth:
+      index: "auth*"
+      timestampField: "@timestamp"
+    elastalert:
+      index: "elastalert*"
+      timestampField: "@timestamp"
+    kyverno:
+      index: "kyverno*"
+      timestampField: "@timestamp"
+    not-defined:
+      index: "not-defined*"
+      timestampField: "@timestamp"
+
+backup:
+  enabled: false
+  image:
+    repository: docker.io/curlimages/curl
+    tag: 7.82.0
+    userId: 100
+  repoName: "elastic-backups"
+  # -- for Azure blob storage use "azure"
+  repoType: "s3"
+
+  secureSettings:
+    # # S3 compatible / OTC
+    # # -- Required
+    # access_key: "REPLACE_ME"
+    # # -- Required
+    # secret_key: "REPLACE_ME"
+
+    # # Azure blob storage
+    # # -- Required
+    # account: "REPLACE_ME"
+    # # -- Required (alternative for key)
+    # sas_token: "REPLACE_ME"
+    # # -- Required (alternative for sas_token)
+    # key: "REPLACE_ME"
+
+  repositorySettings:
+    # # S3 compatible / OTC
+    # # -- Required
+    # endpoint: "https://obs.eu-de.otc.t-systems.com"
+    # # -- Required
+    # bucket: "REPLACE_ME"
+
+    # # Azure blob storage
+    # container: "REPLACE_ME"
+
+  policy:
+    name: "nightly-backup"
+    schedule: "0 0 0 * * ?"
+#    indices can also be set to a list such as [ "data-*", "important" ]
+    indices: [ "*" ]
+    retention:
+      expireAfter: "15d"
+      minCount: 5
+      maxCount: 15
+
+policyException:
+  enabled: true

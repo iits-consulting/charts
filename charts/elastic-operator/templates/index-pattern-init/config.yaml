@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{.Release.Name}}-index-pattern-init-config
+data:
+  index-pattern-init.sh: |
+    #!/bin/sh
+    {{- range $indexName,$indexValues  := .Values.indexPatternInit.indices }}
+    # Apply default Index Pattern into Kibana
+    echo "create index pattern {{$indexName}}"
+    curl -u "$ELASTICSEARCH_USERNAME:$ELASTICSEARCH_PASSWORD" --cacert /kb-cert/ca.crt -X POST -v https://$KIBANA_ENDPOINT/api/saved_objects/index-pattern/{{$indexName}} \
+    -H 'kbn-xsrf: true' -H 'Content-Type: application/json' \
+    -d '{"attributes": {"title": "{{$indexValues.index}}","timeFieldName": "{{$indexValues.timestampField}}","override":true,"refresh_fields":true}}'
+    echo "create index pattern {{$indexName}} finished"
+    {{ end }}

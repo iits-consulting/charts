@@ -1,0 +1,56 @@
+## FROM: https://github.com/elastic/cloud-on-k8s/blob/5937685b9085a5b185dde3d31ad50ccb5cdc034b/config/recipes/beats/filebeat_autodiscover.yaml
+
+{{ if .Values.filebeat.enabled }}
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ .Release.Namespace }}-{{ .Release.Name }}-filebeat
+rules:
+- apiGroups: [""] # "" indicates the core API group
+  resources:
+  - namespaces
+  - pods
+  - nodes
+  verbs:
+  - get
+  - watch
+  - list
+- apiGroups: ["apps"]
+  resources:
+  - replicasets
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups: ["batch"]
+  resources:
+  - jobs
+  verbs:
+  - get
+  - list
+  - watch
+
+---
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ .Release.Name }}-filebeat
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ .Release.Namespace }}-{{ .Release.Name }}-filebeat
+subjects:
+- kind: ServiceAccount
+  name: {{ .Release.Name }}-filebeat
+  namespace: monitoring
+roleRef:
+  kind: ClusterRole
+  name: {{ .Release.Namespace }}-{{ .Release.Name }}-filebeat
+  apiGroup: rbac.authorization.k8s.io
+
+{{ end }}
