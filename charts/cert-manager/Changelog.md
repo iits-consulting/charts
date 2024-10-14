@@ -1,4 +1,9 @@
-## 1.0.x -> 1.1.0
+### Chart version 1.16.1
+ - Updated Chart & App Version to 1.16.1
+ - As indicated per [documentation](https://cert-manager.io/docs/releases/release-notes/release-notes-1.16/#helm) the base chart now includes a Helm schema, so unrecognised fields will make the templating fail.
+
+----
+### Chart version 1.1.0
 
 💥 **Breaking changes** 💥
 
