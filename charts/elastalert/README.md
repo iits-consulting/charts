@@ -1,6 +1,6 @@
 # elastalert
 
-![Version: 0.2.0](https://img.shields.io/badge/Version-0.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.3.0](https://img.shields.io/badge/Version-0.3.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 Wrapper chart for elastalert2 with custom rules to kickstart IITS projects
 
@@ -10,7 +10,7 @@ Wrapper chart for elastalert2 with custom rules to kickstart IITS projects
 elastalert:
   namespace: monitoring
   repoURL: "https://charts.iits.tech"
-  targetRevision: "0.1.1"
+  targetRevision: "0.3.0"
   # If you need custom rules
   valueFile: "value-files/elastalert/values.yaml"
   parameters:
@@ -21,7 +21,7 @@ elastalert:
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://jertel.github.io/elastalert2/ | elastalert2 | 2.17.0 |
+| https://jertel.github.io/elastalert2/ | elastalert2 | 2.20.0 |
 
 ## Values
 
