@@ -1,6 +1,6 @@
 # kyverno
 
-![Version: 2.1.0](https://img.shields.io/badge/Version-2.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 3.2.4](https://img.shields.io/badge/AppVersion-3.2.4-informational?style=flat-square)
+![Version: 2.1.1](https://img.shields.io/badge/Version-2.1.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.12.6](https://img.shields.io/badge/AppVersion-1.12.6-informational?style=flat-square)
 
 This chart wraps the upstream `kyverno` and `kyverno-policies` chart and adds a few useful policies:
   - Verify all images are signed with cosign
@@ -12,9 +12,9 @@ This chart wraps the upstream `kyverno` and `kyverno-policies` chart and adds a 
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://kyverno.github.io/kyverno/ | kyverno | 3.2.4 |
-| https://kyverno.github.io/kyverno/ | kyverno-policies | 3.2.3 |
-| https://kyverno.github.io/policy-reporter | policy-reporter | 2.23.1 |
+| https://kyverno.github.io/kyverno/ | kyverno | 3.2.7 |
+| https://kyverno.github.io/kyverno/ | kyverno-policies | 3.2.6 |
+| https://kyverno.github.io/policy-reporter | policy-reporter | 2.24.2 |
 
 ## Values
 
@@ -112,12 +112,15 @@ This chart wraps the upstream `kyverno` and `kyverno-policies` chart and adds a 
 | kyverno.config.excludeKyvernoNamespace | bool | `false` |  |
 | kyverno.crds.install | bool | `false` |  |
 | kyverno.existingImagePullSecrets | list | `[]` |  |
-| kyverno.features.logging.format | string | `"text"` |  |
+| kyverno.features.logging.format | string | `"json"` |  |
 | kyverno.grafana.enabled | bool | `true` |  |
 | kyverno.reportsController.serviceMonitor.enabled | bool | `true` |  |
 | policy-reporter.install | bool | `true` |  |
 | policy-reporter.kyvernoPlugin.enabled | bool | `true` |  |
+| policy-reporter.kyvernoPlugin.logging.encoding | string | `"json"` |  |
+| policy-reporter.logging.encoding | string | `"json"` |  |
 | policy-reporter.ui.enabled | bool | `true` |  |
+| policy-reporter.ui.logging.encoding | string | `"json"` |  |
 | policy-reporter.ui.plugins.kyverno | bool | `true` |  |
 | prependCustomImageRegistry.autogenControllers | string | `"none"` | Auto gen rules for pod controllers. See https://kyverno.io/docs/writing-policies/autogen/ |
 | prependCustomImageRegistry.enabled | bool | `false` | Enable or disable the policy globally |
