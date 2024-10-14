@@ -8,7 +8,7 @@ description: |
   charts:
     oidc-forward-auth:
       namespace: routing
-      targetRevision: "1.0.0"
+      targetRevision: "1.6.2"
       parameters:
         gatekeeper.config.client-id: "${vault:whatever/data/keycloak/keycloak_proxy_admin#client_id}"
         gatekeeper.config.client-secret: "${vault:whatever/data/keycloak/keycloak_proxy_admin#client_secret}"
@@ -38,5 +38,5 @@ version: 1.6.2
 dependencies:
   - name: gatekeeper
     repository: https://gogatekeeper.github.io/helm-gogatekeeper
-    version: 0.1.49
+    version: 0.1.50
 

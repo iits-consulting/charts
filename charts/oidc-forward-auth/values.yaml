@@ -16,7 +16,7 @@ gatekeeper:
     enabled: true
 
   image:
-    tag: 2.14.0
+    tag: 2.14.3
 
   containerSecurityContext:
     allowPrivilegeEscalation: false
