@@ -1,7 +1,7 @@
 kyverno:
   features:
     logging:
-      format: text
+      format: json
   config:
     excludeKyvernoNamespace: false
 
@@ -51,10 +51,17 @@ kyverno:
 
 policy-reporter:
   install: true
+  logging:
+    encoding: json
 
   kyvernoPlugin:
     enabled: true
+    logging:
+      encoding: json
+
   ui:
+    logging:
+      encoding: json
     enabled: true
     plugins:
       kyverno: true
