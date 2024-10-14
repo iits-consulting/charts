@@ -1,6 +1,6 @@
 # oidc-forward-auth
 
-![Version: 1.6.1](https://img.shields.io/badge/Version-1.6.1-informational?style=flat-square)
+![Version: 1.6.2](https://img.shields.io/badge/Version-1.6.2-informational?style=flat-square)
 
 Forward Auth proxy with gogatekeeper. It replaces the old proxy mechanism
 
@@ -10,7 +10,7 @@ Forward Auth proxy with gogatekeeper. It replaces the old proxy mechanism
 charts:
   oidc-forward-auth:
     namespace: routing
-    targetRevision: "1.0.0"
+    targetRevision: "1.6.2"
     parameters:
       gatekeeper.config.client-id: "${vault:whatever/data/keycloak/keycloak_proxy_admin#client_id}"
       gatekeeper.config.client-secret: "${vault:whatever/data/keycloak/keycloak_proxy_admin#client_secret}"
@@ -39,7 +39,7 @@ ingress:
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://gogatekeeper.github.io/helm-gogatekeeper | gatekeeper | 0.1.49 |
+| https://gogatekeeper.github.io/helm-gogatekeeper | gatekeeper | 0.1.50 |
 
 ## Values
 
@@ -68,7 +68,9 @@ ingress:
 | gatekeeper.config.resources[0].uri | string | `"/*"` |  |
 | gatekeeper.config.server-read-timeout | string | `"10s"` |  |
 | gatekeeper.config.server-write-timeout | string | `"10s"` |  |
-| gatekeeper.image.tag | string | `"2.14.0"` |  |
+| gatekeeper.containerSecurityContext.allowPrivilegeEscalation | bool | `false` |  |
+| gatekeeper.containerSecurityContext.seccompProfile.type | string | `"RuntimeDefault"` |  |
+| gatekeeper.image.tag | string | `"2.14.3"` |  |
 | gatekeeper.livenessProbe.enabled | bool | `true` |  |
 | gatekeeper.replicaCount | int | `2` |  |
 | gatekeeper.resources.limits.cpu | string | `"100m"` |  |
