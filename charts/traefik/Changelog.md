@@ -1,4 +1,9 @@
+## 31.1.1
 
+- Updates to AppVersion 3.1.6
+- There were breaking changes for the Traefik Hub, if you use it, update your CRDs.
+
+---
 ## 30.x -> 31.0.0
 
 - Updates to traefik 3.1.2
@@ -6,7 +11,7 @@
   - If you use it, check the [Release Notes](https://github.com/traefik/traefik-helm-chart/releases/tag/v31.0.0) of traefik for the relevant migrations.
     - Or simply use our [crd-installer](https://github.com/iits-consulting/terraform-opentelekomcloud-project-factory/tree/master/modules/crd_installer) for crd management.
 
-***
+---
 ## 29.x -> 30.0.0
 
 - Updates to traefik 3.1.1
