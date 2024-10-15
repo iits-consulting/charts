@@ -1,0 +1,22 @@
+{{ if .Values.kibana.enabled }}
+
+apiVersion: kibana.k8s.elastic.co/v1
+kind: Kibana
+metadata:
+  name: {{ .Release.Name }}
+spec:
+  version: {{ .Values.kibana.version }}
+  count: 1
+  http:
+    service:
+      metadata:
+        annotations:
+          traefik.ingress.kubernetes.io/service.serverstransport: "{{ $.Release.Namespace }}-{{ $.Release.Name }}-kibana@kubernetescrd"
+          traefik.ingress.kubernetes.io/service.passhostheader: "true"
+          traefik.ingress.kubernetes.io/service.serversscheme: "https"
+  elasticsearchRef:
+    name: {{ .Release.Name }}
+  config:
+{{ .Values.kibana.config | toYaml | indent 4 }}
+
+{{ end }}
