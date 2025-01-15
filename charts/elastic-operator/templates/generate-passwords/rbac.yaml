@@ -1,0 +1,40 @@
+{{ if .Values.generatePasswords.enabled }}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ .Release.Name }}-generate-passwords
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ .Release.Name }}-generate-passwords
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - secrets
+  verbs:
+  - get
+  - patch
+  resourceNames:
+{{- range $secretDescription := .Values.generatePasswords.secrets }}
+  - {{ tpl $secretDescription.name $ }}
+{{- end }}
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ .Release.Name }}-generate-passwords
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ .Release.Name }}-generate-passwords
+subjects:
+- kind: ServiceAccount
+  name: {{ .Release.Name }}-generate-passwords
+  namespace: {{ .Release.Namespace }}
+{{ end }}

@@ -1,0 +1,17 @@
+{{- range $userName, $userDescription := .Values.auth.users }}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ $.Release.Name }}-user-{{ kebabcase $userName }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+type: kubernetes.io/basic-auth
+stringData:
+  username: {{ $userName }}
+{{- if (not (empty $userDescription.existingPassword)) }}
+  password: {{ $userDescription.existingPassword }}
+{{- end }}
+  roles: {{ join "," $userDescription.roles }}
+
+---
+{{ end }}
