@@ -38,5 +38,5 @@ version: 1.6.2
 dependencies:
   - name: gatekeeper
     repository: https://gogatekeeper.github.io/helm-gogatekeeper
-    version: 0.1.50
+    version: 0.1.51
 

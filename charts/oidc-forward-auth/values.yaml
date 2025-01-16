@@ -16,7 +16,7 @@ gatekeeper:
     enabled: true
 
   image:
-    tag: 2.14.3
+    tag: 3.0.2
 
   containerSecurityContext:
     allowPrivilegeEscalation: false
@@ -104,6 +104,10 @@ middleware:
   authResponseHeaders:
     - "Authorization"
     - "Set-Cookie"
+
+  addAuthCookiesToResponse:
+    - "kc-access"
+    - "kc-state"
 
 ingress:
   enabled: true
