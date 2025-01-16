@@ -8,10 +8,11 @@ description: |
   charts:
     oidc-forward-auth:
       namespace: routing
-      targetRevision: "1.6.2"
+      targetRevision: "1.7.0"
       parameters:
         gatekeeper.config.client-id: "${vault:whatever/data/keycloak/keycloak_proxy_admin#client_id}"
         gatekeeper.config.client-secret: "${vault:whatever/data/keycloak/keycloak_proxy_admin#client_secret}"
+        gatekeeper.config.encryption-key: "${vault:whatever/data/keycloak/keycloak_proxy_admin#encryption-key}"
         gatekeeper.config.discovery-url: "https://{{.Values.projectValues.authDomain}}/realms/{{.Values.projectValues.context}}"
         ingress.host: "my.protected.domain"
   ```
@@ -34,7 +35,7 @@ description: |
       enabled: true
   ```
 name: oidc-forward-auth
-version: 1.6.2
+version: 1.7.0
 dependencies:
   - name: gatekeeper
     repository: https://gogatekeeper.github.io/helm-gogatekeeper
