@@ -1,6 +1,6 @@
 # oidc-forward-auth
 
-![Version: 1.6.2](https://img.shields.io/badge/Version-1.6.2-informational?style=flat-square)
+![Version: 1.7.0](https://img.shields.io/badge/Version-1.7.0-informational?style=flat-square)
 
 Forward Auth proxy with gogatekeeper. It replaces the old proxy mechanism
 
@@ -10,10 +10,11 @@ Forward Auth proxy with gogatekeeper. It replaces the old proxy mechanism
 charts:
   oidc-forward-auth:
     namespace: routing
-    targetRevision: "1.6.2"
+    targetRevision: "1.7.0"
     parameters:
       gatekeeper.config.client-id: "${vault:whatever/data/keycloak/keycloak_proxy_admin#client_id}"
       gatekeeper.config.client-secret: "${vault:whatever/data/keycloak/keycloak_proxy_admin#client_secret}"
+      gatekeeper.config.encryption-key: "${vault:whatever/data/keycloak/keycloak_proxy_admin#encryption-key}"
       gatekeeper.config.discovery-url: "https://{{.Values.projectValues.authDomain}}/realms/{{.Values.projectValues.context}}"
       ingress.host: "my.protected.domain"
 ```
@@ -39,7 +40,7 @@ ingress:
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://gogatekeeper.github.io/helm-gogatekeeper | gatekeeper | 0.1.50 |
+| https://gogatekeeper.github.io/helm-gogatekeeper | gatekeeper | 0.1.51 |
 
 ## Values
 
@@ -58,7 +59,7 @@ ingress:
 | gatekeeper.config.enable-refresh-tokens | bool | `true` |  |
 | gatekeeper.config.enable-request-id | bool | `true` |  |
 | gatekeeper.config.enable-token-header | bool | `false` |  |
-| gatekeeper.config.encryption-key | string | `nil` | Highly Recommended: encryption key used to encryption the session state |
+| gatekeeper.config.encryption-key | string | `nil` | Required: encryption key used to encryption the session state |
 | gatekeeper.config.listen | string | `"0.0.0.0:3000"` |  |
 | gatekeeper.config.listen-admin | string | `":4000"` |  |
 | gatekeeper.config.no-proxy | bool | `true` |  |
@@ -70,7 +71,7 @@ ingress:
 | gatekeeper.config.server-write-timeout | string | `"10s"` |  |
 | gatekeeper.containerSecurityContext.allowPrivilegeEscalation | bool | `false` |  |
 | gatekeeper.containerSecurityContext.seccompProfile.type | string | `"RuntimeDefault"` |  |
-| gatekeeper.image.tag | string | `"2.14.3"` |  |
+| gatekeeper.image.tag | string | `"3.0.2"` |  |
 | gatekeeper.livenessProbe.enabled | bool | `true` |  |
 | gatekeeper.replicaCount | int | `2` |  |
 | gatekeeper.resources.limits.cpu | string | `"100m"` |  |
@@ -84,6 +85,8 @@ ingress:
 | ingress.host | string | `nil` | Required, replace it with your host address |
 | ingress.hosts[0].host | string | `"{{ .Values.ingress.host }}"` |  |
 | ingress.hosts[0].paths[0].path | string | `"/oauth"` |  |
+| middleware.addAuthCookiesToResponse[0] | string | `"kc-access"` |  |
+| middleware.addAuthCookiesToResponse[1] | string | `"kc-state"` |  |
 | middleware.address | string | `"http://{{ include \"oidc-forward-auth.fullname\" $ }}-gatekeeper.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.gatekeeper.service.proxy.port }}"` |  |
 | middleware.authRequestHeaders[0] | string | `"Accept"` |  |
 | middleware.authRequestHeaders[1] | string | `"Authorization"` |  |
