@@ -1,6 +1,7 @@
 ### Chart version: 1.7.0
  - AppVersion update to 3.0.2
  - encryption-key is now required by default
+ - Gatekeeper will now refresh the cookie in the browser and also encrypt the token.
 
 ### Chart version: 1.6.2
  - Security settings for pod
