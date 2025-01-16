@@ -39,7 +39,7 @@ ingress:
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://gogatekeeper.github.io/helm-gogatekeeper | gatekeeper | 0.1.50 |
+| https://gogatekeeper.github.io/helm-gogatekeeper | gatekeeper | 0.1.51 |
 
 ## Values
 
@@ -70,7 +70,7 @@ ingress:
 | gatekeeper.config.server-write-timeout | string | `"10s"` |  |
 | gatekeeper.containerSecurityContext.allowPrivilegeEscalation | bool | `false` |  |
 | gatekeeper.containerSecurityContext.seccompProfile.type | string | `"RuntimeDefault"` |  |
-| gatekeeper.image.tag | string | `"2.14.3"` |  |
+| gatekeeper.image.tag | string | `"3.0.2"` |  |
 | gatekeeper.livenessProbe.enabled | bool | `true` |  |
 | gatekeeper.replicaCount | int | `2` |  |
 | gatekeeper.resources.limits.cpu | string | `"100m"` |  |
@@ -84,6 +84,8 @@ ingress:
 | ingress.host | string | `nil` | Required, replace it with your host address |
 | ingress.hosts[0].host | string | `"{{ .Values.ingress.host }}"` |  |
 | ingress.hosts[0].paths[0].path | string | `"/oauth"` |  |
+| middleware.addAuthCookiesToResponse[0] | string | `"kc-access"` |  |
+| middleware.addAuthCookiesToResponse[1] | string | `"kc-state"` |  |
 | middleware.address | string | `"http://{{ include \"oidc-forward-auth.fullname\" $ }}-gatekeeper.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.gatekeeper.service.proxy.port }}"` |  |
 | middleware.authRequestHeaders[0] | string | `"Accept"` |  |
 | middleware.authRequestHeaders[1] | string | `"Authorization"` |  |
