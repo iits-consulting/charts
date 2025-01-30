@@ -1,0 +1,58 @@
+{{ if .Values.generatePasswords.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Release.Name }}-generate-passwords
+  annotations:
+    argocd.argoproj.io/hook: Sync
+    checksum/config: {{ include (print $.Template.BasePath "/generate-passwords/config.yaml") . | sha256sum | substr 0 50 }}
+spec:
+  backoffLimit: 0
+  parallelism: 1
+  completions: 1
+  template:
+    metadata:
+      name: {{ .Release.Name }}-jobcommand
+    spec:
+      tolerations: {{ .Values.generatePasswords.tolerations | toYaml | nindent 8 }}
+      nodeSelector: {{ .Values.generatePasswords.nodeSelector | toYaml | nindent 8 }}
+      restartPolicy: Never
+      serviceAccountName: {{ .Release.Name }}-generate-passwords
+      containers:
+        - name: {{ .Release.Name }}-generate-passwords
+          image: {{ .Values.generatePasswords.image.repository }}:{{ .Values.generatePasswords.image.tag }}
+          imagePullPolicy: IfNotPresent
+          command: [ '/bin/sh', '-c' ]
+          args: [ "/generate-passwords-config/generate-passwords.sh" ]
+          volumeMounts:
+            - name: generate-passwords-config
+              mountPath: /generate-passwords-config
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            privileged: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            seccompProfile:
+              type: RuntimeDefault
+            runAsUser: {{ .Values.generatePasswords.image.userId }}
+      volumes:
+        - name: generate-passwords-config
+          configMap:
+            name: {{ .Release.Name }}-generate-passwords-config
+            defaultMode: 0755
+      securityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+          - ALL
+        privileged: false
+        readOnlyRootFilesystem: true
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+        runAsUser: {{ .Values.generatePasswords.image.userId }}
+
+{{ end }}

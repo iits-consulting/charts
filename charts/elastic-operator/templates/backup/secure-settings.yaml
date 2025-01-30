@@ -1,0 +1,11 @@
+{{- if .Values.backup.enabled }}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ .Release.Name }}-backup-secure-settings
+type: Opaque
+data:
+{{- range $settingName,$settingValue := .Values.backup.secureSettings }}
+  {{ $.Values.backup.repoType}}.client.default.{{ $settingName }}: {{ $settingValue | b64enc }}
+{{- end }}
+{{- end }}

@@ -1,0 +1,21 @@
+{{ if .Values.generatePasswords.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-generate-passwords-config
+data:
+  generate-passwords.sh: |
+    #!/bin/sh
+
+{{- range $secretDescription := .Values.generatePasswords.secrets }}
+    SECRET_NAME="{{ tpl $secretDescription.name $ }}"
+    if [ -z $( kubectl get secret $SECRET_NAME --namespace {{ $.Release.Namespace }} -o jsonpath="{.data.{{ $secretDescription.key }}}" ) ]; then
+      echo "Field {{ $secretDescription.key }} will be added to secret $SECRET_NAME"
+      RANDOM_PASSWORD=$(openssl rand -base64 {{ $secretDescription.length | default "32" }} | tr -d '\n' | base64 -w0)
+      kubectl patch secret $SECRET_NAME --namespace {{ $.Release.Namespace }} --type='json' -p="[{\"op\": \"add\", \"path\": \"/data/{{ $secretDescription.key }}\", \"value\": \"$RANDOM_PASSWORD\"}]"
+    else
+      echo "Field {{ $secretDescription.key }} already exists in secret $SECRET_NAME"
+    fi
+{{ end }}
+
+{{ end }}

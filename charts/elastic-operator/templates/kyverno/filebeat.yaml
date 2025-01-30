@@ -1,0 +1,47 @@
+{{ with .Values.policyException }}
+{{ if .enabled }}
+apiVersion: kyverno.io/v2
+kind: PolicyException
+metadata:
+  name: {{ $.Release.Namespace }}-{{$.Release.Name}}-fb
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-weight": "-5"
+spec:
+  exceptions:
+    - policyName: disallow-capabilities-strict
+      ruleNames:
+        - require-drop-all
+    - policyName: disallow-host-namespaces
+      ruleNames:
+        - host-namespaces
+    - policyName: disallow-host-path
+      ruleNames:
+        - host-path
+    - policyName: disallow-privilege-escalation
+      ruleNames:
+        - privilege-escalation
+    - policyName: require-run-as-non-root-user
+      ruleNames:
+        - run-as-non-root-user
+    - policyName: require-run-as-nonroot
+      ruleNames:
+        - run-as-non-root
+    - policyName: restrict-seccomp-strict
+      ruleNames:
+        - check-seccomp-strict
+    - policyName: restrict-volume-types
+      ruleNames:
+        - restricted-volumes
+  match:
+    any:
+      - resources:
+          kinds:
+            - Pod
+            - DaemonSet
+          names:
+            - {{ $.Release.Name }}-beat-filebeat-*
+          namespaces:
+            - {{ $.Release.Namespace }}
+{{- end }}
+{{- end }}
