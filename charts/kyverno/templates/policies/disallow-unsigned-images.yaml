@@ -16,7 +16,11 @@ spec:
   validationFailureAction: {{ .validationAction }}
   background: {{ .background }}
   webhookTimeoutSeconds: {{ .timeout }}
+  {{- if eq $.Values.imageSigning.failurePolicy "Audit" }}
+  mutateDigest: false
+  {{- else }}
   failurePolicy: Fail
+  {{- end }}
   rules:
     - name: "{{ .name }}-rule"
       match:
