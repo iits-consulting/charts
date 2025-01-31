@@ -16,9 +16,7 @@ spec:
   validationFailureAction: {{ .validationAction }}
   background: {{ .background }}
   webhookTimeoutSeconds: {{ .timeout }}
-  {{- if eq $.Values.imageSigning.failurePolicy "Audit" }}
-  mutateDigest: false
-  {{- else }}
+  {{- if eq $.Values.imageSigning.failurePolicy "Enforce" }}
   failurePolicy: Fail
   {{- end }}
   rules:
@@ -46,7 +44,11 @@ spec:
             secrets:
               - {{ .pullSecret }}
           {{- end }}
+          {{- if eq $.Values.imageSigning.failurePolicy "Enforce" }}
           mutateDigest: true
+          {{- else }}
+          mutateDigest: false
+          {{- end }}
           requireDigest: true
           attestors:
             - entries:
