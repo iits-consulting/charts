@@ -46,10 +46,10 @@ spec:
           {{- end }}
           {{- if eq $.Values.imageSigning.failurePolicy "Enforce" }}
           mutateDigest: true
+          requireDigest: true
           {{- else }}
           mutateDigest: false
           {{- end }}
-          requireDigest: true
           attestors:
             - entries:
                 - keys:
