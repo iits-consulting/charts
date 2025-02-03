@@ -1,9 +1,9 @@
 name: Update helm chart README files
 
 on:
-  pull_request:
-    branches-ignore:
-      - "main"
+  pull_request_target:
+    branch:
+      - 'main'
     paths:
       - 'charts/**/values.yaml'
       - 'charts/**/Chart.yaml'
