@@ -49,8 +49,8 @@ description: |
 
 name: argocd
 appVersion: 2.12.4
-version: 16.3.1
+version: 16.3.2
 dependencies:
   - name: argo-cd
     repository: oci://registry-1.docker.io/bitnamicharts
-    version: 7.0.18
+    version: 7.1.6
