@@ -1,3 +1,6 @@
+### Chart Version 2.2.1
+ - Fixed an issue with missing rbac parameter for the admission controller
+
 ### Chart Version 2.2.0
 - Update kyverno Chart to 3.3.4 & AppVersion to 1.13.2
 - Update kyverno-policies to 3.3.2

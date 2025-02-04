@@ -10,6 +10,20 @@ kyverno:
     replicas: 2
     serviceMonitor:
       enabled: true
+    rbac:
+      clusterRole:
+        extraResources:
+          - apiGroups:
+              - ''
+            resources:
+              - secrets
+            verbs:
+              - list
+              - get
+              - create
+              - update
+              - delete
+              - patch
 
   backgroundController:
     serviceMonitor:
