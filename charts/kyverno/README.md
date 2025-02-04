@@ -1,6 +1,6 @@
 # kyverno
 
-![Version: 2.2.0](https://img.shields.io/badge/Version-2.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.13.2](https://img.shields.io/badge/AppVersion-1.13.2-informational?style=flat-square)
+![Version: 2.2.1](https://img.shields.io/badge/Version-2.2.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.13.2](https://img.shields.io/badge/AppVersion-1.13.2-informational?style=flat-square)
 
 This chart wraps the upstream `kyverno` and `kyverno-policies` chart and adds a few useful policies:
   - Verify all images are signed with cosign
@@ -98,6 +98,14 @@ This chart wraps the upstream `kyverno` and `kyverno-policies` chart and adds a 
 | kyverno-policies.policyExclude.restrict-volume-types.any[0].resources.namespaces[0] | string | `"kube-system"` |  |
 | kyverno.admissionController.replicas | int | `2` |  |
 | kyverno.admissionController.serviceMonitor.enabled | bool | `true` |  |
+| kyverno.admissionController.rbac.clusterRole.extraResources[0].apiGroups[0] | string | `""` |  |
+| kyverno.admissionController.rbac.clusterRole.extraResources[0].resources[0] | string | `"secrets"` |  |
+| kyverno.admissionController.rbac.clusterRole.extraResources[0].verbs[0] | string | `"list"` |  |
+| kyverno.admissionController.rbac.clusterRole.extraResources[0].verbs[1] | string | `"get"` |  |
+| kyverno.admissionController.rbac.clusterRole.extraResources[0].verbs[2] | string | `"create"` |  |
+| kyverno.admissionController.rbac.clusterRole.extraResources[0].verbs[3] | string | `"update"` |  |
+| kyverno.admissionController.rbac.clusterRole.extraResources[0].verbs[4] | string | `"delete"` |  |
+| kyverno.admissionController.rbac.clusterRole.extraResources[0].verbs[5] | string | `"patch"` |  |
 | kyverno.backgroundController.rbac.clusterRole.extraResources[0].apiGroups[0] | string | `""` |  |
 | kyverno.backgroundController.rbac.clusterRole.extraResources[0].resources[0] | string | `"pods"` |  |
 | kyverno.backgroundController.rbac.clusterRole.extraResources[0].verbs[0] | string | `"create"` |  |
