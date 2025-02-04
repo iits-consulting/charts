@@ -3,7 +3,7 @@ dependencies:
   - alias: prometheusStack
     name: kube-prometheus-stack
     repository: https://prometheus-community.github.io/helm-charts
-    version: 62.6.0
+    version: 68.4.5
 description: |
   A complete monitoring/alerting stack with Grafana Prometheus Alertmanager
   
@@ -13,7 +13,7 @@ description: |
   prometheus-stack:
     namespace: monitoring
     repoURL: "https://charts.iits.tech"
-    targetRevision: "62.6.0"
+    targetRevision: "68.4.5"
     ignoreDifferences:
       - jsonPointers:
           - /imagePullSecrets
@@ -27,5 +27,5 @@ description: |
       prometheusStack.grafana.adminPassword: "REPLACE_ME"
   ```
 name: prometheus-stack
-version: 62.6.0
-appVersion: 62.6.0
+version: 68.4.5
+appVersion: 68.4.5
