@@ -1,6 +1,6 @@
 # kyverno
 
-![Version: 2.1.1](https://img.shields.io/badge/Version-2.1.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.12.6](https://img.shields.io/badge/AppVersion-1.12.6-informational?style=flat-square)
+![Version: 2.2.0](https://img.shields.io/badge/Version-2.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.13.2](https://img.shields.io/badge/AppVersion-1.13.2-informational?style=flat-square)
 
 This chart wraps the upstream `kyverno` and `kyverno-policies` chart and adds a few useful policies:
   - Verify all images are signed with cosign
@@ -12,9 +12,9 @@ This chart wraps the upstream `kyverno` and `kyverno-policies` chart and adds a 
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://kyverno.github.io/kyverno/ | kyverno | 3.2.7 |
-| https://kyverno.github.io/kyverno/ | kyverno-policies | 3.2.6 |
-| https://kyverno.github.io/policy-reporter | policy-reporter | 2.24.2 |
+| https://kyverno.github.io/kyverno/ | kyverno | 3.3.4 |
+| https://kyverno.github.io/kyverno/ | kyverno-policies | 3.3.2 |
+| https://kyverno.github.io/policy-reporter | policy-reporter | 3.0.0 |
 
 ## Values
 
@@ -104,6 +104,14 @@ This chart wraps the upstream `kyverno` and `kyverno-policies` chart and adds a 
 | kyverno.backgroundController.rbac.clusterRole.extraResources[0].verbs[1] | string | `"update"` |  |
 | kyverno.backgroundController.rbac.clusterRole.extraResources[0].verbs[2] | string | `"delete"` |  |
 | kyverno.backgroundController.rbac.clusterRole.extraResources[0].verbs[3] | string | `"patch"` |  |
+| kyverno.backgroundController.rbac.clusterRole.extraResources[1].apiGroups[0] | string | `""` |  |
+| kyverno.backgroundController.rbac.clusterRole.extraResources[1].resources[0] | string | `"secrets"` |  |
+| kyverno.backgroundController.rbac.clusterRole.extraResources[1].verbs[0] | string | `"list"` |  |
+| kyverno.backgroundController.rbac.clusterRole.extraResources[1].verbs[1] | string | `"get"` |  |
+| kyverno.backgroundController.rbac.clusterRole.extraResources[1].verbs[2] | string | `"create"` |  |
+| kyverno.backgroundController.rbac.clusterRole.extraResources[1].verbs[3] | string | `"update"` |  |
+| kyverno.backgroundController.rbac.clusterRole.extraResources[1].verbs[4] | string | `"delete"` |  |
+| kyverno.backgroundController.rbac.clusterRole.extraResources[1].verbs[5] | string | `"patch"` |  |
 | kyverno.backgroundController.resources.limits.memory | string | `"1Gi"` |  |
 | kyverno.backgroundController.resources.requests.cpu | string | `"300m"` |  |
 | kyverno.backgroundController.resources.requests.memory | string | `"512Mi"` |  |
@@ -116,12 +124,14 @@ This chart wraps the upstream `kyverno` and `kyverno-policies` chart and adds a 
 | kyverno.grafana.enabled | bool | `true` |  |
 | kyverno.reportsController.serviceMonitor.enabled | bool | `true` |  |
 | policy-reporter.install | bool | `true` |  |
-| policy-reporter.kyvernoPlugin.enabled | bool | `true` |  |
-| policy-reporter.kyvernoPlugin.logging.encoding | string | `"json"` |  |
 | policy-reporter.logging.encoding | string | `"json"` |  |
+| policy-reporter.metrics.enabled | bool | `true` |  |
+| policy-reporter.monitoring.enabled | bool | `true` |  |
+| policy-reporter.plugin.kyverno.enabled | bool | `true` |  |
+| policy-reporter.plugin.kyverno.logging.encoding | string | `"json"` |  |
+| policy-reporter.sourceFilters | list | `[]` |  |
 | policy-reporter.ui.enabled | bool | `true` |  |
 | policy-reporter.ui.logging.encoding | string | `"json"` |  |
-| policy-reporter.ui.plugins.kyverno | bool | `true` |  |
 | prependCustomImageRegistry.autogenControllers | string | `"none"` | Auto gen rules for pod controllers. See https://kyverno.io/docs/writing-policies/autogen/ |
 | prependCustomImageRegistry.enabled | bool | `false` | Enable or disable the policy globally |
 | prependCustomImageRegistry.excludeNamespaces | list | `[]` | Exclude the policy on the given list of namespaces Wildcards are supported. For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards |

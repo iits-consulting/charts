@@ -33,7 +33,7 @@ spec:
             pathType: {{ .pathType | default "Prefix"}}
             backend:
               service:
-                name: "{{ $.Release.Name }}-ui"
+                name: "policy-reporter-ui"
                 port:
                   name: "http"
               {{- end }}
