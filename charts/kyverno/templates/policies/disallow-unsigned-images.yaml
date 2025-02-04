@@ -13,7 +13,6 @@ metadata:
     policies.kyverno.io/description: >-
       Images needs to be signed with a specific private cosign key
 spec:
-  validationFailureAction: {{ .validationAction }}
   background: {{ .background }}
   webhookTimeoutSeconds: {{ .timeout }}
   failurePolicy: Fail
@@ -33,6 +32,8 @@ spec:
                 - {{ . }}
               {{- end }}
         {{- end }}
+      validate:
+        failureAction: {{ .validationAction }}
       verifyImages:
       {{- range .imagesAndPublicKeyPairs }}
         - imageReferences:

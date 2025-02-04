@@ -1,3 +1,13 @@
+### Chart Version 2.2.0
+- Update kyverno Chart to 3.3.4 & AppVersion to 1.13.2
+- Update kyverno-policies to 3.3.2
+- Update policy-reported to 3.0.0
+
+Note: 
+ - There were changes in the CRDs, you have to update them **before** updating. 
+ - Rolling Updates do not work if you come from 2.1.x.
+ - It is recommended to completely uninstall the old version first, then update the CRDs and then install the new version.
+
 ### Chart Version 2.1.1
 
  - Update kyverno Chart to 3.2.7 & AppVersion to 1.12.6

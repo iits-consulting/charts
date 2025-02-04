@@ -14,7 +14,6 @@ metadata:
     policies.kyverno.io/description: >-
       Docker Images are only allowed from specific Registries
 spec:
-  validationFailureAction: {{ .validationAction }}
   background: {{.background}}
   rules:
     - name: "{{ .name }}-rule"
@@ -24,6 +23,7 @@ spec:
               kinds:
                 - Pod
       validate:
+        failureAction: {{ .validationAction }}
         message: >-
           Unknown image registries. Expected images to match: {{ join " | " .allowedRegistries | quote}}.
           Found:

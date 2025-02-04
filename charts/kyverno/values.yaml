@@ -1,4 +1,5 @@
 kyverno:
+
   features:
     logging:
       format: json
@@ -22,15 +23,27 @@ kyverno:
     rbac:
       clusterRole:
         extraResources:
-         - apiGroups:
-             - ''
-           resources:
-             - pods
-           verbs:
-             - create
-             - update
-             - delete
-             - patch
+          - apiGroups:
+              - ''
+            resources:
+              - pods
+            verbs:
+              - create
+              - update
+              - delete
+              - patch
+          - apiGroups:
+              - ''
+            resources:
+              - secrets
+            verbs:
+              - list
+              - get
+              - create
+              - update
+              - delete
+              - patch
+
 
   cleanupController:
     serviceMonitor:
@@ -46,25 +59,35 @@ kyverno:
   crds:
     install: false
 
-  existingImagePullSecrets: []
+  existingImagePullSecrets: [ ]
 
 
 policy-reporter:
   install: true
+
   logging:
     encoding: json
 
-  kyvernoPlugin:
+  # We explicitly remove all filters, since we want a complete dashboard
+  sourceFilters: []
+
+  ui:
     enabled: true
     logging:
       encoding: json
 
-  ui:
-    logging:
-      encoding: json
+  metrics:
     enabled: true
-    plugins:
-      kyverno: true
+
+  monitoring:
+    enabled: true
+
+
+  plugin:
+    kyverno:
+      enabled: true
+      logging:
+        encoding: json
 
 
 kyverno-policies:
@@ -268,7 +291,7 @@ disallowUnsignedImages:
   # Wildcards are supported.
   # For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards
   excludeNamespaces:
-    #- namespace
+  #- namespace
 
 # Only allow images coming from a specific list of registries
 disallowUnspecifiedDockerRegistries:
@@ -337,8 +360,8 @@ disallowEmptyIngressHost:
   enabled: true
 
   exemptions:
-    #- name: ingressname
-    #  namespace: namespace
+  #- name: ingressname
+  #  namespace: namespace
 
 
 ingress:
