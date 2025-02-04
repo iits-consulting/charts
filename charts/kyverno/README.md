@@ -96,8 +96,6 @@ This chart wraps the upstream `kyverno` and `kyverno-policies` chart and adds a 
 | kyverno-policies.policyExclude.restrict-volume-types.any[0].resources.kinds[1] | string | `"ReplicaSet"` |  |
 | kyverno-policies.policyExclude.restrict-volume-types.any[0].resources.kinds[2] | string | `"Pod"` |  |
 | kyverno-policies.policyExclude.restrict-volume-types.any[0].resources.namespaces[0] | string | `"kube-system"` |  |
-| kyverno.admissionController.replicas | int | `2` |  |
-| kyverno.admissionController.serviceMonitor.enabled | bool | `true` |  |
 | kyverno.admissionController.rbac.clusterRole.extraResources[0].apiGroups[0] | string | `""` |  |
 | kyverno.admissionController.rbac.clusterRole.extraResources[0].resources[0] | string | `"secrets"` |  |
 | kyverno.admissionController.rbac.clusterRole.extraResources[0].verbs[0] | string | `"list"` |  |
@@ -106,6 +104,8 @@ This chart wraps the upstream `kyverno` and `kyverno-policies` chart and adds a 
 | kyverno.admissionController.rbac.clusterRole.extraResources[0].verbs[3] | string | `"update"` |  |
 | kyverno.admissionController.rbac.clusterRole.extraResources[0].verbs[4] | string | `"delete"` |  |
 | kyverno.admissionController.rbac.clusterRole.extraResources[0].verbs[5] | string | `"patch"` |  |
+| kyverno.admissionController.replicas | int | `2` |  |
+| kyverno.admissionController.serviceMonitor.enabled | bool | `true` |  |
 | kyverno.backgroundController.rbac.clusterRole.extraResources[0].apiGroups[0] | string | `""` |  |
 | kyverno.backgroundController.rbac.clusterRole.extraResources[0].resources[0] | string | `"pods"` |  |
 | kyverno.backgroundController.rbac.clusterRole.extraResources[0].verbs[0] | string | `"create"` |  |
