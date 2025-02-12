@@ -6,7 +6,7 @@ metadata:
   annotations:
     eck.k8s.elastic.co/license: basic
 spec:
-  version: {{ .Values.elasticsearch.version }}
+  version: {{  tpl .Values.elasticsearch.version $ }}
 {{- if (not (empty .Values.auth)) }}
   auth:
 {{- if (not (empty .Values.auth.users)) }}

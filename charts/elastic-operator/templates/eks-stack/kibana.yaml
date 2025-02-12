@@ -5,7 +5,7 @@ kind: Kibana
 metadata:
   name: {{ .Release.Name }}
 spec:
-  version: {{ .Values.kibana.version }}
+  version: {{ tpl .Values.kibana.version $ }}
   count: 1
 {{- if .Values.ingress.kibana -}}
 {{- if eq .Values.ingress.kibana.enabled true }}

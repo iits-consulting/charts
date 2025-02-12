@@ -6,7 +6,7 @@ metadata:
   name: {{ .Release.Name }}
 spec:
   type: filebeat
-  version: {{ .Values.filebeat.version }}
+  version: {{ tpl .Values.filebeat.version $ }}
   elasticsearchRef:
     name: {{ .Release.Name }}
   kibanaRef:

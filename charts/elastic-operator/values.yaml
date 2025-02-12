@@ -99,7 +99,7 @@ auth:
 elasticsearch:
   enabled: true
   volumeSize: 200G
-  version: 8.17.2
+  version: "{{ .Chart.AppVersion }}"
   nodeCount: 2
   config:
     node:
@@ -134,7 +134,7 @@ elasticsearch:
 
 filebeat:
   enabled: true
-  version: 8.17.1
+  version: "{{ .Chart.AppVersion }}"
   autodiscover:
     providers:
       - type: kubernetes
@@ -264,7 +264,7 @@ filebeat:
 
 kibana:
   enabled: true
-  version: 8.17.1
+  version: "{{ .Chart.AppVersion }}"
   config:
     server:
       basePath: "{{ .Values.ingress.kibana.path }}"
