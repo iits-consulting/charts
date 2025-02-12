@@ -41,7 +41,7 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | auth.users.custom_kibana_guest.roles[0] | string | `"viewer"` |  |
 | backup.enabled | bool | `false` |  |
 | backup.image.repository | string | `"docker.io/curlimages/curl"` |  |
-| backup.image.tag | string | `"8.11.1"` |  |
+| backup.image.tag | string | `"8.12.0"` |  |
 | backup.image.userId | int | `100` |  |
 | backup.nodeSelector | object | `{}` |  |
 | backup.policy.indices[0] | string | `"*"` |  |
@@ -55,6 +55,7 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | backup.repositorySettings | string | `nil` |  |
 | backup.secureSettings | string | `nil` |  |
 | backup.tolerations | list | `[]` |  |
+| eck-operator.securityContext.seccompProfile.type | string | `"RuntimeDefault"` |  |
 | elasticsearch.config.cluster.max_shards_per_node | int | `30000` |  |
 | elasticsearch.config.http.max_header_size | string | `"16kb"` |  |
 | elasticsearch.config.node.store.allow_mmap | bool | `false` |  |
@@ -116,6 +117,7 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | filebeat.processors[4].drop_event.when.or[5].equals."kubernetes.labels".app_kubernetes_io/name | string | `"prometheus"` |  |
 | filebeat.processors[4].drop_event.when.or[6].equals."kubernetes.labels".app_kubernetes_io/name | string | `"kube-state-metrics"` |  |
 | filebeat.processors[4].drop_event.when.or[7].equals."kubernetes.labels".app_kubernetes_io/name | string | `"argo-cd"` |  |
+| filebeat.processors[4].drop_event.when.or[8].contains."kubernetes.labels".app_kubernetes_io/name | string | `"traefik"` |  |
 | filebeat.processors[4].drop_event.when.or[8].contains.error | string | `"read: connection reset by peer"` |  |
 | filebeat.processors[4].drop_event.when.or[9].equals."kubernetes.labels".app_kubernetes_io/name | string | `"gatekeeper"` |  |
 | filebeat.processors[4].drop_event.when.or[9].equals.msg | string | `"authentication session not found in request"` |  |
@@ -153,7 +155,7 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | generatePasswords.secrets[2].name | string | `"{{ .Release.Name }}-user-custom-elastalert"` |  |
 | generatePasswords.tolerations | list | `[]` |  |
 | ilm.image.repository | string | `"docker.io/curlimages/curl"` |  |
-| ilm.image.tag | string | `"8.11.1"` |  |
+| ilm.image.tag | string | `"8.12.0"` |  |
 | ilm.image.userId | int | `100` |  |
 | ilm.nodeSelector | object | `{}` |  |
 | ilm.policies.long.coldAfter | string | `"32d"` |  |
@@ -173,7 +175,7 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | ilm.policies.short.indexPatterns[3] | string | `"monitoring*"` |  |
 | ilm.tolerations | list | `[]` |  |
 | indexPatternInit.image.repository | string | `"docker.io/curlimages/curl"` |  |
-| indexPatternInit.image.tag | string | `"8.11.1"` |  |
+| indexPatternInit.image.tag | string | `"8.12.0"` |  |
 | indexPatternInit.image.userId | int | `100` |  |
 | indexPatternInit.indices.admin.timestampField | string | `"@timestamp"` |  |
 | indexPatternInit.indices.argocd.timestampField | string | `"@timestamp"` |  |
