@@ -1,6 +1,6 @@
 # kyverno
 
-![Version: 2.2.1](https://img.shields.io/badge/Version-2.2.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.13.2](https://img.shields.io/badge/AppVersion-1.13.2-informational?style=flat-square)
+![Version: 2.2.2](https://img.shields.io/badge/Version-2.2.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.13.2](https://img.shields.io/badge/AppVersion-1.13.2-informational?style=flat-square)
 
 This chart wraps the upstream `kyverno` and `kyverno-policies` chart and adds a few useful policies:
   - Verify all images are signed with cosign
@@ -129,6 +129,8 @@ This chart wraps the upstream `kyverno` and `kyverno-policies` chart and adds a 
 | kyverno.crds.install | bool | `false` |  |
 | kyverno.existingImagePullSecrets | list | `[]` |  |
 | kyverno.features.logging.format | string | `"json"` |  |
+| kyverno.features.policyExceptions.enabled | bool | `true` |  |
+| kyverno.features.policyExceptions.namespace | string | `"*"` |  |
 | kyverno.grafana.enabled | bool | `true` |  |
 | kyverno.reportsController.serviceMonitor.enabled | bool | `true` |  |
 | policy-reporter.install | bool | `true` |  |

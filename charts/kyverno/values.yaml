@@ -1,6 +1,9 @@
 kyverno:
 
   features:
+    policyExceptions:
+      enabled: true
+      namespace: "*"
     logging:
       format: json
   config:
