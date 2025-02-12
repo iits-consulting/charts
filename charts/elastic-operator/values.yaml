@@ -189,8 +189,6 @@ filebeat:
             - equals:
                 kubernetes.labels:
                   app_kubernetes_io/name: "argo-cd"
-            - equals:
-                kubernetes.container.name:  "istio-proxy"
             - contains:
                 error: "read: connection reset by peer" # Traefik error log because of TCP health checks
             - equals:
