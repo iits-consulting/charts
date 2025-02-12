@@ -5,7 +5,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: elasticsearch-data-{{ $.Release.Name }}-es-default-{{ $i }}
   annotations:
-    argocd.argoproj.io/sync-wave: “-5”
+    argocd.argoproj.io/sync-wave: "-5"
 spec:
   accessModes:
     - ReadWriteOnce

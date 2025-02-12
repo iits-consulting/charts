@@ -8,6 +8,8 @@ metadata:
     failure-domain.beta.kubernetes.io/zone: {{ $volume.az }}
     pv-dedicated-for: {{ $.Release.Namespace }}-{{ $.Release.Name }}
   name: elasticsearch-{{ $i }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "-5"
 spec:
   # claimRef is used as a method to bind the auto-generated pvc by the operator
   #   to the specific volumes generated here

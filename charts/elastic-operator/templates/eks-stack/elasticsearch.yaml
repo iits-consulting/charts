@@ -5,6 +5,7 @@ metadata:
   name: {{ .Release.Name }}
   annotations:
     eck.k8s.elastic.co/license: basic
+    argocd.argoproj.io/sync-wave: "10"
 spec:
   version: {{  tpl .Values.elasticsearch.version $ }}
 {{- if (not (empty .Values.auth)) }}
