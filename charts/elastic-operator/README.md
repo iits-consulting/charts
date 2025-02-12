@@ -1,6 +1,6 @@
 # elastic-operator
 
-![Version: 8.17.2](https://img.shields.io/badge/Version-8.17.2-informational?style=flat-square)
+![Version: 8.17.2](https://img.shields.io/badge/Version-8.17.2-informational?style=flat-square) ![AppVersion: 8.17.2](https://img.shields.io/badge/AppVersion-8.17.2-informational?style=flat-square)
 
 Elasticsearch + filebeat + kibana with default common used indexes and Index Lifecycle Management.
 It comes also with a backup functionality. This is the version using ECK-operator to deploy and monitor the stack.
@@ -73,7 +73,7 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | elasticsearch.resources.limits.memory | string | `"8G"` |  |
 | elasticsearch.resources.requests.cpu | string | `"200m"` |  |
 | elasticsearch.resources.requests.memory | string | `"6G"` |  |
-| elasticsearch.version | string | `"8.17.2"` |  |
+| elasticsearch.version | string | `"{{ .Chart.AppVersion }}"` |  |
 | elasticsearch.volumeSize | string | `"200G"` |  |
 | filebeat.autodiscover.providers[0]."hints.default_config".paths[0] | string | `"/var/log/containers/*${data.container.id}.log"` |  |
 | filebeat.autodiscover.providers[0]."hints.default_config".type | string | `"container"` |  |
@@ -129,7 +129,7 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | filebeat.resources.requests.cpu | string | `"100m"` |  |
 | filebeat.resources.requests.memory | string | `"100M"` |  |
 | filebeat.tolerations | list | `[]` |  |
-| filebeat.version | string | `"8.17.1"` |  |
+| filebeat.version | string | `"{{ .Chart.AppVersion }}"` |  |
 | filebeat.volumeMounts[0].mountPath | string | `"/var/lib/containerd/container_logs"` |  |
 | filebeat.volumeMounts[0].name | string | `"varlibcontainerdcontainerlogs"` |  |
 | filebeat.volumeMounts[0].readOnly | bool | `true` |  |
@@ -234,7 +234,7 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | kibana.podTemplateSpec.initContainers[0].securityContext.runAsUser | int | `1000` |  |
 | kibana.podTemplateSpec.initContainers[0].securityContext.seccompProfile.type | string | `"RuntimeDefault"` |  |
 | kibana.podTemplateSpec.securityContext.seccompProfile.type | string | `"RuntimeDefault"` |  |
-| kibana.version | string | `"8.17.1"` |  |
+| kibana.version | string | `"{{ .Chart.AppVersion }}"` |  |
 | policyException.enabled | bool | `true` |  |
 
 ----------------------------------------------
