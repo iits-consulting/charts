@@ -107,10 +107,8 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | filebeat.processors[2].decode_json_fields.when.has_fields[0] | string | `"msg"` |  |
 | filebeat.processors[3].add_labels.labels.stage | string | `"${STAGE:dev}"` |  |
 | filebeat.processors[4].drop_event.when.or[0].equals."kubernetes.labels".common_k8s_elastic_co/type | string | `"elasticsearch"` |  |
-| filebeat.processors[4].drop_event.when.or[10].equals."kubernetes.labels".app_kubernetes_io/name | string | `"gatekeeper"` |  |
-| filebeat.processors[4].drop_event.when.or[10].equals.msg | string | `"authentication session not found in request"` |  |
-| filebeat.processors[4].drop_event.when.or[11].equals."kubernetes.labels".app_kubernetes_io/name | string | `"vault-secrets-webhook"` |  |
-| filebeat.processors[4].drop_event.when.or[12].equals."kubernetes.namespace" | string | `"kube-system"` |  |
+| filebeat.processors[4].drop_event.when.or[10].equals."kubernetes.labels".app_kubernetes_io/name | string | `"vault-secrets-webhook"` |  |
+| filebeat.processors[4].drop_event.when.or[11].equals."kubernetes.namespace" | string | `"kube-system"` |  |
 | filebeat.processors[4].drop_event.when.or[1].equals."kubernetes.labels".common_k8s_elastic_co/type | string | `"beat"` |  |
 | filebeat.processors[4].drop_event.when.or[2].equals."kubernetes.labels".common_k8s_elastic_co/type | string | `"kibana"` |  |
 | filebeat.processors[4].drop_event.when.or[3].equals."kubernetes.labels".app_kubernetes_io/name | string | `"grafana"` |  |
@@ -118,8 +116,9 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | filebeat.processors[4].drop_event.when.or[5].equals."kubernetes.labels".app_kubernetes_io/name | string | `"prometheus"` |  |
 | filebeat.processors[4].drop_event.when.or[6].equals."kubernetes.labels".app_kubernetes_io/name | string | `"kube-state-metrics"` |  |
 | filebeat.processors[4].drop_event.when.or[7].equals."kubernetes.labels".app_kubernetes_io/name | string | `"argo-cd"` |  |
-| filebeat.processors[4].drop_event.when.or[8].equals."kubernetes.container.name" | string | `"istio-proxy"` |  |
-| filebeat.processors[4].drop_event.when.or[9].contains.error | string | `"read: connection reset by peer"` |  |
+| filebeat.processors[4].drop_event.when.or[8].contains.error | string | `"read: connection reset by peer"` |  |
+| filebeat.processors[4].drop_event.when.or[9].equals."kubernetes.labels".app_kubernetes_io/name | string | `"gatekeeper"` |  |
+| filebeat.processors[4].drop_event.when.or[9].equals.msg | string | `"authentication session not found in request"` |  |
 | filebeat.readinessProbe.failureThreshold | int | `50` |  |
 | filebeat.readinessProbe.initialDelaySeconds | int | `20` |  |
 | filebeat.readinessProbe.periodSeconds | int | `30` |  |
