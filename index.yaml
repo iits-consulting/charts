@@ -1212,6 +1212,21 @@ entries:
     version: 0.1.1
   elastic-operator:
   - apiVersion: v2
+    appVersion: 8.17.2
+    created: "2025-02-12T15:33:42.864804582Z"
+    dependencies:
+    - name: eck-operator
+      repository: https://helm.elastic.co
+      version: 2.16.1
+    description: 'Elasticsearch + filebeat + kibana with default common used indexes
+      and Index Lifecycle Management. It comes also with a backup functionality. This
+      is the version using ECK-operator to deploy and monitor the stack. '
+    digest: 3a4b1565403daa72937658cc2740c899b58bbc0218fa17ad1b937ef52a1f6715
+    name: elastic-operator
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/elastic-operator-8.17.2/elastic-operator-8.17.2.tgz
+    version: 8.17.2
+  - apiVersion: v2
     created: "2025-01-30T16:09:01.060853521Z"
     dependencies:
     - name: eck-operator
@@ -6592,4 +6607,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/waf-cert-uploader-0.1.1/waf-cert-uploader-0.1.1.tgz
     version: 0.1.1
-generated: "2025-02-04T16:11:24.167271271Z"
+generated: "2025-02-12T15:33:42.865290882Z"
