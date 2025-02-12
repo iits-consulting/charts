@@ -4,8 +4,8 @@ kind: Job
 metadata:
   name: {{.Release.Name}}-ilm-init
   annotations:
-    helm.sh/hook: post-install,post-upgrade
-    helm.sh/hook-weight: "-5"
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
     checksum/config: {{ include (print $.Template.BasePath "/ilm/config.yaml") . | sha256sum | substr 0 50 }}
 spec:
   backoffLimit: 0
@@ -57,12 +57,8 @@ spec:
           secret:
             secretName: {{ .Release.Name }}-es-http-certs-public
       securityContext:
-        allowPrivilegeEscalation: false
-        capabilities:
-          drop:
-          - ALL
-        privileged: false
-        readOnlyRootFilesystem: true
+        fsGroup: 1001
+        runAsGroup: 1002
         runAsNonRoot: true
         seccompProfile:
           type: RuntimeDefault

@@ -4,8 +4,10 @@ apiVersion: kibana.k8s.elastic.co/v1
 kind: Kibana
 metadata:
   name: {{ .Release.Name }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
 spec:
-  version: {{ .Values.kibana.version }}
+  version: {{ tpl .Values.kibana.version $ }}
   count: 1
 {{- if .Values.ingress.kibana -}}
 {{- if eq .Values.ingress.kibana.enabled true }}

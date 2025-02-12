@@ -1,6 +1,6 @@
 # elastic-operator
 
-![Version: 8.17.1](https://img.shields.io/badge/Version-8.17.1-informational?style=flat-square)
+![Version: 8.17.2](https://img.shields.io/badge/Version-8.17.2-informational?style=flat-square) ![AppVersion: 8.17.2](https://img.shields.io/badge/AppVersion-8.17.2-informational?style=flat-square)
 
 Elasticsearch + filebeat + kibana with default common used indexes and Index Lifecycle Management.
 It comes also with a backup functionality. This is the version using ECK-operator to deploy and monitor the stack.
@@ -41,7 +41,7 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | auth.users.custom_kibana_guest.roles[0] | string | `"viewer"` |  |
 | backup.enabled | bool | `false` |  |
 | backup.image.repository | string | `"docker.io/curlimages/curl"` |  |
-| backup.image.tag | string | `"8.11.1"` |  |
+| backup.image.tag | string | `"8.12.0"` |  |
 | backup.image.userId | int | `100` |  |
 | backup.nodeSelector | object | `{}` |  |
 | backup.policy.indices[0] | string | `"*"` |  |
@@ -55,6 +55,7 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | backup.repositorySettings | string | `nil` |  |
 | backup.secureSettings | string | `nil` |  |
 | backup.tolerations | list | `[]` |  |
+| eck-operator.securityContext.seccompProfile.type | string | `"RuntimeDefault"` |  |
 | elasticsearch.config.cluster.max_shards_per_node | int | `30000` |  |
 | elasticsearch.config.http.max_header_size | string | `"16kb"` |  |
 | elasticsearch.config.node.store.allow_mmap | bool | `false` |  |
@@ -73,7 +74,7 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | elasticsearch.resources.limits.memory | string | `"8G"` |  |
 | elasticsearch.resources.requests.cpu | string | `"200m"` |  |
 | elasticsearch.resources.requests.memory | string | `"6G"` |  |
-| elasticsearch.version | string | `"8.17.1"` |  |
+| elasticsearch.version | string | `"{{ .Chart.AppVersion }}"` |  |
 | elasticsearch.volumeSize | string | `"200G"` |  |
 | filebeat.autodiscover.providers[0]."hints.default_config".paths[0] | string | `"/var/log/containers/*${data.container.id}.log"` |  |
 | filebeat.autodiscover.providers[0]."hints.default_config".type | string | `"container"` |  |
@@ -106,33 +107,20 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | filebeat.processors[2].decode_json_fields.target | string | `""` |  |
 | filebeat.processors[2].decode_json_fields.when.has_fields[0] | string | `"msg"` |  |
 | filebeat.processors[3].add_labels.labels.stage | string | `"${STAGE:dev}"` |  |
-| filebeat.processors[4].drop_event.when.or[0].equals."kubernetes.labels"."common.k8s.elastic.co/type" | string | `"elasticsearch"` |  |
-| filebeat.processors[4].drop_event.when.or[10].equals."kubernetes.container.name" | string | `"portal"` |  |
-| filebeat.processors[4].drop_event.when.or[11].equals."kubernetes.container.name" | string | `"repo-server"` |  |
-| filebeat.processors[4].drop_event.when.or[12].equals."kubernetes.container.name" | string | `"argocd-notifications-controller"` |  |
-| filebeat.processors[4].drop_event.when.or[13].equals."kubernetes.container.name" | string | `"application-controller"` |  |
-| filebeat.processors[4].drop_event.when.or[14].equals."kubernetes.namespace" | string | `"kube-system"` |  |
-| filebeat.processors[4].drop_event.when.or[15].equals."kubernetes.labels.component" | string | `"registry"` |  |
-| filebeat.processors[4].drop_event.when.or[16].equals.RequestPath | string | `"/ping"` |  |
-| filebeat.processors[4].drop_event.when.or[17].equals.RouterName | string | `"kibana@file"` |  |
-| filebeat.processors[4].drop_event.when.or[18].equals.message | string | `"200 OK: GET - /public/api/health"` |  |
-| filebeat.processors[4].drop_event.when.or[19].contains.message | string | `"vault-sealed-check\" does not have associated TTL"` |  |
-| filebeat.processors[4].drop_event.when.or[1].equals."kubernetes.labels"."common.k8s.elastic.co/type" | string | `"beat"` |  |
-| filebeat.processors[4].drop_event.when.or[20].contains.message | string | `"Error while renaming Node ID"` |  |
-| filebeat.processors[4].drop_event.when.or[21].contains.message | string | `"pkg/mod/k8s.io/client-go@v0.17.0/tools/cache/reflector.go:108"` |  |
-| filebeat.processors[4].drop_event.when.or[22].contains.message | string | `"TCP 200 0 0"` |  |
-| filebeat.processors[4].drop_event.when.or[23].equals."auth.metadata.role_name" | string | `"gitlab"` |  |
-| filebeat.processors[4].drop_event.when.or[24].equals."auth.metadata.role_name" | string | `"banzai-webhook-role"` |  |
-| filebeat.processors[4].drop_event.when.or[25].equals.app | string | `"vault-secrets-webhook"` |  |
-| filebeat.processors[4].drop_event.when.or[26].contains.message | string | `"agent.server: member joined, marking health alive:"` |  |
-| filebeat.processors[4].drop_event.when.or[2].equals."kubernetes.labels"."common.k8s.elastic.co/type" | string | `"kibana"` |  |
-| filebeat.processors[4].drop_event.when.or[3].equals."kubernetes.labels.app" | string | `"grafana"` |  |
-| filebeat.processors[4].drop_event.when.or[4].equals."kubernetes.labels.app" | string | `"prometheus-stack-operator"` |  |
-| filebeat.processors[4].drop_event.when.or[5].equals."kubernetes.labels.app" | string | `"botkube"` |  |
-| filebeat.processors[4].drop_event.when.or[6].equals."kubernetes.labels.app" | string | `"prometheus"` |  |
-| filebeat.processors[4].drop_event.when.or[7].equals.msg | string | `"no session found in request, redirecting for authorization"` |  |
-| filebeat.processors[4].drop_event.when.or[8].equals."kubernetes.container.name" | string | `"kube-state-metrics"` |  |
-| filebeat.processors[4].drop_event.when.or[9].equals."kubernetes.container.name" | string | `"traefik-admin-dashboard"` |  |
+| filebeat.processors[4].drop_event.when.or[0].equals."kubernetes.labels".common_k8s_elastic_co/type | string | `"elasticsearch"` |  |
+| filebeat.processors[4].drop_event.when.or[10].equals."kubernetes.labels".app_kubernetes_io/name | string | `"vault-secrets-webhook"` |  |
+| filebeat.processors[4].drop_event.when.or[11].equals."kubernetes.namespace" | string | `"kube-system"` |  |
+| filebeat.processors[4].drop_event.when.or[1].equals."kubernetes.labels".common_k8s_elastic_co/type | string | `"beat"` |  |
+| filebeat.processors[4].drop_event.when.or[2].equals."kubernetes.labels".common_k8s_elastic_co/type | string | `"kibana"` |  |
+| filebeat.processors[4].drop_event.when.or[3].equals."kubernetes.labels".app_kubernetes_io/name | string | `"grafana"` |  |
+| filebeat.processors[4].drop_event.when.or[4].equals."kubernetes.labels".app_kubernetes_io/name | string | `"prometheus-stack-prometheus-operator"` |  |
+| filebeat.processors[4].drop_event.when.or[5].equals."kubernetes.labels".app_kubernetes_io/name | string | `"prometheus"` |  |
+| filebeat.processors[4].drop_event.when.or[6].equals."kubernetes.labels".app_kubernetes_io/name | string | `"kube-state-metrics"` |  |
+| filebeat.processors[4].drop_event.when.or[7].equals."kubernetes.labels".app_kubernetes_io/name | string | `"argo-cd"` |  |
+| filebeat.processors[4].drop_event.when.or[8].contains."kubernetes.labels".app_kubernetes_io/name | string | `"traefik"` |  |
+| filebeat.processors[4].drop_event.when.or[8].contains.error | string | `"read: connection reset by peer"` |  |
+| filebeat.processors[4].drop_event.when.or[9].equals."kubernetes.labels".app_kubernetes_io/name | string | `"gatekeeper"` |  |
+| filebeat.processors[4].drop_event.when.or[9].equals.msg | string | `"authentication session not found in request"` |  |
 | filebeat.readinessProbe.failureThreshold | int | `50` |  |
 | filebeat.readinessProbe.initialDelaySeconds | int | `20` |  |
 | filebeat.readinessProbe.periodSeconds | int | `30` |  |
@@ -142,7 +130,7 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | filebeat.resources.requests.cpu | string | `"100m"` |  |
 | filebeat.resources.requests.memory | string | `"100M"` |  |
 | filebeat.tolerations | list | `[]` |  |
-| filebeat.version | string | `"8.17.1"` |  |
+| filebeat.version | string | `"{{ .Chart.AppVersion }}"` |  |
 | filebeat.volumeMounts[0].mountPath | string | `"/var/lib/containerd/container_logs"` |  |
 | filebeat.volumeMounts[0].name | string | `"varlibcontainerdcontainerlogs"` |  |
 | filebeat.volumeMounts[0].readOnly | bool | `true` |  |
@@ -167,7 +155,7 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | generatePasswords.secrets[2].name | string | `"{{ .Release.Name }}-user-custom-elastalert"` |  |
 | generatePasswords.tolerations | list | `[]` |  |
 | ilm.image.repository | string | `"docker.io/curlimages/curl"` |  |
-| ilm.image.tag | string | `"8.11.1"` |  |
+| ilm.image.tag | string | `"8.12.0"` |  |
 | ilm.image.userId | int | `100` |  |
 | ilm.nodeSelector | object | `{}` |  |
 | ilm.policies.long.coldAfter | string | `"32d"` |  |
@@ -187,7 +175,7 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | ilm.policies.short.indexPatterns[3] | string | `"monitoring*"` |  |
 | ilm.tolerations | list | `[]` |  |
 | indexPatternInit.image.repository | string | `"docker.io/curlimages/curl"` |  |
-| indexPatternInit.image.tag | string | `"8.11.1"` |  |
+| indexPatternInit.image.tag | string | `"8.12.0"` |  |
 | indexPatternInit.image.userId | int | `100` |  |
 | indexPatternInit.indices.admin.timestampField | string | `"@timestamp"` |  |
 | indexPatternInit.indices.argocd.timestampField | string | `"@timestamp"` |  |
@@ -247,7 +235,7 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | kibana.podTemplateSpec.initContainers[0].securityContext.runAsUser | int | `1000` |  |
 | kibana.podTemplateSpec.initContainers[0].securityContext.seccompProfile.type | string | `"RuntimeDefault"` |  |
 | kibana.podTemplateSpec.securityContext.seccompProfile.type | string | `"RuntimeDefault"` |  |
-| kibana.version | string | `"8.17.1"` |  |
+| kibana.version | string | `"{{ .Chart.AppVersion }}"` |  |
 | policyException.enabled | bool | `true` |  |
 
 ----------------------------------------------

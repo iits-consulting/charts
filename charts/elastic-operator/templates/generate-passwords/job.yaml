@@ -5,6 +5,8 @@ metadata:
   name: {{ .Release.Name }}-generate-passwords
   annotations:
     argocd.argoproj.io/hook: Sync
+    argocd.argoproj.io/sync-wave: "5"
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
     checksum/config: {{ include (print $.Template.BasePath "/generate-passwords/config.yaml") . | sha256sum | substr 0 50 }}
 spec:
   backoffLimit: 0
@@ -44,12 +46,8 @@ spec:
             name: {{ .Release.Name }}-generate-passwords-config
             defaultMode: 0755
       securityContext:
-        allowPrivilegeEscalation: false
-        capabilities:
-          drop:
-          - ALL
-        privileged: false
-        readOnlyRootFilesystem: true
+        fsGroup: 1001
+        runAsGroup: 1002
         runAsNonRoot: true
         seccompProfile:
           type: RuntimeDefault
