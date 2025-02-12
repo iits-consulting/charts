@@ -86,11 +86,11 @@ auth:
         - monitor
       indices:
         - names:
-          - "elastalert*"
+            - "elastalert*"
           privileges:
             - all
         - names:
-          - "*"
+            - "*"
           privileges:
             - read
             - monitor
@@ -99,7 +99,7 @@ auth:
 elasticsearch:
   enabled: true
   volumeSize: 200G
-  version: 8.17.1
+  version: 8.17.2
   nodeCount: 2
   config:
     node:
@@ -109,7 +109,7 @@ elasticsearch:
       max_header_size: 16kb
     cluster:
       max_shards_per_node: 30000
-  extraSecureSettings: []
+  extraSecureSettings: [ ]
   javaOpts: "-Xmx6g -Xms6g -Dlog4j2.formatMsgNoLookups=true"
   resources:
     requests:
@@ -120,17 +120,17 @@ elasticsearch:
       memory: "8G"
   podTemplateSpec:
     containers:
-    - name: elasticsearch
-      resources:
-        requests:
-          cpu: "{{ .Values.elasticsearch.resources.requests.cpu }}"
-          memory: "{{ .Values.elasticsearch.resources.requests.memory }}"
-        limits:
-          cpu: "{{ .Values.elasticsearch.resources.limits.cpu }}"
-          memory: "{{ .Values.elasticsearch.resources.limits.memory }}"
-      env:
-      - name: ES_JAVA_OPTS
-        value: "{{ .Values.elasticsearch.javaOpts }}"
+      - name: elasticsearch
+        resources:
+          requests:
+            cpu: "{{ .Values.elasticsearch.resources.requests.cpu }}"
+            memory: "{{ .Values.elasticsearch.resources.requests.memory }}"
+          limits:
+            cpu: "{{ .Values.elasticsearch.resources.limits.cpu }}"
+            memory: "{{ .Values.elasticsearch.resources.limits.memory }}"
+        env:
+          - name: ES_JAVA_OPTS
+            value: "{{ .Values.elasticsearch.javaOpts }}"
 
 filebeat:
   enabled: true
@@ -146,17 +146,17 @@ filebeat:
         node: ${NODE_NAME}
   # default processors
   processors:
-    - add_kubernetes_metadata: {}
+    - add_kubernetes_metadata: { }
     - decode_json_fields:
         when:
-            has_fields: ["message"]
-        fields: ["message"]
+          has_fields: [ "message" ]
+        fields: [ "message" ]
         target: ""
         overwrite_keys: true
     - decode_json_fields:
         when:
-            has_fields: ["msg"]
-        fields: ["msg"]
+          has_fields: [ "msg" ]
+        fields: [ "msg" ]
         target: ""
         overwrite_keys: true
     - add_labels:
@@ -165,72 +165,50 @@ filebeat:
     - drop_event:
         when:
           or:
-          - equals:
-              kubernetes.labels:
-                "common.k8s.elastic.co/type": "elasticsearch"
-          - equals:
-              kubernetes.labels:
-                "common.k8s.elastic.co/type": "beat"
-          - equals:
-              kubernetes.labels:
-                "common.k8s.elastic.co/type": "kibana"
-          - equals:
-              kubernetes.labels.app: "grafana"
-          - equals:
-              kubernetes.labels.app: "prometheus-stack-operator"
-          - equals:
-              kubernetes.labels.app: "botkube"
-          - equals:
-              kubernetes.labels.app: "prometheus"
-          - equals:
-              msg: "no session found in request, redirecting for authorization"
-          - equals:
-              kubernetes.container.name: "kube-state-metrics"
-          - equals:
-              kubernetes.container.name: "traefik-admin-dashboard"
-          - equals:
-              kubernetes.container.name: portal
-          - equals:
-              kubernetes.container.name: repo-server
-          - equals:
-              kubernetes.container.name: argocd-notifications-controller
-          - equals:
-              kubernetes.container.name: application-controller
-          - equals:
-              kubernetes.namespace: kube-system
-          - equals:
-              kubernetes.labels.component: registry
-          - equals:
-              RequestPath: "/ping"
-          - equals:
-              RouterName: "kibana@file"
-          - equals:
-              message: "200 OK: GET - /public/api/health"
-          - contains:
-              message: "vault-sealed-check\" does not have associated TTL"
-          - contains:
-              message: "Error while renaming Node ID"
-          - contains:
-              message: "pkg/mod/k8s.io/client-go@v0.17.0/tools/cache/reflector.go:108"
-          # NGINX Ingress
-          - contains:
-              message: "TCP 200 0 0"
-          # Vault logs
-          - equals:
-              auth.metadata.role_name: gitlab
-          - equals:
-              auth.metadata.role_name: banzai-webhook-role
-          - equals:
-              app: vault-secrets-webhook
-          - contains:
-              message: "agent.server: member joined, marking health alive:"
+            - equals:
+                kubernetes.labels:
+                  common_k8s_elastic_co/type: "elasticsearch"
+            - equals:
+                kubernetes.labels:
+                  common_k8s_elastic_co/type: "beat"
+            - equals:
+                kubernetes.labels:
+                  common_k8s_elastic_co/type: "kibana"
+            - equals:
+                kubernetes.labels:
+                  app_kubernetes_io/name: "grafana"
+            - equals:
+                kubernetes.labels:
+                  app_kubernetes_io/name: "prometheus-stack-prometheus-operator"
+            - equals:
+                kubernetes.labels:
+                  app_kubernetes_io/name: "prometheus"
+            - equals:
+                kubernetes.labels:
+                  app_kubernetes_io/name: "kube-state-metrics"
+            - equals:
+                kubernetes.labels:
+                  app_kubernetes_io/name: "argo-cd"
+            - equals:
+                kubernetes.container.name:  "istio-proxy"
+            - contains:
+                error: "read: connection reset by peer" # Traefik error log because of TCP health checks
+            - equals:
+                kubernetes.labels:
+                  app_kubernetes_io/name: "gatekeeper"
+                msg: "authentication session not found in request"
+            - equals:
+                kubernetes.labels:
+                  app_kubernetes_io/name: "vault-secrets-webhook"
+            - equals:
+                kubernetes.namespace: "kube-system"
   # add additional processors without overwriting the default ones  (they will get appended)
-  extraProcessors: []
+  extraProcessors: [ ]
   # default indices
   indices:
     - index: "%{[kubernetes.namespace]:not-defined}-%{[agent.version]}-%{+yyyy.MM}"
   # add additional indices without overwriting the default ones (they will get prepended)
-  extraIndices: []
+  extraIndices: [ ]
   resources:
     requests:
       cpu: "100m"
@@ -262,7 +240,7 @@ filebeat:
   # -- example: Setup stage name
   # - name: STAGE
   #   value: "REPLACE_ME"
-  extraEnv: []
+  extraEnv: [ ]
   volumes:
     # for otc: https://docs.otc.t-systems.com/cloud-container-engine/umn/nodes/node_o_and_m/differences_between_cce_node_mountpath_configurations_and_community_native_configurations.html
     - name: varlibcontainerdcontainerlogs
@@ -273,7 +251,7 @@ filebeat:
       hostPath:
         path: /var/log
         type: ''
-  extraVolumes: []
+  extraVolumes: [ ]
   volumeMounts:
     - name: varlibcontainerdcontainerlogs
       mountPath: /var/lib/containerd/container_logs
@@ -281,8 +259,8 @@ filebeat:
     - mountPath: /var/log
       name: varlog
       readOnly: true
-  extraVolumeMounts: []
-  tolerations: []
+  extraVolumeMounts: [ ]
+  tolerations: [ ]
 
 kibana:
   enabled: true
@@ -339,7 +317,7 @@ kibana:
           runAsUser: 1000
           capabilities:
             drop:
-            - ALL
+              - ALL
           seccompProfile:
             type: RuntimeDefault
     initContainers:
@@ -350,7 +328,7 @@ kibana:
           runAsUser: 1000
           capabilities:
             drop:
-            - ALL
+              - ALL
           seccompProfile:
             type: RuntimeDefault
 
@@ -359,8 +337,8 @@ indexPatternInit:
     repository: docker.io/curlimages/curl
     tag: 8.11.1
     userId: 100
-  tolerations: []
-  nodeSelector: {}
+  tolerations: [ ]
+  nodeSelector: { }
   indices:
     admin:
       timestampField: "@timestamp"
@@ -386,8 +364,8 @@ ilm:
     repository: docker.io/curlimages/curl
     tag: 8.11.1
     userId: 100
-  tolerations: []
-  nodeSelector: {}
+  tolerations: [ ]
+  nodeSelector: { }
   policies:
     long:
       #business apps and security relevant logs
@@ -409,8 +387,8 @@ generatePasswords:
     repository: docker.io/bitnami/kubectl
     tag: 1.32.1
     userId: 100
-  tolerations: []
-  nodeSelector: {}
+  tolerations: [ ]
+  nodeSelector: { }
   secrets:
     - name: "{{ .Release.Name }}-user-custom-kibana-guest"
       key: password
@@ -428,36 +406,36 @@ backup:
     repository: docker.io/curlimages/curl
     tag: 8.11.1
     userId: 100
-  tolerations: []
-  nodeSelector: {}
+  tolerations: [ ]
+  nodeSelector: { }
   repoName: "elastic-backups"
   # -- for Azure blob storage use "azure"
   repoType: "s3"
 
   secureSettings:
-    # # S3 compatible / OTC
-    # # -- Required
-    # access_key: "REPLACE_ME"
-    # # -- Required
-    # secret_key: "REPLACE_ME"
+  # # S3 compatible / OTC
+  # # -- Required
+  # access_key: "REPLACE_ME"
+  # # -- Required
+  # secret_key: "REPLACE_ME"
 
-    # # Azure blob storage
-    # # -- Required
-    # account: "REPLACE_ME"
-    # # -- Required (alternative for key)
-    # sas_token: "REPLACE_ME"
-    # # -- Required (alternative for sas_token)
-    # key: "REPLACE_ME"
+  # # Azure blob storage
+  # # -- Required
+  # account: "REPLACE_ME"
+  # # -- Required (alternative for key)
+  # sas_token: "REPLACE_ME"
+  # # -- Required (alternative for sas_token)
+  # key: "REPLACE_ME"
 
   repositorySettings:
-    # # S3 compatible / OTC
-    # # -- Required
-    # endpoint: "https://obs.eu-de.otc.t-systems.com"
-    # # -- Required
-    # bucket: "REPLACE_ME"
+  # # S3 compatible / OTC
+  # # -- Required
+  # endpoint: "https://obs.eu-de.otc.t-systems.com"
+  # # -- Required
+  # bucket: "REPLACE_ME"
 
-    # # Azure blob storage
-    # container: "REPLACE_ME"
+  # # Azure blob storage
+  # container: "REPLACE_ME"
 
   policy:
     name: "nightly-backup"

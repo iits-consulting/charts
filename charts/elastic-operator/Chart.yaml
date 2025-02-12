@@ -1,6 +1,6 @@
 apiVersion: v2
 name: elastic-operator
-version: 8.17.1
+version: 8.17.2
 dependencies:
   - name: eck-operator
     repository: https://helm.elastic.co
