@@ -3806,6 +3806,14 @@ entries:
     version: 0.2.5
   kasm:
   - apiVersion: v2
+    created: "2025-02-13T20:35:53.352661174Z"
+    digest: 9d66e925a6ac4f79882dbe66038b29f2cd2cff37214821b7c6d6dcd5f2ca706e
+    name: kasm
+    type: application
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/kasm-0.5.0/kasm-0.5.0.tgz
+    version: 0.5.0
+  - apiVersion: v2
     created: "2024-04-29T17:54:06.310301613Z"
     description: '# Description  This is just a Proof of Concept for KASM. Don''t
       use it for production.  ## Installing the Chart with iits ArgoCD ```yaml kasm:   namespace:
@@ -6632,4 +6640,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/waf-cert-uploader-0.1.1/waf-cert-uploader-0.1.1.tgz
     version: 0.1.1
-generated: "2025-02-12T15:50:52.460873287Z"
+generated: "2025-02-13T20:35:53.353588227Z"
