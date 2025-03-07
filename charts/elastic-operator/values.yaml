@@ -340,7 +340,7 @@ kibana:
 indexPatternInit:
   image:
     repository: docker.io/curlimages/curl
-    tag: 8.12.0
+    tag: 8.12.1
     userId: 100
   tolerations: [ ]
   nodeSelector: { }
@@ -367,7 +367,7 @@ indexPatternInit:
 ilm:
   image:
     repository: docker.io/curlimages/curl
-    tag: 8.12.0
+    tag: 8.12.1
     userId: 100
   tolerations: [ ]
   nodeSelector: { }
@@ -390,7 +390,7 @@ generatePasswords:
   enabled: true
   image:
     repository: docker.io/bitnami/kubectl
-    tag: 1.32.1
+    tag: 1.32.2
     userId: 100
   tolerations: [ ]
   nodeSelector: { }
@@ -409,7 +409,7 @@ backup:
   enabled: false
   image:
     repository: docker.io/curlimages/curl
-    tag: 8.12.0
+    tag: 8.12.1
     userId: 100
   tolerations: [ ]
   nodeSelector: { }
