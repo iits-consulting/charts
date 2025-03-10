@@ -1,6 +1,6 @@
 # elastic-operator
 
-![Version: 8.17.2](https://img.shields.io/badge/Version-8.17.2-informational?style=flat-square) ![AppVersion: 8.17.2](https://img.shields.io/badge/AppVersion-8.17.2-informational?style=flat-square)
+![Version: 8.17.3](https://img.shields.io/badge/Version-8.17.3-informational?style=flat-square) ![AppVersion: 8.17.3](https://img.shields.io/badge/AppVersion-8.17.3-informational?style=flat-square)
 
 Elasticsearch + filebeat + kibana with default common used indexes and Index Lifecycle Management.
 It comes also with a backup functionality. This is the version using ECK-operator to deploy and monitor the stack.
@@ -41,7 +41,7 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | auth.users.custom_kibana_guest.roles[0] | string | `"viewer"` |  |
 | backup.enabled | bool | `false` |  |
 | backup.image.repository | string | `"docker.io/curlimages/curl"` |  |
-| backup.image.tag | string | `"8.12.0"` |  |
+| backup.image.tag | string | `"8.12.1"` |  |
 | backup.image.userId | int | `100` |  |
 | backup.nodeSelector | object | `{}` |  |
 | backup.policy.indices[0] | string | `"*"` |  |
@@ -144,7 +144,7 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | filebeat.volumes[1].name | string | `"varlog"` |  |
 | generatePasswords.enabled | bool | `true` |  |
 | generatePasswords.image.repository | string | `"docker.io/bitnami/kubectl"` |  |
-| generatePasswords.image.tag | string | `"1.32.1"` |  |
+| generatePasswords.image.tag | string | `"1.32.2"` |  |
 | generatePasswords.image.userId | int | `100` |  |
 | generatePasswords.nodeSelector | object | `{}` |  |
 | generatePasswords.secrets[0].key | string | `"password"` |  |
@@ -155,7 +155,7 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | generatePasswords.secrets[2].name | string | `"{{ .Release.Name }}-user-custom-elastalert"` |  |
 | generatePasswords.tolerations | list | `[]` |  |
 | ilm.image.repository | string | `"docker.io/curlimages/curl"` |  |
-| ilm.image.tag | string | `"8.12.0"` |  |
+| ilm.image.tag | string | `"8.12.1"` |  |
 | ilm.image.userId | int | `100` |  |
 | ilm.nodeSelector | object | `{}` |  |
 | ilm.policies.long.coldAfter | string | `"32d"` |  |
@@ -175,7 +175,7 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | ilm.policies.short.indexPatterns[3] | string | `"monitoring*"` |  |
 | ilm.tolerations | list | `[]` |  |
 | indexPatternInit.image.repository | string | `"docker.io/curlimages/curl"` |  |
-| indexPatternInit.image.tag | string | `"8.12.0"` |  |
+| indexPatternInit.image.tag | string | `"8.12.1"` |  |
 | indexPatternInit.image.userId | int | `100` |  |
 | indexPatternInit.indices.admin.timestampField | string | `"@timestamp"` |  |
 | indexPatternInit.indices.argocd.timestampField | string | `"@timestamp"` |  |
