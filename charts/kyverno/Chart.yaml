@@ -18,5 +18,5 @@ dependencies:
     version: 3.0.0
     condition: policy-reporter.install
 type: application
-version: 2.2.2
+version: 2.2.2-image-registry-fix
 appVersion: 1.13.2
