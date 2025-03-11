@@ -8,6 +8,9 @@ metadata:
     argocd.argoproj.io/sync-wave: "-5"
 spec:
   exceptions:
+    - policyName: enforce-security-context
+      ruleNames:
+        - add-pod-security-context
     - policyName: disallow-capabilities-strict
       ruleNames:
         - require-drop-all

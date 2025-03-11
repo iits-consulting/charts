@@ -1,6 +1,6 @@
 apiVersion: v2
 name: elastic-operator
-version: 8.17.3
+version: 8.17.3-fb-policyException
 appVersion: 8.17.3
 dependencies:
   - name: eck-operator
