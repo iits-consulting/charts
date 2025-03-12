@@ -15,7 +15,9 @@ metadata:
 spec:
   background: {{ .background }}
   webhookTimeoutSeconds: {{ .timeout }}
+  {{- if eq $.Values.disallowUnsignedImages.validationAction "Enforce" }}
   failurePolicy: Fail
+  {{- end }}
   rules:
     - name: "{{ .name }}-rule"
       match:
@@ -43,8 +45,12 @@ spec:
             secrets:
               - {{ .pullSecret }}
           {{- end }}
+          {{- if eq $.Values.disallowUnsignedImages.validationAction "Enforce" }}
           mutateDigest: true
           requireDigest: true
+          {{- else }}
+          mutateDigest: false
+          {{- end }}
           attestors:
             - entries:
                 - keys:
