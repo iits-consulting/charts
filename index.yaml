@@ -1228,6 +1228,21 @@ entries:
     version: 8.17.3
   - apiVersion: v2
     appVersion: 8.17.3
+    created: "2025-03-14T14:47:57.043729672Z"
+    dependencies:
+    - name: eck-operator
+      repository: https://helm.elastic.co
+      version: 2.16.1
+    description: 'Elasticsearch + filebeat + kibana with default common used indexes
+      and Index Lifecycle Management. It comes also with a backup functionality. This
+      is the version using ECK-operator to deploy and monitor the stack. '
+    digest: 69179ee1d52ae45b56003eb98ef332f7d42cf638f020fa079e3b2ac155d52b12
+    name: elastic-operator
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/elastic-operator-8.17.3-tls-secretName/elastic-operator-8.17.3-tls-secretName.tgz
+    version: 8.17.3-tls-secretName
+  - apiVersion: v2
+    appVersion: 8.17.3
     created: "2025-03-11T14:21:40.200627874Z"
     dependencies:
     - name: eck-operator
@@ -4146,6 +4161,31 @@ entries:
     version: 2.2.2
   - apiVersion: v2
     appVersion: 1.13.2
+    created: "2025-03-14T14:47:57.214538116Z"
+    dependencies:
+    - name: kyverno
+      repository: https://kyverno.github.io/kyverno/
+      version: 3.3.4
+    - name: kyverno-policies
+      repository: https://kyverno.github.io/kyverno/
+      version: 3.3.2
+    - condition: policy-reporter.install
+      name: policy-reporter
+      repository: https://kyverno.github.io/policy-reporter
+      version: 3.0.0
+    description: 'This chart wraps the upstream `kyverno` and `kyverno-policies` chart
+      and adds a few useful policies:   - Verify all images are signed with cosign   -
+      Verify all images come from allowed image repositories   - Replace the complete
+      registry reference with a custom one   - Prepend the image reference with a
+      custom prefix, useful for e.g. pull-through caches '
+    digest: e430e8998aff83616eff2c13b3fb6994eae628feee7f7fdced4e6ddc731cb3d1
+    name: kyverno
+    type: application
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/kyverno-2.2.2-image-registry-fix/kyverno-2.2.2-image-registry-fix.tgz
+    version: 2.2.2-image-registry-fix
+  - apiVersion: v2
+    appVersion: 1.13.2
     created: "2025-03-11T16:04:27.961582781Z"
     dependencies:
     - name: kyverno
@@ -6695,4 +6735,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/waf-cert-uploader-0.1.1/waf-cert-uploader-0.1.1.tgz
     version: 0.1.1
-generated: "2025-03-11T16:04:27.962710807Z"
+generated: "2025-03-14T14:47:57.215091917Z"
