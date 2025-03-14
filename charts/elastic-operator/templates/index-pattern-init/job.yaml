@@ -1,25 +1,27 @@
+{{- with .Values.indexPatternInit }}
+
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{.Release.Name}}-index-pattern-init
+  name: {{ $.Release.Name }}-index-pattern-init
   annotations:
     argocd.argoproj.io/hook: PostSync
     argocd.argoproj.io/hook-delete-policy: HookSucceeded
-    checksum/config: {{ include (print $.Template.BasePath "/index-pattern-init/config.yaml") . | sha256sum | substr 0 50 }}
+    checksum/config: {{ include (print $.Template.BasePath "/index-pattern-init/config.yaml") $ | sha256sum | substr 0 50 }}
 spec:
   backoffLimit: 0
   parallelism: 1
   completions: 1
   template:
     metadata:
-      name: {{.Release.Name}}-jobcommand
+      name: {{ $.Release.Name }}-jobcommand
     spec:
-      tolerations: {{ .Values.indexPatternInit.tolerations | toYaml | nindent 8  }}
-      nodeSelector: {{ .Values.indexPatternInit.nodeSelector | toYaml | nindent 8 }}
+      tolerations: {{ .tolerations | toYaml | nindent 8  }}
+      nodeSelector: {{ .nodeSelector | toYaml | nindent 8 }}
       restartPolicy: Never
       containers:
-        - name: {{.Release.Name}}-index-pattern-init
-          image: {{ .Values.indexPatternInit.image.repository }}:{{ .Values.indexPatternInit.image.tag }}
+        - name: {{ $.Release.Name }}-index-pattern-init
+          image: {{ .image.repository }}:{{ .image.tag }}
           imagePullPolicy: IfNotPresent
           command: [ '/bin/sh', '-c' ]
           args: [ "/index-pattern-init-config/index-pattern-init.sh" ]
@@ -30,9 +32,9 @@ spec:
               valueFrom:
                 secretKeyRef:
                   key: elastic
-                  name: {{ .Release.Name }}-es-elastic-user
+                  name: {{ $.Release.Name }}-es-elastic-user
             - name: KIBANA_ENDPOINT
-              value: {{ .Release.Name }}-kb-http:5601
+              value: {{ $.Release.Name }}-kb-http:5601
           volumeMounts:
             - name: index-pattern-init-config
               mountPath: /index-pattern-init-config
@@ -48,19 +50,20 @@ spec:
             runAsNonRoot: true
             seccompProfile:
               type: RuntimeDefault
-            runAsUser: {{ .Values.indexPatternInit.image.userId }}
+            runAsUser: {{ .image.userId }}
       volumes:
         - name: index-pattern-init-config
           configMap:
-            name: {{.Release.Name}}-index-pattern-init-config
+            name: {{ $.Release.Name }}-index-pattern-init-config
             defaultMode: 0755
         - name: kibana-certificate
           secret:
-            secretName: {{ .Release.Name }}-kb-http-certs-public
+            secretName: {{ $.Release.Name }}-kb-http-certs-public
       securityContext:
         fsGroup: 1001
         runAsGroup: 1002
         runAsNonRoot: true
         seccompProfile:
           type: RuntimeDefault
-        runAsUser: {{ .Values.indexPatternInit.image.userId }}
+        runAsUser: {{ .image.userId }}
+  {{- end }}

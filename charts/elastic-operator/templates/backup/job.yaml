@@ -1,26 +1,27 @@
-{{- if .Values.backup.enabled }}
+{{- with .Values.backup }}
+{{- if .enabled }}
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{.Release.Name}}-backup-init
+  name: {{ $.Release.Name }}-backup-init
   annotations:
     argocd.argoproj.io/hook: PostSync
     argocd.argoproj.io/hook-delete-policy: HookSucceeded
-    checksum/config: {{ include (print $.Template.BasePath "/backup/config.yaml") . | sha256sum | substr 0 50 }}
+    checksum/config: {{ include (print $.Template.BasePath "/backup/config.yaml") $ | sha256sum | substr 0 50 }}
 spec:
   backoffLimit: 0
   parallelism: 1
   completions: 1
   template:
     metadata:
-      name: {{.Release.Name}}-backup-init
+      name: {{ $.Release.Name }}-backup-init
     spec:
-      tolerations: {{ .Values.backup.tolerations | toYaml | nindent 8  }}
-      nodeSelector: {{ .Values.backup.nodeSelector | toYaml | nindent 8 }}
+      tolerations: {{ .tolerations | toYaml | nindent 8  }}
+      nodeSelector: {{ .nodeSelector | toYaml | nindent 8 }}
       restartPolicy: Never
       containers:
-        - name: {{.Release.Name}}-backup-init
-          image: {{ .Values.backup.image.repository }}:{{ .Values.backup.image.tag }}
+        - name: {{ $.Release.Name }}-backup-init
+          image: {{ .image.repository }}:{{ .image.tag }}
           imagePullPolicy: IfNotPresent
           command: ['/bin/sh', '-c']
           args: ["/backup-config/configure-backup.sh"]
@@ -36,7 +37,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   key: elastic
-                  name: {{ .Release.Name }}-es-elastic-user
+                  name: {{ $.Release.Name }}-es-elastic-user
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
@@ -47,20 +48,21 @@ spec:
             runAsNonRoot: true
             seccompProfile:
               type: RuntimeDefault
-            runAsUser: {{ .Values.backup.image.userId }}
+            runAsUser: {{ .image.userId }}
       volumes:
         - name: backup-config
           configMap:
-            name: {{.Release.Name}}-backup-config
+            name: {{ $.Release.Name }}-backup-config
             defaultMode: 0755
         - name: elasticsearch-certificate
           secret:
-            secretName: {{ .Release.Name }}-es-http-certs-public
+            secretName: {{ $.Release.Name }}-es-http-certs-public
       securityContext:
         fsGroup: 1001
         runAsGroup: 1002
         runAsNonRoot: true
         seccompProfile:
           type: RuntimeDefault
-        runAsUser: {{ .Values.backup.image.userId }}
+        runAsUser: {{ .image.userId }}
+{{- end }}
 {{- end }}

@@ -38,6 +38,10 @@ ingress:
       traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
       traefik.ingress.kubernetes.io/router.tls: "true"
       traefik.ingress.kubernetes.io/router.middlewares: "routing-oidc-forward-auth@kubernetescrd"
+    tls:
+      - hosts:
+          - "{{ .Values.ingress.kibana.host }}"
+
   elasticsearch:
     enabled: false
     # -- Required, if enabled
@@ -49,6 +53,9 @@ ingress:
       traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
       traefik.ingress.kubernetes.io/router.tls: "true"
       traefik.ingress.kubernetes.io/router.middlewares: "routing-oidc-forward-auth@kubernetescrd"
+    tls:
+      - hosts:
+          - "{{ .Values.ingress.elasticsearch.host }}"
 
 auth:
   users:
@@ -270,6 +277,7 @@ filebeat:
 kibana:
   enabled: true
   version: "{{ .Chart.AppVersion }}"
+  count: 2
   config:
     server:
       basePath: "{{ .Values.ingress.kibana.path }}"

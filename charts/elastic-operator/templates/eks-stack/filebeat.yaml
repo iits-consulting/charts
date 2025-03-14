@@ -1,65 +1,66 @@
-{{ if .Values.filebeat.enabled }}
-
+{{- with .Values.filebeat }}
+{{- if .enabled }}
 apiVersion: beat.k8s.elastic.co/v1beta1
 kind: Beat
 metadata:
-  name: {{ .Release.Name }}
+  name: {{ $.Release.Name }}
   annotations:
-    argocd.argoproj.io/sync-wave: "10"
+    argocd.argoproj.io/sync-wave: "20"
 spec:
   type: filebeat
-  version: {{ tpl .Values.filebeat.version $ }}
+  version: {{ tpl .version $ }}
   elasticsearchRef:
-    name: {{ .Release.Name }}
+    name: {{ $.Release.Name }}
   kibanaRef:
-    name: {{ .Release.Name }}
+    name: {{ $.Release.Name }}
   config:
     filebeat:
       autodiscover:
-{{ .Values.filebeat.autodiscover | toYaml | indent 8 }}
+        {{- .autodiscover | toYaml | nindent 8 }}
     processors:
-{{ concat .Values.filebeat.processors .Values.filebeat.extraProcessors | toYaml | indent 6 }}
+        {{- concat .processors .extraProcessors | toYaml | nindent 6 }}
     output.elasticsearch:
       username: '${ELASTICSEARCH_USERNAME}'
       password: '${ELASTICSEARCH_PASSWORD}'
       indices:
-{{ concat .Values.filebeat.extraIndices .Values.filebeat.indices | toYaml | indent 8}}
+        {{- concat .extraIndices .indices | toYaml | nindent 8}}
   daemonSet:
     podTemplate:
       metadata:
         annotations:
-          checksum/users: {{ include (print $.Template.BasePath "/eks-stack/elasticsearch-users.yaml") . | sha256sum | substr 0 50 }}
-          checksum/roles: {{ include (print $.Template.BasePath "/eks-stack/elasticsearch-roles.yaml") . | sha256sum | substr 0 50 }}
+          checksum/users: {{ include (print $.Template.BasePath "/eks-stack/elasticsearch-users.yaml") $ | sha256sum | substr 0 50 }}
+          checksum/roles: {{ include (print $.Template.BasePath "/eks-stack/elasticsearch-roles.yaml") $ | sha256sum | substr 0 50 }}
       spec:
         # needed for autodiscover
         # see: https://github.com/elastic/cloud-on-k8s/blob/5937685b9085a5b185dde3d31ad50ccb5cdc034b/config/recipes/beats/filebeat_autodiscover.yaml
-        serviceAccountName: {{ .Release.Name }}-filebeat
+        serviceAccountName: {{ $.Release.Name }}-filebeat
         automountServiceAccountToken: true
         terminationGracePeriodSeconds: 30
         securityContext:
           runAsUser: 0
-{{- if .Values.filebeat.tolerations }}
+        {{- if .tolerations }}
         tolerations:
-{{ .Values.filebeat.tolerations | toYaml | indent 10 }}
-{{- end }}
+          {{- .tolerations | toYaml | indent 10 }}
+        {{- end }}
         containers:
         - name: filebeat
           resources:
-{{ .Values.filebeat.resources | toYaml | indent 12}}
+            {{- .resources | toYaml | nindent 12}}
           env:
-{{ tpl (.Values.filebeat.env | toYaml) $ | indent 10 }}
-{{ if .Values.filebeat.extraEnv }}
-{{ .Values.filebeat.extraEnv | toYaml | indent 10 }}
-{{- end }}
+            {{- tpl (.env | toYaml) $ | nindent 10 }}
+            {{- if .extraEnv }}
+              {{- .extraEnv | toYaml | nindent 10 }}
+            {{- end }}
           volumeMounts:
-{{ .Values.filebeat.volumeMounts | toYaml | indent 10}}
-{{ if .Values.filebeat.extraVolumeMounts }}
-{{ .Values.filebeat.extraVolumeMounts | toYaml | indent 10 }}
-{{- end }}
+            {{- .volumeMounts | toYaml | nindent 10}}
+            {{- if .extraVolumeMounts }}
+              {{- .extraVolumeMounts | toYaml | nindent 10 }}
+            {{- end }}
         volumes:
-{{ .Values.filebeat.volumes | toYaml | indent 8 }}
-{{ if .Values.filebeat.extraVolumes }}
-{{ .Values.filebeat.extraVolumes | toYaml | indent 8 }}
-{{- end -}}
+          {{- .volumes | toYaml | nindent 8 }}
+          {{- if .extraVolumes }}
+            {{- .extraVolumes | toYaml | nindent 8 }}
+          {{- end -}}
 
-{{ end }}
+{{- end }}
+{{- end }}

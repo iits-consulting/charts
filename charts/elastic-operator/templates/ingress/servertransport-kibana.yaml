@@ -1,12 +1,12 @@
-{{- if .Values.ingress.kibana -}}
-{{- if eq .Values.ingress.kibana.enabled true }}
+{{- with .Values.ingress.kibana -}}
+{{- if eq .enabled true }}
 apiVersion: traefik.io/v1alpha1
 kind: ServersTransport
 metadata:
-  name: {{ .Release.Name }}-kibana
+  name: {{ $.Release.Name }}-kibana
 spec:
-  serverName: {{ .Release.Name }}-kb-http
+  serverName: {{ $.Release.Name }}-kb-http
   rootCAsSecrets:
-    - {{ .Release.Name }}-kb-http-certs-public
+    - {{ $.Release.Name }}-kb-http-certs-public
 {{- end }}
 {{- end }}

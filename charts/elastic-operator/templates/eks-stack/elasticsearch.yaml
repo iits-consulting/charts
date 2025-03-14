@@ -1,55 +1,62 @@
-{{ if .Values.elasticsearch.enabled }}
+{{- with .Values.elasticsearch}}
+{{ if .enabled }}
 apiVersion: elasticsearch.k8s.elastic.co/v1
 kind: Elasticsearch
 metadata:
-  name: {{ .Release.Name }}
+  name: {{ $.Release.Name }}
   annotations:
     eck.k8s.elastic.co/license: basic
     argocd.argoproj.io/sync-wave: "10"
 spec:
-  version: {{  tpl .Values.elasticsearch.version $ }}
-{{- if (not (empty .Values.auth)) }}
+  version: {{  tpl .version $ }}
+{{- with $.Values.auth }}
+  {{- if (not (empty .)) }}
   auth:
-{{- if (not (empty .Values.auth.users)) }}
+    {{- if (not (empty .users)) }}
     fileRealm:
-{{- range $userName, $_ := .Values.auth.users }}
+      {{- range $userName, $_ := .users }}
       - secretName: {{ $.Release.Name }}-user-{{ kebabcase $userName }}
-{{- end }}
-{{- end }}
-{{- if (not (empty .Values.auth.roles)) }}
+      {{- end }}
+    {{- end }}
+    {{- if (not (empty $.Values.auth.roles)) }}
     roles:
-{{- range $roleName, $_ := .Values.auth.roles }}
+      {{- range $roleName, $_ := $.Values.auth.roles }}
       - secretName: {{ $.Release.Name }}-role-{{ kebabcase $roleName }}
+      {{- end }}
+    {{- end }}
+  {{- end }}
 {{- end }}
-{{- end }}
-{{- end }}
-{{- if .Values.ingress.elasticsearch -}}
-{{- if eq .Values.ingress.elasticsearch.enabled true }}
+{{- with $.Values.ingress.elasticsearch -}}
+  {{- if and (eq .enabled true) (eq .className "traefik") }}
   http:
     service:
       metadata:
         annotations:
           traefik.ingress.kubernetes.io/service.serverstransport: "{{ $.Release.Namespace }}-{{ $.Release.Name }}-elasticsearch@kubernetescrd"
           traefik.ingress.kubernetes.io/service.serversscheme: "https"
-{{- end }}
+  {{- end }}
 {{- end }}
   secureSettings:
-    - secretName: "{{ .Release.Name }}-backup-secure-settings"
-{{- range $extraSetting := .Values.elasticsearch.extraSecureSettings }}
+    - secretName: "{{ $.Release.Name }}-backup-secure-settings"
+{{- range $extraSetting := .extraSecureSettings }}
     - secretName: {{ $extraSetting }}
 {{- end }}
   nodeSets:
   - name: default
-    count: {{ .Values.elasticsearch.nodeCount }}
+    count: {{ .nodeCount }}
     config:
-{{ .Values.elasticsearch.config | toYaml | indent 6 }}
+      {{- .config | toYaml | nindent 6 }}
     podTemplate:
       spec:
-{{ tpl (.Values.elasticsearch.podTemplateSpec | toYaml) $ | indent 8 }}
+        {{- tpl (.podTemplateSpec | toYaml) $ | nindent 8 }}
     volumeClaimTemplates:
-{{- if .Values.cce }}
-      - {{ include "template.otcPVC" $ |  indent 8 | trim }}
+{{- if $.Values.cce }}
+      -
+      {{- include "template.otcPVC" $ | nindent 8 }}
 {{ else }}
-      - {{ include "template.regularPVC" $ | indent 8 | trim }}
-{{ end }}
-{{ end }}
+      -
+      {{- include "template.regularPVC" $ | nindent 8 }}
+{{- end }}
+
+{{- end }}
+{{- end }}
