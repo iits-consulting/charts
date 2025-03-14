@@ -1,12 +1,12 @@
-{{- if .Values.ingress.elasticsearch -}}
-{{- if eq .Values.ingress.elasticsearch.enabled true }}
+{{- with .Values.ingress.elasticsearch -}}
+{{- if eq .enabled true }}
 apiVersion: traefik.io/v1alpha1
 kind: ServersTransport
 metadata:
-  name: {{ .Release.Name }}-elasticsearch
+  name: {{ $.Release.Name }}-elasticsearch
 spec:
-  serverName: {{ .Release.Name }}-es-http
+  serverName: {{ $.Release.Name }}-es-http
   rootCAsSecrets:
-    - {{ .Release.Name }}-es-http-certs-public
+    - {{ $.Release.Name }}-es-http-certs-public
 {{- end }}
 {{- end }}

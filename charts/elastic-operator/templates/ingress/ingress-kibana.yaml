@@ -18,8 +18,7 @@ spec:
   {{- end }}
 
   tls:
-    - hosts:
-      - {{ .host }}
+    {{- tpl (.tls | toYaml) $ | nindent 4}}
 
   rules:
     - host: {{ .host }}

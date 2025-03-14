@@ -1,34 +1,35 @@
-{{ if .Values.kibana.enabled }}
+{{- with .Values.kibana }}
+{{- if .enabled }}
 
 apiVersion: kibana.k8s.elastic.co/v1
 kind: Kibana
 metadata:
-  name: {{ .Release.Name }}
+  name: {{ $.Release.Name }}
   annotations:
-    argocd.argoproj.io/sync-wave: "10"
+    argocd.argoproj.io/sync-wave: "15"
 spec:
-  version: {{ tpl .Values.kibana.version $ }}
-  count: 1
-{{- if .Values.ingress.kibana -}}
-{{- if eq .Values.ingress.kibana.enabled true }}
+  version: {{ tpl .version $ }}
+  count: {{ .count }}
+  {{- with $.Values.ingress.kibana}}
+    {{- if and (eq .enabled true) (eq .className "traefik") }}
   http:
     service:
       metadata:
         annotations:
           traefik.ingress.kubernetes.io/service.serverstransport: "{{ $.Release.Namespace }}-{{ $.Release.Name }}-kibana@kubernetescrd"
           traefik.ingress.kubernetes.io/service.serversscheme: "https"
-{{- end }}
-{{- end }}
+    {{- end }}
+  {{- end }}
   elasticsearchRef:
-    name: {{ .Release.Name }}
+    name: {{ $.Release.Name }}
   config:
-{{ tpl (.Values.kibana.config | toYaml) $ | indent 4 }}
+    {{- tpl (.config | toYaml) $ | nindent 4 }}
   podTemplate:
     metadata:
       annotations:
-        checksum/users: {{ include (print $.Template.BasePath "/eks-stack/elasticsearch-users.yaml") . | sha256sum | substr 0 50 }}
-        checksum/roles: {{ include (print $.Template.BasePath "/eks-stack/elasticsearch-roles.yaml") . | sha256sum | substr 0 50 }}
+        checksum/users: {{ include (print $.Template.BasePath "/eks-stack/elasticsearch-users.yaml") $ | sha256sum | substr 0 50 }}
+        checksum/roles: {{ include (print $.Template.BasePath "/eks-stack/elasticsearch-roles.yaml") $ | sha256sum | substr 0 50 }}
     spec:
-{{ tpl (.Values.kibana.podTemplateSpec | toYaml) $ | indent 6 }}
-
-{{ end }}
+      {{- tpl (.podTemplateSpec | toYaml) $ | nindent 6 }}
+{{- end }}
+{{- end }}

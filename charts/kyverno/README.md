@@ -1,6 +1,6 @@
 # kyverno
 
-![Version: 2.2.2](https://img.shields.io/badge/Version-2.2.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.13.2](https://img.shields.io/badge/AppVersion-1.13.2-informational?style=flat-square)
+![Version: 2.2.2-image-registry-fix](https://img.shields.io/badge/Version-2.2.2--image--registry--fix-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.13.2](https://img.shields.io/badge/AppVersion-1.13.2-informational?style=flat-square)
 
 This chart wraps the upstream `kyverno` and `kyverno-policies` chart and adds a few useful policies:
   - Verify all images are signed with cosign
