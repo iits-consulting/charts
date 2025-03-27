@@ -1,3 +1,10 @@
+### Chart Version 2.3.0
+- fixed a bug that caused jobs to not count as completed even if the underlying pod finished successfully
+- reworked the internal structure of our custom policies, some parameters change please check if you have overriden some
+- Updated kyverno to Chart 3.3.7 / AppVersion 1.13.4
+- Updated kyverno-policies to 3.3.4
+- Updated policy-reported to 3.0.7
+
 ### Chart Version 2.2.2
 - PolicyExceptions are now toggled on by default
 

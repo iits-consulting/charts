@@ -9,14 +9,14 @@ description: |
 dependencies:
   - name: "kyverno"
     repository: "https://kyverno.github.io/kyverno/"
-    version: 3.3.4
+    version: 3.3.7
   - name: "kyverno-policies"
     repository: "https://kyverno.github.io/kyverno/"
-    version: 3.3.2
+    version: 3.3.4
   - name: "policy-reporter"
     repository: "https://kyverno.github.io/policy-reporter"
-    version: 3.0.0
+    version: 3.0.7
     condition: policy-reporter.install
 type: application
-version: 2.2.2-image-registry-fix
-appVersion: 1.13.2
+version: 2.3.0
+appVersion: 1.13.4
