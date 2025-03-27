@@ -6,11 +6,10 @@ metadata:
   name: {{.name}}
   annotations:
     policies.kyverno.io/title: Replace Image Registry
-    pod-policies.kyverno.io/autogen-controllers: {{ .autogenControllers }}
     policies.kyverno.io/category: DockerImage
-    policies.kyverno.io/severity: high
     policies.kyverno.io/subject: Pod
     policies.kyverno.io/minversion: 1.6.0
+    pod-policies.kyverno.io/autogen-controllers: none
     policies.kyverno.io/description: >-
       We rewrite every third party docker registry to `{{.target}}`.
       If the image does not exist there it can not be deployed.
@@ -25,11 +24,14 @@ metadata:
       if so may need to not match on Pods.
 spec:
   background: false
+  useServerSideApply: true
   rules:
-    - name: {{ .name }}
+    - name: {{ .name }}-containers
       match:
         any:
           - resources:
+              operations:
+                - CREATE # spec.containers cannot be modified on UPDATE
               kinds:
                 - Pod
       mutate:
@@ -40,7 +42,7 @@ spec:
                 {{- range $excludeRegistry := .excludeRegistries}}
                 - key: "{{`{{element.image}}`}}"
                   operator: NotEquals
-                  value: "{{$excludeRegistry}}"
+                  value: "{{ $excludeRegistry }}"
                 {{- end }}
             patchStrategicMerge:
               metadata:
@@ -50,10 +52,12 @@ spec:
                 containers:
                   - name: "{{`{{ element.name }}`}}"
                     image: "{{ `{{ regex_replace_all(` }} {{ .sourceRegex }} {{ `, '{{ element.image }}', '` }}{{ .target | trimSuffix "/" }}{{ `/$2' )}}` }}"
-    - name: {{ .name }}-initcontainers
+    - name: {{ .name }}-initContainers
       match:
         any:
           - resources:
+              operations:
+                - CREATE # spec.initContainers cannot be modified on UPDATE
               kinds:
                 - Pod
       preconditions:
@@ -69,14 +73,45 @@ spec:
                 {{- range $excludeRegistry := .excludeRegistries}}
                 - key: "{{`{{element.image}}`}}"
                   operator: NotEquals
+                  value: "{{ $excludeRegistry }}"
+                {{- end }}
+            patchStrategicMerge:
+              metadata:
+                annotations:
+                  +(clusterpolicies.kyverno.io/{{ .name }}-initContainers): "Replaced the initContainers image registry with {{ .target }}"
+              spec:
+                initContainers:
+                  - name: "{{`{{ element.name }}`}}"
+                    image: "{{ `{{ regex_replace_all(` }} {{ .sourceRegex }} {{ `, '{{ element.image }}', '` }}{{ .target | trimSuffix "/" }}{{ `/$2' )}}` }}"
+    - name: {{ .name }}-ephemeralContainers
+      match:
+        any:
+          - resources:
+              operations:
+                - UPDATE #ephemeralContainers cannot be specified on CREATE
+              kinds:
+                - Pod
+      preconditions:
+        all:
+          - key: "{{`{{ request.object.spec.ephemeralContainers[] || `}}`[]`{{` | length(@) }}`}}"
+            operator: GreaterThanOrEquals
+            value: 1
+      mutate:
+        foreach:
+          - list: "request.object.spec.ephemeralContainers"
+            preconditions:
+              all:
+                {{- range $excludeRegistry := .excludeRegistries}}
+                - key: "{{`{{element.image}}`}}"
+                  operator: NotEquals
                   value: "{{$excludeRegistry}}"
                 {{- end }}
             patchStrategicMerge:
               metadata:
                 annotations:
-                  +(clusterpolicies.kyverno.io/{{ .name }}-initcontainers): "Replaced the initContainers image registry with {{ .target }}"
+                  +(clusterpolicies.kyverno.io/{{ .name }}-ephemeralContainers): "Replaced the ephemeralContainers image registry with {{ .target }}"
               spec:
-                initContainers:
+                ephemeralContainers:
                   - name: "{{`{{ element.name }}`}}"
                     image: "{{ `{{ regex_replace_all(` }} {{ .sourceRegex }} {{ `, '{{ element.image }}', '` }}{{ .target | trimSuffix "/" }}{{ `/$2' )}}` }}"
 

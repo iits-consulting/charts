@@ -9,17 +9,19 @@ metadata:
     policies.kyverno.io/severity: high
     policies.kyverno.io/subject: Pod
     policies.kyverno.io/category: DockerImage
-    pod-policies.kyverno.io/autogen-controllers: {{ .autogenControllers }}
     policies.kyverno.io/title: Disallow unspecified Docker Registries
+    pod-policies.kyverno.io/autogen-controllers: none
     policies.kyverno.io/description: >-
       Docker Images are only allowed from specific Registries
 spec:
-  background: {{.background}}
   rules:
     - name: "{{ .name }}-rule"
       match:
         any:
           - resources:
+              operations:
+                - CREATE
+                - UPDATE
               kinds:
                 - Pod
       validate:
@@ -27,14 +29,18 @@ spec:
         message: >-
           Unknown image registries. Expected images to match: {{ join " | " .allowedRegistries | quote}}.
           Found:
+            ephemeralContainers={{`{{ request.object.spec.ephemeralContainers[*].image }}`}},
             initContainers={{`{{ request.object.spec.initContainers[*].image }}`}},
             containers={{`{{ request.object.spec.containers[*].image }}`}}
         pattern:
           spec:
+            =(ephemeralContainers):
+              - image: {{ join " | " .allowedRegistries | quote}}
             =(initContainers):
               - image: {{ join " | " .allowedRegistries | quote}}
             containers:
               - image: {{ join " | " .allowedRegistries | quote}}
+      {{- if .excludeNamespaces }}
       exclude:
         any:
           - resources:
@@ -42,5 +48,6 @@ spec:
               {{- range .excludeNamespaces }}
                 - {{ . }}
               {{- end }}
+      {{- end }}
 {{ end }}
 {{ end }}

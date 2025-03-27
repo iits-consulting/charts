@@ -6,8 +6,6 @@ kyverno:
       namespace: "*"
     logging:
       format: json
-  config:
-    excludeKyvernoNamespace: false
 
   admissionController:
     replicas: 2
@@ -86,7 +84,7 @@ policy-reporter:
     encoding: json
 
   # We explicitly remove all filters, since we want a complete dashboard
-  sourceFilters: []
+  sourceFilters: [ ]
 
   ui:
     enabled: true
@@ -218,9 +216,6 @@ prependCustomImageRegistry:
   # -- Enable or disable the policy globally
   enabled: false
 
-  # -- Auto gen rules for pod controllers. See https://kyverno.io/docs/writing-policies/autogen/
-  autogenControllers: none
-
   # -- The name of the policy
   name: prepend-image-registry
 
@@ -241,9 +236,6 @@ replaceImageRegistry:
   # -- Enable or disable the policy globally
   enabled: false
 
-  # -- Auto gen rules for pod controllers. See https://kyverno.io/docs/writing-policies/autogen/
-  autogenControllers: none
-
   # -- The name of the policy
   name: replace-image-registry
 
@@ -255,29 +247,24 @@ replaceImageRegistry:
 
   # -- Excludes images from the replacement. Wildcard * is supported
   excludeRegistries:
-    - "docker.io/something/*"
+  #  - "docker.io/something/*"
 
 # Settings for the policy which verifies if images from specific sources are signed.
 disallowUnsignedImages:
   # -- Enable or disable the policy globally
   enabled: false
 
-  # -- Also check already existing containers. See https://kyverno.io/docs/writing-policies/background/
-  background: false
-
-  # -- Auto gen rules for pod controllers. See https://kyverno.io/docs/writing-policies/autogen/
-  autogenControllers: none
-
   # -- The name of the policy
   name: disallow-unsigned-images
 
-  # -- How policy violation should be handled. Use either `enforce` or `audit`. See https://kyverno.io/docs/writing-policies/validate/ for details
-  # If a policy is violated and the action is "enforce", then the ressource will not be allowed
-  # to be created. On the other the `audit` action allows the ressource but reports this incident.
-  validationAction: "Enforce"
+  # kyverno - webhookConfiguration.timeoutSeconds
+  timeoutSeconds: "30"
 
-  # kyverno - webhookTimeoutSeconds
-  timeout: "30"
+  # FailurePolicy defines how unexpected policy errors and webhook response timeout errors are handled.
+  # Possible values:
+  # "Ignore" - will allow failing calls to image registries to be ignored.
+  # "Fail" - will fail the call to the api-server.
+  failurePolicy: "Ignore"
 
   # A list of images and public key pairs.
   #
@@ -297,7 +284,7 @@ disallowUnsignedImages:
   imagesAndPublicKeyPairs:
     - image: "*"
       #pullSecret:
-      ignoreTransparencyLog: true
+      #ignoreTransparencyLog: true
       key: |-
         -----BEGIN PUBLIC KEY-----
         MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEXzV8f2YUEmXF176k//uSmgEEZoKb
@@ -314,12 +301,6 @@ disallowUnsignedImages:
 disallowUnspecifiedDockerRegistries:
   # -- Enable or disable the policy globally
   enabled: false
-
-  # -- Also check already existing containers. See https://kyverno.io/docs/writing-policies/background/
-  background: true
-
-  # -- Auto gen rules for pod controllers. See https://kyverno.io/docs/writing-policies/autogen/
-  autogenControllers: none
 
   # -- The name of the policy
   name: disallow-unspecified-docker-registries
@@ -338,7 +319,7 @@ disallowUnspecifiedDockerRegistries:
   # Wildcards are supported.
   # For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards
   excludeNamespaces:
-    - "kube-system"
+  # - my-namespace
 
 enforceSecurityContext:
 
@@ -348,35 +329,29 @@ enforceSecurityContext:
   # -- The name of the policy
   name: enforce-security-context
 
-  # -- Auto gen rules for pod controllers. See https://kyverno.io/docs/writing-policies/autogen/
-  autogenControllers: none
-
   # -- Exclude the policy on the given list of namespaces
   # Wildcards are supported.
   # For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards
   excludeNamespaces:
-    - "kube-system"
+  # - my-namespace
 
 autoInjectDockerPullSecrets:
   enabled: true
-  # -- Auto gen rules for pod controllers. See https://kyverno.io/docs/writing-policies/autogen/
-  autogenControllers: none
+
   secrets:
 #    gitlab:
 #      username: "access_token"
 #      password: "token or password"
 #      registryUrl: "registry.gitlab.com"
-#      registryWildcard: "*"
 #    github:
 #      username: "token_name"
 #      password: "token or password"
 #      registryUrl: "myregistry"
-#      registryWildcard: "*"
 
 disallowEmptyIngressHost:
   enabled: true
 
-  exemptions:
+  excludeNamespaces:
   #- name: ingressname
   #  namespace: namespace
 
