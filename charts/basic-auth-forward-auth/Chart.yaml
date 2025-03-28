@@ -1,8 +1,0 @@
-apiVersion: v2
-name: basic-auth-forward-auth
-version: 0.2.0
-description: |
-  For workshop we use this chart to establish a basic auth forward auth.
-  OIDC forward auth would be to complicated to implement.
-  But since we use the name "oidc-forward-auth" inside every ingress annotation as a middleware we named the basic auth
-  middleware also like this.
