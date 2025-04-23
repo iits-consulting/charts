@@ -52,6 +52,7 @@ ingress:
 | gatekeeper.config.enable-authorization-header | bool | `false` |  |
 | gatekeeper.config.enable-compression | bool | `true` |  |
 | gatekeeper.config.enable-default-deny | bool | `false` |  |
+| gatekeeper.config.enable-encrypted-token | bool | `false` | enable encryption for the access tokens |
 | gatekeeper.config.enable-json-logging | bool | `true` |  |
 | gatekeeper.config.enable-logging | bool | `false` |  |
 | gatekeeper.config.enable-logout-redirect | bool | `true` |  |
@@ -59,7 +60,7 @@ ingress:
 | gatekeeper.config.enable-refresh-tokens | bool | `true` |  |
 | gatekeeper.config.enable-request-id | bool | `true` |  |
 | gatekeeper.config.enable-token-header | bool | `false` |  |
-| gatekeeper.config.encryption-key | string | `nil` | Required: encryption key used to encryption the session state |
+| gatekeeper.config.encryption-key | string | `nil` | optional: encryption key used to encryption the session state |
 | gatekeeper.config.listen | string | `"0.0.0.0:3000"` |  |
 | gatekeeper.config.listen-admin | string | `":4000"` |  |
 | gatekeeper.config.no-proxy | bool | `true` |  |
