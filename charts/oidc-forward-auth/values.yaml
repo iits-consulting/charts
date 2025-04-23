@@ -34,7 +34,10 @@ gatekeeper:
     # -- Required: discovery url to retrieve the openid configuration, i.e. "https://keycloak.example.com/realms/<realm>"
     discovery-url:
 
-    # -- Required: encryption key used to encryption the session state
+    # -- enable encryption for the access tokens
+    enable-encrypted-token: false
+
+    # -- optional: encryption key used to encryption the session state
     encryption-key:
 
     # important: do not proxy requests to upstream, useful for forward-auth usage (with nginx, traefik)
