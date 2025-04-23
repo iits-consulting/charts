@@ -102,7 +102,6 @@ middleware:
     - "Cookie"
 
   authResponseHeaders:
-    - "Authorization"
     - "Set-Cookie"
 
   addAuthCookiesToResponse:
