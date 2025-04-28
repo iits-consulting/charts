@@ -2,6 +2,10 @@
 
 ## Chart Versions
 
+### 16.3.3
+
+- AppVersion update to 2.14.4
+
 ### 16.3.2
 
 - AppVersion update to 2.13.4
