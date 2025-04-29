@@ -1,8 +1,18 @@
-### Chart Version: 16.3.2
- - AppVersion update to 2.13.4
- - Added the possibility to set the `enableOCI` flag on the helm-registries
- 
- Example of oci Helm Charts: 
+# Changelog
+
+## Chart Versions
+
+### 16.3.3
+
+- AppVersion update to 2.14.4
+
+### 16.3.2
+
+- AppVersion update to 2.13.4
+- Added the possibility to set the `enableOCI` flag on the helm-registries
+
+ Example of oci Helm Charts:
+
 ```hcl
 infrastructure-charts = {
   helmRegistries = {
@@ -15,9 +25,7 @@ infrastructure-charts = {
 }
 ```
 
+### 16.3.1
 
-   
-
-### Chart Version: 16.3.1
- - AppVersion update to 2.12.4
- - No other migrations necessary
+- AppVersion update to 2.12.4
+- No other migrations necessary
