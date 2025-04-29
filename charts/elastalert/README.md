@@ -1,6 +1,6 @@
 # elastalert
 
-![Version: 0.3.0](https://img.shields.io/badge/Version-0.3.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.4.0](https://img.shields.io/badge/Version-0.4.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 Wrapper chart for elastalert2 with custom rules to kickstart IITS projects
 
@@ -21,7 +21,7 @@ elastalert:
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://jertel.github.io/elastalert2/ | elastalert2 | 2.20.0 |
+| https://jertel.github.io/elastalert2/ | elastalert2 | 2.24.0 |
 
 ## Values
 
