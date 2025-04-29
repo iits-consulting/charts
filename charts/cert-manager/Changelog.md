@@ -2,6 +2,10 @@
 
 ## Chart Versions
 
+### 1.17.2
+
+- Updated Chart & App Version to 1.17.2
+
 ### 1.16.1
 
 - Updated Chart & App Version to 1.16.1
