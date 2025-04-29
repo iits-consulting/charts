@@ -104,9 +104,6 @@ middleware:
     - "Authorization"
     - "Cookie"
 
-  authResponseHeaders:
-    - "Set-Cookie"
-
   addAuthCookiesToResponse:
     - "kc-access"
     - "kc-state"
