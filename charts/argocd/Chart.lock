@@ -1,6 +1,6 @@
 dependencies:
 - name: argo-cd
   repository: oci://registry-1.docker.io/bitnamicharts
-  version: 7.1.6
-digest: sha256:f23c4dff121a5949f0b9c4067432efd3f79d4ca660121cc87d57feccb5a54525
-generated: "2025-02-03T12:51:08.81792+01:00"
+  version: 7.3.6
+digest: sha256:4fd7a47176f7e56bc5c94b443b8dfb83aba020e7fd0cc446c3787ac1fc42a5ac
+generated: "2025-04-29T13:09:02.157128+02:00"
