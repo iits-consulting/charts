@@ -4754,6 +4754,30 @@ entries:
     version: 1.0.0
   oidc-forward-auth:
   - apiVersion: v2
+    created: "2025-04-29T15:57:54.64572509Z"
+    dependencies:
+    - name: gatekeeper
+      repository: https://gogatekeeper.github.io/helm-gogatekeeper
+      version: 0.1.51
+    description: 'Forward Auth proxy with gogatekeeper. It replaces the old proxy
+      mechanism  ## Installing the Chart with iits ArgoCD  ```yaml charts:   oidc-forward-auth:     namespace:
+      routing     targetRevision: "1.7.0"     parameters:       gatekeeper.config.client-id:
+      "${vault:whatever/data/keycloak/keycloak_proxy_admin#client_id}"       gatekeeper.config.client-secret:
+      "${vault:whatever/data/keycloak/keycloak_proxy_admin#client_secret}"       gatekeeper.config.encryption-key:
+      "${vault:whatever/data/keycloak/keycloak_proxy_admin#encryption-key}"       gatekeeper.config.discovery-url:
+      "https://{{.Values.projectValues.authDomain}}/realms/{{.Values.projectValues.context}}"       ingress.host:
+      "my.protected.domain" ```  ## Then use it like this   ```yaml ingress:   enabled:
+      true   # -- Mandatory, replace it with your host address   host:    annotations:     traefik.ingress.kubernetes.io/router.entrypoints:
+      websecure     traefik.ingress.kubernetes.io/router.tls: "true"     #namespace-name@kubernetescrd     traefik.ingress.kubernetes.io/router.middlewares:
+      routing-oidc-forward-auth@kubernetescrd   # Creates default Ingress with tls
+      and the given host from .Values.ingress.host   defaultIngress:     enabled:
+      true ``` '
+    digest: ac9b6f0e8eb972c03b8c3eba989e5e98c549119f94fb9f4bd8c45ff9742f835a
+    name: oidc-forward-auth
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/oidc-forward-auth-1.7.1/oidc-forward-auth-1.7.1.tgz
+    version: 1.7.1
+  - apiVersion: v2
     created: "2025-01-16T14:18:15.960825217Z"
     dependencies:
     - name: gatekeeper
@@ -6760,4 +6784,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/waf-cert-uploader-0.1.1/waf-cert-uploader-0.1.1.tgz
     version: 0.1.1
-generated: "2025-03-27T13:38:31.592241052Z"
+generated: "2025-04-29T15:57:54.646320119Z"
