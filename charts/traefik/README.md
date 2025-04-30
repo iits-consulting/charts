@@ -25,7 +25,6 @@ Always read the [Changelog](Changelog.md) for information about possible migrati
 | traefik.additionalArguments[0] | string | `"--ping"` |  |
 | traefik.deployment.replicas | int | `2` |  |
 | traefik.globalArguments[0] | string | `"--global.checknewversion"` |  |
-| traefik.image.tag | string | `"v3.3.3"` |  |
 | traefik.ingressClass.enabled | bool | `true` |  |
 | traefik.ingressClass.isDefaultClass | bool | `true` |  |
 | traefik.ingressRoute.dashboard.enabled | bool | `true` |  |
