@@ -2,6 +2,12 @@
 
 ## Chart Versions
 
+### 2.4.0
+
+- Update kyverno Chart to 3.4.0
+- Update kyverno-policies to 3.4.0
+- Update policy-reported to 3.1.3
+
 ### 2.3.0
 
 - fixed a bug that caused jobs to not count as completed even if the underlying pod finished successfully

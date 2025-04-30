@@ -9,14 +9,14 @@ description: |
 dependencies:
   - name: "kyverno"
     repository: "https://kyverno.github.io/kyverno/"
-    version: 3.3.7
+    version: 3.4.0
   - name: "kyverno-policies"
     repository: "https://kyverno.github.io/kyverno/"
-    version: 3.3.4
+    version: 3.4.0
   - name: "policy-reporter"
     repository: "https://kyverno.github.io/policy-reporter"
-    version: 3.0.7
+    version: 3.1.3
     condition: policy-reporter.install
 type: application
-version: 2.3.0
+version: 2.4.0
 appVersion: 1.13.4
