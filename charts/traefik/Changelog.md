@@ -2,6 +2,13 @@
 
 ## Chart Versions
 
+### 35.2.0
+
+- Update to traefik 3.3.6
+  - There were changes in the CRDs of the Traefik in the base chart.
+  - Check the [Release Notes](https://github.com/traefik/traefik-helm-chart/releases/tag/v35.2.0) of traefik for the relevant migrations.
+    - Or simply use our [crd-installer](https://github.com/iits-consulting/terraform-opentelekomcloud-project-factory/tree/master/modules/crd_installer) for crd management.
+
 ### 34.2.0
 
 - Updates to traefik 3.3.3
