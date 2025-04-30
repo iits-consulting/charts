@@ -1,6 +1,6 @@
 # traefik
 
-![Version: 34.2.0](https://img.shields.io/badge/Version-34.2.0-informational?style=flat-square) ![AppVersion: v3.3.2](https://img.shields.io/badge/AppVersion-v3.3.2-informational?style=flat-square)
+![Version: 35.2.0](https://img.shields.io/badge/Version-35.2.0-informational?style=flat-square) ![AppVersion: v3.3.6](https://img.shields.io/badge/AppVersion-v3.3.6-informational?style=flat-square)
 
 The traefik ingress controller with some additional resources and sane default values for IITS projects.
 Always read the [Changelog](Changelog.md) for information about possible migrations.
@@ -9,7 +9,7 @@ Always read the [Changelog](Changelog.md) for information about possible migrati
 
 | Repository | Name | Version |
 |------------|------|---------|
-| oci://ghcr.io/traefik/helm | traefik | 34.2.0 |
+| oci://ghcr.io/traefik/helm | traefik | 35.2.0 |
 
 ## Values
 
