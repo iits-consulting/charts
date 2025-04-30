@@ -1,6 +1,4 @@
 traefik:
-  image:
-    tag: v3.3.3
   globalArguments:
     - "--global.checknewversion"
   additionalArguments:
