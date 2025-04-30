@@ -2,6 +2,11 @@
 
 ## Changelog Versions
 
+### 1.7.1
+
+- Update gogatekeeper helm chart version to 0.1.54
+- bump helm chart version to 1.7.1
+
 ### 1.7.0
 
 - AppVersion update to 3.0.2
