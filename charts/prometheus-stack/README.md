@@ -1,6 +1,6 @@
 # prometheus-stack
 
-![Version: 58.3.0](https://img.shields.io/badge/Version-58.3.0-informational?style=flat-square) ![AppVersion: 58.2.2](https://img.shields.io/badge/AppVersion-58.2.2-informational?style=flat-square)
+![Version: 62.6.0-blackbox-exporter](https://img.shields.io/badge/Version-62.6.0--blackbox--exporter-informational?style=flat-square) ![AppVersion: 62.6.0](https://img.shields.io/badge/AppVersion-62.6.0-informational?style=flat-square)
 
 A complete monitoring/alerting stack with Grafana Prometheus Alertmanager
 
@@ -10,7 +10,7 @@ A complete monitoring/alerting stack with Grafana Prometheus Alertmanager
 prometheus-stack:
   namespace: monitoring
   repoURL: "https://charts.iits.tech"
-  targetRevision: "43.2.0"
+  targetRevision: "62.6.0-blackbox-exporter"
   ignoreDifferences:
     - jsonPointers:
         - /imagePullSecrets
@@ -18,9 +18,7 @@ prometheus-stack:
   syncOptions:
     - ServerSideApply=true
   parameters:
-    global.alertmanager.host: "admin.{{.Values.projectValues.rootDomain}}"
-    global.prometheus.host: "admin.{{.Values.projectValues.rootDomain}}"
-    global.grafana.host: "admin.{{.Values.projectValues.rootDomain}}"
+    global.ingress.host: "{{.Values.projectValues.rootDomain}}"
     prometheusStack.grafana.adminPassword: "REPLACE_ME"
 ```
 
@@ -28,7 +26,7 @@ prometheus-stack:
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://prometheus-community.github.io/helm-charts | prometheusStack(kube-prometheus-stack) | 58.2.2 |
+| https://prometheus-community.github.io/helm-charts | prometheusStack(kube-prometheus-stack) | 62.6.0 |
 
 ## Values
 
@@ -39,14 +37,16 @@ prometheus-stack:
 | global.ingress.annotations."traefik.ingress.kubernetes.io/router.tls" | string | `"true"` |  |
 | global.ingress.enabled | bool | `true` |  |
 | global.ingress.host | string | `nil` |  |
-| global.ingress.paths.alertmanager | string | `"/alertmanager"` |  |
-| global.ingress.paths.grafana | string | `"/grafana"` |  |
-| global.ingress.paths.prometheus | string | `"/prometheus"` |  |
+| global.ingress.hosts.alertmanager.host | string | `"alertmanager.{{.Values.global.ingress.host}}"` |  |
+| global.ingress.hosts.alertmanager.path | string | `"/"` |  |
+| global.ingress.hosts.grafana.host | string | `"grafana.{{.Values.global.ingress.host}}"` |  |
+| global.ingress.hosts.grafana.path | string | `"/"` |  |
+| global.ingress.hosts.prometheus.host | string | `"prometheus.{{.Values.global.ingress.host}}"` |  |
+| global.ingress.hosts.prometheus.path | string | `"/"` |  |
 | policyException.enabled | bool | `true` |  |
-| prometheusStack.alertmanager.alertmanagerSpec.externalUrl | string | `"https://{{$.Values.global.ingress.host}}{{$.Values.global.ingress.paths.alertmanager}}"` |  |
+| prometheusStack.alertmanager.alertmanagerSpec.externalUrl | string | `"https://{{$.Values.global.ingress.hosts.alertmanager.host}}{{$.Values.global.ingress.hosts.alertmanager.path}}"` |  |
 | prometheusStack.alertmanager.alertmanagerSpec.resources.requests.cpu | string | `"5m"` |  |
 | prometheusStack.alertmanager.alertmanagerSpec.resources.requests.memory | string | `"100Mi"` |  |
-| prometheusStack.alertmanager.alertmanagerSpec.routePrefix | string | `"/alertmanager"` |  |
 | prometheusStack.alertmanager.config.global.resolve_timeout | string | `"5m"` |  |
 | prometheusStack.alertmanager.config.global.slack_api_url | string | `"http://myhost.local"` |  |
 | prometheusStack.alertmanager.config.receivers[0].name | string | `"null"` |  |
@@ -97,22 +97,20 @@ prometheus-stack:
 | prometheusStack.grafana."grafana.ini"."auth.basic".enabled | bool | `true` |  |
 | prometheusStack.grafana."grafana.ini".auth.disable_login_form | bool | `false` |  |
 | prometheusStack.grafana."grafana.ini".security.disable_initial_admin_creation | bool | `false` |  |
-| prometheusStack.grafana."grafana.ini".server.root_url | string | `"https://{{$.Values.global.ingress.host}}{{$.Values.global.ingress.paths.grafana}}"` |  |
-| prometheusStack.grafana."grafana.ini".server.serve_from_sub_path | bool | `true` |  |
+| prometheusStack.grafana."grafana.ini".server.root_url | string | `"https://{{$.Values.global.ingress.hosts.grafana.host}}{{$.Values.global.ingress.hosts.grafana.path}}"` |  |
 | prometheusStack.grafana.adminPassword | string | `nil` | Required |
-| prometheusStack.grafana.serviceMonitor.path | string | `"/grafana/metrics"` |  |
+| prometheusStack.grafana.serviceMonitor.path | string | `"/metrics"` |  |
 | prometheusStack.kubeControllerManager.enabled | bool | `false` |  |
 | prometheusStack.kubeProxy.enabled | bool | `false` |  |
 | prometheusStack.kubeScheduler.enabled | bool | `false` |  |
 | prometheusStack.kubelet.enabled | bool | `true` |  |
 | prometheusStack.nameOverride | string | `"prometheus-stack"` |  |
-| prometheusStack.prometheus.prometheusSpec.externalUrl | string | `"https://{{$.Values.global.ingress.host}}{{$.Values.global.ingress.paths.prometheus}}"` |  |
+| prometheusStack.prometheus.prometheusSpec.externalUrl | string | `"https://{{$.Values.global.ingress.hosts.prometheus.host}}{{$.Values.global.ingress.hosts.prometheus.path}}"` |  |
 | prometheusStack.prometheus.prometheusSpec.podMonitorSelector | string | `nil` |  |
 | prometheusStack.prometheus.prometheusSpec.podMonitorSelectorNilUsesHelmValues | bool | `false` |  |
 | prometheusStack.prometheus.prometheusSpec.probeSelectorNilUsesHelmValues | bool | `false` |  |
 | prometheusStack.prometheus.prometheusSpec.resources.requests.cpu | string | `"60m"` |  |
 | prometheusStack.prometheus.prometheusSpec.resources.requests.memory | string | `"2255Mi"` |  |
-| prometheusStack.prometheus.prometheusSpec.routePrefix | string | `"/prometheus"` |  |
 | prometheusStack.prometheus.prometheusSpec.serviceMonitorSelectorNilUsesHelmValues | bool | `false` |  |
 | prometheusStack.prometheus.prometheusSpec.storageSpec.volumeClaimTemplate.spec.accessModes[0] | string | `"ReadWriteOnce"` |  |
 | prometheusStack.prometheus.prometheusSpec.storageSpec.volumeClaimTemplate.spec.resources.requests.storage | string | `"30G"` |  |
@@ -122,4 +120,4 @@ prometheus-stack:
 | prometheusStack.prometheusOperator.tls.enabled | bool | `false` |  |
 
 ----------------------------------------------
-Autogenerated from chart metadata using [helm-docs v1.13.1](https://github.com/norwoodj/helm-docs/releases/v1.13.1)
+Autogenerated from chart metadata using [helm-docs v1.14.2](https://github.com/norwoodj/helm-docs/releases/v1.14.2)
