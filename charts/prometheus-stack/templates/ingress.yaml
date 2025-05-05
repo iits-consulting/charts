@@ -1,9 +1,9 @@
 {{- with .Values.global.ingress }}
-{{- if eq true .enabled }}
+{{- if .enabled }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ $.Release.Name }}-ingress
+  name: {{$.Release.Name }}-ingress
   {{- with .labels }}
     {{- toYaml . | nindent 4 }}
   {{- end }}
@@ -27,17 +27,17 @@ spec:
     {{- end }}
   {{- end }}
   rules:
-    {{- range $serviceName,$obj := .hosts }}
-    - host: {{ tpl (toYaml $obj.host) $ }}
+    - host: {{ tpl (toYaml .host) $ }}
       http:
         paths:
-          - path: {{ $obj.path }}
+        {{- range $serviceName,$path := .paths }}
+          - path: {{ $path }}
             pathType: "Prefix"
             backend:
               service:
                 name: {{$.Release.Name}}-{{ $serviceName }}
                 port:
                   number: {{ index $.Values.prometheusStack $serviceName "service" "port" }}
-    {{- end }}
+        {{- end }}
 {{- end }}
 {{- end }}
