@@ -134,6 +134,9 @@ prometheus-stack:
 | prometheusStack.grafana."grafana.ini".server.serve_from_sub_path | bool | `true` |  |
 | prometheusStack.grafana.adminPassword | string | `nil` | Required |
 | prometheusStack.grafana.serviceMonitor.path | string | `"/grafana/metrics"` |  |
+| prometheusStack.grafana.sidecar.dashboards.enabled | bool | `true` |  |
+| prometheusStack.grafana.sidecar.dashboards.folderAnnotation | string | `"k8s-sidecar-target-directory"` |  |
+| prometheusStack.grafana.sidecar.dashboards.provider.foldersFromFilesStructure | bool | `true` |  |
 | prometheusStack.kubeControllerManager.enabled | bool | `false` |  |
 | prometheusStack.kubeProxy.enabled | bool | `false` |  |
 | prometheusStack.kubeScheduler.enabled | bool | `false` |  |
