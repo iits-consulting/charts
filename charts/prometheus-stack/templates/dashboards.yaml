@@ -10,11 +10,11 @@ items:
   - apiVersion: v1
     kind: ConfigMap
     metadata:
-      name: {{ printf "%s-%s" $releaseName $dashboardName | trunc 63 | trimSuffix "-" | replace "_" "-" }}
+      name: {{ printf "%s-%s" (include "monitor.fullname" $ | trunc 58) $dashboardName | trunc 63  | trimSuffix "-" | replace "_" "-" }}
       labels:
-        grafana_dashboard: "1"
+        {{ $.Values.prometheusStack.grafana.sidecar.dashboards.label }}: {{ $.Values.prometheusStack.grafana.sidecar.dashboards.labelValue }}
       annotations:
-        k8s-sidecar-target-directory: {{ printf "/tmp/%s" $catalogName | trimSuffix "/"}}
+        {{ $.Values.prometheusStack.grafana.sidecar.dashboards.folderAnnotation }}: {{ printf "/tmp/%s" $catalogName | trimSuffix "/"}}
     data:
       {{ $dashboardName }}.json: |-
       {{- $.Files.Get $path | nindent 8 }}

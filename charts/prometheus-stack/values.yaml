@@ -112,6 +112,12 @@ prometheusStack:
       patch:
         enabled: false
   grafana:
+    sidecar:
+      dashboards:
+        enabled: true
+        folderAnnotation: k8s-sidecar-target-directory
+        provider:
+          foldersFromFilesStructure: true
     serviceMonitor:
       path: "/grafana/metrics"
     # -- Required
