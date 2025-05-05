@@ -2,10 +2,16 @@ global:
   ingress:
     enabled: true
     host:
-    paths:
-      prometheus: /prometheus
-      grafana: /grafana
-      alertmanager: /alertmanager
+    hosts:
+      prometheus:
+       host: "prometheus.{{.Values.global.ingress.host}}"
+       path: "/"
+      grafana:
+        host: "grafana.{{.Values.global.ingress.host}}"
+        path: "/"
+      alertmanager:
+        host: "alertmanager.{{.Values.global.ingress.host}}"
+        path: "/"
     annotations:
       traefik.ingress.kubernetes.io/router.entrypoints: websecure
       traefik.ingress.kubernetes.io/router.tls: "true"
@@ -55,29 +61,25 @@ prometheusStack:
       node: true
       prometheus: true
       prometheusOperator: true
+      time: true
   prometheus:
     prometheusSpec:
-      externalUrl: https://{{$.Values.global.ingress.host}}{{$.Values.global.ingress.paths.prometheus}}
+      externalUrl: "https://{{$.Values.global.ingress.hosts.prometheus.host}}{{$.Values.global.ingress.hosts.prometheus.path}}"
       serviceMonitorSelectorNilUsesHelmValues: false
       podMonitorSelectorNilUsesHelmValues: false
       probeSelectorNilUsesHelmValues: false
-      podMonitorSelector: { }
-      routePrefix: "/prometheus"
+      podMonitorSelector: null
       resources:
         requests:
           memory: "2255Mi"
           cpu: "60m"
-
-      retention: 1y # 365 days
-
       storageSpec:
         volumeClaimTemplate:
           spec:
             accessModes: [ "ReadWriteOnce" ]
             resources:
               requests:
-                # Depends on how many metrics & applications you are tracking, but we average out at about 5-6GB per 10 days
-                storage: 250G
+                storage: 30G
   prometheusOperator:
     enabled: true
     tls:
@@ -88,13 +90,12 @@ prometheusStack:
         enabled: false
   grafana:
     serviceMonitor:
-      path: "/grafana/metrics"
+      path: "/metrics"
     # -- Required
     adminPassword:
     grafana.ini:
       server:
-        serve_from_sub_path: true
-        root_url: https://{{$.Values.global.ingress.host}}{{$.Values.global.ingress.paths.grafana}}
+        root_url: "https://{{$.Values.global.ingress.hosts.grafana.host}}{{$.Values.global.ingress.hosts.grafana.path}}"
       auth:
         disable_login_form: false
       auth.basic:
@@ -137,26 +138,11 @@ prometheusStack:
       templates:
         - /etc/alertmanager/config/*.tmpl
     alertmanagerSpec:
-      externalUrl: https://{{$.Values.global.ingress.host}}{{$.Values.global.ingress.paths.alertmanager}}
-      routePrefix: "/alertmanager"
+      externalUrl: "https://{{$.Values.global.ingress.hosts.alertmanager.host}}{{$.Values.global.ingress.hosts.alertmanager.path}}"
       resources:
         requests:
           memory: "100Mi"
           cpu: "5m"
-    additionalRules:
-      enabled: false
-      groups: [ ]
-#      - name: sensors
-#        rules:
-#          - alert: MissingData
-#            annotations:
-#              description: ""
-#              summary: ""
-#            expr: >
-#              sum() <= 0
-#            for: 5m
-#            labels:
-#              severity: warning
 
 # Kyverno Policy Exception
 policyException:
