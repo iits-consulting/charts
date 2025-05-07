@@ -1,6 +1,6 @@
 # prometheus-stack
 
-![Version: 68.4.5](https://img.shields.io/badge/Version-68.4.5-informational?style=flat-square) ![AppVersion: 68.4.5](https://img.shields.io/badge/AppVersion-68.4.5-informational?style=flat-square)
+![Version: 71.0.0](https://img.shields.io/badge/Version-71.0.0-informational?style=flat-square) ![AppVersion: 71.0.0](https://img.shields.io/badge/AppVersion-71.0.0-informational?style=flat-square)
 
 A complete monitoring/alerting stack with Grafana Prometheus Alertmanager
 
@@ -10,7 +10,7 @@ A complete monitoring/alerting stack with Grafana Prometheus Alertmanager
 prometheus-stack:
   namespace: monitoring
   repoURL: "https://charts.iits.tech"
-  targetRevision: "68.4.5"
+  targetRevision: "71.0.0"
   ignoreDifferences:
     - jsonPointers:
         - /imagePullSecrets
@@ -28,7 +28,7 @@ prometheus-stack:
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://prometheus-community.github.io/helm-charts | prometheusStack(kube-prometheus-stack) | 68.4.5 |
+| https://prometheus-community.github.io/helm-charts | prometheusStack(kube-prometheus-stack) | 71.0.0 |
 
 ## Values
 
