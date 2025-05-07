@@ -1,8 +1,8 @@
 # oidc-forward-auth
 
-![Version: 1.7.0](https://img.shields.io/badge/Version-1.7.0-informational?style=flat-square)
+![Version: 1.7.2](https://img.shields.io/badge/Version-1.7.2-informational?style=flat-square)
 
-Forward Auth proxy with gogatekeeper. It replaces the old proxy mechanism
+Traefik forward auth with gogatekeeper.
 
 ## Installing the Chart with iits ArgoCD
 
@@ -10,7 +10,7 @@ Forward Auth proxy with gogatekeeper. It replaces the old proxy mechanism
 charts:
   oidc-forward-auth:
     namespace: routing
-    targetRevision: "1.7.0"
+    targetRevision: "1.7.2"
     parameters:
       gatekeeper.config.client-id: "${vault:whatever/data/keycloak/keycloak_proxy_admin#client_id}"
       gatekeeper.config.client-secret: "${vault:whatever/data/keycloak/keycloak_proxy_admin#client_secret}"
@@ -23,24 +23,16 @@ charts:
 
 ```yaml
 ingress:
-  enabled: true
-  # -- Mandatory, replace it with your host address
-  host:
-  annotations:
-    traefik.ingress.kubernetes.io/router.entrypoints: websecure
-    traefik.ingress.kubernetes.io/router.tls: "true"
-    #namespace-name@kubernetescrd
+    annotations:
+    # Value Pattern: <namespace>-<name>@kubernetescrd
     traefik.ingress.kubernetes.io/router.middlewares: routing-oidc-forward-auth@kubernetescrd
-  # Creates default Ingress with tls and the given host from .Values.ingress.host
-  defaultIngress:
-    enabled: true
 ```
 
 ## Requirements
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://gogatekeeper.github.io/helm-gogatekeeper | gatekeeper | 0.1.51 |
+| https://gogatekeeper.github.io/helm-gogatekeeper | gatekeeper | 0.1.54 |
 
 ## Values
 
@@ -56,7 +48,7 @@ ingress:
 | gatekeeper.config.enable-json-logging | bool | `true` |  |
 | gatekeeper.config.enable-logging | bool | `false` |  |
 | gatekeeper.config.enable-logout-redirect | bool | `true` |  |
-| gatekeeper.config.enable-metrics | bool | `false` |  |
+| gatekeeper.config.enable-metrics | bool | `true` |  |
 | gatekeeper.config.enable-refresh-tokens | bool | `true` |  |
 | gatekeeper.config.enable-request-id | bool | `true` |  |
 | gatekeeper.config.enable-token-header | bool | `false` |  |
@@ -72,13 +64,12 @@ ingress:
 | gatekeeper.config.server-write-timeout | string | `"10s"` |  |
 | gatekeeper.containerSecurityContext.allowPrivilegeEscalation | bool | `false` |  |
 | gatekeeper.containerSecurityContext.seccompProfile.type | string | `"RuntimeDefault"` |  |
-| gatekeeper.image.tag | string | `"3.0.2"` |  |
 | gatekeeper.livenessProbe.enabled | bool | `true` |  |
+| gatekeeper.metrics.serviceMonitor.enabled | bool | `true` |  |
 | gatekeeper.replicaCount | int | `2` |  |
-| gatekeeper.resources.limits.cpu | string | `"100m"` |  |
-| gatekeeper.resources.limits.memory | string | `"128Mi"` |  |
+| gatekeeper.resources.limits.memory | string | `"100Mi"` |  |
 | gatekeeper.resources.requests.cpu | string | `"10m"` |  |
-| gatekeeper.resources.requests.memory | string | `"16Mi"` |  |
+| gatekeeper.resources.requests.memory | string | `"100Mi"` |  |
 | gatekeeper.strategy.type | string | `"RollingUpdate"` |  |
 | ingress.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
 | ingress.annotations."traefik.ingress.kubernetes.io/router.tls" | string | `"true"` |  |
