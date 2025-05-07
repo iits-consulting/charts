@@ -78,6 +78,31 @@ prometheusStack:
               requests:
                 # Depends on how many metrics & applications you are tracking, but we average out at about 5-6GB per 10 days
                 storage: 250G
+
+  additionalPrometheusRulesMap:
+    uptime-monitoring:
+      groups:
+        - name: uptime-monitoring
+          rules:
+            - alert: DecreasingUptime
+              annotations:
+                description: 'Uptime of {{ $labels.instance }} less than 95%.'
+                summary: '{{ $labels.instance }} not reachable'
+              expr: >
+                sum by (instance) (avg_over_time(probe_success[5m])) < 0.95
+              for: 1m
+              labels:
+                severity: high
+            - alert: DecreasingUptime
+              annotations:
+                description: 'Uptime of {{ $labels.instance }} less than 50%.'
+                summary: '{{ $labels.instance }} not reachable'
+              expr: >
+                sum by (instance) (avg_over_time(probe_success[5m])) < 0.5
+              for: 1m
+              labels:
+                severity: critical
+
   prometheusOperator:
     enabled: true
     tls:
@@ -87,6 +112,12 @@ prometheusStack:
       patch:
         enabled: false
   grafana:
+    sidecar:
+      dashboards:
+        enabled: true
+        folderAnnotation: k8s-sidecar-target-directory
+        provider:
+          foldersFromFilesStructure: true
     serviceMonitor:
       path: "/grafana/metrics"
     # -- Required
@@ -143,21 +174,92 @@ prometheusStack:
         requests:
           memory: "100Mi"
           cpu: "5m"
-    additionalRules:
-      enabled: false
-      groups: [ ]
-#      - name: sensors
-#        rules:
-#          - alert: MissingData
-#            annotations:
-#              description: ""
-#              summary: ""
-#            expr: >
-#              sum() <= 0
-#            for: 5m
-#            labels:
-#              severity: warning
 
 # Kyverno Policy Exception
 policyException:
   enabled: true
+
+blackboxExporter:
+  enabled: true # Chart dependency condition
+  fullnameOverride: blackbox-exporter
+  secretConfig: true
+  config:
+    modules:
+      http_2xx:
+        prober: http
+        timeout: 5s
+        http:
+          valid_http_versions: [ "HTTP/1.1", "HTTP/2.0" ]
+          preferred_ip_protocol: "ip4"
+          valid_status_codes: [ ]  # Defaults to 2xx
+      #http_2xx_oauth_client_credentials:
+      #  prober: http
+      #  timeout: 5s
+      #  http:
+      #    valid_http_versions: [ "HTTP/1.1", "HTTP/2.0" ]
+      #    preferred_ip_protocol: "ip4"
+      #    valid_status_codes: [ ]  # Defaults to 2xx
+      #    oauth2:
+      #      client_id: "SET_ME"
+      #      client_secret: "SET_ME"
+      #      token_url: "SET_ME"
+      #      endpoint_params:
+      #        grant_type: "client_credentials"
+      dns_baseline:
+        prober: dns
+        timeout: 5s
+        dns:
+          preferred_ip_protocol: "ip4"
+          query_name: "google.com" # domain to ask the DNS Server
+          query_type: "A"
+          valid_rcodes:
+            - NOERROR
+
+  securityContext:
+    seccompProfile:
+      type: "RuntimeDefault"
+  serviceMonitor:
+    enabled: false
+    selfMonitor:
+      enabled: true
+    targets:
+
+# Load dashboard(s) for the blackbox uptime monitor
+dashboards:
+  enabled: true
+
+uptimeMonitors:
+  ## If true, a ServiceMonitor CRD is created for a prometheus operator
+  ## https://github.com/coreos/prometheus-operator for each target
+  ##
+  enabled: true
+
+  # Default values that will be used for all ServiceMonitors created by `targets`
+  defaults:
+    additionalMetricsRelabels: {}
+    additionalRelabeling: []
+    labels: {}
+    interval: 30s
+    scrapeTimeout: 30s
+    honorTimestamps: true
+    module: http_2xx
+    jobName: "prometheus-stack"
+  ## scheme: HTTP scheme to use for scraping. Can be used with `tlsConfig` for example if using istio mTLS.
+  scheme: http
+  ## path: HTTP path. Needs to be adjusted, if web.route-prefix is set
+  path: "/probe"
+  ## tlsConfig: TLS configuration to use when scraping the endpoint. For example if using istio mTLS.
+  ## Of type: https://github.com/coreos/prometheus-operator/blob/master/Documentation/api.md#tlsconfig
+  tlsConfig: {}
+  bearerTokenFile:
+
+  defaultTargets:
+    - name: baseline
+      module: dns_baseline
+      url: "8.8.8.8" # DNS Server to ask
+
+  # Add your targets here
+  # see defaults for possible parameters
+  targets: []
+    # - name: my-target
+    #   url: https://app.example.com/

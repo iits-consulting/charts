@@ -3,7 +3,12 @@ dependencies:
   - alias: prometheusStack
     name: kube-prometheus-stack
     repository: https://prometheus-community.github.io/helm-charts
-    version: 68.4.5
+    version: 62.6.0
+  - alias: blackboxExporter
+    condition: blackboxExporter.enabled
+    name: prometheus-blackbox-exporter
+    repository: https://prometheus-community.github.io/helm-charts
+    version: 9.4.0
 description: |
   A complete monitoring/alerting stack with Grafana Prometheus Alertmanager
   
@@ -13,7 +18,7 @@ description: |
   prometheus-stack:
     namespace: monitoring
     repoURL: "https://charts.iits.tech"
-    targetRevision: "68.4.5"
+    targetRevision: "62.6.0"
     ignoreDifferences:
       - jsonPointers:
           - /imagePullSecrets
@@ -27,5 +32,4 @@ description: |
       prometheusStack.grafana.adminPassword: "REPLACE_ME"
   ```
 name: prometheus-stack
-version: 68.4.5
-appVersion: 68.4.5
+version: 62.6.0
