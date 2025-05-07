@@ -122,13 +122,12 @@ elasticsearch:
     cluster:
       max_shards_per_node: 30000
   extraSecureSettings: [ ]
-  javaOpts: "-Xmx6g -Xms6g -Dlog4j2.formatMsgNoLookups=true"
+  javaOpts: ""
   resources:
     requests:
       cpu: "200m"
-      memory: "6G"
+      memory: "8G"
     limits:
-      cpu: "1000m"
       memory: "8G"
   podTemplateSpec:
     containers:
@@ -138,7 +137,6 @@ elasticsearch:
             cpu: "{{ .Values.elasticsearch.resources.requests.cpu }}"
             memory: "{{ .Values.elasticsearch.resources.requests.memory }}"
           limits:
-            cpu: "{{ .Values.elasticsearch.resources.limits.cpu }}"
             memory: "{{ .Values.elasticsearch.resources.limits.memory }}"
         env:
           - name: ES_JAVA_OPTS
@@ -226,7 +224,6 @@ filebeat:
       cpu: "100m"
       memory: "100M"
     limits:
-      cpu: "400m"
       memory: "500M"
   readinessProbe:
     failureThreshold: 50
@@ -278,23 +275,34 @@ kibana:
   enabled: true
   version: "{{ .Chart.AppVersion }}"
   count: 2
+
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "1G"
+    limits:
+      memory: "1G"
+
   config:
     server:
       basePath: "{{ .Values.ingress.kibana.path }}"
       publicBaseUrl: "https://{{ .Values.ingress.kibana.host }}{{ .Values.ingress.kibana.path }}"
       rewriteBasePath: true
+
     monitoring:
       ui:
         enabled: true
         container:
           elasticsearch:
             enabled: true
+
     xpack:
       reporting:
         csv:
           maxSizeBytes: 1048576000
         queue:
           timeout: 1800000
+
       security:
         authc:
           providers: # allow login as anonymous user into kibana, using anonymous user of elasticsearch
@@ -307,12 +315,20 @@ kibana:
             basic:
               basic1:
                 order: 1
+
   podTemplateSpec:
     securityContext:
       seccompProfile:
         type: RuntimeDefault
+
     containers:
       - name: kibana
+        resources:
+          requests:
+            cpu: "{{ .Values.kibana.resources.requests.cpu }}"
+            memory: "{{ .Values.kibana.resources.requests.memory }}"
+          limits:
+            memory: "{{ .Values.kibana.resources.limits.memory }}"
         env:
           - name: ANONYMOUS_USERNAME
             valueFrom:
@@ -333,8 +349,15 @@ kibana:
               - ALL
           seccompProfile:
             type: RuntimeDefault
+
     initContainers:
       - name: elastic-internal-init
+        resources:
+          requests:
+            cpu: "250m"
+            memory: "50Mi"
+          limits:
+            memory: "50Mi"
         securityContext:
           allowPrivilegeEscalation: false
           runAsNonRoot: true
@@ -375,7 +398,7 @@ indexPatternInit:
 ilm:
   image:
     repository: docker.io/curlimages/curl
-    tag: 8.12.1
+    tag: 8.13.0
     userId: 100
   tolerations: [ ]
   nodeSelector: { }
@@ -398,7 +421,7 @@ generatePasswords:
   enabled: true
   image:
     repository: docker.io/bitnami/kubectl
-    tag: 1.32.2
+    tag: 1.32.4
     userId: 100
   tolerations: [ ]
   nodeSelector: { }
@@ -417,7 +440,7 @@ backup:
   enabled: false
   image:
     repository: docker.io/curlimages/curl
-    tag: 8.12.1
+    tag: 8.13.0
     userId: 100
   tolerations: [ ]
   nodeSelector: { }

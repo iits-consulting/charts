@@ -1,6 +1,6 @@
 # elastic-operator
 
-![Version: 8.17.3-tls-secretName](https://img.shields.io/badge/Version-8.17.3--tls--secretName-informational?style=flat-square) ![AppVersion: 8.17.3](https://img.shields.io/badge/AppVersion-8.17.3-informational?style=flat-square)
+![Version: 8.18.1](https://img.shields.io/badge/Version-8.18.1-informational?style=flat-square) ![AppVersion: 8.18.1](https://img.shields.io/badge/AppVersion-8.18.1-informational?style=flat-square)
 
 Elasticsearch + filebeat + kibana with default common used indexes and Index Lifecycle Management.
 It comes also with a backup functionality. This is the version using ECK-operator to deploy and monitor the stack.
@@ -9,7 +9,7 @@ It comes also with a backup functionality. This is the version using ECK-operato
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://helm.elastic.co | eck-operator | 2.16.1 |
+| https://helm.elastic.co | eck-operator | 3.0.0 |
 
 ## Values
 
@@ -41,7 +41,7 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | auth.users.custom_kibana_guest.roles[0] | string | `"viewer"` |  |
 | backup.enabled | bool | `false` |  |
 | backup.image.repository | string | `"docker.io/curlimages/curl"` |  |
-| backup.image.tag | string | `"8.12.1"` |  |
+| backup.image.tag | string | `"8.13.0"` |  |
 | backup.image.userId | int | `100` |  |
 | backup.nodeSelector | object | `{}` |  |
 | backup.policy.indices[0] | string | `"*"` |  |
@@ -61,19 +61,17 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | elasticsearch.config.node.store.allow_mmap | bool | `false` |  |
 | elasticsearch.enabled | bool | `true` |  |
 | elasticsearch.extraSecureSettings | list | `[]` |  |
-| elasticsearch.javaOpts | string | `"-Xmx6g -Xms6g -Dlog4j2.formatMsgNoLookups=true"` |  |
+| elasticsearch.javaOpts | string | `""` |  |
 | elasticsearch.nodeCount | int | `2` |  |
 | elasticsearch.podTemplateSpec.containers[0].env[0].name | string | `"ES_JAVA_OPTS"` |  |
 | elasticsearch.podTemplateSpec.containers[0].env[0].value | string | `"{{ .Values.elasticsearch.javaOpts }}"` |  |
 | elasticsearch.podTemplateSpec.containers[0].name | string | `"elasticsearch"` |  |
-| elasticsearch.podTemplateSpec.containers[0].resources.limits.cpu | string | `"{{ .Values.elasticsearch.resources.limits.cpu }}"` |  |
 | elasticsearch.podTemplateSpec.containers[0].resources.limits.memory | string | `"{{ .Values.elasticsearch.resources.limits.memory }}"` |  |
 | elasticsearch.podTemplateSpec.containers[0].resources.requests.cpu | string | `"{{ .Values.elasticsearch.resources.requests.cpu }}"` |  |
 | elasticsearch.podTemplateSpec.containers[0].resources.requests.memory | string | `"{{ .Values.elasticsearch.resources.requests.memory }}"` |  |
-| elasticsearch.resources.limits.cpu | string | `"1000m"` |  |
 | elasticsearch.resources.limits.memory | string | `"8G"` |  |
 | elasticsearch.resources.requests.cpu | string | `"200m"` |  |
-| elasticsearch.resources.requests.memory | string | `"6G"` |  |
+| elasticsearch.resources.requests.memory | string | `"8G"` |  |
 | elasticsearch.version | string | `"{{ .Chart.AppVersion }}"` |  |
 | elasticsearch.volumeSize | string | `"200G"` |  |
 | filebeat.autodiscover.providers[0]."hints.default_config".paths[0] | string | `"/var/log/containers/*${data.container.id}.log"` |  |
@@ -125,7 +123,6 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | filebeat.readinessProbe.initialDelaySeconds | int | `20` |  |
 | filebeat.readinessProbe.periodSeconds | int | `30` |  |
 | filebeat.readinessProbe.timeoutSeconds | int | `10` |  |
-| filebeat.resources.limits.cpu | string | `"400m"` |  |
 | filebeat.resources.limits.memory | string | `"500M"` |  |
 | filebeat.resources.requests.cpu | string | `"100m"` |  |
 | filebeat.resources.requests.memory | string | `"100M"` |  |
@@ -144,7 +141,7 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | filebeat.volumes[1].name | string | `"varlog"` |  |
 | generatePasswords.enabled | bool | `true` |  |
 | generatePasswords.image.repository | string | `"docker.io/bitnami/kubectl"` |  |
-| generatePasswords.image.tag | string | `"1.32.2"` |  |
+| generatePasswords.image.tag | string | `"1.32.4"` |  |
 | generatePasswords.image.userId | int | `100` |  |
 | generatePasswords.nodeSelector | object | `{}` |  |
 | generatePasswords.secrets[0].key | string | `"password"` |  |
@@ -155,7 +152,7 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | generatePasswords.secrets[2].name | string | `"{{ .Release.Name }}-user-custom-elastalert"` |  |
 | generatePasswords.tolerations | list | `[]` |  |
 | ilm.image.repository | string | `"docker.io/curlimages/curl"` |  |
-| ilm.image.tag | string | `"8.12.1"` |  |
+| ilm.image.tag | string | `"8.13.0"` |  |
 | ilm.image.userId | int | `100` |  |
 | ilm.nodeSelector | object | `{}` |  |
 | ilm.policies.long.coldAfter | string | `"32d"` |  |
@@ -226,18 +223,27 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | kibana.podTemplateSpec.containers[0].env[1].valueFrom.secretKeyRef.key | string | `"password"` |  |
 | kibana.podTemplateSpec.containers[0].env[1].valueFrom.secretKeyRef.name | string | `"{{ .Release.Name }}-user-custom-kibana-guest"` |  |
 | kibana.podTemplateSpec.containers[0].name | string | `"kibana"` |  |
+| kibana.podTemplateSpec.containers[0].resources.limits.memory | string | `"{{ .Values.kibana.resources.limits.memory }}"` |  |
+| kibana.podTemplateSpec.containers[0].resources.requests.cpu | string | `"{{ .Values.kibana.resources.requests.cpu }}"` |  |
+| kibana.podTemplateSpec.containers[0].resources.requests.memory | string | `"{{ .Values.kibana.resources.requests.memory }}"` |  |
 | kibana.podTemplateSpec.containers[0].securityContext.allowPrivilegeEscalation | bool | `false` |  |
 | kibana.podTemplateSpec.containers[0].securityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | kibana.podTemplateSpec.containers[0].securityContext.runAsNonRoot | bool | `true` |  |
 | kibana.podTemplateSpec.containers[0].securityContext.runAsUser | int | `1000` |  |
 | kibana.podTemplateSpec.containers[0].securityContext.seccompProfile.type | string | `"RuntimeDefault"` |  |
 | kibana.podTemplateSpec.initContainers[0].name | string | `"elastic-internal-init"` |  |
+| kibana.podTemplateSpec.initContainers[0].resources.limits.memory | string | `"50Mi"` |  |
+| kibana.podTemplateSpec.initContainers[0].resources.requests.cpu | string | `"250m"` |  |
+| kibana.podTemplateSpec.initContainers[0].resources.requests.memory | string | `"50Mi"` |  |
 | kibana.podTemplateSpec.initContainers[0].securityContext.allowPrivilegeEscalation | bool | `false` |  |
 | kibana.podTemplateSpec.initContainers[0].securityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | kibana.podTemplateSpec.initContainers[0].securityContext.runAsNonRoot | bool | `true` |  |
 | kibana.podTemplateSpec.initContainers[0].securityContext.runAsUser | int | `1000` |  |
 | kibana.podTemplateSpec.initContainers[0].securityContext.seccompProfile.type | string | `"RuntimeDefault"` |  |
 | kibana.podTemplateSpec.securityContext.seccompProfile.type | string | `"RuntimeDefault"` |  |
+| kibana.resources.limits.memory | string | `"1G"` |  |
+| kibana.resources.requests.cpu | string | `"100m"` |  |
+| kibana.resources.requests.memory | string | `"1G"` |  |
 | kibana.version | string | `"{{ .Chart.AppVersion }}"` |  |
 | policyException.enabled | bool | `true` |  |
 
