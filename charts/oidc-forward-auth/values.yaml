@@ -6,17 +6,17 @@ gatekeeper:
 
   resources:
     limits:
-      cpu: 100m
-      memory: 128Mi
+      memory: 100Mi
     requests:
       cpu: 10m
-      memory: 16Mi
+      memory: 100Mi
 
   livenessProbe:
     enabled: true
 
-  image:
-    tag: 3.0.2
+  metrics:
+    serviceMonitor:
+      enabled: true
 
   containerSecurityContext:
     allowPrivilegeEscalation: false
@@ -34,7 +34,10 @@ gatekeeper:
     # -- Required: discovery url to retrieve the openid configuration, i.e. "https://keycloak.example.com/realms/<realm>"
     discovery-url:
 
-    # -- Required: encryption key used to encryption the session state
+    # -- enable encryption for the access tokens
+    enable-encrypted-token: false
+
+    # -- optional: encryption key used to encryption the session state
     encryption-key:
 
     # important: do not proxy requests to upstream, useful for forward-auth usage (with nginx, traefik)
@@ -71,7 +74,7 @@ gatekeeper:
     enable-logging: false
 
     #enable the prometheus metrics collector on /oauth/metrics
-    enable-metrics: false
+    enable-metrics: true
 
     # defines the binding interface for main listener, e.g. {address}:{port}. This is required and there is no default value
     listen: 0.0.0.0:3000
@@ -100,10 +103,6 @@ middleware:
     - "Accept"
     - "Authorization"
     - "Cookie"
-
-  authResponseHeaders:
-    - "Authorization"
-    - "Set-Cookie"
 
   addAuthCookiesToResponse:
     - "kc-access"
