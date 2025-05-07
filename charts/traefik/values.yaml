@@ -3,6 +3,7 @@ traefik:
     - "--global.checknewversion"
   additionalArguments:
     - "--ping"
+
   logs:
     general:
       format: json
@@ -15,6 +16,9 @@ traefik:
     replicas: 2
 
   service:
+    annotations:
+      # Signals OTC to forward the real client IP instead of the ELB IP(s).
+      "kubernetes.io/elb.transparent-client-ip": "true"
     spec:
       externalTrafficPolicy: Cluster
 
@@ -41,6 +45,16 @@ traefik:
     default:
       defaultCertificate:
         secretName: "traefik-default-cert"
+
+  affinity:
+    #Do not place pod's on same node to prevent a downtime when a node fails.
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: '{{ template "traefik.name" . }}'
+              app.kubernetes.io/instance: '{{ .Release.Name }}-{{ include "traefik.namespace" . }}'
+          topologyKey: kubernetes.io/hostname
 
   metrics:
     prometheus:
@@ -79,12 +93,3 @@ defaultCert:
   # -- Defaults are 'letsencrypt' for HTTP01 and 'letsencrypt-dns' for DNS01
   # For wildcard-certificates you need to use the DNS01 Challenge
   issuerName: "letsencrypt-dns"
-
-podMonitor:
-  enabled: true
-  #labels: {}
-  #annotations: {}
-  port: "metrics"
-  interval: "10s"
-  path: "/metrics"
-
