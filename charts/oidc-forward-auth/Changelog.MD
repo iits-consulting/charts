@@ -2,10 +2,16 @@
 
 ## Changelog Versions
 
+### 1.8.0
+- Update gogatekeeper helm chart version to 0.1.54
+- Update AppVersion to 3.3.0
+
 ### 1.7.1
 
-- Update gogatekeeper helm chart version to 0.1.54
-- bump helm chart version to 1.7.1
+- Drop the authResponseHeaders from the middleware
+  - gogatekeeper will no longer Override the `Authentication` header a client might send.
+- Disable encryption of the access-token cookie.
+  - this way automated clients can still interact with protected domains.
 
 ### 1.7.0
 

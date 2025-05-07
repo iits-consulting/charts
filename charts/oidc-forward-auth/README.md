@@ -1,6 +1,6 @@
 # oidc-forward-auth
 
-![Version: 1.7.1](https://img.shields.io/badge/Version-1.7.1-informational?style=flat-square)
+![Version: 1.7.0](https://img.shields.io/badge/Version-1.7.0-informational?style=flat-square)
 
 Forward Auth proxy with gogatekeeper. It replaces the old proxy mechanism
 
@@ -10,7 +10,7 @@ Forward Auth proxy with gogatekeeper. It replaces the old proxy mechanism
 charts:
   oidc-forward-auth:
     namespace: routing
-    targetRevision: "1.7.1"
+    targetRevision: "1.7.0"
     parameters:
       gatekeeper.config.client-id: "${vault:whatever/data/keycloak/keycloak_proxy_admin#client_id}"
       gatekeeper.config.client-secret: "${vault:whatever/data/keycloak/keycloak_proxy_admin#client_secret}"
@@ -40,7 +40,7 @@ ingress:
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://gogatekeeper.github.io/helm-gogatekeeper | gatekeeper | 0.1.54 |
+| https://gogatekeeper.github.io/helm-gogatekeeper | gatekeeper | 0.1.51 |
 
 ## Values
 
