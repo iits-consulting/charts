@@ -1,6 +1,6 @@
 # elastic-operator
 
-![Version: 8.18.0](https://img.shields.io/badge/Version-8.18.0-informational?style=flat-square) ![AppVersion: 8.18.0](https://img.shields.io/badge/AppVersion-8.18.0-informational?style=flat-square)
+![Version: 8.18.1](https://img.shields.io/badge/Version-8.18.1-informational?style=flat-square) ![AppVersion: 8.18.1](https://img.shields.io/badge/AppVersion-8.18.1-informational?style=flat-square)
 
 Elasticsearch + filebeat + kibana with default common used indexes and Index Lifecycle Management.
 It comes also with a backup functionality. This is the version using ECK-operator to deploy and monitor the stack.
