@@ -5,7 +5,7 @@ Generally updates should just work in-place. But:
 * Have a backup at hand - just in case
 * Make sure that the persistent volumes of elasticsearch have "Retain" as their reclaim policy and wont get deleted at any point
 * Check out the settings of the new chart. They should be compatible with the ones from elasticsearch chart (at least for the default config). But take a look at them and configure the chart. Some keys and locations of settings might have changed.
-* tested from elasticsearch `8.5.1` to `8.18.1` (you can configure the version of elasticsearch in elastic-operator chart)
+* tested from elasticsearch `8.5.1` to `9.0.0` (you can configure the version of elasticsearch in elastic-operator chart)
 * check out the [docs](https://www.elastic.co/docs/deploy-manage/upgrade/prepare-to-upgrade) on how to prepare for an upgrade
 
 ## The migration process

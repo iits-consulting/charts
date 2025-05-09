@@ -2,6 +2,12 @@
 
 ## Chart Versions
 
+### BREAKING CHANGE 9.0.0
+
+- app version update to 9.0.0
+
+> Important: The upgrade to version 9.x requires a specific upgrade path (the latest upgrade path can be found [here](https://www.elastic.co/docs/deploy-manage/upgrade/prepare-to-upgrade#prepare-upgrade-from-8.x)). Before installing version 9.0.0, a version update to 8.18.1 must be made, otherwise the upgrade will fail. use "8.18.1-fb-migr-filestream" from our stack for easy upgrading
+
 ### 8.18.1-fb-migr-filestream
 
 > Important: In preparation for the upgrade to version 9.0.0, this update must be installed as part of the upgrade path. Otherwise Filebeat will not be functional after upgrading to v9.0.0.
@@ -15,6 +21,7 @@ Following the official [migration guide](https://www.elastic.co/docs/reference/b
 ### 8.18.1-fb-tolerations
 
 - fixed a bug in the Helm chart that caused tolerations rendering to fail for Filebeat
+
 
 ### 8.18.1
 
