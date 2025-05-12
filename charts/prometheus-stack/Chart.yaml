@@ -3,7 +3,7 @@ dependencies:
   - alias: prometheusStack
     name: kube-prometheus-stack
     repository: https://prometheus-community.github.io/helm-charts
-    version: 62.6.0
+    version: 63.1.0
   - alias: blackboxExporter
     condition: blackboxExporter.enabled
     name: prometheus-blackbox-exporter
@@ -18,7 +18,7 @@ description: |
   prometheus-stack:
     namespace: monitoring
     repoURL: "https://charts.iits.tech"
-    targetRevision: "62.6.0"
+    targetRevision: "63.1.0"
     ignoreDifferences:
       - jsonPointers:
           - /imagePullSecrets
@@ -32,4 +32,4 @@ description: |
       prometheusStack.grafana.adminPassword: "REPLACE_ME"
   ```
 name: prometheus-stack
-version: 62.6.0
+version: 63.1.0
