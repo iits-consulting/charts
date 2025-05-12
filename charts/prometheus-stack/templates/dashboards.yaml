@@ -1,22 +1,19 @@
 {{- $files := .Files.Glob "dashboards/**.json" }}
 {{- if and $files .Values.dashboards.enabled }}
-{{- $releaseName := .Release.Name }}
-apiVersion: v1
-kind: ConfigMapList
-items:
 {{- range $path, $fileContents := $files }}
-  {{- $dashboardName := regexReplaceAll "(^.*/)(.*)\\.json$" $path "${2}" }}
-  {{- $catalogName := regexReplaceAll "(^.*/)(.*)\\.json$" $path "${1}" }}
-  - apiVersion: v1
-    kind: ConfigMap
-    metadata:
-      name: {{ printf "%s-%s" (include "monitor.fullname" $ | trunc 58) $dashboardName | trunc 63  | trimSuffix "-" | replace "_" "-" }}
-      labels:
-        {{ $.Values.prometheusStack.grafana.sidecar.dashboards.label }}: {{ $.Values.prometheusStack.grafana.sidecar.dashboards.labelValue }}
-      annotations:
-        {{ $.Values.prometheusStack.grafana.sidecar.dashboards.folderAnnotation }}: {{ printf "/tmp/%s" $catalogName | trimSuffix "/"}}
-    data:
-      {{ $dashboardName }}.json: |-
-      {{- $.Files.Get $path | nindent 8 }}
+{{- $dashboardName := regexReplaceAll "(^.*/)(.*)\\.json$" $path "${2}" }}
+{{- $catalogName := regexReplaceAll "(^.*/)(.*)\\.json$" $path "${1}" }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ printf "%s-%s" (include "monitor.fullname" $ | trunc 58) $dashboardName | trunc 63  | trimSuffix "-" | replace "_" "-" }}
+  labels:
+    {{ $.Values.prometheusStack.grafana.sidecar.dashboards.label }}: {{ $.Values.prometheusStack.grafana.sidecar.dashboards.labelValue | quote }}
+  annotations:
+    {{ $.Values.prometheusStack.grafana.sidecar.dashboards.folderAnnotation }}: {{ printf "/tmp/%s" $catalogName | trimSuffix "/"}}
+data:
+  {{ $dashboardName }}.json: |-
+    {{- $.Files.Get $path | nindent 4 }}
 {{- end }}
 {{- end }}
