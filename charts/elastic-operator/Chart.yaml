@@ -1,11 +1,11 @@
 apiVersion: v2
 name: elastic-operator
-version: 8.18.1
+version: 8.18.1-fb-tolerations
 appVersion: 8.18.1
 dependencies:
   - name: eck-operator
     repository: https://helm.elastic.co
-    version: 3.0.0 
+    version: 3.0.0
 description: |
   Elasticsearch + filebeat + kibana with default common used indexes and Index Lifecycle Management.
   It comes also with a backup functionality. This is the version using ECK-operator to deploy and monitor the stack.

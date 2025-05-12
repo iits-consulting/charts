@@ -40,7 +40,7 @@ spec:
           runAsUser: 0
         {{- if .tolerations }}
         tolerations:
-          {{- .tolerations | toYaml | indent 10 }}
+          {{- .tolerations | toYaml | nindent 10 }}
         {{- end }}
         containers:
         - name: filebeat
