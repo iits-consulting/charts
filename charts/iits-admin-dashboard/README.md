@@ -1,6 +1,6 @@
 # iits-admin-dashboard
 
-![Version: 1.7.2](https://img.shields.io/badge/Version-1.7.2-informational?style=flat-square) ![AppVersion: 2.1.0](https://img.shields.io/badge/AppVersion-2.1.0-informational?style=flat-square)
+![Version: 1.7.2](https://img.shields.io/badge/Version-1.7.2-informational?style=flat-square) ![AppVersion: 2.4.0](https://img.shields.io/badge/AppVersion-2.4.0-informational?style=flat-square)
 
 This chart deploys a super simple webserver that provides a simple website containing links to a set
 of dashboards that are usually deployed in our infrastructure setup as well as some nifty external
@@ -12,7 +12,7 @@ tools.
 iits-admin-dashboard:
   namespace: admin
   repoURL: "https://charts.iits.tech"
-  targetRevision: "1.7.1"
+  targetRevision: "1.7.2"
   parameters:
     ingress.host: "REPLACE_ME"
 ```
@@ -92,14 +92,17 @@ iits-admin-dashboard:
 | deployment.health.startupProbe.initialDelaySeconds | int | `5` |  |
 | deployment.health.startupProbe.path | string | `"/"` |  |
 | deployment.health.startupProbe.periodSeconds | int | `5` |  |
+| deployment.image.name | string | `"docker-static-website"` |  |
+| deployment.image.pullPolicy | string | `"IfNotPresent"` |  |
+| deployment.image.registry | string | `"lipanski"` |  |
+| deployment.image.tag | string | `""` |  |
 | deployment.imagePullSecrets | list | `[]` |  |
 | deployment.onePodForEachNode | bool | `false` |  |
 | deployment.podAnnotations | object | `{}` |  |
 | deployment.podSecurityContext | string | `nil` |  |
 | deployment.replicaCount | int | `2` |  |
-| deployment.resources.limits.cpu | string | `"10m"` |  |
-| deployment.resources.limits.memory | string | `"8Mi"` |  |
-| deployment.resources.requests.cpu | string | `"1m"` |  |
+| deployment.resources.limits.memory | string | `"4Mi"` |  |
+| deployment.resources.requests.cpu | string | `"10m"` |  |
 | deployment.resources.requests.memory | string | `"4Mi"` |  |
 | deployment.securityContext.allowPrivilegeEscalation | bool | `false` |  |
 | deployment.securityContext.capabilities.drop[0] | string | `"ALL"` |  |
