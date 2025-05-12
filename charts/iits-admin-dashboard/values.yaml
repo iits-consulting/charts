@@ -118,7 +118,7 @@ ingress:
   enabled: true
 
   # -- Required, replace it with your host address
-  host:
+  host: ""
 
   labels:
 
@@ -197,3 +197,21 @@ service:
   labels:
   type: "ClusterIP"
   port: 80
+
+uptimeMonitor:
+  enabled: false
+  # Default values that will be used for all ServiceMonitors created by `targets`
+  defaults:
+    additionalMetricsRelabels: {}
+    additionalRelabeling: []
+    labels: {}
+    interval: 30s
+    scrapeTimeout: 30s
+    honorTimestamps: true
+    module: http_2xx
+    jobName: "prometheus-stack"
+  scheme: http
+  path: "/probe"
+  blackboxNamespace: "monitoring"
+  tlsConfig: {}
+  bearerTokenFile: ""
