@@ -67,7 +67,9 @@ prometheusStack:
         requests:
           memory: "2255Mi"
           cpu: "60m"
-
+      serviceMonitorSelector:
+        matchLabels:
+          release: null # defaults to "{{ $.Release.Name }}", which is a breaking change and unnecessary for us
       retention: 1y # 365 days
 
       storageSpec:
