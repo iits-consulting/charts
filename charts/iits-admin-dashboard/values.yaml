@@ -141,13 +141,18 @@ deployment:
 
   annotations:
 
+  image:
+    registry: "lipanski"
+    name: "docker-static-website"
+    tag: "" # default is .Chart.AppVersion
+    pullPolicy: "IfNotPresent"
+
   resources:
     requests:
       memory: "4Mi"
-      cpu: "1m"
-    limits:
-      memory: "8Mi"
       cpu: "10m"
+    limits:
+      memory: "4Mi"
 
   podAnnotations: { }
 

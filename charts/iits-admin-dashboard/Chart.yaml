@@ -1,7 +1,7 @@
 apiVersion: v2
 name: iits-admin-dashboard
 version: 1.7.2
-appVersion: 2.1.0
+appVersion: 2.4.0
 description: |
   This chart deploys a super simple webserver that provides a simple website containing links to a set
   of dashboards that are usually deployed in our infrastructure setup as well as some nifty external
@@ -13,7 +13,7 @@ description: |
   iits-admin-dashboard:
     namespace: admin
     repoURL: "https://charts.iits.tech"
-    targetRevision: "1.7.1"
+    targetRevision: "1.7.2"
     parameters:
       ingress.host: "REPLACE_ME"
   ```
