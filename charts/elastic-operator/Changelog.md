@@ -2,6 +2,10 @@
 
 ## Chart Versions
 
+### 8.18.1-fb-tolerations
+
+- fixed a bug in the Helm chart that caused tolerations rendering to fail for Filebeat
+
 ### 8.18.1
 
 - app version update to 8.18.1
