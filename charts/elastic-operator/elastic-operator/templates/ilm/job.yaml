@@ -1,0 +1,66 @@
+{{- with .Values.ilm }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ $.Release.Name }}-ilm-init
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+    checksum/config: {{ include (print $.Template.BasePath "/ilm/config.yaml") $ | sha256sum | substr 0 50 }}
+spec:
+  backoffLimit: 0
+  parallelism: 1
+  completions: 1
+  template:
+    metadata:
+      name: {{ $.Release.Name }}-jobcommand
+    spec:
+      tolerations: {{ .tolerations | toYaml | nindent 8  }}
+      nodeSelector: {{ .nodeSelector | toYaml | nindent 8 }}
+      restartPolicy: Never
+      containers:
+        - name: {{ $.Release.Name }}-ilm-init
+          image: {{ .image.repository }}:{{ .image.tag }}
+          imagePullPolicy: IfNotPresent
+          command: ['/bin/sh', '-c']
+          args: ["/ilm-config/configure-ilm.sh"]
+          env:
+            - name: ELASTICSEARCH_USERNAME
+              value: elastic
+            - name: ELASTICSEARCH_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: elastic
+                  name: {{ $.Release.Name }}-es-elastic-user
+          volumeMounts:
+            - name: ilm-config
+              mountPath: /ilm-config
+            - name: elasticsearch-certificate
+              mountPath: /es-cert
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            privileged: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            seccompProfile:
+              type: RuntimeDefault
+            runAsUser: {{ .image.userId }}
+      volumes:
+        - name: ilm-config
+          configMap:
+            name: {{ $.Release.Name }}-ilm-config
+            defaultMode: 0755
+        - name: elasticsearch-certificate
+          secret:
+            secretName: {{ $.Release.Name }}-es-http-certs-public
+      securityContext:
+        fsGroup: 1001
+        runAsGroup: 1002
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+        runAsUser: {{ .image.userId }}
+  {{- end }}

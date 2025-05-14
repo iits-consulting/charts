@@ -1,0 +1,24 @@
+{{ with .Values.policyException }}
+{{ if .enabled }}
+apiVersion: kyverno.io/v2
+kind: PolicyException
+metadata:
+  name: {{ $.Release.Namespace }}-{{$.Release.Name}}-es
+  annotations:
+    argocd.argoproj.io/sync-wave: "-5"
+spec:
+  exceptions:
+    - policyName: restrict-seccomp-strict
+      ruleNames:
+        - check-seccomp-strict
+  match:
+    any:
+      - resources:
+          kinds:
+            - Pod
+          names:
+            - {{ $.Release.Name }}-es-default-*
+          namespaces:
+            - {{ $.Release.Namespace }}
+{{- end }}
+{{- end }}

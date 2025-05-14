@@ -1,0 +1,68 @@
+{{- with .Values.elasticsearch}}
+{{ if .enabled }}
+apiVersion: elasticsearch.k8s.elastic.co/v1
+kind: Elasticsearch
+metadata:
+  name: {{ $.Release.Name }}
+  annotations:
+    eck.k8s.elastic.co/license: basic
+    argocd.argoproj.io/sync-wave: "10"
+spec:
+  version: {{  tpl .version $ }}
+{{- with $.Values.auth }}
+  {{- if (not (empty .)) }}
+  auth:
+    {{- if (not (empty .users)) }}
+    fileRealm:
+      {{- range $userName, $_ := .users }}
+      - secretName: {{ $.Release.Name }}-user-{{ kebabcase $userName }}
+      {{- end }}
+    {{- end }}
+    {{- if (not (empty $.Values.auth.roles)) }}
+    roles:
+      {{- range $roleName, $_ := $.Values.auth.roles }}
+      - secretName: {{ $.Release.Name }}-role-{{ kebabcase $roleName }}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+{{- end }}
+  http:
+{{- with $.Values.generateTLS -}}
+  {{- if .enabled }}
+    tls:
+      certificate:
+        secretName: {{$.Release.Name}}-{{ .secretName }}
+  {{- end }}
+{{- end }}
+{{- with $.Values.ingress.elasticsearch -}}
+  {{- if and (eq .enabled true) (eq .className "traefik") }}
+      metadata:
+        annotations:
+          traefik.ingress.kubernetes.io/service.serverstransport: "{{ $.Release.Namespace }}-{{ $.Release.Name }}-elasticsearch@kubernetescrd"
+          traefik.ingress.kubernetes.io/service.serversscheme: "https"
+  {{- end }}
+{{- end }}
+  secureSettings:
+    - secretName: "{{ $.Release.Name }}-backup-secure-settings"
+{{- range $extraSetting := .extraSecureSettings }}
+    - secretName: {{ $extraSetting }}
+{{- end }}
+  nodeSets:
+  - name: default
+    count: {{ .nodeCount }}
+    config:
+      {{- .config | toYaml | nindent 6 }}
+    podTemplate:
+      spec:
+        {{- tpl (.podTemplateSpec | toYaml) $ | nindent 8 }}
+    volumeClaimTemplates:
+{{- if $.Values.cce }}
+      -
+      {{- include "template.otcPVC" $ | nindent 8 }}
+{{ else }}
+      -
+      {{- include "template.regularPVC" $ | nindent 8 }}
+{{- end }}
+
+{{- end }}
+{{- end }}

@@ -1,0 +1,51 @@
+{{ if .Values.generatePasswords.enabled }}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ .Release.Name }}-generate-passwords
+  annotations:
+    argocd.argoproj.io/hook: Sync
+    argocd.argoproj.io/sync-wave: "5"
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ .Release.Name }}-generate-passwords
+  annotations:
+    argocd.argoproj.io/hook: Sync
+    argocd.argoproj.io/sync-wave: "5"
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - secrets
+  verbs:
+  - get
+  - patch
+  resourceNames:
+{{- range $secretDescription := .Values.generatePasswords.secrets }}
+  - {{ tpl $secretDescription.name $ }}
+{{- end }}
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ .Release.Name }}-generate-passwords
+  annotations:
+    argocd.argoproj.io/hook: Sync
+    argocd.argoproj.io/sync-wave: "5"
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ .Release.Name }}-generate-passwords
+subjects:
+- kind: ServiceAccount
+  name: {{ .Release.Name }}-generate-passwords
+  namespace: {{ .Release.Namespace }}
+{{ end }}
