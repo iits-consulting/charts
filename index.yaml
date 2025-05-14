@@ -1321,6 +1321,21 @@ entries:
     - https://github.com/iits-consulting/charts/releases/download/elastic-operator-8.18.1-fb-tolerations/elastic-operator-8.18.1-fb-tolerations.tgz
     version: 8.18.1-fb-tolerations
   - apiVersion: v2
+    appVersion: 8.18.1
+    created: "2025-05-14T13:10:33.584035647Z"
+    dependencies:
+    - name: eck-operator
+      repository: https://helm.elastic.co
+      version: 3.0.0
+    description: 'Elasticsearch + filebeat + kibana with default common used indexes
+      and Index Lifecycle Management. It comes also with a backup functionality. This
+      is the version using ECK-operator to deploy and monitor the stack. '
+    digest: 9d4beca055a1a16164f4f474205975b13a036f4ab7ec01fe5b40f4304e1dbcfe
+    name: elastic-operator
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/elastic-operator-8.18.1-fb-tolerations/elastic-operator-8.18.1-fb-tolerations.tgz
+    version: 8.18.1-fb-tolerations
+  - apiVersion: v2
     appVersion: 8.17.3
     created: "2025-03-10T12:49:55.573839904Z"
     dependencies:
@@ -5884,6 +5899,30 @@ entries:
     - https://github.com/iits-consulting/charts/releases/download/prometheus-stack-68.4.5/prometheus-stack-68.4.5.tgz
     version: 68.4.5
   - apiVersion: v2
+    created: "2025-05-14T13:10:33.785499064Z"
+    dependencies:
+    - alias: prometheusStack
+      name: kube-prometheus-stack
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 63.1.0
+    - alias: blackboxExporter
+      condition: blackboxExporter.enabled
+      name: prometheus-blackbox-exporter
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 9.4.0
+    description: 'A complete monitoring/alerting stack with Grafana Prometheus Alertmanager  ##
+      Installing the Chart with iits ArgoCD  ```yaml prometheus-stack:   namespace:
+      monitoring   repoURL: "https://charts.iits.tech"   targetRevision: "63.1.0"   ignoreDifferences:     -
+      jsonPointers:         - /imagePullSecrets       kind: ServiceAccount   syncOptions:     -
+      ServerSideApply=true   parameters:     global.alertmanager.host: "admin.{{.Values.projectValues.rootDomain}}"     global.prometheus.host:
+      "admin.{{.Values.projectValues.rootDomain}}"     global.grafana.host: "admin.{{.Values.projectValues.rootDomain}}"     prometheusStack.grafana.adminPassword:
+      "REPLACE_ME" ``` '
+    digest: 07317839acdcf8bf0777c531bd98d19193cde2e61d682fed5731c235f76199d7
+    name: prometheus-stack
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/prometheus-stack-63.1.2/prometheus-stack-63.1.2.tgz
+    version: 63.1.2
+  - apiVersion: v2
     created: "2025-05-12T11:34:54.376188383Z"
     dependencies:
     - alias: prometheusStack
@@ -6197,19 +6236,6 @@ entries:
     - https://github.com/iits-consulting/charts/releases/download/prometheus-stack-43.1.3/prometheus-stack-43.1.3.tgz
     version: 43.1.3
   - apiVersion: v2
-    created: "2023-06-05T16:33:21.100545313Z"
-    dependencies:
-    - alias: prometheusStack
-      name: kube-prometheus-stack
-      repository: https://prometheus-community.github.io/helm-charts
-      version: 43.1.3
-    description: A complete monitoring/alerting stack with Grafana Prometheus Alertmanager
-    digest: 6399807969bf6e14b7920dd8e4e4e1b6bf8ea197627ad9ceefc19ca27fe1ba43
-    name: prometheus-stack
-    urls:
-    - https://github.com/iits-consulting/charts/releases/download/prometheus-stack-43.1.3-storage-bugfix/prometheus-stack-43.1.3-storage-bugfix.tgz
-    version: 43.1.3-storage-bugfix
-  - apiVersion: v2
     created: "2023-06-05T15:45:42.916184484Z"
     dependencies:
     - alias: prometheusStack
@@ -6218,6 +6244,19 @@ entries:
       version: 43.1.3
     description: A complete monitoring/alerting stack with Grafana Prometheus Alertmanager
     digest: 1aeab4f72f043e0be8bc93a8bc6e75fa442200cf23382906a0bf915ee2627e54
+    name: prometheus-stack
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/prometheus-stack-43.1.3-storage-bugfix/prometheus-stack-43.1.3-storage-bugfix.tgz
+    version: 43.1.3-storage-bugfix
+  - apiVersion: v2
+    created: "2023-06-05T16:33:21.100545313Z"
+    dependencies:
+    - alias: prometheusStack
+      name: kube-prometheus-stack
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 43.1.3
+    description: A complete monitoring/alerting stack with Grafana Prometheus Alertmanager
+    digest: 6399807969bf6e14b7920dd8e4e4e1b6bf8ea197627ad9ceefc19ca27fe1ba43
     name: prometheus-stack
     urls:
     - https://github.com/iits-consulting/charts/releases/download/prometheus-stack-43.1.3-storage-bugfix/prometheus-stack-43.1.3-storage-bugfix.tgz
@@ -7001,4 +7040,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/waf-cert-uploader-0.1.1/waf-cert-uploader-0.1.1.tgz
     version: 0.1.1
-generated: "2025-05-14T09:19:53.861170672Z"
+generated: "2025-05-14T13:10:33.786173465Z"
