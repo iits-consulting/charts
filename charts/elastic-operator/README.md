@@ -1,6 +1,6 @@
 # elastic-operator
 
-![Version: 8.18.1-fb-tolerations](https://img.shields.io/badge/Version-8.18.1--fb--tolerations-informational?style=flat-square) ![AppVersion: 8.18.1](https://img.shields.io/badge/AppVersion-8.18.1-informational?style=flat-square)
+![Version: 8.18.1-fb-migr-filestream](https://img.shields.io/badge/Version-8.18.1--fb--migr--filestream-informational?style=flat-square) ![AppVersion: 8.18.1](https://img.shields.io/badge/AppVersion-8.18.1-informational?style=flat-square)
 
 Elasticsearch + filebeat + kibana with default common used indexes and Index Lifecycle Management.
 It comes also with a backup functionality. This is the version using ECK-operator to deploy and monitor the stack.
@@ -74,9 +74,14 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | elasticsearch.resources.requests.memory | string | `"8G"` |  |
 | elasticsearch.version | string | `"{{ .Chart.AppVersion }}"` |  |
 | elasticsearch.volumeSize | string | `"200G"` |  |
-| filebeat.autodiscover.providers[0]."hints.default_config".paths[0] | string | `"/var/log/containers/*${data.container.id}.log"` |  |
-| filebeat.autodiscover.providers[0]."hints.default_config".type | string | `"container"` |  |
-| filebeat.autodiscover.providers[0]."hints.enabled" | bool | `true` |  |
+| filebeat.autodiscover.providers[0].hints.default_config.id | string | `"kubernetes-container-logs-${data.kubernetes.pod.name}-${data.kubernetes.container.id}"` |  |
+| filebeat.autodiscover.providers[0].hints.default_config.parsers[0].container | object | `{}` |  |
+| filebeat.autodiscover.providers[0].hints.default_config.paths[0] | string | `"/var/log/containers/*${data.kubernetes.container.id}.log"` |  |
+| filebeat.autodiscover.providers[0].hints.default_config.prospector.scanner."fingerprint.enabled" | bool | `true` |  |
+| filebeat.autodiscover.providers[0].hints.default_config.prospector.scanner.symlinks | bool | `true` |  |
+| filebeat.autodiscover.providers[0].hints.default_config.take_over | bool | `true` |  |
+| filebeat.autodiscover.providers[0].hints.default_config.type | string | `"filestream"` |  |
+| filebeat.autodiscover.providers[0].hints.enabled | bool | `true` |  |
 | filebeat.autodiscover.providers[0].node | string | `"${NODE_NAME}"` |  |
 | filebeat.autodiscover.providers[0].type | string | `"kubernetes"` |  |
 | filebeat.enabled | bool | `true` |  |
