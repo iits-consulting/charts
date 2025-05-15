@@ -463,6 +463,8 @@ indexPatternInit:
       timestampField: "@timestamp"
     monitoring:
       timestampField: "@timestamp"
+    routing:
+      timestampField: "@timestamp"
     vault:
       timestampField: "@timestamp"
     not-defined:
@@ -470,9 +472,10 @@ indexPatternInit:
 
 ilm:
   image:
-    repository: docker.io/curlimages/curl
-    tag: 8.13.0
+    repository: apteno/alpine-jq
+    tag: 2025-04-06
     userId: 100
+  skipExisting: false
   tolerations: [ ]
   nodeSelector: { }
   policies:
