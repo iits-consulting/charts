@@ -164,8 +164,8 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | generatePasswords.tolerations | list | `[]` |  |
 | generateTLS.enabled | bool | `false` |  |
 | generateTLS.secretName | string | `"tls-elastic"` |  |
-| ilm.image.repository | string | `"docker.io/curlimages/curl"` |  |
-| ilm.image.tag | string | `"8.13.0"` |  |
+| ilm.image.repository | string | `"apteno/alpine-jq"` |  |
+| ilm.image.tag | string | `"2025-04-06"` |  |
 | ilm.image.userId | int | `100` |  |
 | ilm.nodeSelector | object | `{}` |  |
 | ilm.policies.long.coldAfter | string | `"32d"` |  |
@@ -183,6 +183,7 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | ilm.policies.short.indexPatterns[1] | string | `"argocd*"` |  |
 | ilm.policies.short.indexPatterns[2] | string | `"kyverno*"` |  |
 | ilm.policies.short.indexPatterns[3] | string | `"monitoring*"` |  |
+| ilm.skipExisting | bool | `false` |  |
 | ilm.tolerations | list | `[]` |  |
 | indexPatternInit.enabled | bool | `true` |  |
 | indexPatternInit.image.repository | string | `"docker.io/curlimages/curl"` |  |
@@ -195,6 +196,7 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | indexPatternInit.indices.kyverno.timestampField | string | `"@timestamp"` |  |
 | indexPatternInit.indices.monitoring.timestampField | string | `"@timestamp"` |  |
 | indexPatternInit.indices.not-defined.timestampField | string | `"@timestamp"` |  |
+| indexPatternInit.indices.routing.timestampField | string | `"@timestamp"` |  |
 | indexPatternInit.indices.vault.timestampField | string | `"@timestamp"` |  |
 | indexPatternInit.nodeSelector | object | `{}` |  |
 | indexPatternInit.skipExisting | bool | `false` |  |
