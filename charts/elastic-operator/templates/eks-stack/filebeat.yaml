@@ -23,7 +23,6 @@ spec:
         {{- concat .processors .extraProcessors | toYaml | nindent 6 }}
     {{- if eq $.Values.logstash.enabled false }}
     output.elasticsearch:
-      enabled: false
       username: '${ELASTICSEARCH_USERNAME}'
       password: '${ELASTICSEARCH_PASSWORD}'
       indices:
