@@ -1,0 +1,38 @@
+{{ with .Values.generateTLS }}
+{{ if .enabled }}
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: {{$.Release.Name}}-selfsigned-root-issuer
+  namespace: {{$.Release.Namespace}}
+  annotations:
+    "helm.sh/resource-policy": keep
+    argocd.argoproj.io/sync-wave: "5"
+spec:
+  selfSigned: {}
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: {{$.Release.Name}}-selfsigned-intermediate-issuer
+  namespace: {{$.Release.Namespace}}
+  annotations:
+    "helm.sh/resource-policy": keep
+    argocd.argoproj.io/sync-wave: "7"
+spec:
+  ca:
+    secretName: {{$.Release.Name}}-selfsigned-root-ca-secret
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: {{$.Release.Name}}-selfsigned-issuer
+  namespace: {{$.Release.Namespace}}
+  annotations:
+    "helm.sh/resource-policy": keep
+    argocd.argoproj.io/sync-wave: "9"
+spec:
+  ca:
+    secretName: {{$.Release.Name}}-selfsigned-intermediate-ca-secret
+{{- end }}
+{{- end }}

@@ -38,6 +38,10 @@ ingress:
       traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
       traefik.ingress.kubernetes.io/router.tls: "true"
       traefik.ingress.kubernetes.io/router.middlewares: "routing-oidc-forward-auth@kubernetescrd"
+    tls:
+      - hosts:
+          - "{{ .Values.ingress.kibana.host }}"
+
   elasticsearch:
     enabled: false
     # -- Required, if enabled
@@ -49,6 +53,9 @@ ingress:
       traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
       traefik.ingress.kubernetes.io/router.tls: "true"
       traefik.ingress.kubernetes.io/router.middlewares: "routing-oidc-forward-auth@kubernetescrd"
+    tls:
+      - hosts:
+          - "{{ .Values.ingress.elasticsearch.host }}"
 
 auth:
   users:
@@ -67,6 +74,10 @@ auth:
       existingPassword: ""
       roles:
         - custom_elastalert
+    logstash:
+      existingPassword: ""
+      roles:
+        - logstash
   roles:
     # see: https://www.elastic.co/guide/en/beats/filebeat/current/feature-roles.html
     custom_filebeat:
@@ -100,6 +111,20 @@ auth:
             - read
             - monitor
             - view_index_metadata
+    logstash:
+      cluster:
+        - manage_index_templates
+        - monitor
+        - manage_ilm
+      indices:
+        - names:
+            - "*"
+          privileges:
+            - write
+            - create
+            - create_index
+            - manage
+            - manage_ilm
 
 elasticsearch:
   enabled: true
@@ -136,6 +161,61 @@ elasticsearch:
         env:
           - name: ES_JAVA_OPTS
             value: "{{ .Values.elasticsearch.javaOpts }}"
+
+logstash:
+  enabled: false
+  version: "{{ .Chart.AppVersion }}"
+  elasticsearchRefs:
+    - clusterName: default
+      name: "{{ .Release.Name }}"
+  config:
+    pipeline.batch.size: 125
+  pipelines:
+    - pipeline.id: default-elasticsearch
+      config.string: |
+        input {
+          beats {
+            port => 5044
+          }
+        }
+        filter {
+          ### The config works from top to bottom, everytime it finds a match, the target_index will be overwritten
+          mutate {
+            add_field => { "[@metadata][target_index]" => "not-defined-%{[agent][version]}-%{+yyyy.MM}" }
+          }
+          ### Example: Overrides the default index, if the namespace is argocd
+          if [kubernetes][namespace] == "argocd" {
+            mutate { replace => { "[@metadata][target_index]" => "argocd_%{[agent][version]}-%{+yyyy.MM}" } }
+          }
+        }
+
+        output {
+          elasticsearch {
+            hosts => [ "${DEFAULT_ES_HOSTS}" ]
+            user => "${LOGSTASH_USERNAME}"
+            password => "${LOGSTASH_PASSWORD}"
+            cacert => "${DEFAULT_ES_SSL_CERTIFICATE_AUTHORITY}"
+            index => "%{[@metadata][target_index]}"
+          }
+        }
+  # https://discuss.elastic.co/t/logstash-and-auto-index-creation-with-eck/360391 Add user which can write to custom indices
+  env:
+    - name: NODE_NAME
+      valueFrom:
+        fieldRef:
+          apiVersion: v1
+          fieldPath: spec.nodeName
+    - name: LOGSTASH_USERNAME
+      valueFrom:
+        secretKeyRef:
+          key: username
+          name: "{{ .Release.Name }}-user-logstash"
+    - name: LOGSTASH_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          key: password
+          name: "{{ .Release.Name }}-user-logstash"
+  
 
 filebeat:
   enabled: true
@@ -219,7 +299,6 @@ filebeat:
       cpu: "100m"
       memory: "100M"
     limits:
-      cpu: "400m"
       memory: "500M"
   readinessProbe:
     failureThreshold: 50
@@ -270,6 +349,7 @@ filebeat:
 kibana:
   enabled: true
   version: "{{ .Chart.AppVersion }}"
+  count: 2
   config:
     server:
       basePath: "{{ .Values.ingress.kibana.path }}"
@@ -338,10 +418,12 @@ kibana:
             type: RuntimeDefault
 
 indexPatternInit:
+  enabled: true
   image:
     repository: docker.io/curlimages/curl
     tag: 8.12.1
     userId: 100
+  skipExisting: false
   tolerations: [ ]
   nodeSelector: { }
   indices:
@@ -356,8 +438,6 @@ indexPatternInit:
     kyverno:
       timestampField: "@timestamp"
     monitoring:
-      timestampField: "@timestamp"
-    routing:
       timestampField: "@timestamp"
     vault:
       timestampField: "@timestamp"
@@ -387,7 +467,7 @@ ilm:
       deleteAfter: 14d
 
 generatePasswords:
-  enabled: true
+  enabled: false
   image:
     repository: docker.io/bitnami/kubectl
     tag: 1.32.2
@@ -404,6 +484,13 @@ generatePasswords:
     - name: "{{ .Release.Name }}-user-custom-elastalert"
       key: password
       #length: 32
+
+# Generates a long-lived root CA and intermediate CA and adds it to elastic.
+# Especially handy, if elastic should not be exposed but other cluster services do 
+# want to communicate with elastic, but do not have an easy way to rotate tls secrets.
+generateTLS:
+  enabled: false
+  secretName: "tls-elastic"
 
 backup:
   enabled: false
@@ -454,3 +541,4 @@ backup:
 
 policyException:
   enabled: true
+

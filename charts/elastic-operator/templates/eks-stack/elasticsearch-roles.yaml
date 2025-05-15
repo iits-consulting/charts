@@ -7,7 +7,7 @@ type: Opaque
 stringData:
   roles.yml: |-
     {{ $roleName }}:
-{{ $roleDescription | toYaml | indent 6 }}
+{{ $roleDescription | toYaml | nindent 6 }}
 
 ---
 {{ end }}

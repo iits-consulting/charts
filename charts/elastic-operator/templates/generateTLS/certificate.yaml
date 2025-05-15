@@ -1,0 +1,64 @@
+{{ with .Values.generateTLS }}
+{{ if .enabled }}
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{$.Release.Name}}-selfsigned-root-ca
+  annotations:
+    "helm.sh/resource-policy": keep
+    argocd.argoproj.io/sync-wave: "6"
+spec:
+  isCA: true
+  commonName: {{$.Release.Name}}-selfsigned-root-ca
+  secretName: {{$.Release.Name}}-selfsigned-root-ca-secret
+  privateKey:
+    algorithm: ECDSA 
+    size: 256      
+  duration: 43800h # 5 years (long-lived)
+  renewBefore: 720h  
+  issuerRef:
+    name: {{$.Release.Name}}-selfsigned-root-issuer
+    kind: Issuer 
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{$.Release.Name}}-selfsigned-intermediate-ca
+  annotations:
+    "helm.sh/resource-policy": keep
+    argocd.argoproj.io/sync-wave: "8"
+spec:
+  isCA: true
+  commonName: {{$.Release.Name}}-selfsigned-intermediate-ca
+  secretName: {{$.Release.Name}}-selfsigned-intermediate-ca-secret
+  privateKey:
+    algorithm: ECDSA 
+    size: 256      
+  duration: 8760h
+  renewBefore: 720h  
+  issuerRef:
+    name: {{$.Release.Name}}-selfsigned-intermediate-issuer
+    kind: Issuer 
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{$.Release.Name}}-es-cert
+  annotations:
+    "helm.sh/resource-policy": keep
+    argocd.argoproj.io/sync-wave: "10"
+spec:
+  dnsNames:
+    - localhost
+    - {{$.Release.Name}}-es-http
+    - {{$.Release.Name}}-es-http.{{$.Release.Namespace}}.svc
+    - {{$.Release.Name}}-es-http.{{$.Release.Namespace}}.svc.cluster.local
+  issuerRef:
+    kind: Issuer
+    name: {{$.Release.Name}}-selfsigned-issuer
+  secretName: {{$.Release.Name}}-{{.secretName}}
+  subject:
+    organizations:
+      - elastic 
+{{- end }}
+{{- end }}

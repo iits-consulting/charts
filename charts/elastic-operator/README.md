@@ -1,6 +1,6 @@
 # elastic-operator
 
-![Version: 8.17.3](https://img.shields.io/badge/Version-8.17.3-informational?style=flat-square) ![AppVersion: 8.17.3](https://img.shields.io/badge/AppVersion-8.17.3-informational?style=flat-square)
+![Version: 8.17.3-tls-secretName](https://img.shields.io/badge/Version-8.17.3--tls--secretName-informational?style=flat-square) ![AppVersion: 8.17.3](https://img.shields.io/badge/AppVersion-8.17.3-informational?style=flat-square)
 
 Elasticsearch + filebeat + kibana with default common used indexes and Index Lifecycle Management.
 It comes also with a backup functionality. This is the version using ECK-operator to deploy and monitor the stack.
@@ -196,6 +196,7 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | ingress.elasticsearch.host | string | `"REPLACE_ME"` | Required, if enabled |
 | ingress.elasticsearch.labels | string | `nil` |  |
 | ingress.elasticsearch.path | string | `"/elasticsearch"` |  |
+| ingress.elasticsearch.tls[0].hosts[0] | string | `"{{ .Values.ingress.elasticsearch.host }}"` |  |
 | ingress.kibana.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
 | ingress.kibana.annotations."traefik.ingress.kubernetes.io/router.middlewares" | string | `"routing-oidc-forward-auth@kubernetescrd"` |  |
 | ingress.kibana.annotations."traefik.ingress.kubernetes.io/router.tls" | string | `"true"` |  |
@@ -204,6 +205,7 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | ingress.kibana.host | string | `"REPLACE_ME"` | Required, if enabled |
 | ingress.kibana.labels | string | `nil` |  |
 | ingress.kibana.path | string | `"/kibana"` |  |
+| ingress.kibana.tls[0].hosts[0] | string | `"{{ .Values.ingress.kibana.host }}"` |  |
 | kibana.config.monitoring.ui.container.elasticsearch.enabled | bool | `true` |  |
 | kibana.config.monitoring.ui.enabled | bool | `true` |  |
 | kibana.config.server.basePath | string | `"{{ .Values.ingress.kibana.path }}"` |  |
@@ -215,6 +217,7 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | kibana.config.xpack.security.authc.providers.anonymous.anonymous1.credentials.username | string | `"${ANONYMOUS_USERNAME}"` |  |
 | kibana.config.xpack.security.authc.providers.anonymous.anonymous1.order | int | `0` |  |
 | kibana.config.xpack.security.authc.providers.basic.basic1.order | int | `1` |  |
+| kibana.count | int | `2` |  |
 | kibana.enabled | bool | `true` |  |
 | kibana.podTemplateSpec.containers[0].env[0].name | string | `"ANONYMOUS_USERNAME"` |  |
 | kibana.podTemplateSpec.containers[0].env[0].valueFrom.secretKeyRef.key | string | `"username"` |  |

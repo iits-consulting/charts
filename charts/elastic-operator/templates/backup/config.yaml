@@ -1,8 +1,9 @@
-{{- if .Values.backup.enabled }}
+{{- with .Values.backup }}
+{{- if .enabled }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{.Release.Name}}-backup-config
+  name: {{ $.Release.Name }}-backup-config
   annotations:
     argocd.argoproj.io/hook: PostSync
     argocd.argoproj.io/hook-delete-policy: HookSucceeded
@@ -11,39 +12,40 @@ data:
     #!/bin/sh
     set -eu
 
-    endpoint="https://{{ .Release.Name }}-es-http:9200"
+    endpoint="https://{{ $.Release.Name }}-es-http:9200"
 
-    echo -e "\nINFO: Creating {{ $.Values.backup.repoType}} snapshot repository {{ .Values.backup.repoName }}"
-    curl -u "$ELASTICSEARCH_USERNAME:$ELASTICSEARCH_PASSWORD" --cacert /es-cert/ca.crt -s -X PUT --header 'Content-Type: application/json' ${endpoint}/_snapshot/{{ .Values.backup.repoName }} --data-binary @- << EOF
+    echo -e "\nINFO: Creating {{ .repoType}} snapshot repository {{ .repoName }}"
+    curl -u "$ELASTICSEARCH_USERNAME:$ELASTICSEARCH_PASSWORD" --cacert /es-cert/ca.crt -s -X PUT --header 'Content-Type: application/json' ${endpoint}/_snapshot/{{ .repoName }} --data-binary @- << EOF
 
       {
-        "type": "{{ .Values.backup.repoType }}",
-        "settings": {{ .Values.backup.repositorySettings | toJson }}
+        "type": "{{ .repoType }}",
+        "settings": {{ .repositorySettings | toJson }}
       }
     EOF
 
-    echo -e "\nINFO: {{ .Values.backup.repoType }} snapshot repository {{ .Values.backup.repoName }} created!"
+    echo -e "\nINFO: {{ .repoType }} snapshot repository {{ .repoName }} created!"
 
-    echo -e "\nINFO: Creating SLM policy {{ .Values.backup.policy.name }}"
-    curl -u "$ELASTICSEARCH_USERNAME:$ELASTICSEARCH_PASSWORD" --cacert /es-cert/ca.crt -s -X PUT --header 'Content-Type: application/json' ${endpoint}/_slm/policy/{{ .Values.backup.policy.name }} --data-binary @- << EOF
+    echo -e "\nINFO: Creating SLM policy {{ .policy.name }}"
+    curl -u "$ELASTICSEARCH_USERNAME:$ELASTICSEARCH_PASSWORD" --cacert /es-cert/ca.crt -s -X PUT --header 'Content-Type: application/json' ${endpoint}/_slm/policy/{{ .policy.name }} --data-binary @- << EOF
 
 
       {
-        "schedule": "{{ .Values.backup.policy.schedule }}",
-        "name": "<{{ .Values.backup.policy.name }}-{now/d}>",
-        "repository": "{{ .Values.backup.repoName }}",
+        "schedule": "{{ .policy.schedule }}",
+        "name": "<{{ .policy.name }}-{now/d}>",
+        "repository": "{{ .repoName }}",
         "config": {
-          "indices": {{.Values.backup.policy.indices | toJson }},
+          "indices": {{ .policy.indices | toJson }},
           "ignore_unavailable": false,
           "include_global_state": true
         },
         "retention": {
-          "expire_after": "{{ .Values.backup.policy.retention.expireAfter }}",
-          "min_count": {{ .Values.backup.policy.retention.minCount }},
-          "max_count": {{ .Values.backup.policy.retention.maxCount }}
+          "expire_after": "{{ .policy.retention.expireAfter }}",
+          "min_count": {{ .policy.retention.minCount }},
+          "max_count": {{ .policy.retention.maxCount }}
         }
       }
     EOF
 
-    echo -e "\nINFO: SLM policy {{ .Values.backup.policy.name }} created!"
+    echo -e "\nINFO: SLM policy {{ .policy.name }} created!"
+{{- end }}
 {{- end }}

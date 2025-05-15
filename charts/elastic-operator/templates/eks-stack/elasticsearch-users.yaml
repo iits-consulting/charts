@@ -5,7 +5,7 @@ metadata:
   name: {{ $.Release.Name }}-user-{{ kebabcase $userName }}
 type: kubernetes.io/basic-auth
 stringData:
-  username: {{ $userName }}
+  username: {{ $userName | quote }}
 {{- if (not (empty $userDescription.existingPassword)) }}
   password: {{ $userDescription.existingPassword }}
 {{- end }}
