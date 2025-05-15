@@ -150,7 +150,7 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | filebeat.volumes[1].hostPath.path | string | `"/var/log"` |  |
 | filebeat.volumes[1].hostPath.type | string | `""` |  |
 | filebeat.volumes[1].name | string | `"varlog"` |  |
-| generatePasswords.enabled | bool | `false` |  |
+| generatePasswords.enabled | bool | `true` |  |
 | generatePasswords.image.repository | string | `"docker.io/bitnami/kubectl"` |  |
 | generatePasswords.image.tag | string | `"1.32.4"` |  |
 | generatePasswords.image.userId | int | `100` |  |
