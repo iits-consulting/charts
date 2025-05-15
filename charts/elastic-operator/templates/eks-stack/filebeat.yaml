@@ -27,7 +27,6 @@ spec:
       password: '${ELASTICSEARCH_PASSWORD}'
       indices:
         {{- concat .extraIndices .indices | toYaml | nindent 8}}
-        {{- concat .processors .extraProcessors | toYaml | nindent 6 }}
     {{- end }}
     {{- if eq $.Values.logstash.enabled true }}
     output.logstash:
