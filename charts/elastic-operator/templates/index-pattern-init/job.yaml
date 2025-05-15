@@ -1,5 +1,5 @@
+{{- if .Values.indexPatternInit.enabled }}
 {{- with .Values.indexPatternInit }}
-
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -66,4 +66,5 @@ spec:
         seccompProfile:
           type: RuntimeDefault
         runAsUser: {{ .image.userId }}
+  {{- end }}
   {{- end }}
