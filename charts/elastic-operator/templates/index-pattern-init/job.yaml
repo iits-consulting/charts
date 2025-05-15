@@ -6,7 +6,7 @@ metadata:
   name: {{ $.Release.Name }}-index-pattern-init
   annotations:
     argocd.argoproj.io/hook: PostSync
-{{/*    argocd.argoproj.io/hook-delete-policy: HookSucceeded*/}}
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
     checksum/config: {{ include (print $.Template.BasePath "/index-pattern-init/config.yaml") $ | sha256sum | substr 0 50 }}
 spec:
   backoffLimit: 0

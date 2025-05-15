@@ -9,6 +9,8 @@ metadata:
 spec:
   type: filebeat
   version: {{ tpl .version $ }}
+  elasticsearchRef:
+    name: {{ $.Release.Name }}
   kibanaRef:
     name: {{ $.Release.Name }}
   config:
@@ -17,11 +19,17 @@ spec:
         {{- .autodiscover | toYaml | nindent 8 }}
     processors:
         {{- concat .processors .extraProcessors | toYaml | nindent 6 }}
+    output.elasticsearch:
+      username: '${ELASTICSEARCH_USERNAME}'
+      password: '${ELASTICSEARCH_PASSWORD}'
+      indices:
+        {{- concat .extraIndices .indices | toYaml | nindent 8}}
+        {{- concat .processors .extraProcessors | toYaml | nindent 6 }}
     output.logstash:
-      enabled: true
+      enabled: false
       loadbalance: true
       hosts: 
-        - elastic-operator-ls-api.monitoring.svc:5044
+        - {{$.Release.Name}}-ls-api.monitoring.svc:5044
   daemonSet:
     podTemplate:
       metadata:
@@ -38,7 +46,7 @@ spec:
           runAsUser: 0
         {{- if .tolerations }}
         tolerations:
-          {{- .tolerations | toYaml | indent 10 }}
+          {{- .tolerations | toYaml | nindent 10 }}
         {{- end }}
         containers:
         - name: filebeat

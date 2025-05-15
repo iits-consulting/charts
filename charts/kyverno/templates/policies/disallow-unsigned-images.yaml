@@ -7,51 +7,56 @@ metadata:
   annotations:
     policies.kyverno.io/severity: high
     policies.kyverno.io/subject: Pod
-    pod-policies.kyverno.io/autogen-controllers: {{ .autogenControllers }}
     policies.kyverno.io/category: DockerImage
     policies.kyverno.io/title: Disallow Unsigned Images
+    pod-policies.kyverno.io/autogen-controllers: none
     policies.kyverno.io/description: >-
       Images needs to be signed with a specific private cosign key
 spec:
-  background: {{ .background }}
-  webhookTimeoutSeconds: {{ .timeout }}
-  failurePolicy: Fail
+  webhookConfiguration:
+    failurePolicy: {{ .failurePolicy }}
+    timeoutSeconds: {{ .timeoutSeconds }}
+  useServerSideApply: true
+  validationFailureAction: Enforce
   rules:
     - name: "{{ .name }}-rule"
       match:
         any:
           - resources:
+              operations:
+                - CREATE
+                - UPDATE
               kinds:
                 - Pod
-      {{- with .excludeNamespaces}}
+    {{- with .excludeNamespaces}}
       exclude:
         any:
           - resources:
               namespaces:
-              {{- range . }}
+            {{- range . }}
                 - {{ . }}
-              {{- end }}
-        {{- end }}
-      validate:
-        failureAction: {{ .validationAction }}
+            {{- end }}
+      {{- end }}
       verifyImages:
-      {{- range .imagesAndPublicKeyPairs }}
-        - imageReferences:
+    {{- range .imagesAndPublicKeyPairs }}
+        - type: Cosign
+          imageReferences:
             - {{ .image | quote}}
-          {{ if .pullSecret }}
+        {{- if .pullSecret }}
           imageRegistryCredentials:
             secrets:
               - {{ .pullSecret }}
-          {{- end }}
+        {{- end }}
+          required: true
           mutateDigest: true
-          requireDigest: true
+          verifyDigest: true
           attestors:
             - entries:
                 - keys:
                     publicKeys: |-
-{{ .key | indent 22 }}
+{{ .key | indent 24 }}
                     rekor:
                       ignoreTlog: {{ .ignoreTransparencyLog | default true }}
-      {{- end }}
+    {{- end }}
 {{ end }}
 {{ end }}

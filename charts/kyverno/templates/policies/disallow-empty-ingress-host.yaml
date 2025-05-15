@@ -21,9 +21,12 @@ spec:
       match:
         any:
           - resources:
+              operations:
+                - CREATE
+                - UPDATE
               kinds:
                 - Ingress
-      {{- with .exemptions }}
+      {{- with .excludeNamespaces }}
       exclude:
         any:
         {{- range $exemption := . }}

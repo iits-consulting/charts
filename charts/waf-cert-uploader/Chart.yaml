@@ -1,6 +1,0 @@
-apiVersion: v2
-name: waf-cert-uploader
-description:  A Helm chart for the WAF certificate uploader
-type: application
-version: 0.1.1
-appVersion: v0.1.1

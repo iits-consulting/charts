@@ -5,27 +5,33 @@ kind: ClusterPolicy
 metadata:
   name: {{.name}}
   annotations:
-    pod-policies.kyverno.io/autogen-controllers: {{ .autogenControllers }}
     policies.kyverno.io/title: Enforce security settings for pods
     policies.kyverno.io/category: Pod Security
-    policies.kyverno.io/severity: high
     policies.kyverno.io/subject: Pod
     policies.kyverno.io/minversion: 1.9.0
+    pod-policies.kyverno.io/autogen-controllers: none
     policies.kyverno.io/description: >-
       Enforce security settings for pods
 spec:
+  background: false #Cannot mutate already existing pods
+  useServerSideApply: true
   rules:
     - name: add-pod-security-context
       match:
         resources:
+          operations:
+            - CREATE
+            - UPDATE
           kinds:
             - Pod
+      {{- if .excludeNamespaces}}
       exclude:
         resources:
           namespaces:
            {{- range .excludeNamespaces }}
             - {{ . }}
            {{- end }}
+      {{- end }}
       mutate:
         foreach:
           - list: "request.object.spec.containers[]"
@@ -51,6 +57,14 @@ spec:
                           - ALL
                       +(privileged): false
                 initContainers:
+                  - (name): '*'
+                    securityContext:
+                      +(allowPrivilegeEscalation): false
+                      +(capabilities):
+                        drop:
+                          - ALL
+                      +(privileged): false
+                ephemeralContainers:
                   - (name): '*'
                     securityContext:
                       +(allowPrivilegeEscalation): false

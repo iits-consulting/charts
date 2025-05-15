@@ -1,14 +1,14 @@
 apiVersion: v2
 description: |
-  Forward Auth proxy with gogatekeeper. It replaces the old proxy mechanism
-  
+  Traefik forward auth with gogatekeeper.
+
   ## Installing the Chart with iits ArgoCD
 
   ```yaml
   charts:
     oidc-forward-auth:
       namespace: routing
-      targetRevision: "1.7.0"
+      targetRevision: "1.7.2"
       parameters:
         gatekeeper.config.client-id: "${vault:whatever/data/keycloak/keycloak_proxy_admin#client_id}"
         gatekeeper.config.client-secret: "${vault:whatever/data/keycloak/keycloak_proxy_admin#client_secret}"
@@ -22,22 +22,14 @@ description: |
 
   ```yaml
   ingress:
-    enabled: true
-    # -- Mandatory, replace it with your host address
-    host: 
-    annotations:
-      traefik.ingress.kubernetes.io/router.entrypoints: websecure
-      traefik.ingress.kubernetes.io/router.tls: "true"
-      #namespace-name@kubernetescrd
+      annotations:
+      # Value Pattern: <namespace>-<name>@kubernetescrd
       traefik.ingress.kubernetes.io/router.middlewares: routing-oidc-forward-auth@kubernetescrd
-    # Creates default Ingress with tls and the given host from .Values.ingress.host
-    defaultIngress:
-      enabled: true
   ```
 name: oidc-forward-auth
-version: 1.7.0
+version: 1.7.2
 dependencies:
   - name: gatekeeper
     repository: https://gogatekeeper.github.io/helm-gogatekeeper
-    version: 0.1.51
+    version: 0.1.54
 

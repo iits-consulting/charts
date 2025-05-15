@@ -1,6 +1,6 @@
 dependencies:
 - name: gatekeeper
   repository: https://gogatekeeper.github.io/helm-gogatekeeper
-  version: 0.1.51
-digest: sha256:6a864255a5562a316b67e7e30a0bc6af20a33331b63985919b27537ddf15eedf
-generated: "2025-01-16T12:00:25.046636+01:00"
+  version: 0.1.54
+digest: sha256:b843e6fde578d68b600123a83d1219258a014e102a29971ee23d5b7fde2ece81
+generated: "2025-04-30T09:08:54.125865+02:00"

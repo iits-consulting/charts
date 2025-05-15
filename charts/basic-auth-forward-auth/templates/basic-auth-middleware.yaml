@@ -1,8 +1,0 @@
-apiVersion: traefik.io/v1alpha1
-kind: Middleware
-metadata:
-  name: {{.Values.middleware.name}}
-spec:
-  basicAuth:
-    secret: admin-secret
-    headerField: X-WebAuth-User

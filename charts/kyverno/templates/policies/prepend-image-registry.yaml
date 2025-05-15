@@ -6,7 +6,7 @@ metadata:
   name: {{.name}}
   annotations:
     policies.kyverno.io/title: Prepend custom image registry
-    pod-policies.kyverno.io/autogen-controllers: {{ .autogenControllers }}
+    pod-policies.kyverno.io/autogen-controllers: none
     policies.kyverno.io/category: DockerImage
     policies.kyverno.io/severity: high
     policies.kyverno.io/subject: Pod
@@ -30,14 +30,18 @@ spec:
       match:
         any:
           - resources:
+              operations:
+                - CREATE # spec.containers cannot be modified on UPDATE
               kinds:
                 - Pod
+      {{- if .excludeNamespaces }}
       exclude:
         resources:
           namespaces:
           {{- range .excludeNamespaces }}
             - {{ . }}
           {{- end }}
+      {{- end }}
       mutate:
         foreach:
           - list: "request.object.spec.containers"
@@ -49,22 +53,34 @@ spec:
                 containers:
                   - name: "{{ `{{ element.name }}` }}"
                     image: "{{ .registry | trimSuffix "/" }}/{{ `{{ images.containers.\"{{element.name}}\".registry}}/{{ images.containers.\"{{element.name}}\".path}}:{{images.containers.\"{{element.name}}\".tag}}`}}"
+            {{- if .excludeRegistries}}
             preconditions:
               all:
-          {{- range $excludeRegistry := .excludeRegistries}}
+              {{- range $excludeRegistry := .excludeRegistries}}
                 - key: "{{`{{element.image}}`}}"
                   operator: NotEquals
                   value: "{{$excludeRegistry}}"
-          {{- end }}
+              {{- end }}
+            {{- end }}
     - name: prepend-registry-initcontainers
       match:
         any:
           - resources:
+              operations:
+                - CREATE # spec.initContainers cannot be modified on UPDATE
               kinds:
                 - Pod
+      {{- if .excludeNamespaces }}
+      exclude:
+        resources:
+          namespaces:
+          {{- range .excludeNamespaces }}
+            - {{ . }}
+          {{- end }}
+      {{- end }}
       preconditions:
         all:
-          - key: "{{ `{{ request.object.spec.initContainers[] || '' | length(@) }} `}}"
+          - key: "{{ `{{ request.object.spec.initContainers[] || `}}`[]`{{` | length(@) }} `}}"
             operator: GreaterThanOrEquals
             value: 1
       mutate:
@@ -73,18 +89,61 @@ spec:
             patchStrategicMerge:
               metadata:
                 annotations:
-                  +(clusterpolicies.kyverno.io/prepend-registry-containers): "Prepended the initContainers image with {{ .registry }}"
+                  +(clusterpolicies.kyverno.io/prepend-registry-initContainers): "Prepended the initContainers image with {{ .registry }}"
               spec:
                 initContainers:
                   - name: "{{ `{{ element.name }}` }}"
-                    image: "{{ .registry | trimSuffix "/" }}/{{ `{{ images.containers.\"{{element.name}}\".registry}}/{{ images.containers.\"{{element.name}}\".path}}:{{images.containers.\"{{element.name}}\".tag}}`}}"
+                    image: "{{ .registry | trimSuffix "/" }}/{{ `{{ images.initContainers.\"{{element.name}}\".registry}}/{{ images.initContainers.\"{{element.name}}\".path}}:{{images.initContainers.\"{{element.name}}\".tag}}`}}"
+            {{- if .excludeRegistries}}
             preconditions:
               all:
-          {{- range $excludeRegistry := .excludeRegistries}}
+              {{- range $excludeRegistry := .excludeRegistries}}
                 - key: "{{`{{element.image}}`}}"
                   operator: NotEquals
                   value: "{{$excludeRegistry}}"
+              {{- end }}
+            {{- end }}
+    - name: prepend-registry-ephemeralContainers
+      match:
+        any:
+          - resources:
+              operations:
+                - UPDATE #ephemeralContainers cannot be specified on CREATE
+              kinds:
+                - Pod
+      {{- if .excludeNamespaces }}
+      exclude:
+        resources:
+          namespaces:
+          {{- range .excludeNamespaces }}
+            - {{ . }}
           {{- end }}
+      {{- end }}
+      preconditions:
+        all:
+          - key: "{{ `{{ request.object.spec.ephemeralContainers[] || `}}`[]`{{` | length(@) }} `}}"
+            operator: GreaterThanOrEquals
+            value: 1
+      mutate:
+        foreach:
+          - list: "request.object.spec.ephemeralContainers"
+            patchStrategicMerge:
+              metadata:
+                annotations:
+                  +(clusterpolicies.kyverno.io/prepend-registry-ephemeralContainers): "Prepended the ephemeralContainers image with {{ .registry }}"
+              spec:
+                ephemeralContainers:
+                  - name: "{{ `{{ element.name }}` }}"
+                    image: "{{ .registry | trimSuffix "/" }}/{{ `{{ images.ephemeralContainers.\"{{element.name}}\".registry}}/{{ images.ephemeralContainers.\"{{element.name}}\".path}}:{{images.ephemeralContainers.\"{{element.name}}\".tag}}`}}"
+            {{- if .excludeRegistries}}
+            preconditions:
+              all:
+              {{- range $excludeRegistry := .excludeRegistries}}
+                - key: "{{ `{{element.image}}` }}"
+                  operator: NotEquals
+                  value: "{{ $excludeRegistry }}"
+              {{- end }}
+            {{- end }}
 ---
 {{- end }}
 {{- end }}

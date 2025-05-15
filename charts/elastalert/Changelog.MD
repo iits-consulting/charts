@@ -1,4 +1,8 @@
-### Chart version 0.3.0
+# Changelog
 
- - Update to AppVersion 2.20.0
- - No Migrations necessary.
+## Chart Versions
+
+### 0.3.0
+
+- Update to AppVersion 2.20.0
+- No Migrations necessary.

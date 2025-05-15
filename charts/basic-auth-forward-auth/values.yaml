@@ -1,7 +1,0 @@
-# -- https://doc.traefik.io/traefik/middlewares/http/basicauth/
-credentials:
-  username: "admin"
-  password:
-middleware:
-  # We use here the oidc name since we predefined in all charts the oidc-forward-auth-middleware
-  name: oidc-forward-auth
