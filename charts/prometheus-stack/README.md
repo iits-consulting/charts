@@ -48,7 +48,12 @@ prometheus-stack:
 | blackboxExporter.config.modules.http_2xx.prober | string | `"http"` |  |
 | blackboxExporter.config.modules.http_2xx.timeout | string | `"5s"` |  |
 | blackboxExporter.enabled | bool | `true` |  |
+| blackboxExporter.extraArgs[0] | string | `"--log.level=warn"` |  |
+| blackboxExporter.extraArgs[1] | string | `"--log.format=json"` |  |
 | blackboxExporter.fullnameOverride | string | `"blackbox-exporter"` |  |
+| blackboxExporter.resources.limits.memory | string | `"100Mi"` |  |
+| blackboxExporter.resources.requests.cpu | string | `"100m"` |  |
+| blackboxExporter.resources.requests.memory | string | `"100Mi"` |  |
 | blackboxExporter.secretConfig | bool | `true` |  |
 | blackboxExporter.securityContext.seccompProfile.type | string | `"RuntimeDefault"` |  |
 | blackboxExporter.serviceMonitor.enabled | bool | `false` |  |
