@@ -59,7 +59,7 @@ prometheus-stack:
 | blackboxExporter.serviceMonitor.enabled | bool | `false` |  |
 | blackboxExporter.serviceMonitor.selfMonitor.enabled | bool | `true` |  |
 | blackboxExporter.serviceMonitor.targets | string | `nil` |  |
-| blackboxExporter.strategy.rollingUpdate | object | `{}` |  |
+| blackboxExporter.strategy.rollingUpdate | string | `nil` |  |
 | blackboxExporter.strategy.type | string | `"Recreate"` |  |
 | dashboards.enabled | bool | `true` |  |
 | global.ingress.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
