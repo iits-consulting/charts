@@ -185,6 +185,9 @@ blackboxExporter:
   enabled: true # Chart dependency condition
   fullnameOverride: blackbox-exporter
   secretConfig: true
+  # strategy: Recreate ensures that we do not have multiple pods reporting on the same endpoint during a rollout.
+  # This does result in a brief downtime for the uptime monitoring but reduces the metric aggregation requirements on the dashboard and reduces the chances of inaccurate probe measurements.
+  strategy: Recreate
   config:
     modules:
       http_2xx:
