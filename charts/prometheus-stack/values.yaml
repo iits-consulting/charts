@@ -189,7 +189,7 @@ blackboxExporter:
   # This does result in a brief downtime for the uptime monitoring but reduces the metric aggregation requirements on the dashboard and reduces the chances of inaccurate probe measurements.
   strategy:
     type: Recreate
-    rollingUpdate: {}
+    rollingUpdate: null
   extraArgs:
     [ "--log.level=warn", "--log.format=json" ]
   resources:
