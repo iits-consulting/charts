@@ -76,12 +76,7 @@ prometheus-stack:
 | prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].rules[0].annotations.description | string | `"Uptime of {{ $labels.instance }} is reporting down for 3 consecutive checks."` |  |
 | prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].rules[0].annotations.summary | string | `"{{ $labels.instance }} not reachable"` |  |
 | prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].rules[0].expr | string | `"sum by (instance) (sum_over_time(probe_success{}[90s])) < 1\n"` |  |
-| prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].rules[0].labels.severity | string | `"high"` |  |
-| prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].rules[1].alert | string | `"ServiceIsDown"` |  |
-| prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].rules[1].annotations.description | string | `"Uptime of {{ $labels.instance }} is reporting down for 5 consecutive checks."` |  |
-| prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].rules[1].annotations.summary | string | `"{{ $labels.instance }} not reachable"` |  |
-| prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].rules[1].expr | string | `"sum by (instance) (sum_over_time(probe_success{}[150s])) < 1\n"` |  |
-| prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].rules[1].labels.severity | string | `"critical"` |  |
+| prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].rules[0].labels.severity | string | `"critical"` |  |
 | prometheusStack.alertmanager.alertmanagerSpec.externalUrl | string | `"https://{{$.Values.global.ingress.host}}{{$.Values.global.ingress.paths.alertmanager}}"` |  |
 | prometheusStack.alertmanager.alertmanagerSpec.resources.requests.cpu | string | `"5m"` |  |
 | prometheusStack.alertmanager.alertmanagerSpec.resources.requests.memory | string | `"100Mi"` |  |
@@ -102,8 +97,10 @@ prometheus-stack:
 | prometheusStack.alertmanager.config.route.repeat_interval | string | `"12h"` |  |
 | prometheusStack.alertmanager.config.route.routes[0].match.alertname | string | `"Watchdog"` |  |
 | prometheusStack.alertmanager.config.route.routes[0].receiver | string | `"null"` |  |
-| prometheusStack.alertmanager.config.route.routes[1].continue | bool | `true` |  |
+| prometheusStack.alertmanager.config.route.routes[1].group_by[0] | string | `"..."` |  |
+| prometheusStack.alertmanager.config.route.routes[1].matchers[0].severity | string | `"critical"` |  |
 | prometheusStack.alertmanager.config.route.routes[1].receiver | string | `"slack"` |  |
+| prometheusStack.alertmanager.config.route.routes[2].receiver | string | `"slack"` |  |
 | prometheusStack.alertmanager.config.templates[0] | string | `"/etc/alertmanager/config/*.tmpl"` |  |
 | prometheusStack.crds.enabled | bool | `false` |  |
 | prometheusStack.defaultRules.create | bool | `true` |  |
