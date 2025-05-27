@@ -72,17 +72,15 @@ prometheus-stack:
 | global.ingress.paths.prometheus | string | `"/prometheus"` |  |
 | policyException.enabled | bool | `true` |  |
 | prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].name | string | `"uptime-monitoring"` |  |
-| prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].rules[0].alert | string | `"DecreasingUptime"` |  |
-| prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].rules[0].annotations.description | string | `"Uptime of {{ $labels.instance }} less than 95%."` |  |
+| prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].rules[0].alert | string | `"ServiceIsDown"` |  |
+| prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].rules[0].annotations.description | string | `"Uptime of {{ $labels.instance }} is reporting down for 3 consecutive checks."` |  |
 | prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].rules[0].annotations.summary | string | `"{{ $labels.instance }} not reachable"` |  |
-| prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].rules[0].expr | string | `"sum by (instance) (avg_over_time(probe_success[5m])) < 0.95\n"` |  |
-| prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].rules[0].for | string | `"1m"` |  |
+| prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].rules[0].expr | string | `"sum by (instance) (sum_over_time(probe_success{}[90s])) < 1\n"` |  |
 | prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].rules[0].labels.severity | string | `"high"` |  |
-| prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].rules[1].alert | string | `"DecreasingUptime"` |  |
-| prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].rules[1].annotations.description | string | `"Uptime of {{ $labels.instance }} less than 50%."` |  |
+| prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].rules[1].alert | string | `"ServiceIsDown"` |  |
+| prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].rules[1].annotations.description | string | `"Uptime of {{ $labels.instance }} is reporting down for 5 consecutive checks."` |  |
 | prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].rules[1].annotations.summary | string | `"{{ $labels.instance }} not reachable"` |  |
-| prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].rules[1].expr | string | `"sum by (instance) (avg_over_time(probe_success[5m])) < 0.5\n"` |  |
-| prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].rules[1].for | string | `"1m"` |  |
+| prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].rules[1].expr | string | `"sum by (instance) (sum_over_time(probe_success{}[150s])) < 1\n"` |  |
 | prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].rules[1].labels.severity | string | `"critical"` |  |
 | prometheusStack.alertmanager.alertmanagerSpec.externalUrl | string | `"https://{{$.Values.global.ingress.host}}{{$.Values.global.ingress.paths.alertmanager}}"` |  |
 | prometheusStack.alertmanager.alertmanagerSpec.resources.requests.cpu | string | `"5m"` |  |
