@@ -95,11 +95,14 @@ prometheus-stack:
 | prometheusStack.alertmanager.config.route.group_interval | string | `"5m"` |  |
 | prometheusStack.alertmanager.config.route.group_wait | string | `"30s"` |  |
 | prometheusStack.alertmanager.config.route.repeat_interval | string | `"12h"` |  |
-| prometheusStack.alertmanager.config.route.routes[0].match.alertname | string | `"Watchdog"` |  |
+| prometheusStack.alertmanager.config.route.routes[0].matchers[0] | string | `"alertname=\"Watchdog\""` |  |
 | prometheusStack.alertmanager.config.route.routes[0].receiver | string | `"null"` |  |
 | prometheusStack.alertmanager.config.route.routes[1].group_by[0] | string | `"..."` |  |
-| prometheusStack.alertmanager.config.route.routes[1].matchers[0].severity | string | `"critical"` |  |
+| prometheusStack.alertmanager.config.route.routes[1].group_interval | string | `"1s"` |  |
+| prometheusStack.alertmanager.config.route.routes[1].group_wait | string | `"1s"` |  |
+| prometheusStack.alertmanager.config.route.routes[1].matchers[0] | string | `"severity=\"critical\""` |  |
 | prometheusStack.alertmanager.config.route.routes[1].receiver | string | `"slack"` |  |
+| prometheusStack.alertmanager.config.route.routes[1].repeat_interval | string | `"30m"` |  |
 | prometheusStack.alertmanager.config.route.routes[2].receiver | string | `"slack"` |  |
 | prometheusStack.alertmanager.config.templates[0] | string | `"/etc/alertmanager/config/*.tmpl"` |  |
 | prometheusStack.crds.enabled | bool | `false` |  |
