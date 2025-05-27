@@ -93,14 +93,6 @@ prometheusStack:
               expr: >
                 sum by (instance) (sum_over_time(probe_success{}[90s])) < 1
               labels:
-                severity: high
-            - alert: ServiceIsDown
-              annotations:
-                description: 'Uptime of {{ $labels.instance }} is reporting down for 5 consecutive checks.'
-                summary: '{{ $labels.instance }} not reachable'
-              expr: >
-                sum by (instance) (sum_over_time(probe_success{}[150s])) < 1
-              labels:
                 severity: critical
 
   prometheusOperator:
@@ -148,7 +140,10 @@ prometheusStack:
             match:
               alertname: Watchdog
           - receiver: 'slack'
-            continue: true
+            group_by: [ '...' ]
+            matchers:
+              - severity: critical
+          - receiver: 'slack'
       receivers:
         - name: 'null'
         - name: 'slack'
