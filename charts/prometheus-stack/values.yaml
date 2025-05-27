@@ -86,22 +86,20 @@ prometheusStack:
       groups:
         - name: uptime-monitoring
           rules:
-            - alert: DecreasingUptime
+            - alert: ServiceIsDown
               annotations:
-                description: 'Uptime of {{ $labels.instance }} less than 95%.'
+                description: 'Uptime of {{ $labels.instance }} is reporting down for 3 consecutive checks.'
                 summary: '{{ $labels.instance }} not reachable'
               expr: >
-                sum by (instance) (avg_over_time(probe_success[5m])) < 0.95
-              for: 1m
+                sum by (instance) (sum_over_time(probe_success{}[90s])) < 1
               labels:
                 severity: high
-            - alert: DecreasingUptime
+            - alert: ServiceIsDown
               annotations:
-                description: 'Uptime of {{ $labels.instance }} less than 50%.'
+                description: 'Uptime of {{ $labels.instance }} is reporting down for 5 consecutive checks.'
                 summary: '{{ $labels.instance }} not reachable'
               expr: >
-                sum by (instance) (avg_over_time(probe_success[5m])) < 0.5
-              for: 1m
+                sum by (instance) (sum_over_time(probe_success{}[150s])) < 1
               labels:
                 severity: critical
 
