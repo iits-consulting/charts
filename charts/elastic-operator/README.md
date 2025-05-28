@@ -79,7 +79,6 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | filebeat.autodiscover.providers[0].hints.default_config.paths[0] | string | `"/var/log/containers/*${data.kubernetes.container.id}.log"` |  |
 | filebeat.autodiscover.providers[0].hints.default_config.prospector.scanner."fingerprint.enabled" | bool | `true` |  |
 | filebeat.autodiscover.providers[0].hints.default_config.prospector.scanner.symlinks | bool | `true` |  |
-| filebeat.autodiscover.providers[0].hints.default_config.take_over | bool | `true` |  |
 | filebeat.autodiscover.providers[0].hints.default_config.type | string | `"filestream"` |  |
 | filebeat.autodiscover.providers[0].hints.enabled | bool | `true` |  |
 | filebeat.autodiscover.providers[0].node | string | `"${NODE_NAME}"` |  |
