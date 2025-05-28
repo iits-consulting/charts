@@ -86,22 +86,12 @@ prometheusStack:
       groups:
         - name: uptime-monitoring
           rules:
-            - alert: DecreasingUptime
+            - alert: ServiceIsDown
               annotations:
-                description: 'Uptime of {{ $labels.instance }} less than 95%.'
+                description: 'Uptime of {{ $labels.instance }} is reporting down for 3 consecutive checks.'
                 summary: '{{ $labels.instance }} not reachable'
               expr: >
-                sum by (instance) (avg_over_time(probe_success[5m])) < 0.95
-              for: 1m
-              labels:
-                severity: high
-            - alert: DecreasingUptime
-              annotations:
-                description: 'Uptime of {{ $labels.instance }} less than 50%.'
-                summary: '{{ $labels.instance }} not reachable'
-              expr: >
-                sum by (instance) (avg_over_time(probe_success[5m])) < 0.5
-              for: 1m
+                sum by (instance) (sum_over_time(probe_success{}[90s])) < 1
               labels:
                 severity: critical
 
@@ -147,10 +137,16 @@ prometheusStack:
         repeat_interval: 12h
         routes:
           - receiver: 'null'
-            match:
-              alertname: Watchdog
+            matchers:
+              - alertname="Watchdog"
           - receiver: 'slack'
-            continue: true
+            group_by: [ '...' ]
+            group_wait: 1s
+            group_interval: 1s
+            repeat_interval: 30m
+            matchers:
+              - severity="critical"
+          - receiver: 'slack'
       receivers:
         - name: 'null'
         - name: 'slack'
@@ -185,6 +181,19 @@ blackboxExporter:
   enabled: true # Chart dependency condition
   fullnameOverride: blackbox-exporter
   secretConfig: true
+  # strategy: Recreate ensures that we do not have multiple pods reporting on the same endpoint during a rollout.
+  # This does result in a brief downtime for the uptime monitoring but reduces the metric aggregation requirements on the dashboard and reduces the chances of inaccurate probe measurements.
+  strategy:
+    type: Recreate
+    rollingUpdate: null
+  extraArgs:
+    [ "--log.level=warn", "--log.format=json" ]
+  resources:
+    requests:
+      cpu: 100m
+      memory: 100Mi
+    limits:
+      memory: 100Mi
   config:
     modules:
       http_2xx:

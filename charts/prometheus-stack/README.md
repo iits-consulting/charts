@@ -1,6 +1,6 @@
 # prometheus-stack
 
-![Version: 63.1.2](https://img.shields.io/badge/Version-63.1.2-informational?style=flat-square)
+![Version: 63.1.3](https://img.shields.io/badge/Version-63.1.3-informational?style=flat-square)
 
 A complete monitoring/alerting stack with Grafana Prometheus Alertmanager
 
@@ -48,12 +48,19 @@ prometheus-stack:
 | blackboxExporter.config.modules.http_2xx.prober | string | `"http"` |  |
 | blackboxExporter.config.modules.http_2xx.timeout | string | `"5s"` |  |
 | blackboxExporter.enabled | bool | `true` |  |
+| blackboxExporter.extraArgs[0] | string | `"--log.level=warn"` |  |
+| blackboxExporter.extraArgs[1] | string | `"--log.format=json"` |  |
 | blackboxExporter.fullnameOverride | string | `"blackbox-exporter"` |  |
+| blackboxExporter.resources.limits.memory | string | `"100Mi"` |  |
+| blackboxExporter.resources.requests.cpu | string | `"100m"` |  |
+| blackboxExporter.resources.requests.memory | string | `"100Mi"` |  |
 | blackboxExporter.secretConfig | bool | `true` |  |
 | blackboxExporter.securityContext.seccompProfile.type | string | `"RuntimeDefault"` |  |
 | blackboxExporter.serviceMonitor.enabled | bool | `false` |  |
 | blackboxExporter.serviceMonitor.selfMonitor.enabled | bool | `true` |  |
 | blackboxExporter.serviceMonitor.targets | string | `nil` |  |
+| blackboxExporter.strategy.rollingUpdate | string | `nil` |  |
+| blackboxExporter.strategy.type | string | `"Recreate"` |  |
 | dashboards.enabled | bool | `true` |  |
 | global.ingress.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
 | global.ingress.annotations."traefik.ingress.kubernetes.io/router.middlewares" | string | `"routing-oidc-forward-auth@kubernetescrd"` |  |
@@ -65,18 +72,11 @@ prometheus-stack:
 | global.ingress.paths.prometheus | string | `"/prometheus"` |  |
 | policyException.enabled | bool | `true` |  |
 | prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].name | string | `"uptime-monitoring"` |  |
-| prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].rules[0].alert | string | `"DecreasingUptime"` |  |
-| prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].rules[0].annotations.description | string | `"Uptime of {{ $labels.instance }} less than 95%."` |  |
+| prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].rules[0].alert | string | `"ServiceIsDown"` |  |
+| prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].rules[0].annotations.description | string | `"Uptime of {{ $labels.instance }} is reporting down for 3 consecutive checks."` |  |
 | prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].rules[0].annotations.summary | string | `"{{ $labels.instance }} not reachable"` |  |
-| prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].rules[0].expr | string | `"sum by (instance) (avg_over_time(probe_success[5m])) < 0.95\n"` |  |
-| prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].rules[0].for | string | `"1m"` |  |
-| prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].rules[0].labels.severity | string | `"high"` |  |
-| prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].rules[1].alert | string | `"DecreasingUptime"` |  |
-| prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].rules[1].annotations.description | string | `"Uptime of {{ $labels.instance }} less than 50%."` |  |
-| prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].rules[1].annotations.summary | string | `"{{ $labels.instance }} not reachable"` |  |
-| prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].rules[1].expr | string | `"sum by (instance) (avg_over_time(probe_success[5m])) < 0.5\n"` |  |
-| prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].rules[1].for | string | `"1m"` |  |
-| prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].rules[1].labels.severity | string | `"critical"` |  |
+| prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].rules[0].expr | string | `"sum by (instance) (sum_over_time(probe_success{}[90s])) < 1\n"` |  |
+| prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].rules[0].labels.severity | string | `"critical"` |  |
 | prometheusStack.alertmanager.alertmanagerSpec.externalUrl | string | `"https://{{$.Values.global.ingress.host}}{{$.Values.global.ingress.paths.alertmanager}}"` |  |
 | prometheusStack.alertmanager.alertmanagerSpec.resources.requests.cpu | string | `"5m"` |  |
 | prometheusStack.alertmanager.alertmanagerSpec.resources.requests.memory | string | `"100Mi"` |  |
@@ -95,10 +95,15 @@ prometheus-stack:
 | prometheusStack.alertmanager.config.route.group_interval | string | `"5m"` |  |
 | prometheusStack.alertmanager.config.route.group_wait | string | `"30s"` |  |
 | prometheusStack.alertmanager.config.route.repeat_interval | string | `"12h"` |  |
-| prometheusStack.alertmanager.config.route.routes[0].match.alertname | string | `"Watchdog"` |  |
+| prometheusStack.alertmanager.config.route.routes[0].matchers[0] | string | `"alertname=\"Watchdog\""` |  |
 | prometheusStack.alertmanager.config.route.routes[0].receiver | string | `"null"` |  |
-| prometheusStack.alertmanager.config.route.routes[1].continue | bool | `true` |  |
+| prometheusStack.alertmanager.config.route.routes[1].group_by[0] | string | `"..."` |  |
+| prometheusStack.alertmanager.config.route.routes[1].group_interval | string | `"1s"` |  |
+| prometheusStack.alertmanager.config.route.routes[1].group_wait | string | `"1s"` |  |
+| prometheusStack.alertmanager.config.route.routes[1].matchers[0] | string | `"severity=\"critical\""` |  |
 | prometheusStack.alertmanager.config.route.routes[1].receiver | string | `"slack"` |  |
+| prometheusStack.alertmanager.config.route.routes[1].repeat_interval | string | `"30m"` |  |
+| prometheusStack.alertmanager.config.route.routes[2].receiver | string | `"slack"` |  |
 | prometheusStack.alertmanager.config.templates[0] | string | `"/etc/alertmanager/config/*.tmpl"` |  |
 | prometheusStack.crds.enabled | bool | `false` |  |
 | prometheusStack.defaultRules.create | bool | `true` |  |
