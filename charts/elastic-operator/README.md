@@ -185,9 +185,9 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | ilm.policies.short.indexPatterns[3] | string | `"monitoring*"` |  |
 | ilm.tolerations | list | `[]` |  |
 | indexPatternInit.enabled | bool | `true` |  |
-| indexPatternInit.image.repository | string | `"docker.io/curlimages/curl"` |  |
-| indexPatternInit.image.tag | string | `"8.12.1"` |  |
-| indexPatternInit.image.userId | int | `100` |  |
+| indexPatternInit.image.repository | string | `"toolbox"` |  |
+| indexPatternInit.image.tag | string | `"1.0.0"` |  |
+| indexPatternInit.image.userId | int | `10001` |  |
 | indexPatternInit.indices.admin.timestampField | string | `"@timestamp"` |  |
 | indexPatternInit.indices.argocd.timestampField | string | `"@timestamp"` |  |
 | indexPatternInit.indices.auth.timestampField | string | `"@timestamp"` |  |
@@ -195,6 +195,7 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | indexPatternInit.indices.kyverno.timestampField | string | `"@timestamp"` |  |
 | indexPatternInit.indices.monitoring.timestampField | string | `"@timestamp"` |  |
 | indexPatternInit.indices.not-defined.timestampField | string | `"@timestamp"` |  |
+| indexPatternInit.indices.routing.timestampField | string | `"@timestamp"` |  |
 | indexPatternInit.indices.vault.timestampField | string | `"@timestamp"` |  |
 | indexPatternInit.nodeSelector | object | `{}` |  |
 | indexPatternInit.skipExisting | bool | `false` |  |
