@@ -57,7 +57,7 @@
           },
           "mappings": [],
           "thresholds": {
-            "mode": "percentage",
+            "mode": "absolute",
             "steps": [
               {
                 "color": "red",
@@ -65,7 +65,7 @@
               },
               {
                 "color": "green",
-                "value": 99.95
+                "value": 0.9995
               }
             ]
           }
@@ -149,7 +149,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "probe_success",
+          "expr": "probe_success{instance=~\"$instance_selector\"}",
           "format": "table",
           "instant": false,
           "legendFormat": "__auto",
@@ -284,7 +284,7 @@
           "decimals": 3,
           "mappings": [],
           "thresholds": {
-            "mode": "percentage",
+            "mode": "absolute",
             "steps": [
               {
                 "color": "red",
@@ -292,7 +292,7 @@
               },
               {
                 "color": "green",
-                "value": 99.95
+                "value": 0.9995
               }
             ]
           },
@@ -333,7 +333,8 @@
           ],
           "show": false
         },
-        "showHeader": true
+        "showHeader": true,
+        "sortBy": []
       },
       "pluginVersion": "11.2.0",
       "targets": [
@@ -344,7 +345,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum by (instance) (sum_over_time(clamp_max(probe_success - ignoring(instance,target, module) group_left () $baseline_correction_toggle*(probe_success{instance=\"$baseline\"}-1), 1.0)[$__range:30s] offset -1s))/sum by (instance) (count_over_time(probe_success[$__range:30s] offset -1s))",
+          "expr": "# Calculate availability rate by instance\n# First calculating the sum of values adjusted by baseline\n# Then dividing by the count of samples in the interval\nsum by (instance) (\n  sum_over_time(\n    # Apply baseline correction (if enabled) and cap at 1.0\n    clamp_max(\n      # Start with raw probe success values\n      probe_success{instance=~\"$instance_selector\"} \n      # Subtract baseline adjustment using vector matching\n      - on() group_left() ($baseline_correction_toggle * (probe_success{instance=\"$baseline\"} - 1))\n      # Cap at maximum value of 1.0\n      , 1.0\n    )[$__range:30s] offset -1s\n  )\n)\n/\n# Divide by the count of samples in the time period\nsum by (instance) (\n  count_over_time(\n    clamp_max(\n      probe_success{instance=~\"$instance_selector\"} \n      - on() group_left() ($baseline_correction_toggle * (probe_success{instance=\"$baseline\"} - 1))\n      , 1.0\n    )[$__range:30s] offset -1s\n  )\n)",
           "format": "table",
           "instant": true,
           "legendFormat": "__auto",
@@ -403,7 +404,7 @@
           "mappings": [],
           "noValue": "-",
           "thresholds": {
-            "mode": "percentage",
+            "mode": "absolute",
             "steps": [
               {
                 "color": "red",
@@ -411,7 +412,7 @@
               },
               {
                 "color": "green",
-                "value": 99.95
+                "value": 0.9995
               }
             ]
           },
@@ -462,7 +463,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum by (instance) (sum_over_time(clamp_max(probe_success - ignoring(instance,target,module) group_left () $baseline_correction_toggle*(probe_success{instance=\"$baseline\"}-1), 1.0)[$__range:30s] offset -1s))/sum by (instance) (count_over_time(probe_success[$__range:30s] offset -1s))",
+          "expr": "# Calculate availability rate by instance\n# First calculating the sum of values adjusted by baseline\n# Then dividing by the count of samples in the interval\nsum by (instance) (\n  sum_over_time(\n    # Apply baseline correction (if enabled) and cap at 1.0\n    clamp_max(\n      # Start with raw probe success values\n      probe_success{instance=~\"$instance_selector\"} \n      # Subtract baseline adjustment using vector matching\n      - on() group_left() ($baseline_correction_toggle * (probe_success{instance=\"$baseline\"} - 1))\n      # Cap at maximum value of 1.0\n      , 1.0\n    )[$__range:30s] offset -1s\n  )\n)\n/\n# Divide by the count of samples in the time period\nsum by (instance) (\n  count_over_time(\n    clamp_max(\n      probe_success{instance=~\"$instance_selector\"} \n      - on() group_left() ($baseline_correction_toggle * (probe_success{instance=\"$baseline\"} - 1))\n      , 1.0\n    )[$__range:30s] offset -1s\n  )\n)",
           "format": "table",
           "instant": true,
           "legendFormat": "__auto",
@@ -521,7 +522,7 @@
           "mappings": [],
           "noValue": "-",
           "thresholds": {
-            "mode": "percentage",
+            "mode": "absolute",
             "steps": [
               {
                 "color": "red",
@@ -529,7 +530,7 @@
               },
               {
                 "color": "green",
-                "value": 99.95
+                "value": 0.9995
               }
             ]
           },
@@ -580,7 +581,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum by (instance) (sum_over_time(clamp_max(probe_success - ignoring(instance,target,module) group_left () $baseline_correction_toggle*(probe_success{instance=\"$baseline\"}-1), 1.0)[$__range:30s] offset -1s))/sum by (instance) (count_over_time(probe_success[$__range:30s] offset -1s))",
+          "expr": "# Calculate availability rate by instance\n# First calculating the sum of values adjusted by baseline\n# Then dividing by the count of samples in the interval\nsum by (instance) (\n  sum_over_time(\n    # Apply baseline correction (if enabled) and cap at 1.0\n    clamp_max(\n      # Start with raw probe success values\n      probe_success{instance=~\"$instance_selector\"} \n      # Subtract baseline adjustment using vector matching\n      - on() group_left() ($baseline_correction_toggle * (probe_success{instance=\"$baseline\"} - 1))\n      # Cap at maximum value of 1.0\n      , 1.0\n    )[$__range:30s] offset -1s\n  )\n)\n/\n# Divide by the count of samples in the time period\nsum by (instance) (\n  count_over_time(\n    clamp_max(\n      probe_success{instance=~\"$instance_selector\"} \n      - on() group_left() ($baseline_correction_toggle * (probe_success{instance=\"$baseline\"} - 1))\n      , 1.0\n    )[$__range:30s] offset -1s\n  )\n)",
           "format": "table",
           "instant": true,
           "legendFormat": "__auto",
@@ -654,7 +655,7 @@
           "decimals": 3,
           "mappings": [],
           "thresholds": {
-            "mode": "percentage",
+            "mode": "absolute",
             "steps": [
               {
                 "color": "red",
@@ -662,7 +663,7 @@
               },
               {
                 "color": "green",
-                "value": 99.95
+                "value": 0.9995
               }
             ]
           },
@@ -700,7 +701,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum by (instance) (sum_over_time(clamp_max(probe_success - ignoring(instance,target, module) group_left () $baseline_correction_toggle*(probe_success{instance=\"$baseline\"}-1), 1.0)[$__interval:30s] offset -1s))/sum by (instance) (count_over_time(probe_success[$__interval:30s] offset -1s))",
+          "expr": "# Calculate availability rate by instance\n# First calculating the sum of values adjusted by baseline\n# Then dividing by the count of samples in the interval\nsum by (instance) (\n  sum_over_time(\n    # Apply baseline correction (if enabled) and cap at 1.0\n    clamp_max(\n      # Start with raw probe success values\n      probe_success{instance=~\"$instance_selector\"} \n      # Subtract baseline adjustment using vector matching\n      - on() group_left() ($baseline_correction_toggle * (probe_success{instance=\"$baseline\"} - 1))\n      # Cap at maximum value of 1.0\n      , 1.0\n    )[$__interval:30s] offset -1s\n  )\n)\n/\n# Divide by the count of samples in the time period\nsum by (instance) (\n  count_over_time(\n    clamp_max(\n      probe_success{instance=~\"$instance_selector\"} \n      - on() group_left() ($baseline_correction_toggle * (probe_success{instance=\"$baseline\"} - 1))\n      , 1.0\n    )[$__interval:30s] offset -1s\n  )\n)",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
@@ -735,7 +736,7 @@
           "decimals": 3,
           "mappings": [],
           "thresholds": {
-            "mode": "percentage",
+            "mode": "absolute",
             "steps": [
               {
                 "color": "red",
@@ -743,7 +744,7 @@
               },
               {
                 "color": "green",
-                "value": 99.95
+                "value": 0.9995
               }
             ]
           },
@@ -782,7 +783,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum by (instance) (sum_over_time(clamp_max(probe_success offset -1d1s - ignoring(instance,target,module) group_left () $baseline_correction_toggle*(probe_success{instance=\"$baseline\"} offset -1d1s -1), 1.0)[$__interval:30s]))/sum by (instance) (count_over_time(probe_success offset -1d1s [$__interval:30s]))",
+          "expr": "# Calculate availability rate by instance\n# First calculating the sum of values adjusted by baseline\n# Then dividing by the count of samples in the interval\nsum by (instance) (\n  sum_over_time(\n    # Apply baseline correction (if enabled) and cap at 1.0\n    clamp_max(\n      # Start with raw probe success values\n      probe_success{instance=~\"$instance_selector\"} \n      # Subtract baseline adjustment using vector matching\n      - on() group_left() ($baseline_correction_toggle * (probe_success{instance=\"$baseline\"} - 1))\n      # Cap at maximum value of 1.0\n      , 1.0\n    )[$__interval:30s] offset -1d1s\n  )\n)\n/\n# Divide by the count of samples in the time period\nsum by (instance) (\n  count_over_time(\n    clamp_max(\n      probe_success{instance=~\"$instance_selector\"} \n      - on() group_left() ($baseline_correction_toggle * (probe_success{instance=\"$baseline\"} - 1))\n      , 1.0\n    )[$__interval:30s] offset -1d1s\n  )\n)",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
@@ -818,15 +819,14 @@
           "decimals": 3,
           "mappings": [],
           "thresholds": {
-            "mode": "percentage",
+            "mode": "absolute",
             "steps": [
               {
-                "color": "red",
-                "value": null
+                "color": "red"
               },
               {
                 "color": "green",
-                "value": 99.95
+                "value": 0.9995
               }
             ]
           },
@@ -865,7 +865,7 @@
             "uid": "prometheus"
           },
           "editorMode": "code",
-          "expr": "sum by (instance) (sum_over_time(clamp_max(probe_success offset -1d1s - ignoring(instance,target,module) group_left () $baseline_correction_toggle*(probe_success{instance=\"$baseline\"} offset -1d1s -1), 1.0)[$__interval:30s]))/sum by (instance) (count_over_time(probe_success offset -1d1s [$__interval:30s]))",
+          "expr": "# Calculate availability rate by instance\n# First calculating the sum of values adjusted by baseline\n# Then dividing by the count of samples in the interval\nsum by (instance) (\n  sum_over_time(\n    # Apply baseline correction (if enabled) and cap at 1.0\n    clamp_max(\n      # Start with raw probe success values\n      probe_success{instance=~\"$instance_selector\"} \n      # Subtract baseline adjustment using vector matching\n      - on() group_left() ($baseline_correction_toggle * (probe_success{instance=\"$baseline\"} - 1))\n      # Cap at maximum value of 1.0\n      , 1.0\n    )[$__interval:30s] offset -1d1s\n  )\n)\n/\n# Divide by the count of samples in the time period\nsum by (instance) (\n  count_over_time(\n    clamp_max(\n      probe_success{instance=~\"$instance_selector\"} \n      - on() group_left() ($baseline_correction_toggle * (probe_success{instance=\"$baseline\"} - 1))\n      , 1.0\n    )[$__interval:30s] offset -1d1s\n  )\n)",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
@@ -877,6 +877,7 @@
       "type": "state-timeline"
     }
   ],
+  "refresh": "",
   "schemaVersion": 39,
   "tags": [
     "Blackbox",
@@ -885,6 +886,39 @@
   ],
   "templating": {
     "list": [
+      {
+        "current": {
+          "selected": false,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus"
+        },
+        "definition": "label_values(probe_success,instance)",
+        "description": "Select which instances to display on the dashboard",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Instance",
+        "multi": true,
+        "name": "instance_selector",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(probe_success,instance)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
       {
         "current": {
           "selected": false,
@@ -946,13 +980,13 @@
     ]
   },
   "time": {
-    "from": "now-30d",
+    "from": "now-24h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "Blackbox Uptime Monitor",
   "uid": "aejsqqy9db20wc",
-  "version": 90,
+  "version": 110,
   "weekStart": "monday"
 }

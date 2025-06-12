@@ -1,6 +1,6 @@
 # prometheus-stack
 
-![Version: 63.1.1](https://img.shields.io/badge/Version-63.1.1-informational?style=flat-square)
+![Version: 63.1.2](https://img.shields.io/badge/Version-63.1.2-informational?style=flat-square)
 
 A complete monitoring/alerting stack with Grafana Prometheus Alertmanager
 

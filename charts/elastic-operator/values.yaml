@@ -221,12 +221,21 @@ filebeat:
   autodiscover:
     providers:
       - type: kubernetes
-        hints.enabled: true
-        hints.default_config:
-          type: container
-          paths:
-            - /var/log/containers/*${data.container.id}.log
         node: ${NODE_NAME}
+        hints:
+          default_config:
+            id: kubernetes-container-logs-${data.kubernetes.pod.name}-${data.kubernetes.container.id}
+            parsers:
+            - container: {}
+            paths:
+            - /var/log/containers/*${data.kubernetes.container.id}.log
+            prospector:
+              scanner:
+                fingerprint.enabled: true
+                symlinks: true
+            take_over: true
+            type: filestream
+          enabled: true
   # default processors
   processors:
     - add_kubernetes_metadata: { }

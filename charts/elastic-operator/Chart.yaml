@@ -1,6 +1,6 @@
 apiVersion: v2
 name: elastic-operator
-version: 8.18.1-fb-tolerations
+version: 8.18.1-fb-migr-filestream
 appVersion: 8.18.1
 dependencies:
   - name: eck-operator
