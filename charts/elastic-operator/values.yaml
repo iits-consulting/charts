@@ -493,7 +493,7 @@ ilm:
       deleteAfter: 14d
 
 generatePasswords:
-  enabled: false
+  enabled: true
   image:
     repository: docker.io/bitnami/kubectl
     tag: 1.32.4
