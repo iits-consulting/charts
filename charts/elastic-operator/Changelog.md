@@ -2,6 +2,12 @@
 
 ## Chart Versions
 
+### BREAKING CHANGE 9.0.1
+
+- app version update to 9.0.1
+
+> Important: The upgrade to version 9.x requires a specific upgrade path (the latest upgrade path can be found [here](https://www.elastic.co/docs/deploy-manage/upgrade/prepare-to-upgrade#prepare-upgrade-from-8.x)). Before installing version 9.0.0, a version update to 8.18.1 must be made, otherwise the upgrade will fail. Use version "8.18.1-fb-migr-filestream" from our stack for easy upgrading.
+
 ### 8.18.1-fb-migr-filestream
 
 > Important: In preparation for the upgrade to version 9.0.0, this update must be installed as part of the upgrade path. Otherwise Filebeat will not be functional after upgrading to v9.0.0.

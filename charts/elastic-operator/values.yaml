@@ -233,7 +233,6 @@ filebeat:
               scanner:
                 fingerprint.enabled: true
                 symlinks: true
-            take_over: true
             type: filestream
           enabled: true
   # default processors
