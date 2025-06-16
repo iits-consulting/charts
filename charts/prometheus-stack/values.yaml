@@ -58,10 +58,9 @@ prometheusStack:
   prometheus:
     prometheusSpec:
       externalUrl: https://{{$.Values.global.ingress.host}}{{$.Values.global.ingress.paths.prometheus}}
-      serviceMonitorSelectorNilUsesHelmValues: false
-      podMonitorSelectorNilUsesHelmValues: false
-      probeSelectorNilUsesHelmValues: false
-      podMonitorSelector: { }
+      podMonitorSelector:
+        matchLabels:
+          release: null # defaults to "{{ $.Release.Name }}", which is a breaking change and unnecessary for us
       routePrefix: "/prometheus"
       resources:
         requests:
