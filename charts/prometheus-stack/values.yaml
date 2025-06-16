@@ -58,20 +58,18 @@ prometheusStack:
   prometheus:
     prometheusSpec:
       externalUrl: https://{{$.Values.global.ingress.host}}{{$.Values.global.ingress.paths.prometheus}}
-      serviceMonitorSelectorNilUsesHelmValues: false
-      podMonitorSelectorNilUsesHelmValues: false
-      probeSelectorNilUsesHelmValues: false
-      podMonitorSelector: { }
       routePrefix: "/prometheus"
+      podMonitorSelector: # note to future self: matchLabels: null is only necessary for prometheus 63.1.0, it is not necessary in >= 64.x
+        matchLabels: null
+      serviceMonitorSelector:
+        matchLabels: null
+      probeSelector:
+        matchLabels: null
+      retention: 1y # 365 days
       resources:
         requests:
           memory: "2255Mi"
           cpu: "60m"
-      serviceMonitorSelector:
-        matchLabels:
-          release: null # defaults to "{{ $.Release.Name }}", which is a breaking change and unnecessary for us
-      retention: 1y # 365 days
-
       storageSpec:
         volumeClaimTemplate:
           spec:
