@@ -1,6 +1,6 @@
 # prometheus-stack
 
-![Version: 63.1.3](https://img.shields.io/badge/Version-63.1.3-informational?style=flat-square)
+![Version: 63.1.4](https://img.shields.io/badge/Version-63.1.4-informational?style=flat-square)
 
 A complete monitoring/alerting stack with Grafana Prometheus Alertmanager
 
@@ -10,7 +10,7 @@ A complete monitoring/alerting stack with Grafana Prometheus Alertmanager
 prometheus-stack:
   namespace: monitoring
   repoURL: "https://charts.iits.tech"
-  targetRevision: "63.1.0"
+  targetRevision: "63.1.4"
   ignoreDifferences:
     - jsonPointers:
         - /imagePullSecrets
@@ -148,15 +148,12 @@ prometheus-stack:
 | prometheusStack.kubelet.enabled | bool | `true` |  |
 | prometheusStack.nameOverride | string | `"prometheus-stack"` |  |
 | prometheusStack.prometheus.prometheusSpec.externalUrl | string | `"https://{{$.Values.global.ingress.host}}{{$.Values.global.ingress.paths.prometheus}}"` |  |
-| prometheusStack.prometheus.prometheusSpec.podMonitorSelector | object | `{}` |  |
-| prometheusStack.prometheus.prometheusSpec.podMonitorSelectorNilUsesHelmValues | bool | `false` |  |
-| prometheusStack.prometheus.prometheusSpec.probeSelectorNilUsesHelmValues | bool | `false` |  |
+| prometheusStack.prometheus.prometheusSpec.podMonitorSelector.matchLabels.release | string | `nil` |  |
 | prometheusStack.prometheus.prometheusSpec.resources.requests.cpu | string | `"60m"` |  |
 | prometheusStack.prometheus.prometheusSpec.resources.requests.memory | string | `"2255Mi"` |  |
 | prometheusStack.prometheus.prometheusSpec.retention | string | `"1y"` |  |
 | prometheusStack.prometheus.prometheusSpec.routePrefix | string | `"/prometheus"` |  |
 | prometheusStack.prometheus.prometheusSpec.serviceMonitorSelector.matchLabels.release | string | `nil` |  |
-| prometheusStack.prometheus.prometheusSpec.serviceMonitorSelectorNilUsesHelmValues | bool | `false` |  |
 | prometheusStack.prometheus.prometheusSpec.storageSpec.volumeClaimTemplate.spec.accessModes[0] | string | `"ReadWriteOnce"` |  |
 | prometheusStack.prometheus.prometheusSpec.storageSpec.volumeClaimTemplate.spec.resources.requests.storage | string | `"250G"` |  |
 | prometheusStack.prometheusOperator.admissionWebhooks.enabled | bool | `false` |  |
