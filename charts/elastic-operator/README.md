@@ -1,6 +1,6 @@
 # elastic-operator
 
-![Version: 9.0.1](https://img.shields.io/badge/Version-9.0.1-informational?style=flat-square) ![AppVersion: 9.0.1](https://img.shields.io/badge/AppVersion-9.0.1-informational?style=flat-square)
+![Version: 9.0.2](https://img.shields.io/badge/Version-9.0.2-informational?style=flat-square) ![AppVersion: 9.0.1](https://img.shields.io/badge/AppVersion-9.0.1-informational?style=flat-square)
 
 Elasticsearch + filebeat + kibana with default common used indexes and Index Lifecycle Management.
 It comes also with a backup functionality. This is the version using ECK-operator to deploy and monitor the stack.
@@ -98,12 +98,18 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | filebeat.extraProcessors | list | `[]` |  |
 | filebeat.extraVolumeMounts | list | `[]` |  |
 | filebeat.extraVolumes | list | `[]` |  |
-| filebeat.indices[0].index | string | `"%{[kubernetes.namespace]:not-defined}-%{[agent.version]}-%{+yyyy.MM}"` |  |
+| filebeat.indices[0].index | string | `"%{[kubernetes.namespace]:not-defined}-%{[kubernetes.labels.app_kubernetes_io/name]}-%{[agent.version]}-%{+yyyy.MM}"` |  |
+| filebeat.indices[0].when.has_fields[0] | string | `"kubernetes.labels.app_kubernetes_io/name"` |  |
+| filebeat.indices[1].index | string | `"%{[kubernetes.namespace]:not-defined}-%{[kubernetes.labels.app]}-%{[agent.version]}-%{+yyyy.MM}"` |  |
+| filebeat.indices[1].when.has_fields[0] | string | `"kubernetes.labels.app"` |  |
+| filebeat.indices[2].index | string | `"%{[kubernetes.namespace]:not-defined}-not-defined-%{[agent.version]}-%{+yyyy.MM}"` |  |
 | filebeat.processors[0].add_kubernetes_metadata | object | `{}` |  |
+| filebeat.processors[1].decode_json_fields.add_error_key | bool | `true` |  |
 | filebeat.processors[1].decode_json_fields.fields[0] | string | `"message"` |  |
 | filebeat.processors[1].decode_json_fields.overwrite_keys | bool | `true` |  |
 | filebeat.processors[1].decode_json_fields.target | string | `""` |  |
 | filebeat.processors[1].decode_json_fields.when.has_fields[0] | string | `"message"` |  |
+| filebeat.processors[2].decode_json_fields.add_error_key | bool | `true` |  |
 | filebeat.processors[2].decode_json_fields.fields[0] | string | `"msg"` |  |
 | filebeat.processors[2].decode_json_fields.overwrite_keys | bool | `true` |  |
 | filebeat.processors[2].decode_json_fields.target | string | `""` |  |
