@@ -171,12 +171,14 @@ filebeat:
         fields: [ "message" ]
         target: ""
         overwrite_keys: true
+        add_error_key: true
     - decode_json_fields:
         when:
           has_fields: [ "msg" ]
         fields: [ "msg" ]
         target: ""
         overwrite_keys: true
+        add_error_key: true
     - add_labels:
         labels:
           stage: ${STAGE:dev}
@@ -224,7 +226,13 @@ filebeat:
   extraProcessors: [ ]
   # default indices
   indices:
-    - index: "%{[kubernetes.namespace]:not-defined}-%{[agent.version]}-%{+yyyy.MM}"
+    - index: "%{[kubernetes.namespace]:not-defined}-%{[kubernetes.labels.app_kubernetes_io/name]}-%{[agent.version]}-%{+yyyy.MM}"
+      when:
+        has_fields: [ "kubernetes.labels.app_kubernetes_io/name" ]
+    - index: "%{[kubernetes.namespace]:not-defined}-%{[kubernetes.labels.app]}-%{[agent.version]}-%{+yyyy.MM}"
+      when:
+        has_fields: [ "kubernetes.labels.app" ]
+    - index: "%{[kubernetes.namespace]:not-defined}-not-defined-%{[agent.version]}-%{+yyyy.MM}"
   # add additional indices without overwriting the default ones (they will get prepended)
   extraIndices: [ ]
   resources:
