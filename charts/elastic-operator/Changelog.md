@@ -2,6 +2,14 @@
 
 ## Chart Versions
 
+### BREAKING CHANGE 9.1.0
+
+- app version update to 9.1.0
+
+> Important: Starting with this version we prefix all logs gathered by filebeat with `logs-` to adhere to recommended elastic index pattern.
+> We recommend that you also rename old indexes, so that they are also picked up by our ilm policies.
+> Any manually created dashboards and data-views will likely not show new data until you update the index-patterns
+
 ### BREAKING CHANGE 9.0.1
 
 - app version update to 9.0.1

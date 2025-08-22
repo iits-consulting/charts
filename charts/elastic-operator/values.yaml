@@ -226,13 +226,13 @@ filebeat:
   extraProcessors: [ ]
   # default indices
   indices:
-    - index: "%{[kubernetes.namespace]:not-defined}-%{[kubernetes.labels.app_kubernetes_io/name]}-%{[agent.version]}-%{+yyyy.MM}"
+    - index: "logs-%{[kubernetes.namespace]:not-defined}-%{[kubernetes.labels.app_kubernetes_io/name]}-%{[agent.version]}-%{+yyyy.MM}"
       when:
         has_fields: [ "kubernetes.labels.app_kubernetes_io/name" ]
-    - index: "%{[kubernetes.namespace]:not-defined}-%{[kubernetes.labels.app]}-%{[agent.version]}-%{+yyyy.MM}"
+    - index: "logs-%{[kubernetes.namespace]:not-defined}-%{[kubernetes.labels.app]}-%{[agent.version]}-%{+yyyy.MM}"
       when:
         has_fields: [ "kubernetes.labels.app" ]
-    - index: "%{[kubernetes.namespace]:not-defined}-not-defined-%{[agent.version]}-%{+yyyy.MM}"
+    - index: "logs-%{[kubernetes.namespace]:not-defined}-not-defined-%{[agent.version]}-%{+yyyy.MM}"
   # add additional indices without overwriting the default ones (they will get prepended)
   extraIndices: [ ]
   resources:
@@ -387,57 +387,57 @@ kibana:
 indexPatternInit:
   image:
     repository: docker.io/curlimages/curl
-    tag: 8.12.1
+    tag: 8.14.1
     userId: 100
   tolerations: [ ]
   nodeSelector: { }
   indices:
-    admin:
+    logs-admin:
       timestampField: "@timestamp"
-    argocd:
+    logs-argocd:
       timestampField: "@timestamp"
-    auth:
+    logs-auth:
       timestampField: "@timestamp"
-    cert-manager:
+    logs-cert-manager:
       timestampField: "@timestamp"
-    kyverno:
+    logs-kyverno:
       timestampField: "@timestamp"
-    monitoring:
+    logs-monitoring:
       timestampField: "@timestamp"
-    routing:
+    logs-routing:
       timestampField: "@timestamp"
-    vault:
+    logs-vault:
       timestampField: "@timestamp"
-    not-defined:
+    logs-not-defined:
       timestampField: "@timestamp"
 
 ilm:
   image:
     repository: docker.io/curlimages/curl
-    tag: 8.13.0
+    tag: 8.14.1
     userId: 100
   tolerations: [ ]
   nodeSelector: { }
   policies:
     long:
       #business apps and security relevant logs
-      indexPatterns: [ "auth*", "vault*" ]
+      indexPatterns: [ "logs-auth*", "logs-vault*" ]
       coldAfter: 32d
       deleteAfter: 365d
     medium:
-      indexPatterns: [ "cert-manager*", "routing*", "not-defined*" ]
+      indexPatterns: [ "logs-cert-manager*", "logs-routing*", "logs-*" ]
       coldAfter: 32d
       deleteAfter: 90d
     short:
-      indexPatterns: [ "admin*", "argocd*", "kyverno*", "monitoring*" ]
+      indexPatterns: [ "logs-admin*", "logs-argocd*", "logs-kyverno*", "logs-monitoring*" ]
       coldAfter: 2d
       deleteAfter: 14d
 
 generatePasswords:
   enabled: true
   image:
-    repository: docker.io/bitnami/kubectl
-    tag: 1.32.4
+    repository: docker.io/alpine/kubectl
+    tag: 1.33.4
     userId: 100
   tolerations: [ ]
   nodeSelector: { }
@@ -456,7 +456,7 @@ backup:
   enabled: false
   image:
     repository: docker.io/curlimages/curl
-    tag: 8.13.0
+    tag: 8.14.1
     userId: 100
   tolerations: [ ]
   nodeSelector: { }
