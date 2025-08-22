@@ -1,6 +1,6 @@
 # elastic-operator
 
-![Version: 9.0.5](https://img.shields.io/badge/Version-9.0.5-informational?style=flat-square) ![AppVersion: 9.0.5](https://img.shields.io/badge/AppVersion-9.0.5-informational?style=flat-square)
+![Version: 9.1.2](https://img.shields.io/badge/Version-9.1.2-informational?style=flat-square) ![AppVersion: 9.1.2](https://img.shields.io/badge/AppVersion-9.1.2-informational?style=flat-square)
 
 Elasticsearch + filebeat + kibana with default common used indexes and Index Lifecycle Management.
 It comes also with a backup functionality. This is the version using ECK-operator to deploy and monitor the stack.
@@ -9,7 +9,7 @@ It comes also with a backup functionality. This is the version using ECK-operato
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://helm.elastic.co | eck-operator | 3.0.0 |
+| https://helm.elastic.co | eck-operator | 3.1.0 |
 
 ## Values
 
@@ -41,7 +41,7 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | auth.users.custom_kibana_guest.roles[0] | string | `"viewer"` |  |
 | backup.enabled | bool | `false` |  |
 | backup.image.repository | string | `"docker.io/curlimages/curl"` |  |
-| backup.image.tag | string | `"8.13.0"` |  |
+| backup.image.tag | string | `"8.14.1"` |  |
 | backup.image.userId | int | `100` |  |
 | backup.nodeSelector | object | `{}` |  |
 | backup.policy.indices[0] | string | `"*"` |  |
@@ -98,11 +98,11 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | filebeat.extraProcessors | list | `[]` |  |
 | filebeat.extraVolumeMounts | list | `[]` |  |
 | filebeat.extraVolumes | list | `[]` |  |
-| filebeat.indices[0].index | string | `"%{[kubernetes.namespace]:not-defined}-%{[kubernetes.labels.app_kubernetes_io/name]}-%{[agent.version]}-%{+yyyy.MM}"` |  |
+| filebeat.indices[0].index | string | `"logs-%{[kubernetes.namespace]:not-defined}-%{[kubernetes.labels.app_kubernetes_io/name]}-%{[agent.version]}-%{+yyyy.MM}"` |  |
 | filebeat.indices[0].when.has_fields[0] | string | `"kubernetes.labels.app_kubernetes_io/name"` |  |
-| filebeat.indices[1].index | string | `"%{[kubernetes.namespace]:not-defined}-%{[kubernetes.labels.app]}-%{[agent.version]}-%{+yyyy.MM}"` |  |
+| filebeat.indices[1].index | string | `"logs-%{[kubernetes.namespace]:not-defined}-%{[kubernetes.labels.app]}-%{[agent.version]}-%{+yyyy.MM}"` |  |
 | filebeat.indices[1].when.has_fields[0] | string | `"kubernetes.labels.app"` |  |
-| filebeat.indices[2].index | string | `"%{[kubernetes.namespace]:not-defined}-not-defined-%{[agent.version]}-%{+yyyy.MM}"` |  |
+| filebeat.indices[2].index | string | `"logs-%{[kubernetes.namespace]:not-defined}-not-defined-%{[agent.version]}-%{+yyyy.MM}"` |  |
 | filebeat.processors[0].add_kubernetes_metadata | object | `{}` |  |
 | filebeat.processors[1].decode_json_fields.add_error_key | bool | `true` |  |
 | filebeat.processors[1].decode_json_fields.fields[0] | string | `"message"` |  |
@@ -150,8 +150,8 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | filebeat.volumes[1].hostPath.type | string | `""` |  |
 | filebeat.volumes[1].name | string | `"varlog"` |  |
 | generatePasswords.enabled | bool | `true` |  |
-| generatePasswords.image.repository | string | `"docker.io/bitnami/kubectl"` |  |
-| generatePasswords.image.tag | string | `"1.32.4"` |  |
+| generatePasswords.image.repository | string | `"docker.io/alpine/kubectl"` |  |
+| generatePasswords.image.tag | string | `"1.33.4"` |  |
 | generatePasswords.image.userId | int | `100` |  |
 | generatePasswords.nodeSelector | object | `{}` |  |
 | generatePasswords.secrets[0].key | string | `"password"` |  |
@@ -162,37 +162,37 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | generatePasswords.secrets[2].name | string | `"{{ .Release.Name }}-user-custom-elastalert"` |  |
 | generatePasswords.tolerations | list | `[]` |  |
 | ilm.image.repository | string | `"docker.io/curlimages/curl"` |  |
-| ilm.image.tag | string | `"8.13.0"` |  |
+| ilm.image.tag | string | `"8.14.1"` |  |
 | ilm.image.userId | int | `100` |  |
 | ilm.nodeSelector | object | `{}` |  |
 | ilm.policies.long.coldAfter | string | `"32d"` |  |
 | ilm.policies.long.deleteAfter | string | `"365d"` |  |
-| ilm.policies.long.indexPatterns[0] | string | `"auth*"` |  |
-| ilm.policies.long.indexPatterns[1] | string | `"vault*"` |  |
+| ilm.policies.long.indexPatterns[0] | string | `"logs-auth*"` |  |
+| ilm.policies.long.indexPatterns[1] | string | `"logs-vault*"` |  |
 | ilm.policies.medium.coldAfter | string | `"32d"` |  |
 | ilm.policies.medium.deleteAfter | string | `"90d"` |  |
-| ilm.policies.medium.indexPatterns[0] | string | `"cert-manager*"` |  |
-| ilm.policies.medium.indexPatterns[1] | string | `"routing*"` |  |
-| ilm.policies.medium.indexPatterns[2] | string | `"not-defined*"` |  |
+| ilm.policies.medium.indexPatterns[0] | string | `"logs-cert-manager*"` |  |
+| ilm.policies.medium.indexPatterns[1] | string | `"logs-routing*"` |  |
+| ilm.policies.medium.indexPatterns[2] | string | `"logs-*"` |  |
 | ilm.policies.short.coldAfter | string | `"2d"` |  |
 | ilm.policies.short.deleteAfter | string | `"14d"` |  |
-| ilm.policies.short.indexPatterns[0] | string | `"admin*"` |  |
-| ilm.policies.short.indexPatterns[1] | string | `"argocd*"` |  |
-| ilm.policies.short.indexPatterns[2] | string | `"kyverno*"` |  |
-| ilm.policies.short.indexPatterns[3] | string | `"monitoring*"` |  |
+| ilm.policies.short.indexPatterns[0] | string | `"logs-admin*"` |  |
+| ilm.policies.short.indexPatterns[1] | string | `"logs-argocd*"` |  |
+| ilm.policies.short.indexPatterns[2] | string | `"logs-kyverno*"` |  |
+| ilm.policies.short.indexPatterns[3] | string | `"logs-monitoring*"` |  |
 | ilm.tolerations | list | `[]` |  |
 | indexPatternInit.image.repository | string | `"docker.io/curlimages/curl"` |  |
-| indexPatternInit.image.tag | string | `"8.12.1"` |  |
+| indexPatternInit.image.tag | string | `"8.14.1"` |  |
 | indexPatternInit.image.userId | int | `100` |  |
-| indexPatternInit.indices.admin.timestampField | string | `"@timestamp"` |  |
-| indexPatternInit.indices.argocd.timestampField | string | `"@timestamp"` |  |
-| indexPatternInit.indices.auth.timestampField | string | `"@timestamp"` |  |
-| indexPatternInit.indices.cert-manager.timestampField | string | `"@timestamp"` |  |
-| indexPatternInit.indices.kyverno.timestampField | string | `"@timestamp"` |  |
-| indexPatternInit.indices.monitoring.timestampField | string | `"@timestamp"` |  |
-| indexPatternInit.indices.not-defined.timestampField | string | `"@timestamp"` |  |
-| indexPatternInit.indices.routing.timestampField | string | `"@timestamp"` |  |
-| indexPatternInit.indices.vault.timestampField | string | `"@timestamp"` |  |
+| indexPatternInit.indices.logs-admin.timestampField | string | `"@timestamp"` |  |
+| indexPatternInit.indices.logs-argocd.timestampField | string | `"@timestamp"` |  |
+| indexPatternInit.indices.logs-auth.timestampField | string | `"@timestamp"` |  |
+| indexPatternInit.indices.logs-cert-manager.timestampField | string | `"@timestamp"` |  |
+| indexPatternInit.indices.logs-kyverno.timestampField | string | `"@timestamp"` |  |
+| indexPatternInit.indices.logs-monitoring.timestampField | string | `"@timestamp"` |  |
+| indexPatternInit.indices.logs-not-defined.timestampField | string | `"@timestamp"` |  |
+| indexPatternInit.indices.logs-routing.timestampField | string | `"@timestamp"` |  |
+| indexPatternInit.indices.logs-vault.timestampField | string | `"@timestamp"` |  |
 | indexPatternInit.nodeSelector | object | `{}` |  |
 | indexPatternInit.tolerations | list | `[]` |  |
 | ingress.elasticsearch.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
