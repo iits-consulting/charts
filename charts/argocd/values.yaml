@@ -1,10 +1,3 @@
-global:
-  syncWindow:
-  - kind: allow
-    schedule: '* * * * *'
-    manualSync: true
-    duration: 24h
-
 argo-cd:
   fullnameOverride: "argocd"
 
@@ -112,50 +105,3 @@ argo-cd:
 
 # Please use argocd-secret chart instead if you are using keycloak deployed in the same stage to avoid cyclic dependencies.
 #    secret:
-
-# -- List of projects which you want to bootstrap
-projects:
-#  # bootstraps infrastructure related charts like traefik, elastic-stack...
-#  infrastructure-charts:
-#    # values which are handed over to the infrastructure-charts project like this you can for example give over information from terraform to argocd
-#    projectValues:
-#      # Set this to enable stage values.yaml
-#      stage:
-#    # defaults to false
-#    serverSideApply:
-#    # information about the git repo which should be bootstrapped
-#    git:
-#      # defaults to ARGOCD_GIT_ACCESS_TOKEN
-#      username:
-#      password: "SET_BY_TERRAFORM"
-#      repoUrl: "SET_BY_TERRAFORM"
-#      # defaults to main
-#      branch:
-#      # defaults to project name
-#      path:
-#      repoPrivateKeyBase64Encoded:
-#
-#    # helm registries credentials
-#    helmRegistries:
-#      infraRegistry:
-#        # defaults to map key
-#        name: ""
-#        password: "SET_BY_TERRAFORM"
-#        url: "SET_BY_TERRAFORM"
-#        # defaults to ARGOCD_GIT_ACCESS_TOKEN
-#        username:
-#
-#    # defaults to *
-#    allowedUrls:
-#
-#    syncWindow:
-#      - kind: deny
-#        schedule: '0 0 * * *'
-#        duration: 23h
-#      - kind: allow
-#        schedule: '0 23 * * *'
-#        duration: 1h
-
-# Kyverno Policy Exception
-policyException:
-  enabled: true

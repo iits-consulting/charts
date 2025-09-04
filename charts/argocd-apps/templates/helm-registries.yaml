@@ -1,3 +1,4 @@
+# TODO: make clear text password optional and provide possibility to create externalSecrets object
 {{- range $projectName,$project := .Values.projects }}
 {{- range $registryName,$registry := $project.helmRegistries }}
 {{-  $registryName := ($registry.name | default ($registryName | snakecase | replace "_" "-")) }}
