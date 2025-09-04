@@ -38,9 +38,13 @@ clusterIssuers:
   # -- Only available for OTC
   otcDNS:
     enabled: true
+    # Name of an existing secret to use, otherwise will create one with "accessKey" and "secretKey"
+    # Existing secret has to have the keys accessKey and secretKey specified with appropriate values
+    # existingSecretRef: otc-dns-creds
     name: letsencrypt-dns
     server: https://acme-v02.api.letsencrypt.org/directory
     region: eu-de
+    # Optional, if existingSecretRef is used
     accessKey: ""
     secretKey: ""
 
