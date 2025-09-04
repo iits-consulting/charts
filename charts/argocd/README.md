@@ -12,7 +12,7 @@ resource "helm_release" "argocd" {
   name                  = "argocd"
   repository            = "https://charts.iits.tech"
   chart                 = "argocd"
-  version               = "16.3.0"
+  version               = "17.0.0"
   namespace             = "argocd"
   create_namespace      = true
   wait                  = true
@@ -21,33 +21,8 @@ resource "helm_release" "argocd" {
   render_subchart_notes = true
   dependency_update     = true
   wait_for_jobs         = true
-  set_sensitive {
-    name  = "projects.app-charts.git.password"
-    value = var.git_token
-  }
-  values                = [
-    yamlencode({
-      projects = {
-        infrastructure-charts = {
-          projectValues = {
-            # Set this to enable stage values-$STAGE.yaml
-            stage        = var.stage
-            # Example values which are handed down to the project. Like this you can give over information from terraform to argo-cd
-            rootDomain  = var.domain_name
-          }
-          git = {
-            repoUrl  = "https://github.com/iits-consulting/otc-infrastructure-charts-template"
-          }
-        }
-      }
-    }
-    )
-  ]
 }
 ```
-
-In the project https://github.com/iits-consulting/otc-infrastructure-charts-template it expects a helm chart
-named infrastructure-charts and will install everything from there.
 
 ## Requirements
 
