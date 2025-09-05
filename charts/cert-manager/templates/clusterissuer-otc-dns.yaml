@@ -23,9 +23,9 @@ spec:
             config:
               region: {{ .Values.clusterIssuers.otcDNS.region }}
               accessKeySecretRef:
-                name: {{ .Release.Name }}-otc-dns-creds
+                name: {{ .Values.clusterIssuers.otcDNS.existingSecretRef | default (printf "%s-otc-dns-creds" .Release.Name) }}
                 key: accessKey
               secretKeySecretRef:
-                name: {{ .Release.Name }}-otc-dns-creds
+                name: {{ .Values.clusterIssuers.otcDNS.existingSecretRef | default (printf "%s-otc-dns-creds" .Release.Name) }}
                 key: secretKey
 {{ end }}
