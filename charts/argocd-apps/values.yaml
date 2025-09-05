@@ -5,43 +5,49 @@ global:
     manualSync: true
     duration: 24h
 
-# -- List of projects which you want to bootstrap
+# ? Idea: Add the possibility to add a repo to an existing project - currently it's 1:1
+# -- List of projects with applications which you want to create
 projects:
 #  # bootstraps infrastructure related charts like traefik, elastic-stack...
 #  infrastructure-charts:
-#    # values which are handed over to the infrastructure-charts project like this you can for example give over information from terraform to argocd
-#    projectValues:
-#      # Set this to enable stage values.yaml
-#      stage:
+#    # values which are handed over to the infrastructure-charts project. Like this you can for example hand over information from Terraform/OpenTofu to ArgoCD
+#    tofuValues: {}
+#      # Set this to enable a stage specific values.yaml
+#      # stage: ""
 #    # defaults to false
-#    serverSideApply:
+#    serverSideApply: "false"
 #    # information about the git repo which should be bootstrapped
 #    git:
-#      # defaults to ARGOCD_GIT_ACCESS_TOKEN
-#      username:
-#      TODO: make clear text password optional and provide possibility to create externalSecrets object
-#      password: "SET_BY_TERRAFORM"
-#      repoUrl: "SET_BY_TERRAFORM"
-#      # defaults to main
-#      branch:
-#      # defaults to project name
-#      path:
-#      repoPrivateKeyBase64Encoded:
-#
+#     secretType: plain # Options: plain or externalSecret, default is plain for backwards compatibility
+#     repoUrl: ""
+#     # Optional, defaults to project name
+#     path: ""
+#     # Optional, defaults to main
+#     branch: ""
+#     # Values used for secretType "plain"
+#     ## defaults to ARGOCD_GIT_ACCESS_TOKEN
+#     username: ""
+#     password: ""
+#     repoPrivateKeyBase64Encoded: ""
+#     # Values used for secretType "externalSecret"
+#     secretStoreName: ""        # Name of the secret store object created in K8s
+#     accessType: ""                 # Options: https or ssh
+#     secretPath: ""            # Path to the secret in the targeted Hashicorp Vault
+
 #    # helm registries credentials
 #    helmRegistries:
 #      infraRegistry:
 #        # defaults to map key
 #        name: ""
-#        TODO: make clear text password optional and provide possibility to create externalSecrets object
-#        password: "SET_BY_TERRAFORM"
-#        url: "SET_BY_TERRAFORM"
+#        # TODO: make clear text password optional and provide possibility to create externalSecrets object
+#        password: ""
+#        url: ""
 #        # defaults to ARGOCD_GIT_ACCESS_TOKEN
 #        username:
-#
+
 #    # defaults to *
-#    allowedUrls:
-#
+#    # allowedUrls:
+
 #    syncWindow:
 #      - kind: deny
 #        schedule: '0 0 * * *'
