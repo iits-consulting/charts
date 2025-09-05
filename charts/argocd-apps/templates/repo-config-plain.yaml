@@ -1,0 +1,25 @@
+{{ range $projectName,$project := .Values.projects }}
+  # Added "not $project.git.secretType" for backwards compatibility, so plain is the default
+  # TODO: check, if we want to have backwards compatibility, or enforce a breaking change
+  {{- if or (eq $project.git.secretType "plain") (not $project.git.secretType) }}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ $projectName }}-git
+  labels:
+    argocd.argoproj.io/secret-type: repository
+    app.kubernetes.io/part-of: argocd
+data:
+  url: {{ required "A value for $project.git.repoUrl with a valid URL has to be specified" $project.git.repoUrl | b64enc }}
+  name: {{ printf $projectName | b64enc }}
+  type: {{ printf "git" | b64enc }}
+    {{- if and (ne $project.git.password "") (eq $project.git.repoPrivateKeyBase64Encoded "") }}
+  password: {{ required "A value for $project.git.password has to be specified" (printf $project.git.password) | b64enc }}
+  username: {{ printf ($project.git.username | default "ARGOCD_GIT_ACCESS_TOKEN") | b64enc }}
+    {{ else if and (ne $project.git.repoPrivateKeyBase64Encoded "") (eq $project.git.password "") }}
+  sshPrivateKey: {{ required "A value for $project.git.repoPrivateKeyBase64Encoded has to be specified" (printf $project.git.repoPrivateKeyBase64Encoded) }}
+    {{ else }}
+      {{ fail "Either $project.git.password or $project.git.repoPrivateKeyBase64Encoded has to be set." }}
+    {{- end }}
+  {{- end }}
+{{- end }}

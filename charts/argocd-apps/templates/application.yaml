@@ -25,12 +25,11 @@ spec:
      targetRevision: {{ $project.git.branch | default "main" }}
      helm:
        values: |
-         projectValues:
-           {{- $project.projectValues | toYaml | nindent 12}}
+          {{- $project.tofuValues | toYaml | nindent 10}}
        valueFiles:
          - values.yaml
-         {{- if ($project.projectValues).stage }}
-         - values-{{ $project.projectValues.stage }}.yaml
+         {{- if ($project.tofuValues).stage }}
+         - values-{{ $project.tofuValues.stage }}.yaml
          {{- end}}
 ---
 {{- end }}
