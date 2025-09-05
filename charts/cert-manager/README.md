@@ -27,7 +27,7 @@ Wrapper chart for cert-manager. Deploys a ClusterIssuer resource to bootstrap Le
 | clusterIssuers.http.ingressClass | string | `"traefik"` |  |
 | clusterIssuers.http.name | string | `"letsencrypt"` |  |
 | clusterIssuers.http.server | string | `"https://acme-v02.api.letsencrypt.org/directory"` |  |
-| clusterIssuers.otcDNS | object | `{"accessKey":"","enabled":true,"name":"letsencrypt-dns","region":"eu-de","secretKey":"","server":"https://acme-v02.api.letsencrypt.org/directory"}` | Only available for OTC |
+| clusterIssuers.otcDNS | object | `{"accessKey":"","enabled":true,"existingSecretRef":"","name":"letsencrypt-dns","region":"eu-de","secretKey":"","server":"https://acme-v02.api.letsencrypt.org/directory"}` | Only available for OTC |
 | policyException.enabled | string | `"{{ .Values.clusterIssuers.otcDNS.enabled }}"` |  |
 
 ----------------------------------------------
