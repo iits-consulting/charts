@@ -2,6 +2,10 @@
 
 ## Chart Versions
 
+### 1.17.4
+- Updated Chart & App Version to 1.17.4
+- Made secret creation for OTC DNS clusterIssuer optional based on values
+
 ### 1.17.2
 
 - Updated Chart & App Version to 1.17.2
