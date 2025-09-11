@@ -26,11 +26,7 @@ description: |
       yamlencode({
         projects = {
           infrastructure-charts = {
-<<<<<<< HEAD
             tofuValues = {
-=======
-            projectValues = {
->>>>>>> 4e64a4b (OTC-108 migrate argo cd to argo cd (#177))
               # Set this to enable stage values-$STAGE.yaml
               stage        = var.stage
               # Example values which are handed down to the project. Like this you can give over information from terraform to argo-cd
@@ -50,9 +46,5 @@ description: |
   In the project https://github.com/iits-consulting/otc-infrastructure-charts-template it expects a helm chart
   named infrastructure-charts and will install everything from there.
 
-name: argocd
-<<<<<<< HEAD
+name: argocd-apps
 version: 1.0.1
-=======
-version: 1.0.0
->>>>>>> 4e64a4b (OTC-108 migrate argo cd to argo cd (#177))
