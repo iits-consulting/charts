@@ -2,6 +2,10 @@
 
 ## Chart Versions
 
+### 2.5.0
+
+- Added feature to use existing imagePullSecrets in release namespace
+
 ### 2.4.0
 
 - Update kyverno Chart to 3.4.0
