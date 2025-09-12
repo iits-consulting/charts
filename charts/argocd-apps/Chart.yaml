@@ -47,4 +47,4 @@ description: |
   named infrastructure-charts and will install everything from there.
 
 name: argocd-apps
-version: 1.0.0
+version: 1.0.1
