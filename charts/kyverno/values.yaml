@@ -1,5 +1,4 @@
 kyverno:
-
   features:
     policyExceptions:
       enabled: true
@@ -15,7 +14,7 @@ kyverno:
       clusterRole:
         extraResources:
           - apiGroups:
-              - ''
+              - ""
             resources:
               - secrets
             verbs:
@@ -39,7 +38,7 @@ kyverno:
       clusterRole:
         extraResources:
           - apiGroups:
-              - ''
+              - ""
             resources:
               - pods
             verbs:
@@ -48,7 +47,7 @@ kyverno:
               - delete
               - patch
           - apiGroups:
-              - ''
+              - ""
             resources:
               - secrets
             verbs:
@@ -58,7 +57,6 @@ kyverno:
               - update
               - delete
               - patch
-
 
   cleanupController:
     serviceMonitor:
@@ -74,8 +72,7 @@ kyverno:
   crds:
     install: false
 
-  existingImagePullSecrets: [ ]
-
+  existingImagePullSecrets: []
 
 policy-reporter:
   install: true
@@ -84,7 +81,7 @@ policy-reporter:
     encoding: json
 
   # We explicitly remove all filters, since we want a complete dashboard
-  sourceFilters: [ ]
+  sourceFilters: []
 
   ui:
     enabled: true
@@ -97,13 +94,11 @@ policy-reporter:
   monitoring:
     enabled: true
 
-
   plugin:
     kyverno:
       enabled: true
       logging:
         encoding: json
-
 
 kyverno-policies:
   autogenControllers: none
@@ -211,7 +206,6 @@ kyverno-policies:
             namespaces:
               - kube-system
 
-
 prependCustomImageRegistry:
   # -- Enable or disable the policy globally
   enabled: false
@@ -223,13 +217,12 @@ prependCustomImageRegistry:
   registry: "mysecure-registry.example.com"
 
   # -- a list of registries that should be skipped when mangling the image reference
-  excludeRegistries: [ ]
+  excludeRegistries: []
 
   # -- Exclude the policy on the given list of namespaces
   # Wildcards are supported.
   # For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards
-  excludeNamespaces: [ ]
-
+  excludeNamespaces: []
 
 # Replace all registries and force to go through a specific one. Often functions as a pull through cache proxy
 replaceImageRegistry:
@@ -322,7 +315,6 @@ disallowUnspecifiedDockerRegistries:
   # - my-namespace
 
 enforceSecurityContext:
-
   # -- Enable or disable the policy globally
   enabled: false
 
@@ -336,7 +328,7 @@ enforceSecurityContext:
   # - my-namespace
 
 autoInjectDockerPullSecrets:
-  enabled: true
+  enabled: false
 
   # You can specify existing secrets of type "kubernetes.io/dockerconfigjson" under "existingSecretRef" to
   # clone and use instead of letting Kyverno create these secrets from the chart values. Note that the
@@ -347,18 +339,20 @@ autoInjectDockerPullSecrets:
   # same time. For this, specify existing secrets under "existingSecretRef" and the ones to create under
   # "secrets" as displayed in the examples.
   existingSecretRef:
-  # - pull-secret-dockerhub
-  # - pull-secret-mycustomregistry
+    # - name: pull-secret-dockerhub
+    #   namespace: kyverno
+    # - name: pull-secret-mycustomregistry
+    #   namespace: mycustomnamespace
 
   secrets:
-#    gitlab:
-#      username: "access_token"
-#      password: "token or password"
-#      registryUrl: "registry.gitlab.com"
-#    github:
-#      username: "token_name"
-#      password: "token or password"
-#      registryUrl: "myregistry"
+    # gitlab:
+    #   username: "access_token"
+    #   password: "token or password"
+    #   registryUrl: "registry.gitlab.com"
+    # github:
+    #   username: "token_name"
+    #   password: "token or password"
+    #   registryUrl: "myregistry"
 
 disallowEmptyIngressHost:
   enabled: true
@@ -366,7 +360,6 @@ disallowEmptyIngressHost:
   excludeNamespaces:
   #- name: ingressname
   #  namespace: namespace
-
 
 ingress:
   enabled: true
