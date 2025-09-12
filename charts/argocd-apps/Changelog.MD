@@ -4,7 +4,7 @@
 
 ### 1.0.1
 
-- Fixed a bug that did not allow repositories under ` rojects` in the `values.yaml` to be defined without the key `password`
+- Fixed a bug that did not allow repositories under `projects` in the `values.yaml` to be defined without the key `password`
 
 ### 1.0.0
 
