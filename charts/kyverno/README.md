@@ -22,6 +22,7 @@ This chart wraps the upstream `kyverno` and `kyverno-policies` chart and adds a 
 |-----|------|---------|-------------|
 | autoInjectDockerPullSecrets.enabled | bool | `true` |  |
 | autoInjectDockerPullSecrets.secrets | string | `nil` |  |
+| existingSecretRef | list | 'nil' | Keys of existing imagePullSecrets to use and clone from |
 | disallowEmptyIngressHost.enabled | bool | `true` |  |
 | disallowEmptyIngressHost.excludeNamespaces | string | `nil` |  |
 | disallowUnsignedImages.enabled | bool | `false` | Enable or disable the policy globally |
