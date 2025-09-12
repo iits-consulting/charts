@@ -1,6 +1,6 @@
 # argocd-apps
 
-![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square)
+![Version: 1.0.1](https://img.shields.io/badge/Version-1.0.1-informational?style=flat-square)
 
 This chart is used to create content objects for ArgoCD like Applications, AppProjects and related K8s secrets for the repo configuration.
 
