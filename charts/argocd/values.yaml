@@ -5,7 +5,7 @@ argo-cd:
     logging:
       format: "json"
       level: "warn"
-    domain: "https://{{ .Values.server.ingress.hostname }}{{ .Values.server.ingress.path }}"
+    domain: "{{ .Values.server.ingress.hostname }}"
 
   controller:
     replicas: 2

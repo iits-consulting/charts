@@ -14,7 +14,7 @@ resource "helm_release" "argocd" {
   name                  = "argocd"
   repository            = "https://charts.iits.tech"
   chart                 = "argocd"
-  version               = "18.1.0"
+  version               = "18.0.0"
   namespace             = "argocd"
   create_namespace      = true
   wait                  = true
@@ -30,7 +30,7 @@ resource "helm_release" "argocd" {
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://argoproj.github.io/argo-helm | argo-cd | 9.0.0 |
+| https://argoproj.github.io/argo-helm | argo-cd | 8.0.0 |
 
 ## Values
 
@@ -51,7 +51,7 @@ resource "helm_release" "argocd" {
 | argo-cd.controller.resources.requests.memory | string | `"512Mi"` |  |
 | argo-cd.dex.enabled | bool | `false` |  |
 | argo-cd.fullnameOverride | string | `"argocd"` |  |
-| argo-cd.global.domain | string | `"https://{{ .Values.server.ingress.hostname }}{{ .Values.server.ingress.path }}"` |  |
+| argo-cd.global.domain | string | `"{{ .Values.server.ingress.hostname }}"` |  |
 | argo-cd.global.logging.format | string | `"json"` |  |
 | argo-cd.global.logging.level | string | `"warn"` |  |
 | argo-cd.notifications.enabled | bool | `false` |  |
