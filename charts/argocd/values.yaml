@@ -74,7 +74,7 @@ argo-cd:
       - name: "ARGOCD_SERVER_ROOTPATH"
         # If we are serving on the root '/' this variable needs to be either non-existent or empty for the argo-server to respond properly.
         # Relevant if you want to serve argo on a dedicated sub-domain i.e. argo.example.com
-        value: '{{ $path := .Values.server.ingress.path }}{{ if ($path | ne "/") }}{{ $path }}{{ end }}'
+        value: "{{ $path := .Values.server.ingress.path }}{{ if ($path | ne \"/\") }}{{ $path }}{{ end }}"
 
     insecure: true #We terminate https at our router (traefik)
 
