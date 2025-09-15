@@ -4,6 +4,6 @@ dependencies:
   version: v1.17.4
 - name: cert-manager-webhook-opentelekomcloud
   repository: https://iits-consulting.github.io/cert-manager-webhook-opentelekomcloud
-  version: 0.1.4
-digest: sha256:7eba64f50ab66959530c5294507cb96b8881d1034229f0095feed5d83a0fc651
-generated: "2025-09-05T13:32:30.304248+02:00"
+  version: 0.1.5-security-context
+digest: sha256:b3310f4371379734e6bd9f3bdcc53da1a1a5315fa6bda882d83f441cb97ad25f
+generated: "2025-09-15T15:54:48.414894281+02:00"
