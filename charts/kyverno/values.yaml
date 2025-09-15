@@ -375,3 +375,4 @@ ingress:
       paths:
         - path: "/policies"
         - path: "/_nuxt"
+
