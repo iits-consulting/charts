@@ -2,6 +2,10 @@
 
 ## Chart Versions
 
+### 2.5.0
+
+- Simplified mutating policy for security context enforcement
+
 ### 2.4.0
 
 - Update kyverno Chart to 3.4.0
