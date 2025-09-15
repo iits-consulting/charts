@@ -2,15 +2,9 @@
 
 ## Chart Versions
 
-### 2.5.1
+### 3.0.0
 
-- Set default of `autoInjectDockerPullSecrets.enabled` to false
-- Changed `autoInjectDockerPullSecrets.existingSecretRef` from list to map so it conforms to secretRef standards (name and namespace must be specified)
-- Changed `allPullSecretRefs` in `_helpers.tpl` to reflect new `existingSecretRef` format
-- Changed `add-image-pull-secrets.yaml` to reflect new `existingSecretRef`
-
-### 2.5.0
-
+- **Breaking** Set default of `autoInjectDockerPullSecrets.enabled` to false
 - Added feature to use existing imagePullSecrets in release namespace
 
 ### 2.4.0
