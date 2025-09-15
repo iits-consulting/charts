@@ -1,30 +1,62 @@
 argo-cd:
   fullnameOverride: "argocd"
 
+  global:
+    logging:
+      format: "json"
+      level: "warn"
+    domain: "https://{{ .Values.server.ingress.hostname }}{{ .Values.server.ingress.path }}"
+
   controller:
-    kind: StatefulSet
-    replicaCount: 2
-    extraEnvVars:
+    replicas: 2
+    env:
       - name: "TZ"
         value: "Europe/Berlin"
-    logFormat: "json"
-    resourcesPreset: "medium"
+    # resources equivalent to Bitnami setting "small"
+    # see https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15
+    resources:
+      requests:
+        cpu: 500m
+        memory: 512Mi
+        ephemeral-storage: 50Mi
+      limits:
+        cpu: 750m
+        memory: 768Mi
+        ephemeral-storage: 2Gi
+
   dex:
     enabled: false
+
   notifications:
     enabled: false
+
   repoServer:
-    replicaCount: 2
-    extraEnvVars:
+    replicas: 2
+    env:
       - name: "TZ"
         value: "Europe/Berlin"
-    logFormat: "json"
-    resourcesPreset: "small"
-    containerSecurityContext:
-      seccompProfile:
-        type: Unconfined
+    # resources equivalent to Bitnami setting "small"
+    # see https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15
+    resources:
+      requests:
+        cpu: 500m
+        memory: 512Mi
+        ephemeral-storage: 50Mi
+      limits:
+        cpu: 750m
+        memory: 768Mi
+        ephemeral-storage: 2Gi
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+
   server:
-    replicaCount: 2
+    replicas: 2
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
     ingress:
       enabled: true
       hostname: "SET_BY_TERRAFORM"
@@ -32,7 +64,7 @@ argo-cd:
         traefik.ingress.kubernetes.io/router.entrypoints: websecure
         traefik.ingress.kubernetes.io/router.tls: "true"
       path: "/argocd"
-    extraEnvVars:
+    env:
       - name: "TZ"
         value: "Europe/Berlin"
 
@@ -42,62 +74,60 @@ argo-cd:
       - name: "ARGOCD_SERVER_ROOTPATH"
         # If we are serving on the root '/' this variable needs to be either non-existent or empty for the argo-server to respond properly.
         # Relevant if you want to serve argo on a dedicated sub-domain i.e. argo.example.com
-        value: "{{ $path := .Values.server.ingress.path }}{{ if ($path | ne \"/\") }}{{ $path }}{{ end }}"
+        value: '{{ $path := .Values.server.ingress.path }}{{ if ($path | ne "/") }}{{ $path }}{{ end }}'
 
-    logFormat: json
-    insecure: true
+    insecure: true #We terminate https at our router (traefik)
 
-    config:
-      url: "https://{{ .Values.server.ingress.hostname }}{{ .Values.server.ingress.path }}"
+  configs:
+    url: "https://{{ .Values.server.ingress.hostname }}{{ .Values.server.ingress.path }}"
 
-      oidc.config: |
-        name: OIDC
-        issuer: $argocd-oidc:oidcURL
-        clientID: $argocd-oidc:clientID
-        clientSecret: $argocd-oidc:clientSecret
-        requestedScopes:
-          - openid
-          - profile
-          - email
-          - groups
-        requestedIDTokenClaims:
-          groups:
-            essential: true
+    oidc.config: |
+      name: OIDC
+      issuer: $argocd-oidc:oidcURL
+      clientID: $argocd-oidc:clientID
+      clientSecret: $argocd-oidc:clientSecret
+      requestedScopes:
+        - openid
+        - profile
+        - email
+        - groups
+      requestedIDTokenClaims:
+        groups:
+          essential: true
 
-      resource.customizations: |
-        # Ignores .data changes of all secrets with a vaultInjectionChecksum annotation
-        argoproj.io/Application:
-         ignoreDifferences: |
-            jqPathExpressions:
-              - '. | select(.metadata.annotations.parametersChecksum) | .spec.source.helm'
-              - '. | select(.metadata.annotations.valueFileChecksum) | .spec.source.helm'
-        # Ignores caBundle and template changes of the following resources
-        admissionregistration.k8s.io/MutatingWebhookConfiguration:
-          ignoreDifferences: |
-            jqPathExpressions:
-              - .metadata.annotations.template
-              - '.webhooks'
-        apiextensions.k8s.io/CustomResourceDefinition:
-          ignoreDifferences: |
-            jqPathExpressions:
-              - .spec.conversion.webhookClientConfig.caBundle
-        admissionregistration.k8s.io/ValidatingWebhookConfiguration:
-          ignoreDifferences: |
-            jqPathExpressions:
-              - .metadata.annotations.template
-              - '.webhooks[]?.clientConfig.caBundle'
-              - '.webhooks'
-        cert-manager.io/Certificate:
-          ignoreDifferences: |
-            jqPathExpressions:
-              - .spec.duration
-        networking.k8s.io/Ingress:
-          health.lua: |
-            hs = {}
-            hs.status = "Healthy"
-            return hs
+    resource.customizations: |
+      # Ignores .data changes of all secrets with a vaultInjectionChecksum annotation
+      argoproj.io/Application:
+        ignoreDifferences: |
+          jqPathExpressions:
+            - '. | select(.metadata.annotations.parametersChecksum) | .spec.source.helm'
+            - '. | select(.metadata.annotations.valueFileChecksum) | .spec.source.helm'
+      # Ignores caBundle and template changes of the following resources
+      admissionregistration.k8s.io/MutatingWebhookConfiguration:
+        ignoreDifferences: |
+          jqPathExpressions:
+            - .metadata.annotations.template
+            - '.webhooks'
+      apiextensions.k8s.io/CustomResourceDefinition:
+        ignoreDifferences: |
+          jqPathExpressions:
+            - .spec.conversion.webhookClientConfig.caBundle
+      admissionregistration.k8s.io/ValidatingWebhookConfiguration:
+        ignoreDifferences: |
+          jqPathExpressions:
+            - .metadata.annotations.template
+            - '.webhooks[]?.clientConfig.caBundle'
+            - '.webhooks'
+      cert-manager.io/Certificate:
+        ignoreDifferences: |
+          jqPathExpressions:
+            - .spec.duration
+      networking.k8s.io/Ingress:
+        health.lua: |
+          hs = {}
+          hs.status = "Healthy"
+          return hs
 
-  config:
     rbac:
       policy.csv: |
         g, ARGOCD-ADMIN, role:admin
@@ -105,3 +135,7 @@ argo-cd:
 
 # Please use argocd-secret chart instead if you are using keycloak deployed in the same stage to avoid cyclic dependencies.
 #    secret:
+
+# Kyverno Policy Exception
+policyException:
+  enabled: true

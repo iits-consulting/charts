@@ -2,10 +2,15 @@
 
 ## Chart Versions
 
+### 18.0.0
+
+- **Breaking:** Switch from Bitnami to Argo Project implementation of ArgoCD
+- Converted `values.yaml` to ArgoProj requirements (actual configuration was kept as good as possible)
+- Reenabled `policyException` in values
+
 ### 17.0.0
 
 - **Breaking:** Split ArgoCD setup and ArgoCD configuration in two different repositories. To get the same setup as before, add the argocd-apps repo in Version 1.0.0 with the same code as additional chart
-
 
 ### 16.3.3
 
@@ -16,7 +21,7 @@
 - AppVersion update to 2.13.4
 - Added the possibility to set the `enableOCI` flag on the helm-registries
 
- Example of oci Helm Charts:
+Example of oci Helm Charts:
 
 ```hcl
 infrastructure-charts = {
