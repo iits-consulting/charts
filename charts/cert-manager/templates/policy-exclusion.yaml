@@ -9,14 +9,9 @@ metadata:
     "helm.sh/hook-weight": "-5"
 spec:
   exceptions:
-    - policyName: restrict-seccomp-strict
+    - policyName: require-run-as-nonroot
       ruleNames:
-        - check-seccomp-strict
-        - autogen-check-seccomp-strict
-    - policyName: restrict-seccomp
-      ruleNames:
-        - check-seccomp
-        - autogen-check-seccomp
+        - run-as-non-root
     - policyName: enforce-security-context
       ruleNames:
         - add-pod-security-context
@@ -24,8 +19,6 @@ spec:
     any:
       - resources:
           kinds:
-            - Deployment
-            - ReplicaSet
             - Pod
           names:
             - '*cert-manager-webhook-opentelekomcloud*'
