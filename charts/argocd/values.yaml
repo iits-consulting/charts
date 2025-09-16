@@ -12,16 +12,16 @@ argo-cd:
     env:
       - name: "TZ"
         value: "Europe/Berlin"
-    # resources equivalent to Bitnami setting "small"
+    # resources equivalent to Bitnami setting "medium"
     # see https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15
     resources:
       requests:
         cpu: 500m
-        memory: 512Mi
+        memory: 1024Mi
         ephemeral-storage: 50Mi
       limits:
         cpu: 750m
-        memory: 768Mi
+        memory: 1536Mi
         ephemeral-storage: 2Gi
 
   dex:
@@ -74,7 +74,7 @@ argo-cd:
       - name: "ARGOCD_SERVER_ROOTPATH"
         # If we are serving on the root '/' this variable needs to be either non-existent or empty for the argo-server to respond properly.
         # Relevant if you want to serve argo on a dedicated sub-domain i.e. argo.example.com
-        value: "{{ $path := .Values.server.ingress.path }}{{ if ($path | ne \"/\") }}{{ $path }}{{ end }}"
+        value: '{{ $path := .Values.server.ingress.path }}{{ if ($path | ne "/") }}{{ $path }}{{ end }}'
 
     insecure: true #We terminate https at our router (traefik)
 
