@@ -2,6 +2,11 @@
 
 ## Chart Versions
 
+### 3.0.0
+
+- **Breaking** Set default of `autoInjectDockerPullSecrets.enabled` to false
+- Added feature to use existing imagePullSecrets in release namespace
+
 ### 2.5.0
 
 - Simplified mutating policy for security context enforcement
