@@ -45,10 +45,10 @@ resource "helm_release" "argocd" {
 | argo-cd.controller.replicas | int | `2` |  |
 | argo-cd.controller.resources.limits.cpu | string | `"750m"` |  |
 | argo-cd.controller.resources.limits.ephemeral-storage | string | `"2Gi"` |  |
-| argo-cd.controller.resources.limits.memory | string | `"768Mi"` |  |
+| argo-cd.controller.resources.limits.memory | string | `"1536Mi"` |  |
 | argo-cd.controller.resources.requests.cpu | string | `"500m"` |  |
 | argo-cd.controller.resources.requests.ephemeral-storage | string | `"50Mi"` |  |
-| argo-cd.controller.resources.requests.memory | string | `"512Mi"` |  |
+| argo-cd.controller.resources.requests.memory | string | `"1024Mi"` |  |
 | argo-cd.dex.enabled | bool | `false` |  |
 | argo-cd.fullnameOverride | string | `"argocd"` |  |
 | argo-cd.global.domain | string | `"{{ .Values.server.ingress.hostname }}"` |  |
