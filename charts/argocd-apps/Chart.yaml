@@ -9,7 +9,7 @@ description: |
     name                  = "argocd-apps"
     repository            = "https://charts.iits.tech"
     chart                 = "argocd-apps"
-    version               = "1.0.2"
+    version               = "2.0.0"
     namespace             = "argocd"
     create_namespace      = true
     wait                  = true
@@ -27,12 +27,10 @@ description: |
         projects = {
           infrastructure-charts = {
             tofuValues = {
-              projectValues = {
-                # Set this to enable stage values-$STAGE.yaml
-                stage        = var.stage
-                # Example values which are handed down to the project. Like this you can give over information from terraform to argo-cd
-                rootDomain  = var.domain_name
-              }
+              # Set this to enable stage values-$STAGE.yaml
+              stage        = var.stage
+              # Example values which are handed down to the project. Like this you can give over information from terraform to argo-cd
+              rootDomain  = var.domain_name
             }
             git = {
               repoUrl  = "https://github.com/iits-consulting/otc-infrastructure-charts-template"
@@ -48,4 +46,4 @@ description: |
   named infrastructure-charts and will install everything from there.
 
 name: argocd-apps
-version: 1.0.2
+version: 2.0.0
