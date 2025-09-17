@@ -10,11 +10,11 @@ data:
   url: {{ $project.git.repoUrl | b64enc }}
   name: {{ printf $projectName | b64enc }}
   type: {{ printf "git" | b64enc }}
-  {{- if ne $project.git.password  "" }}
+  {{- if $project.git.password }}
   password: {{ printf $project.git.password | b64enc }}
   username: {{ printf ($project.git.username | default "ARGOCD_GIT_ACCESS_TOKEN") | b64enc }}
   {{else}}
-    {{- if ne $project.git.repoPrivateKeyBase64Encoded "" }}
+    {{- if $project.git.repoPrivateKeyBase64Encoded }}
   sshPrivateKey: {{ printf $project.git.repoPrivateKeyBase64Encoded }}
     {{- end }}
   {{- end }}
