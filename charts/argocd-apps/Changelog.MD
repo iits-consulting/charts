@@ -2,6 +2,11 @@
 
 ## Chart Versions
 
+### 2.0.0
+- **Breaking:** Adjusted the projectValues section to a more general approach for setting additional values
+- Updated repo-config for plain text credentials and renamed it to repo-config-plain.yaml. Added error handling
+- Added possibility to add externalSecrets object instead of plaintext repo-config
+
 ### 1.0.1
 
 - Fixed a bug that did not allow repositories under `projects` in the `values.yaml` to be defined without the key `password`
