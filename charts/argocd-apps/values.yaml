@@ -7,7 +7,7 @@ global:
 
 # ? Idea: Add the possibility to add a repo to an existing project - currently it's 1:1
 # -- List of projects with applications which you want to create
-projects:
+projects: {}
 #  # bootstraps infrastructure related charts like traefik, elastic-stack...
 #  infrastructure-charts:
 #    # values which are handed over to the infrastructure-charts project. Like this you can for example hand over information from Terraform/OpenTofu to ArgoCD
@@ -26,6 +26,7 @@ projects:
 #     branch: ""
 #     # Values used for secretType "plain"
 #     ## defaults to ARGOCD_GIT_ACCESS_TOKEN
+#     ## Sensitive values below are optional. If omitted, a repo-config without sensitive credentials will be created
 #     username: ""
 #     password: ""
 #     repoPrivateKeyBase64Encoded: ""

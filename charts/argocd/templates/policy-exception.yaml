@@ -34,3 +34,4 @@ spec:
             - argocd-repo-server*
 {{- end }}
 {{- end }}
+
