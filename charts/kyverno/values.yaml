@@ -336,17 +336,30 @@ enforceSecurityContext:
   # - my-namespace
 
 autoInjectDockerPullSecrets:
-  enabled: true
+  enabled: false
 
-  secrets:
-#    gitlab:
-#      username: "access_token"
-#      password: "token or password"
-#      registryUrl: "registry.gitlab.com"
-#    github:
-#      username: "token_name"
-#      password: "token or password"
-#      registryUrl: "myregistry"
+  # You can specify existing secrets of type "kubernetes.io/dockerconfigjson" under "existingSecretRef" to
+  # clone and use instead of letting Kyverno create these secrets from the chart values. Note that the
+  # secrets to copy must contain valid ".dockerconfigjson" data. Additionally, the existing secrets to
+  # be used must be specified under "existingImagePullSecrets" in the values.yaml.
+  # It is possible to use both existing secrets and have Kyverno create new secrets from the chart at the
+  # same time. For this, specify existing secrets under "existingSecretRef" and the ones to create under
+  # "secrets" as displayed in the examples.
+  existingSecretRef: []
+  # - name: pull-secret-dockerhub
+  #   namespace: kyverno
+  # - name: pull-secret-mycustomregistry
+  #   namespace: mycustomnamespace
+
+  secrets: {}
+  #  gitlab:
+  #    username: "access_token"
+  #    password: "token or password"
+  #    registryUrl: "registry.gitlab.com"
+  #  github:
+  #    username: "token_name"
+  #    password: "token or password"
+  #    registryUrl: "myregistry"
 
 disallowEmptyIngressHost:
   enabled: true
