@@ -2,6 +2,8 @@ apiVersion: v2
 description: |
   This chart is used to bootstrap a Kubernetes cluster with `argocd`.
   You can use this chart to deploy `argocd` through tools like `terraform`.
+  Note that this is only deploying the core ArgoCD components. To deploy
+  projects, use the `argocd-apps` chart instead.
 
   Usage example:
 
@@ -10,7 +12,7 @@ description: |
     name                  = "argocd"
     repository            = "https://charts.iits.tech"
     chart                 = "argocd"
-    version               = "17.0.0"
+    version               = "18.0.0"
     namespace             = "argocd"
     create_namespace      = true
     wait                  = true
@@ -23,9 +25,9 @@ description: |
   ```
 
 name: argocd
-appVersion: 2.14.11
-version: 17.0.0
+appVersion: 3.0.0
+version: 18.0.0
 dependencies:
   - name: argo-cd
-    repository: oci://registry-1.docker.io/bitnamicharts
-    version: 7.3.6
+    repository: https://argoproj.github.io/argo-helm
+    version: 8.0.0
