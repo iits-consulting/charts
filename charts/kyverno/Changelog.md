@@ -2,6 +2,9 @@
 
 ## Chart Versions
 
+### 3.1.0
+- Update dependent helm chart versions
+
 ### 3.0.0
 
 - **Breaking** Set default of `autoInjectDockerPullSecrets.enabled` to false
