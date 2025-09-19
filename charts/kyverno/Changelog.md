@@ -2,6 +2,12 @@
 
 ## Chart Versions
 
+### 3.1.0
+
+- Update kyverno Chart to 3.5.1
+- Update kyverno-policies Chart to 3.5.1
+- Update policy-reporter Chart to 3.5.0
+
 ### 3.0.0
 
 - **Breaking** Set default of `autoInjectDockerPullSecrets.enabled` to false
