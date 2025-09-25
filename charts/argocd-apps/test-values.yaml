@@ -1,0 +1,19 @@
+global:
+  syncWindow:
+  - kind: allow
+    schedule: '* * * * *'
+    manualSync: true
+    duration: 24h
+
+# ? Idea: Add the possibility to add a repo to an existing project - currently it's 1:1
+projects:
+  # bootstraps infrastructure related charts like traefik, elastic-stack...
+  infrastructure-charts:
+    # information about the git repo which should be bootstrapped
+    git:
+      secretType: externalSecret # Options: plain or externalSecret, default is plain for backwards compatibility
+      repoUrl: "test"
+      secretStoreType: ""        # Optional, default is "SecretStore"
+      secretStoreName: "testName"        # Name of the secret store object created in K8s
+      accessType: "https"             # Options: https or ssh
+      secretPath: "/path/to/secret"             # Path to the secret in the targeted Hashicorp Vault

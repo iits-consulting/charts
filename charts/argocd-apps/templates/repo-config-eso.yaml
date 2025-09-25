@@ -8,9 +8,9 @@ spec:
   refreshInterval: 1h                        # rate SecretManager pulls GCPSM
   secretStoreRef:
     kind: {{ $project.git.secretStoreType | default "SecretStore" | quote }}
-    name: {{ required "A value for $project.git.secretStoreName with a valid secretStore name has to be specified!" $project.git.secretStoreName | quote }} # name of the SecretStore (or kind specified)
+    name: {{ $project.git.secretStoreName | required "A value for $project.git.secretStoreName with a valid secretStore name has to be specified!" | quote }} # name of the SecretStore (or kind specified)
   target:
-    name: {{ $projectName }}-git"             # name of the k8s Secret to be created
+    name: {{ $projectName }}-git            # name of the k8s Secret to be created
     creationPolicy: Owner
     template:
       mergePolicy: Merge
@@ -20,9 +20,9 @@ spec:
           argocd.argoproj.io/secret-type: repository
           app.kubernetes.io/part-of: argocd
       data:
-        url: {{ required "A value for $project.git.repoUrl with a valid URL has to be specified" $project.git.repoUrl | b64enc }}
-        name: {{ printf $projectName | b64enc }}
-        type: {{ printf "git" | b64enc }}
+        url: {{ $project.git.repoUrl | required "A value for $project.git.repoUrl with a valid URL has to be specified" | quote }}
+        name: {{ $projectName | quote }}
+        type: "git"
     {{- /* Only if username + password is set */}}
     {{- if eq $project.git.accessType "https" }}
         password: "{{ `{{ .password }}` }}"            # escaping needed due to helm usage
@@ -38,17 +38,17 @@ spec:
     {{- if eq $project.git.accessType "https" }}
   - secretKey: password
     remoteRef:
-      key: {{ required "A $project.git.secretPath entry required!" $project.git.secretPath }}     # path to the secret in vault e.g. /path/to/repo-config
+      key: {{ $project.git.secretPath | required "A $project.git.secretPath entry required!" }}     # path to the secret in vault e.g. /path/to/repo-config
       property: password           # data key to retrieve from specified secret in vault - if empty, everything from the secret is fetched
   - secretKey: username
     remoteRef:
-      key: {{ required "A $project.git.secretPath entry required!" $project.git.secretPath }}              # path to the secret in vault
+      key: {{ $project.git.secretPath | required "A $project.git.secretPath entry required!" }}              # path to the secret in vault
       property: username           # data key to retrieve from specified secret in vault - if empty, everything from the secret is fetched
     {{- /* Only when sshPrivateKey is set */}}
     {{- else if eq $project.git.accessType "ssh" }}
   - secretKey: sshPrivateKey
     remoteRef:
-      key: {{ required "A $project.git.secretPath entry required!" $project.git.secretPath }}              # path to the secret in vault
+      key: {{ $project.git.secretPath | required "A $project.git.secretPath entry required!" }}              # path to the secret in vault
       property: sshPrivateKey      # data key to retrieve from specified secret in vault - if empty, everything from the secret is fetched
     {{- else }}
       {{ fail "Git accessType has to be specified in $project.git.accessType for ExternalSecret. Options: ssh(sshPrivateKey) or https(username + password)" }}
