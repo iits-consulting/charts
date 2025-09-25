@@ -3,7 +3,9 @@
 ## Chart Versions
 
 ### 3.1.0
-- Update dependent helm chart versions
+- Update Kyverno chart to 3.5.1
+- Update Kyverno-policies chart to 3.5.1
+- Update policy-reporter chart to 3.5.0
 
 ### 3.0.0
 
