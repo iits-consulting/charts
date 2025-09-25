@@ -2,6 +2,9 @@
 
 ## Chart Versions
 
+### 18.1.0
+- Update Argo-cd helm chart dependency to 8.5.0 which includes ArgoCD in Version 3.1.5
+
 ### 18.0.0
 
 - **Breaking:** Switch from Bitnami to Argo Project implementation of ArgoCD

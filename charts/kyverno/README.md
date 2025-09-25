@@ -1,6 +1,6 @@
 # kyverno
 
-![Version: 3.0.0](https://img.shields.io/badge/Version-3.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.13.4](https://img.shields.io/badge/AppVersion-1.13.4-informational?style=flat-square)
+![Version: 3.1.0](https://img.shields.io/badge/Version-3.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.15.1](https://img.shields.io/badge/AppVersion-1.15.1-informational?style=flat-square)
 
 This chart wraps the upstream `kyverno` and `kyverno-policies` chart and adds a few useful policies:
   - Verify all images are signed with cosign
@@ -12,9 +12,9 @@ This chart wraps the upstream `kyverno` and `kyverno-policies` chart and adds a 
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://kyverno.github.io/kyverno/ | kyverno | 3.4.0 |
-| https://kyverno.github.io/kyverno/ | kyverno-policies | 3.4.0 |
-| https://kyverno.github.io/policy-reporter | policy-reporter | 3.1.3 |
+| https://kyverno.github.io/kyverno/ | kyverno | 3.5.1 |
+| https://kyverno.github.io/kyverno/ | kyverno-policies | 3.5.1 |
+| https://kyverno.github.io/policy-reporter | policy-reporter | 3.5.0 |
 
 ## Values
 
