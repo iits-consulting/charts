@@ -9,7 +9,7 @@ description: |
     name                  = "argocd-apps"
     repository            = "https://charts.iits.tech"
     chart                 = "argocd-apps"
-    version               = "1.0.0"
+    version               = "2.0.0"
     namespace             = "argocd"
     create_namespace      = true
     wait                  = true
@@ -26,7 +26,7 @@ description: |
       yamlencode({
         projects = {
           infrastructure-charts = {
-            projectValues = {
+            tofuValues = {
               # Set this to enable stage values-$STAGE.yaml
               stage        = var.stage
               # Example values which are handed down to the project. Like this you can give over information from terraform to argo-cd
@@ -37,8 +37,7 @@ description: |
             }
           }
         }
-      }
-      )
+      })
     ]
   }
   ```
@@ -47,4 +46,4 @@ description: |
   named infrastructure-charts and will install everything from there.
 
 name: argocd-apps
-version: 1.0.1
+version: 2.0.0
