@@ -1,6 +1,6 @@
 # argocd
 
-![Version: 18.1.0](https://img.shields.io/badge/Version-18.1.0-informational?style=flat-square)
+![Version: 18.1.0](https://img.shields.io/badge/Version-18.1.0-informational?style=flat-square) ![AppVersion: 3.1.5](https://img.shields.io/badge/AppVersion-3.1.5-informational?style=flat-square)
 
 This chart is used to bootstrap a Kubernetes cluster with `argocd`.
 You can use this chart to deploy `argocd` through tools like `terraform`.
