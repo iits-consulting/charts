@@ -26,6 +26,7 @@ description: |
 
 name: argocd
 version: 18.1.0
+appVersion: 3.1.5
 dependencies:
   - name: argo-cd
     repository: https://argoproj.github.io/argo-helm
