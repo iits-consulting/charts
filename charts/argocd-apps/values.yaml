@@ -31,9 +31,10 @@ projects: {}
 #     password: ""
 #     repoPrivateKeyBase64Encoded: ""
 #     # Values used for secretType "externalSecret"
+#     secretStoreType: ""        # Optional, default is "SecretStore"
 #     secretStoreName: ""        # Name of the secret store object created in K8s
-#     accessType: ""                 # Options: https or ssh
-#     secretPath: ""            # Path to the secret in the targeted Hashicorp Vault
+#     accessType: ""             # Options: https or ssh
+#     secretPath: ""             # Path to the secret in the targeted Hashicorp Vault
 
 #    # helm registries credentials
 #    helmRegistries:

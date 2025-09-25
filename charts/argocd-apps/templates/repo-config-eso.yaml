@@ -7,7 +7,7 @@ metadata:
 spec:
   refreshInterval: 1h                        # rate SecretManager pulls GCPSM
   secretStoreRef:
-    kind: SecretStore
+    kind: {{ $project.git.secretStoreType | default "SecretStore" | quote }}
     name: {{ required "A value for $project.git.secretStoreName with a valid secretStore name has to be specified!" $project.git.secretStoreName | quote }} # name of the SecretStore (or kind specified)
   target:
     name: {{ $projectName }}-git"             # name of the k8s Secret to be created
