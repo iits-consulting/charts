@@ -13,7 +13,8 @@ projects: {}
 #     # values which are handed over to the infrastructure-charts project. Like this you can for example hand over information from Terraform/OpenTofu to ArgoCD
 #     tofuValues: {}
 #       # Set this to enable a stage specific values.yaml
-#       # stage: ""
+#       # projectValues:
+#       #   stage: ""
 #     # defaults to false
 #     serverSideApply: "false"
 #     # information about the git repo which should be bootstrapped

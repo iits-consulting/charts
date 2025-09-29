@@ -28,8 +28,10 @@ spec:
           {{- $project.tofuValues | toYaml | nindent 10}}
        valueFiles:
          - values.yaml
-         {{- if ($project.tofuValues).stage }}
-         - values-{{ $project.tofuValues.stage }}.yaml
-         {{- end}}
+      {{- if $project.tofuValues.projectValues }}
+        {{- if $project.tofuValues.projectValues.stage }}
+        - values-{{ $project.tofuValues.projectValues.stage }}.yaml
+        {{- end}}
+      {{- end}}
 ---
 {{- end }}
