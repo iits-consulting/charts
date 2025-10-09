@@ -1,6 +1,6 @@
 # elastic-operator
 
-![Version: 9.0.5](https://img.shields.io/badge/Version-9.0.5-informational?style=flat-square) ![AppVersion: 9.0.5](https://img.shields.io/badge/AppVersion-9.0.5-informational?style=flat-square)
+![Version: 9.1.0](https://img.shields.io/badge/Version-9.1.0-informational?style=flat-square) ![AppVersion: 9.0.5](https://img.shields.io/badge/AppVersion-9.0.5-informational?style=flat-square)
 
 Elasticsearch + filebeat + kibana with default common used indexes and Index Lifecycle Management.
 It comes also with a backup functionality. This is the version using ECK-operator to deploy and monitor the stack.
@@ -150,8 +150,8 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | filebeat.volumes[1].hostPath.type | string | `""` |  |
 | filebeat.volumes[1].name | string | `"varlog"` |  |
 | generatePasswords.enabled | bool | `true` |  |
-| generatePasswords.image.repository | string | `"docker.io/bitnami/kubectl"` |  |
-| generatePasswords.image.tag | string | `"1.32.4"` |  |
+| generatePasswords.image.repository | string | `"nixery.dev/shell/openssl/kubectl"` |  |
+| generatePasswords.image.tag | string | `"latest"` |  |
 | generatePasswords.image.userId | int | `100` |  |
 | generatePasswords.nodeSelector | object | `{}` |  |
 | generatePasswords.secrets[0].key | string | `"password"` |  |
