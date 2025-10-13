@@ -1,6 +1,6 @@
 # argocd-apps
 
-![Version: 2.0.1](https://img.shields.io/badge/Version-2.0.1-informational?style=flat-square)
+![Version: 2.0.2](https://img.shields.io/badge/Version-2.0.2-informational?style=flat-square)
 
 This chart is used to create content objects for ArgoCD like Applications, AppProjects and related K8s secrets for the repo configuration.
 
@@ -11,7 +11,7 @@ resource "helm_release" "argocd-apps" {
   name                  = "argocd-apps"
   repository            = "https://charts.iits.tech"
   chart                 = "argocd-apps"
-  version               = "2.0.1"
+  version               = "2.0.2"
   namespace             = "argocd"
   create_namespace      = true
   wait                  = true

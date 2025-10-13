@@ -4,34 +4,32 @@ kind: Application
 metadata:
   name: {{ $projectName }}
 spec:
-   project: {{ $projectName }}
-   revisionHistoryLimit: 3
-   syncPolicy:
-     automated:
-       prune: true
-       selfHeal: true
-       allowEmpty: true
-     syncOptions:
-       - CreateNamespace=true
-       {{- if $project.serverSideApply}}
-       - ServerSideApply=true
-       {{- end}}
-   destination:
-     server: https://kubernetes.default.svc
-     namespace: {{ $.Release.Namespace }}
-   source:
-     path: {{ $project.git.path | default $projectName }}
-     repoURL: {{ $project.git.repoUrl }}
-     targetRevision: {{ $project.git.branch | default "main" }}
-     helm:
-       values: |
-          {{- $project.tofuValues | toYaml | nindent 10}}
-       valueFiles:
-         - values.yaml
-      {{- if $project.tofuValues.projectValues }}
-        {{- if $project.tofuValues.projectValues.stage }}
-        - values-{{ $project.tofuValues.projectValues.stage }}.yaml
-        {{- end}}
+  project: {{ $projectName }}
+  revisionHistoryLimit: 3
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+      allowEmpty: true
+    syncOptions:
+      - CreateNamespace=true
+      {{- if $project.serverSideApply}}
+      - ServerSideApply=true
       {{- end}}
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: {{ $.Release.Namespace }}
+  source:
+    path: {{ $project.git.path | default $projectName }}
+    repoURL: {{ $project.git.repoUrl }}
+    targetRevision: {{ $project.git.branch | default "main" }}
+    helm:
+      values: |
+        {{- $project.tofuValues | toYaml | nindent 10}}
+      valueFiles:
+        - values.yaml
+      {{- if ((($project.tofuValues).projectValues).stage) }}
+        - values-{{ $project.tofuValues.projectValues.stage }}.yaml
+      {{- end }}
 ---
 {{- end }}
