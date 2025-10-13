@@ -76,14 +76,6 @@ argo-cd:
         # Relevant if you want to serve argo on a dedicated sub-domain i.e. argo.example.com
         value: '{{ $path := .Values.server.ingress.path }}{{ if ($path | ne "/") }}{{ $path }}{{ end }}'
 
-    extraArgs:
-      - "--insecure"
-      - "--rootpath"
-      - "/argocd"
-
-    service:
-      servicePortHttps: 80
-
     insecure: true #We terminate https at our router (traefik)
 
   configs:
@@ -143,6 +135,7 @@ argo-cd:
 
     params:
       server.insecure: true
+      server.rootpath: "/argocd"
 
 # Please use argocd-secret chart instead if you are using keycloak deployed in the same stage to avoid cyclic dependencies.
 #    secret:
