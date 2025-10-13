@@ -2,6 +2,10 @@
 
 ## Chart Versions
 
+### 9.0.5-bitnamilegacy
+
+- Changed Bitnami image for password generation job to `docker.io/bitnamilegacy/kubectl` (temporary solution to keep chart functional, migrate to other image in a later release)
+
 ### BREAKING CHANGE 9.0.1
 
 - app version update to 9.0.1
