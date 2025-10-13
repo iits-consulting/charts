@@ -1,6 +1,6 @@
 # argocd-apps
 
-![Version: 2.0.0](https://img.shields.io/badge/Version-2.0.0-informational?style=flat-square)
+![Version: 2.0.1](https://img.shields.io/badge/Version-2.0.1-informational?style=flat-square)
 
 This chart is used to create content objects for ArgoCD like Applications, AppProjects and related K8s secrets for the repo configuration.
 
@@ -11,7 +11,7 @@ resource "helm_release" "argocd-apps" {
   name                  = "argocd-apps"
   repository            = "https://charts.iits.tech"
   chart                 = "argocd-apps"
-  version               = "2.0.0"
+  version               = "2.0.1"
   namespace             = "argocd"
   create_namespace      = true
   wait                  = true
@@ -29,10 +29,12 @@ resource "helm_release" "argocd-apps" {
       projects = {
         infrastructure-charts = {
           tofuValues = {
-            # Set this to enable stage values-$STAGE.yaml
-            stage        = var.stage
-            # Example values which are handed down to the project. Like this you can give over information from terraform to argo-cd
-            rootDomain  = var.domain_name
+            projectValues = {
+              # Set this to enable stage based values-$STAGE.yaml file
+              stage        = var.stage
+              # Example values which are handed down to the project. Like this you can hand over information from terraform to argo-cd
+              rootDomain  = var.domain_name
+            }
           }
           git = {
             repoUrl  = "https://github.com/iits-consulting/otc-infrastructure-charts-template"

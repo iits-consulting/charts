@@ -2,6 +2,9 @@
 
 ## Chart Versions
 
+### 2.0.1
+- Moved the stage variable for extra value files back into projectValues to prevent duplicate entries
+
 ### 2.0.0
 - **Breaking:** Adjusted the projectValues section to a more general approach for setting additional values
 - Updated repo-config for plain text credentials and renamed it to repo-config-plain.yaml. Added error handling
