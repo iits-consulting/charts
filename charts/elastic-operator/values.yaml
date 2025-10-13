@@ -436,8 +436,7 @@ ilm:
 generatePasswords:
   enabled: true
   image:
-    # TODO: This is not quite fit for production, should evaluate better options in the future
-    repository: docker.io/bitnamilegacy/kubectl
+    repository: docker.io/bitnami/kubectl
     tag: 1.32.4
     userId: 100
   tolerations: [ ]
