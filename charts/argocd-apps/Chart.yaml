@@ -9,7 +9,7 @@ description: |
     name                  = "argocd-apps"
     repository            = "https://charts.iits.tech"
     chart                 = "argocd-apps"
-    version               = "2.0.1"
+    version               = "2.0.2"
     namespace             = "argocd"
     create_namespace      = true
     wait                  = true
@@ -48,4 +48,4 @@ description: |
   named infrastructure-charts and will install everything from there.
 
 name: argocd-apps
-version: 2.0.1
+version: 2.0.2

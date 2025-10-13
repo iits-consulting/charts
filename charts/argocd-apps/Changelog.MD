@@ -2,6 +2,9 @@
 
 ## Chart Versions
 
+### 2.0.2
+- Adds a missing check regarding the stage variable and reformats the application.yaml
+
 ### 2.0.1
 - Moved the stage variable for extra value files back into projectValues to prevent duplicate entries
 
