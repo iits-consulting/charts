@@ -12,7 +12,7 @@ description: |
     name                  = "argocd"
     repository            = "https://charts.iits.tech"
     chart                 = "argocd"
-    version               = "18.1.0"
+    version               = "18.1.1"
     namespace             = "argocd"
     create_namespace      = true
     wait                  = true
@@ -25,7 +25,7 @@ description: |
   ```
 
 name: argocd
-version: 18.1.0
+version: 18.1.1
 appVersion: 3.1.5
 dependencies:
   - name: argo-cd
