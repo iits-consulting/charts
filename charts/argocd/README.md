@@ -39,6 +39,7 @@ resource "helm_release" "argocd" {
 | argo-cd.configs."oidc.config" | string | `"name: OIDC\nissuer: $argocd-oidc:oidcURL\nclientID: $argocd-oidc:clientID\nclientSecret: $argocd-oidc:clientSecret\nrequestedScopes:\n  - openid\n  - profile\n  - email\n  - groups\nrequestedIDTokenClaims:\n  groups:\n    essential: true\n"` |  |
 | argo-cd.configs."resource.customizations" | string | `"# Ignores .data changes of all secrets with a vaultInjectionChecksum annotation\nargoproj.io/Application:\n  ignoreDifferences: |\n    jqPathExpressions:\n      - '. | select(.metadata.annotations.parametersChecksum) | .spec.source.helm'\n      - '. | select(.metadata.annotations.valueFileChecksum) | .spec.source.helm'\n# Ignores caBundle and template changes of the following resources\nadmissionregistration.k8s.io/MutatingWebhookConfiguration:\n  ignoreDifferences: |\n    jqPathExpressions:\n      - .metadata.annotations.template\n      - '.webhooks'\napiextensions.k8s.io/CustomResourceDefinition:\n  ignoreDifferences: |\n    jqPathExpressions:\n      - .spec.conversion.webhookClientConfig.caBundle\nadmissionregistration.k8s.io/ValidatingWebhookConfiguration:\n  ignoreDifferences: |\n    jqPathExpressions:\n      - .metadata.annotations.template\n      - '.webhooks[]?.clientConfig.caBundle'\n      - '.webhooks'\ncert-manager.io/Certificate:\n  ignoreDifferences: |\n    jqPathExpressions:\n      - .spec.duration\nnetworking.k8s.io/Ingress:\n  health.lua: |\n    hs = {}\n    hs.status = \"Healthy\"\n    return hs\n"` |  |
 | argo-cd.configs.params."server.insecure" | bool | `true` |  |
+| argo-cd.configs.params."server.rootpath" | string | `"/argocd"` |  |
 | argo-cd.configs.rbac."policy.csv" | string | `"g, ARGOCD-ADMIN, role:admin\ng, SYSTEM-ADMINISTRATOR, role:admin\n"` |  |
 | argo-cd.configs.url | string | `"https://{{ .Values.server.ingress.hostname }}{{ .Values.server.ingress.path }}"` |  |
 | argo-cd.controller.env[0].name | string | `"TZ"` |  |
@@ -71,9 +72,6 @@ resource "helm_release" "argocd" {
 | argo-cd.server.env[0].value | string | `"Europe/Berlin"` |  |
 | argo-cd.server.env[1].name | string | `"ARGOCD_SERVER_ROOTPATH"` |  |
 | argo-cd.server.env[1].value | string | `"{{ $path := .Values.server.ingress.path }}{{ if ($path | ne \"/\") }}{{ $path }}{{ end }}"` |  |
-| argo-cd.server.extraArgs[0] | string | `"--insecure"` |  |
-| argo-cd.server.extraArgs[1] | string | `"--rootpath"` |  |
-| argo-cd.server.extraArgs[2] | string | `"/argocd"` |  |
 | argo-cd.server.ingress.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
 | argo-cd.server.ingress.annotations."traefik.ingress.kubernetes.io/router.tls" | string | `"true"` |  |
 | argo-cd.server.ingress.enabled | bool | `true` |  |
@@ -83,7 +81,6 @@ resource "helm_release" "argocd" {
 | argo-cd.server.metrics.enabled | bool | `true` |  |
 | argo-cd.server.metrics.serviceMonitor.enabled | bool | `true` |  |
 | argo-cd.server.replicas | int | `2` |  |
-| argo-cd.server.service.servicePortHttps | int | `80` |  |
 | policyException.enabled | bool | `true` |  |
 
 ----------------------------------------------
