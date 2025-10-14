@@ -63,7 +63,7 @@ argo-cd:
       annotations:
         traefik.ingress.kubernetes.io/router.entrypoints: websecure
         traefik.ingress.kubernetes.io/router.tls: "true"
-      path: "/argocd"
+      path: &ingressPath "/argocd"
     env:
       - name: "TZ"
         value: "Europe/Berlin"
@@ -125,7 +125,7 @@ argo-cd:
 
     params:
       server.insecure: true
-      server.rootpath: "/argocd"
+      server.rootpath: *ingressPath
 
 # Please use argocd-secret chart instead if you are using keycloak deployed in the same stage to avoid cyclic dependencies.
 #    secret:
