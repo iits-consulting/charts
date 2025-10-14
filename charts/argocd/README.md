@@ -70,14 +70,11 @@ resource "helm_release" "argocd" {
 | argo-cd.repoServer.resources.requests.memory | string | `"512Mi"` |  |
 | argo-cd.server.env[0].name | string | `"TZ"` |  |
 | argo-cd.server.env[0].value | string | `"Europe/Berlin"` |  |
-| argo-cd.server.env[1].name | string | `"ARGOCD_SERVER_ROOTPATH"` |  |
-| argo-cd.server.env[1].value | string | `"{{ $path := .Values.server.ingress.path }}{{ if ($path | ne \"/\") }}{{ $path }}{{ end }}"` |  |
 | argo-cd.server.ingress.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
 | argo-cd.server.ingress.annotations."traefik.ingress.kubernetes.io/router.tls" | string | `"true"` |  |
 | argo-cd.server.ingress.enabled | bool | `true` |  |
 | argo-cd.server.ingress.hostname | string | `"SET_BY_TERRAFORM"` |  |
 | argo-cd.server.ingress.path | string | `"/argocd"` |  |
-| argo-cd.server.insecure | bool | `true` |  |
 | argo-cd.server.metrics.enabled | bool | `true` |  |
 | argo-cd.server.metrics.serviceMonitor.enabled | bool | `true` |  |
 | argo-cd.server.replicas | int | `2` |  |
