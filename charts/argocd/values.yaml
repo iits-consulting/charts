@@ -68,16 +68,6 @@ argo-cd:
       - name: "TZ"
         value: "Europe/Berlin"
 
-      # There is no need to specify ARGOCD_SERVER_BASEHREF, as that would only change the UI path, which is done by setting ARGOCD_SERVER_ROOTPATH
-      # ARGOCD_SERVER_BASEHREF changes UI path only
-      # ARGOCD_SERVER_ROOTPATH changes UI + API path
-      - name: "ARGOCD_SERVER_ROOTPATH"
-        # If we are serving on the root '/' this variable needs to be either non-existent or empty for the argo-server to respond properly.
-        # Relevant if you want to serve argo on a dedicated sub-domain i.e. argo.example.com
-        value: "{{ $path := .Values.server.ingress.path }}{{ if ($path | ne \"/\") }}{{ $path }}{{ end }}"
-
-    insecure: true #We terminate https at our router (traefik)
-
   configs:
     url: "https://{{ .Values.server.ingress.hostname }}{{ .Values.server.ingress.path }}"
 
