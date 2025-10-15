@@ -26,10 +26,16 @@ spec:
     {{- end }}
   {{- end }}
 {{- end }}
+  http:
+{{- with $.Values.generateTLS -}}
+  {{- if .enabled }}
+    tls:
+      certificate:
+        secretName: {{$.Release.Name}}-{{ .secretName }}
+  {{- end }}
+{{- end }}
 {{- with $.Values.ingress.elasticsearch -}}
   {{- if and (eq .enabled true) (eq .className "traefik") }}
-  http:
-    service:
       metadata:
         annotations:
           traefik.ingress.kubernetes.io/service.serverstransport: "{{ $.Release.Namespace }}-{{ $.Release.Name }}-elasticsearch@kubernetescrd"
