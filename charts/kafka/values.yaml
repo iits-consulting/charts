@@ -1,4 +1,6 @@
 kafka:
+  image:
+    repository: bitnamilegacy/kafka
   replicaCount: 3
   maxMessageBytes: _52428800
   autoCreateTopicsEnable: true
@@ -15,6 +17,8 @@ kafka:
       enabled: true
     jmx:
       enabled: true
+      image:
+        repository: bitnamilegacy/jmx-exporter
 
   persistence:
     size: 30G
