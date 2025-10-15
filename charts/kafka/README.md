@@ -1,6 +1,6 @@
 # kafka
 
-![Version: 22.2.0](https://img.shields.io/badge/Version-22.2.0-informational?style=flat-square) ![AppVersion: 22.1.5](https://img.shields.io/badge/AppVersion-22.1.5-informational?style=flat-square)
+![Version: 22.2.0-bitnamilegacy](https://img.shields.io/badge/Version-22.2.0--bitnamilegacy-informational?style=flat-square) ![AppVersion: 22.1.5](https://img.shields.io/badge/AppVersion-22.1.5-informational?style=flat-square)
 
 Apache Kafka is an open-source distributed event streaming platform used by thousands of companies for high-performance data pipelines, streaming analytics, data integration, and mission-critical applications.
 This chart wraps the `kafka` chart from bitnami and defines a few sensible defaults.
