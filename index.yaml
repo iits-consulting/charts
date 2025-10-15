@@ -4243,6 +4243,22 @@ entries:
     - https://github.com/iits-consulting/charts/releases/download/kafka-22.2.0/kafka-22.2.0.tgz
     version: 22.2.0
   - apiVersion: v2
+    appVersion: 22.1.5
+    created: "2025-10-15T13:59:14.105679847Z"
+    dependencies:
+    - name: kafka
+      repository: https://charts.bitnami.com/bitnami
+      version: 22.1.5
+    description: 'Apache Kafka is an open-source distributed event streaming platform
+      used by thousands of companies for high-performance data pipelines, streaming
+      analytics, data integration, and mission-critical applications. This chart wraps
+      the `kafka` chart from bitnami and defines a few sensible defaults. '
+    digest: a251ce8452afea172ce6c65ad029c14acb98374c0761a2cec90ee06bac107196
+    name: kafka
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/kafka-22.2.0-bitnamilegacy/kafka-22.2.0-bitnamilegacy.tgz
+    version: 22.2.0-bitnamilegacy
+  - apiVersion: v2
     created: "2024-02-06T13:33:07.265758992Z"
     dependencies:
     - name: kafka
@@ -7504,4 +7520,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/waf-cert-uploader-0.1.1/waf-cert-uploader-0.1.1.tgz
     version: 0.1.1
-generated: "2025-10-15T06:16:48.942396693Z"
+generated: "2025-10-15T13:59:14.106201905Z"
