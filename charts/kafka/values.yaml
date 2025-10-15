@@ -13,6 +13,8 @@ kafka:
       enabled: true
     kafka:
       enabled: true
+      image:
+        repository: bitnami/kafka-exporter-archived
     jmx:
       enabled: true
 
