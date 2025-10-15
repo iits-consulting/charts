@@ -2,6 +2,11 @@
 
 ## Chart Versions
 
+### 18.1.1
+- Explicitly set the params `server.insecure: true` and `server.rootpath: "/argocd"` to fix ingress
+- Use YAML anchor on `server.rootpath` and `server.ingress.path`
+- Removed env `ARGOCD_SERVER_ROOTPATH` and old `insecure: true`
+
 ### 18.1.0
 - Update Argo-cd helm chart dependency to 8.5.0 which includes ArgoCD in Version 3.1.5
 
