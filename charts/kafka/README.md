@@ -17,8 +17,10 @@ This chart wraps the `kafka` chart from bitnami and defines a few sensible defau
 |-----|------|---------|-------------|
 | kafka.autoCreateTopicsEnable | bool | `true` |  |
 | kafka.deleteTopicEnable | bool | `false` |  |
+| kafka.image.repository | string | `"bitnamilegacy/kafka"` |  |
 | kafka.maxMessageBytes | string | `"_52428800"` |  |
 | kafka.metrics.jmx.enabled | bool | `true` |  |
+| kafka.metrics.jmx.image.repository | string | `"bitnamilegacy/jmx-exporter"` |  |
 | kafka.metrics.kafka.enabled | bool | `true` |  |
 | kafka.metrics.prometheusRule.enabled | bool | `true` |  |
 | kafka.metrics.serviceMonitor.enabled | bool | `true` |  |
