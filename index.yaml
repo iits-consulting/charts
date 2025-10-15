@@ -185,6 +185,27 @@ entries:
   argocd:
   - apiVersion: v2
     appVersion: 3.1.5
+    created: "2025-10-15T06:16:48.941058756Z"
+    dependencies:
+    - name: argo-cd
+      repository: https://argoproj.github.io/argo-helm
+      version: 8.5.0
+    description: 'This chart is used to bootstrap a Kubernetes cluster with `argocd`.
+      You can use this chart to deploy `argocd` through tools like `terraform`. Note
+      that this is only deploying the core ArgoCD components. To deploy projects,
+      use the `argocd-apps` chart instead.  Usage example:  ```hcl resource "helm_release"
+      "argocd" {   name                  = "argocd"   repository            = "https://charts.iits.tech"   chart                 =
+      "argocd"   version               = "18.1.1"   namespace             = "argocd"   create_namespace      =
+      true   wait                  = true   atomic                = true   timeout               =
+      900 // 15 Minutes   render_subchart_notes = true   dependency_update     = true   wait_for_jobs         =
+      true } ``` '
+    digest: ba331b887bfd199e8f02110df0946b107d65b01f4016e45dd2e97267aad9b1a7
+    name: argocd
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/argocd-18.1.1/argocd-18.1.1.tgz
+    version: 18.1.1
+  - apiVersion: v2
+    appVersion: 3.1.5
     created: "2025-09-25T13:24:46.900462631Z"
     dependencies:
     - name: argo-cd
@@ -568,18 +589,6 @@ entries:
     - https://github.com/iits-consulting/charts/releases/download/argocd-5.30.1-repo-server-fix/argocd-5.30.1-repo-server-fix.tgz
     version: 5.30.1-repo-server-fix
   - apiVersion: v2
-    created: "2023-05-03T09:56:42.015721097Z"
-    dependencies:
-    - name: argo-cd
-      repository: https://argoproj.github.io/argo-helm
-      version: 5.30.1
-    description: argocd bootstrap
-    digest: 1994ab079121437179a69675284ace19084a4bca0236dd205410a7c20883ac19
-    name: argocd
-    urls:
-    - https://github.com/iits-consulting/charts/releases/download/argocd-5.30.1-repo-server-fix/argocd-5.30.1-repo-server-fix.tgz
-    version: 5.30.1-repo-server-fix
-  - apiVersion: v2
     created: "2023-05-08T09:06:14.006607729Z"
     dependencies:
     - name: argo-cd
@@ -587,6 +596,18 @@ entries:
       version: 5.30.1
     description: argocd bootstrap
     digest: d76223d3455163390af9a46c4e515c07e8914c9e7f8dca97d534079d684151eb
+    name: argocd
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/argocd-5.30.1-repo-server-fix/argocd-5.30.1-repo-server-fix.tgz
+    version: 5.30.1-repo-server-fix
+  - apiVersion: v2
+    created: "2023-05-03T09:56:42.015721097Z"
+    dependencies:
+    - name: argo-cd
+      repository: https://argoproj.github.io/argo-helm
+      version: 5.30.1
+    description: argocd bootstrap
+    digest: 1994ab079121437179a69675284ace19084a4bca0236dd205410a7c20883ac19
     name: argocd
     urls:
     - https://github.com/iits-consulting/charts/releases/download/argocd-5.30.1-repo-server-fix/argocd-5.30.1-repo-server-fix.tgz
@@ -7483,4 +7504,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/waf-cert-uploader-0.1.1/waf-cert-uploader-0.1.1.tgz
     version: 0.1.1
-generated: "2025-10-13T14:11:23.857021632Z"
+generated: "2025-10-15T06:16:48.942396693Z"
