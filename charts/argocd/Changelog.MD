@@ -2,6 +2,10 @@
 
 ## Chart Versions
 
+### 18.2.0
+- Fixing bugs in the values.yaml which appeared after changing the dependency chart. Throught his some configs weren't taking effect
+- Updating dependency chart to latest 8x. version, specifically 8.6.4 - this updates argocd to 3.1.8
+
 ### 18.1.1
 - Explicitly set the params `server.insecure: true` and `server.rootpath: "/argocd"` to fix ingress
 - Use YAML anchor on `server.rootpath` and `server.ingress.path`
