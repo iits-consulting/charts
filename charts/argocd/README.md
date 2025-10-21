@@ -58,7 +58,7 @@ resource "helm_release" "argocd" {
 | argo-cd.controller.resources.requests.memory | string | `"1024Mi"` |  |
 | argo-cd.dex.enabled | bool | `false` |  |
 | argo-cd.fullnameOverride | string | `"argocd"` |  |
-| argo-cd.global.domain | string | `"{{ .Values.server.ingress.hostname }}/argocd"` |  |
+| argo-cd.global.domain | string | `"REPLACE_THIS/argocd"` |  |
 | argo-cd.global.logging.format | string | `"json"` |  |
 | argo-cd.global.logging.level | string | `"warn"` |  |
 | argo-cd.notifications.enabled | bool | `false` |  |
@@ -78,7 +78,7 @@ resource "helm_release" "argocd" {
 | argo-cd.server.ingress.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
 | argo-cd.server.ingress.annotations."traefik.ingress.kubernetes.io/router.tls" | string | `"true"` |  |
 | argo-cd.server.ingress.enabled | bool | `true` |  |
-| argo-cd.server.ingress.hostname | string | `"SET_BY_TERRAFORM"` |  |
+| argo-cd.server.ingress.hostname | string | `"REPLACE_THIS"` |  |
 | argo-cd.server.ingress.path | string | `"/argocd"` |  |
 | argo-cd.server.metrics.enabled | bool | `true` |  |
 | argo-cd.server.metrics.serviceMonitor.enabled | bool | `true` |  |

@@ -5,7 +5,9 @@ argo-cd:
     logging:
       format: "json"
       level: "warn"
-    domain: "{{ .Values.server.ingress.hostname }}/argocd"
+    # the /argocd suffix is required for oidc to resolve callback url correct
+    # there is an unfixed bug report in argocd: https://github.com/argoproj/argo-cd/issues/23694
+    domain: "REPLACE_THIS/argocd"
 
   controller:
     replicas: 2
@@ -59,7 +61,7 @@ argo-cd:
         enabled: true
     ingress:
       enabled: true
-      hostname: "SET_BY_TERRAFORM"
+      hostname: "REPLACE_THIS"
       annotations:
         traefik.ingress.kubernetes.io/router.entrypoints: websecure
         traefik.ingress.kubernetes.io/router.tls: "true"
