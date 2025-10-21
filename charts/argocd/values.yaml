@@ -5,7 +5,7 @@ argo-cd:
     logging:
       format: "json"
       level: "warn"
-    domain: "{{ .Values.server.ingress.hostname }}"
+    domain: "{{ .Values.server.ingress.hostname }}/argocd"
 
   controller:
     replicas: 2
@@ -71,7 +71,7 @@ argo-cd:
   configs:
     cm:
       oidc.config: |
-        name: OIDC
+        name: keycloak
         issuer: $argocd-oidc:oidcURL
         clientID: $argocd-oidc:clientID
         clientSecret: $argocd-oidc:clientSecret
@@ -84,33 +84,31 @@ argo-cd:
           groups:
             essential: true
 
-      resource.customizations.ignoreDifferences.argoproj.io/Application: |
+      resource.customizations.ignoreDifferences.argoproj.io_Application: |
         # Ignores .data changes of all secrets with a vaultInjectionChecksum annotation
         jqPathExpressions:
           - '. | select(.metadata.annotations.parametersChecksum) | .spec.source.helm'
           - '. | select(.metadata.annotations.valueFileChecksum) | .spec.source.helm'
-      resource.customizations.ignoreDifferences.admissionregistration.k8s.io/MutatingWebhookConfiguration: |
+      resource.customizations.ignoreDifferences.admissionregistration.k8s.io_MutatingWebhookConfiguration: |
         # Ignores caBundle and template changes of the following resources
         jqPathExpressions:
           - .metadata.annotations.template
           - '.webhooks'
-      resource.customizations.ignoreDifferences.apiextensions.k8s.io/CustomResourceDefinition: |
+      resource.customizations.ignoreDifferences.apiextensions.k8s.io_CustomResourceDefinition: |
         jqPathExpressions:
           - .spec.conversion.webhookClientConfig.caBundle
-      resource.customizations.ignoreDifferences.admissionregistration.k8s.io/ValidatingWebhookConfiguration: |
+      resource.customizations.ignoreDifferences.admissionregistration.k8s.io_ValidatingWebhookConfiguration: |
         jqPathExpressions:
           - .metadata.annotations.template
           - '.webhooks[]?.clientConfig.caBundle'
           - '.webhooks'
-      resource.customizations.ignoreDifferences.cert-manager.io/Certificate: |
+      resource.customizations.ignoreDifferences.cert-manager.io_Certificate: |
         jqPathExpressions:
           - .spec.duration
-      resource.customizations.health.networking.k8s.io/Ingress: |
+      resource.customizations.health.networking.k8s.io_Ingress: |
         hs = {}
         hs.status = "Healthy"
         return hs
-
-
 
     rbac:
       policy.csv: |
@@ -120,6 +118,7 @@ argo-cd:
     params:
       server.insecure: true
       server.rootpath: *ingressPath
+      server.basehref: *ingressPath
 
 # Please use argocd-secret chart instead if you are using keycloak deployed in the same stage to avoid cyclic dependencies.
 #     secret:
