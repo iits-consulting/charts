@@ -36,12 +36,16 @@ resource "helm_release" "argocd" {
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| argo-cd.configs."oidc.config" | string | `"name: OIDC\nissuer: $argocd-oidc:oidcURL\nclientID: $argocd-oidc:clientID\nclientSecret: $argocd-oidc:clientSecret\nrequestedScopes:\n  - openid\n  - profile\n  - email\n  - groups\nrequestedIDTokenClaims:\n  groups:\n    essential: true\n"` |  |
-| argo-cd.configs."resource.customizations" | string | `"# Ignores .data changes of all secrets with a vaultInjectionChecksum annotation\nargoproj.io/Application:\n  ignoreDifferences: |\n    jqPathExpressions:\n      - '. | select(.metadata.annotations.parametersChecksum) | .spec.source.helm'\n      - '. | select(.metadata.annotations.valueFileChecksum) | .spec.source.helm'\n# Ignores caBundle and template changes of the following resources\nadmissionregistration.k8s.io/MutatingWebhookConfiguration:\n  ignoreDifferences: |\n    jqPathExpressions:\n      - .metadata.annotations.template\n      - '.webhooks'\napiextensions.k8s.io/CustomResourceDefinition:\n  ignoreDifferences: |\n    jqPathExpressions:\n      - .spec.conversion.webhookClientConfig.caBundle\nadmissionregistration.k8s.io/ValidatingWebhookConfiguration:\n  ignoreDifferences: |\n    jqPathExpressions:\n      - .metadata.annotations.template\n      - '.webhooks[]?.clientConfig.caBundle'\n      - '.webhooks'\ncert-manager.io/Certificate:\n  ignoreDifferences: |\n    jqPathExpressions:\n      - .spec.duration\nnetworking.k8s.io/Ingress:\n  health.lua: |\n    hs = {}\n    hs.status = \"Healthy\"\n    return hs\n"` |  |
+| argo-cd.configs.cm."oidc.config" | string | `"name: OIDC\nissuer: $argocd-oidc:oidcURL\nclientID: $argocd-oidc:clientID\nclientSecret: $argocd-oidc:clientSecret\nrequestedScopes:\n  - openid\n  - profile\n  - email\n  - groups\nrequestedIDTokenClaims:\n  groups:\n    essential: true\n"` |  |
+| argo-cd.configs.cm."resource.customizations.health.networking.k8s.io/Ingress" | string | `"hs = {}\nhs.status = \"Healthy\"\nreturn hs\n"` |  |
+| argo-cd.configs.cm."resource.customizations.ignoreDifferences.admissionregistration.k8s.io/MutatingWebhookConfiguration" | string | `"# Ignores caBundle and template changes of the following resources\njqPathExpressions:\n  - .metadata.annotations.template\n  - '.webhooks'\n"` |  |
+| argo-cd.configs.cm."resource.customizations.ignoreDifferences.admissionregistration.k8s.io/ValidatingWebhookConfiguration" | string | `"jqPathExpressions:\n  - .metadata.annotations.template\n  - '.webhooks[]?.clientConfig.caBundle'\n  - '.webhooks'\n"` |  |
+| argo-cd.configs.cm."resource.customizations.ignoreDifferences.apiextensions.k8s.io/CustomResourceDefinition" | string | `"jqPathExpressions:\n  - .spec.conversion.webhookClientConfig.caBundle\n"` |  |
+| argo-cd.configs.cm."resource.customizations.ignoreDifferences.argoproj.io/Application" | string | `"# Ignores .data changes of all secrets with a vaultInjectionChecksum annotation\njqPathExpressions:\n  - '. | select(.metadata.annotations.parametersChecksum) | .spec.source.helm'\n  - '. | select(.metadata.annotations.valueFileChecksum) | .spec.source.helm'\n"` |  |
+| argo-cd.configs.cm."resource.customizations.ignoreDifferences.cert-manager.io/Certificate" | string | `"jqPathExpressions:\n  - .spec.duration\n"` |  |
 | argo-cd.configs.params."server.insecure" | bool | `true` |  |
 | argo-cd.configs.params."server.rootpath" | string | `"/argocd"` |  |
 | argo-cd.configs.rbac."policy.csv" | string | `"g, ARGOCD-ADMIN, role:admin\ng, SYSTEM-ADMINISTRATOR, role:admin\n"` |  |
-| argo-cd.configs.url | string | `"https://{{ .Values.server.ingress.hostname }}{{ .Values.server.ingress.path }}"` |  |
 | argo-cd.controller.env[0].name | string | `"TZ"` |  |
 | argo-cd.controller.env[0].value | string | `"Europe/Berlin"` |  |
 | argo-cd.controller.replicas | int | `2` |  |
