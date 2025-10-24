@@ -184,6 +184,27 @@ entries:
     version: 0.3.1-fix-probes
   argocd:
   - apiVersion: v2
+    appVersion: 3.1.8
+    created: "2025-10-24T11:01:08.962078039Z"
+    dependencies:
+    - name: argo-cd
+      repository: https://argoproj.github.io/argo-helm
+      version: 8.6.4
+    description: 'This chart is used to bootstrap a Kubernetes cluster with `argocd`.
+      You can use this chart to deploy `argocd` through tools like `terraform`. Note
+      that this is only deploying the core ArgoCD components. To deploy projects,
+      use the `argocd-apps` chart instead.  Usage example:  ```hcl resource "helm_release"
+      "argocd" {   name                  = "argocd"   repository            = "https://charts.iits.tech"   chart                 =
+      "argocd"   version               = "18.2.0"   namespace             = "argocd"   create_namespace      =
+      true   wait                  = true   atomic                = true   timeout               =
+      900 // 15 Minutes   render_subchart_notes = true   dependency_update     = true   wait_for_jobs         =
+      true } ``` '
+    digest: faa94922d0dfb5ebe87aa4c13ac75f225e9ffea369a2f4823e3b1b9cc7a035e2
+    name: argocd
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/argocd-18.2.0/argocd-18.2.0.tgz
+    version: 18.2.0
+  - apiVersion: v2
     appVersion: 3.1.5
     created: "2025-10-15T06:16:48.941058756Z"
     dependencies:
@@ -589,18 +610,6 @@ entries:
     - https://github.com/iits-consulting/charts/releases/download/argocd-5.30.1-repo-server-fix/argocd-5.30.1-repo-server-fix.tgz
     version: 5.30.1-repo-server-fix
   - apiVersion: v2
-    created: "2023-05-08T09:06:14.006607729Z"
-    dependencies:
-    - name: argo-cd
-      repository: https://argoproj.github.io/argo-helm
-      version: 5.30.1
-    description: argocd bootstrap
-    digest: d76223d3455163390af9a46c4e515c07e8914c9e7f8dca97d534079d684151eb
-    name: argocd
-    urls:
-    - https://github.com/iits-consulting/charts/releases/download/argocd-5.30.1-repo-server-fix/argocd-5.30.1-repo-server-fix.tgz
-    version: 5.30.1-repo-server-fix
-  - apiVersion: v2
     created: "2023-05-03T09:56:42.015721097Z"
     dependencies:
     - name: argo-cd
@@ -608,6 +617,18 @@ entries:
       version: 5.30.1
     description: argocd bootstrap
     digest: 1994ab079121437179a69675284ace19084a4bca0236dd205410a7c20883ac19
+    name: argocd
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/argocd-5.30.1-repo-server-fix/argocd-5.30.1-repo-server-fix.tgz
+    version: 5.30.1-repo-server-fix
+  - apiVersion: v2
+    created: "2023-05-08T09:06:14.006607729Z"
+    dependencies:
+    - name: argo-cd
+      repository: https://argoproj.github.io/argo-helm
+      version: 5.30.1
+    description: argocd bootstrap
+    digest: d76223d3455163390af9a46c4e515c07e8914c9e7f8dca97d534079d684151eb
     name: argocd
     urls:
     - https://github.com/iits-consulting/charts/releases/download/argocd-5.30.1-repo-server-fix/argocd-5.30.1-repo-server-fix.tgz
@@ -693,34 +714,6 @@ entries:
     - https://github.com/iits-consulting/charts/releases/download/argocd-5.30.1-fix-proj-generation/argocd-5.30.1-fix-proj-generation.tgz
     version: 5.30.1-fix-proj-generation
   - apiVersion: v2
-    created: "2023-07-05T12:15:24.78948865Z"
-    dependencies:
-    - name: argo-cd
-      repository: https://argoproj.github.io/argo-helm
-      version: 5.30.1
-    description: 'This chart is used to bootstrap a Kubernetes cluster with `argocd`.
-      You can use this chart to deploy `argocd` through tools like `terraform`.  Usage
-      example:  ```hcl resource "helm_release" "argocd" {   name                  =
-      "argocd"   repository            = "https://charts.iits.tech"   chart                 =
-      "argocd"   version               = "5.30.1-fix-proj-generation"   namespace             =
-      "argocd"   create_namespace      = true   wait                  = true   atomic                =
-      true   timeout               = 900 // 15 Minutes   render_subchart_notes = true   dependency_update     =
-      true   wait_for_jobs         = true   values                = [     yamlencode({       projects
-      = {         infrastructure-charts = {           projectValues = {             #
-      Set this to enable stage $STAGE-values.yaml             stage        = var.stage             #
-      Example values which are handed down to the project. Like this you can give
-      over informations from terraform to argocd             traefikElbId = module.terraform_secrets_from_encrypted_s3_bucket.secrets["elb_id"]             adminDomain  =
-      "admin.${var.domain_name}"           }            git = {             password
-      = var.git_token             repoUrl  = "https://github.com/iits-consulting/otc-infrastructure-charts-template"           }         }       }     }     )   ]
-      } ```  In the project https://github.com/iits-consulting/otc-infrastructure-charts-template
-      it expects a helm chart named infrastructure-charts and will install everything
-      from there. '
-    digest: 6cabea2f688460a9074402abb5ddacf07a004dc37551ddd800511df42c52e93d
-    name: argocd
-    urls:
-    - https://github.com/iits-consulting/charts/releases/download/argocd-5.30.1-fix-helm-registries/argocd-5.30.1-fix-helm-registries.tgz
-    version: 5.30.1-fix-helm-registries
-  - apiVersion: v2
     created: "2023-07-05T17:12:02.698822375Z"
     dependencies:
     - name: argo-cd
@@ -744,6 +737,34 @@ entries:
       it expects a helm chart named infrastructure-charts and will install everything
       from there. '
     digest: deab019d5148ed2021b96a7968924b7e89161f9ea735ce38e3ef3cc697186df7
+    name: argocd
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/argocd-5.30.1-fix-helm-registries/argocd-5.30.1-fix-helm-registries.tgz
+    version: 5.30.1-fix-helm-registries
+  - apiVersion: v2
+    created: "2023-07-05T12:15:24.78948865Z"
+    dependencies:
+    - name: argo-cd
+      repository: https://argoproj.github.io/argo-helm
+      version: 5.30.1
+    description: 'This chart is used to bootstrap a Kubernetes cluster with `argocd`.
+      You can use this chart to deploy `argocd` through tools like `terraform`.  Usage
+      example:  ```hcl resource "helm_release" "argocd" {   name                  =
+      "argocd"   repository            = "https://charts.iits.tech"   chart                 =
+      "argocd"   version               = "5.30.1-fix-proj-generation"   namespace             =
+      "argocd"   create_namespace      = true   wait                  = true   atomic                =
+      true   timeout               = 900 // 15 Minutes   render_subchart_notes = true   dependency_update     =
+      true   wait_for_jobs         = true   values                = [     yamlencode({       projects
+      = {         infrastructure-charts = {           projectValues = {             #
+      Set this to enable stage $STAGE-values.yaml             stage        = var.stage             #
+      Example values which are handed down to the project. Like this you can give
+      over informations from terraform to argocd             traefikElbId = module.terraform_secrets_from_encrypted_s3_bucket.secrets["elb_id"]             adminDomain  =
+      "admin.${var.domain_name}"           }            git = {             password
+      = var.git_token             repoUrl  = "https://github.com/iits-consulting/otc-infrastructure-charts-template"           }         }       }     }     )   ]
+      } ```  In the project https://github.com/iits-consulting/otc-infrastructure-charts-template
+      it expects a helm chart named infrastructure-charts and will install everything
+      from there. '
+    digest: 6cabea2f688460a9074402abb5ddacf07a004dc37551ddd800511df42c52e93d
     name: argocd
     urls:
     - https://github.com/iits-consulting/charts/releases/download/argocd-5.30.1-fix-helm-registries/argocd-5.30.1-fix-helm-registries.tgz
@@ -7520,4 +7541,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/waf-cert-uploader-0.1.1/waf-cert-uploader-0.1.1.tgz
     version: 0.1.1
-generated: "2025-10-15T13:59:14.106201905Z"
+generated: "2025-10-24T11:01:08.962855027Z"
