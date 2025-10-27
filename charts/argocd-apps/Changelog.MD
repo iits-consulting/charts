@@ -2,6 +2,9 @@
 
 ## Chart Versions
 
+### 2.0.3
+- Fix missing template separator in repo-config-plain.yaml
+
 ### 2.0.2
 - Adds a missing check regarding the stage variable and reformats the application.yaml
 
