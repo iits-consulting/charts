@@ -871,6 +871,31 @@ entries:
     version: 1.0.0
   argocd-apps:
   - apiVersion: v2
+    created: "2025-10-27T18:13:34.731049257Z"
+    description: 'This chart is used to create content objects for ArgoCD like Applications,
+      AppProjects and related K8s secrets for the repo configuration.  Usage example
+      for terraform:  ```hcl resource "helm_release" "argocd-apps" {   name                  =
+      "argocd-apps"   repository            = "https://charts.iits.tech"   chart                 =
+      "argocd-apps"   version               = "2.0.3"   namespace             = "argocd"   create_namespace      =
+      true   wait                  = true   atomic                = true   timeout               =
+      900 // 15 Minutes   render_subchart_notes = true   dependency_update     = true   wait_for_jobs         =
+      true   set_sensitive {     name  = "projects.app-charts.git.password"     value
+      = var.git_token   }   values                = [     yamlencode({       projects
+      = {         infrastructure-charts = {           tofuValues = {             projectValues
+      = {               # Set this to enable stage based values-$STAGE.yaml file               stage        =
+      var.stage               # Example values which are handed down to the project.
+      Like this you can hand over information from terraform to argo-cd               rootDomain  =
+      var.domain_name             }           }           git = {             repoUrl  =
+      "https://github.com/iits-consulting/otc-infrastructure-charts-template"           }         }       }     })   ]
+      } ```  In the project https://github.com/iits-consulting/otc-infrastructure-charts-template
+      it expects a helm chart named infrastructure-charts and will install everything
+      from there. '
+    digest: 79a6869e85c5f2ba2b9ab93690d969f4b9b61c54522d40cdf268e471d70851db
+    name: argocd-apps
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/argocd-apps-2.0.3/argocd-apps-2.0.3.tgz
+    version: 2.0.3
+  - apiVersion: v2
     created: "2025-10-13T14:11:23.856052688Z"
     description: 'This chart is used to create content objects for ArgoCD like Applications,
       AppProjects and related K8s secrets for the repo configuration.  Usage example
@@ -7541,4 +7566,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/waf-cert-uploader-0.1.1/waf-cert-uploader-0.1.1.tgz
     version: 0.1.1
-generated: "2025-10-24T11:01:08.962855027Z"
+generated: "2025-10-27T18:13:34.731988624Z"
