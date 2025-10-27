@@ -18,5 +18,6 @@ data:
     {{ else if $project.git.repoPrivateKeyBase64Encoded }}
   sshPrivateKey: {{ $project.git.repoPrivateKeyBase64Encoded }}
     {{- end }}
+---
   {{- end }}
 {{- end }}
