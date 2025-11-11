@@ -20,7 +20,7 @@ This chart wraps the upstream `kyverno` and `kyverno-policies` chart and adds a 
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| autoInjectDockerPullSecrets.enabled | bool | `true` |  |
+| autoInjectDockerPullSecrets.enabled | bool | `false` |  |
 | autoInjectDockerPullSecrets.existingSecretRef | list | `[]` |  |
 | autoInjectDockerPullSecrets.secrets | object | `{}` |  |
 | disallowEmptyIngressHost.enabled | bool | `true` |  |
