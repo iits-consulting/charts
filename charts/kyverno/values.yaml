@@ -336,7 +336,7 @@ enforceSecurityContext:
   # - my-namespace
 
 autoInjectDockerPullSecrets:
-  enabled: true
+  enabled: false
 
   # You can specify existing secrets of type "kubernetes.io/dockerconfigjson" under "existingSecretRef" to
   # clone and use instead of letting Kyverno create these secrets from the chart values. Note that the
