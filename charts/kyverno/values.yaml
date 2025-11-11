@@ -351,15 +351,15 @@ autoInjectDockerPullSecrets:
   # - name: pull-secret-mycustomregistry
   #   namespace: mycustomnamespace
 
-  secrets:
-    gitlab:
-      username: "access_token"
-      password: "token or password"
-      registryUrl: "registry.gitlab.com"
-    iits-docs:
-      username: "token_name"
-      password: "token or password"
-      registryUrl: "myregistry"
+  secrets: {}
+  #  gitlab:
+  #    username: "access_token"
+  #    password: "token or password"
+  #    registryUrl: "registry.gitlab.com"
+  #  github:
+  #    username: "token_name"
+  #    password: "token or password"
+  #    registryUrl: "myregistry"
 
 disallowEmptyIngressHost:
   enabled: true
