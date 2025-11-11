@@ -22,12 +22,7 @@ This chart wraps the upstream `kyverno` and `kyverno-policies` chart and adds a 
 |-----|------|---------|-------------|
 | autoInjectDockerPullSecrets.enabled | bool | `true` |  |
 | autoInjectDockerPullSecrets.existingSecretRef | list | `[]` |  |
-| autoInjectDockerPullSecrets.secrets.gitlab.password | string | `"token or password"` |  |
-| autoInjectDockerPullSecrets.secrets.gitlab.registryUrl | string | `"registry.gitlab.com"` |  |
-| autoInjectDockerPullSecrets.secrets.gitlab.username | string | `"access_token"` |  |
-| autoInjectDockerPullSecrets.secrets.iits-docs.password | string | `"token or password"` |  |
-| autoInjectDockerPullSecrets.secrets.iits-docs.registryUrl | string | `"myregistry"` |  |
-| autoInjectDockerPullSecrets.secrets.iits-docs.username | string | `"token_name"` |  |
+| autoInjectDockerPullSecrets.secrets | object | `{}` |  |
 | disallowEmptyIngressHost.enabled | bool | `true` |  |
 | disallowEmptyIngressHost.excludeNamespaces | string | `nil` |  |
 | disallowUnsignedImages.enabled | bool | `false` | Enable or disable the policy globally |
