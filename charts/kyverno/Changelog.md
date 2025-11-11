@@ -2,6 +2,9 @@
 
 ## Chart Versions
 
+### 3.1.1
+- Bugfix: cannot specify multiple image pull secret due to missing yaml seperator (---)
+
 ### 3.1.0
 - Update Kyverno chart to 3.5.1
 - Update Kyverno-policies chart to 3.5.1
