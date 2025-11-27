@@ -109,7 +109,6 @@ prometheus-stack:
 | prometheusStack.defaultRules.create | bool | `true` |  |
 | prometheusStack.defaultRules.disabled.InfoInhibitor | bool | `true` |  |
 | prometheusStack.defaultRules.disabled.KubeClientCertificateExpiration | bool | `true` |  |
-| prometheusStack.defaultRules.disabled.KubeletDown | bool | `true` |  |
 | prometheusStack.defaultRules.disabled.NodeClockNotSynchronising | bool | `true` |  |
 | prometheusStack.defaultRules.rules.alertmanager | bool | `true` |  |
 | prometheusStack.defaultRules.rules.etcd | bool | `true` |  |
@@ -145,7 +144,7 @@ prometheus-stack:
 | prometheusStack.kubeControllerManager.enabled | bool | `false` |  |
 | prometheusStack.kubeProxy.enabled | bool | `false` |  |
 | prometheusStack.kubeScheduler.enabled | bool | `false` |  |
-| prometheusStack.kubelet.enabled | bool | `true` |  |
+| prometheusStack.kubelet.enabled | bool | `false` |  |
 | prometheusStack.nameOverride | string | `"prometheus-stack"` |  |
 | prometheusStack.prometheus.prometheusSpec.externalUrl | string | `"https://{{$.Values.global.ingress.host}}{{$.Values.global.ingress.paths.prometheus}}"` |  |
 | prometheusStack.prometheus.prometheusSpec.podMonitorSelectorNilUsesHelmValues | bool | `false` |  |
