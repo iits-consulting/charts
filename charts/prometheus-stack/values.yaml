@@ -17,7 +17,7 @@ prometheusStack:
   kubeScheduler:
     enabled: false
   kubelet:
-    enabled: true
+    enabled: false
   nameOverride: prometheus-stack
 
   crds:
@@ -31,7 +31,6 @@ prometheusStack:
     disabled:
       KubeClientCertificateExpiration: true
       NodeClockNotSynchronising: true #CCE does not give access to that
-      KubeletDown: true  #CCE does not give access to that
       InfoInhibitor: true #It is spamming
     rules:
       alertmanager: true
