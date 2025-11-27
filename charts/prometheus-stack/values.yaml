@@ -59,12 +59,6 @@ prometheusStack:
     prometheusSpec:
       externalUrl: https://{{$.Values.global.ingress.host}}{{$.Values.global.ingress.paths.prometheus}}
       routePrefix: "/prometheus"
-      podMonitorSelector: # note to future self: matchLabels: null is only necessary for prometheus 63.1.0, it is not necessary in >= 64.x
-        matchLabels: null
-      serviceMonitorSelector:
-        matchLabels: null
-      probeSelector:
-        matchLabels: null
       retention: 1y # 365 days
       resources:
         requests:
