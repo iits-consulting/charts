@@ -148,10 +148,13 @@ prometheus-stack:
 | prometheusStack.kubelet.enabled | bool | `true` |  |
 | prometheusStack.nameOverride | string | `"prometheus-stack"` |  |
 | prometheusStack.prometheus.prometheusSpec.externalUrl | string | `"https://{{$.Values.global.ingress.host}}{{$.Values.global.ingress.paths.prometheus}}"` |  |
+| prometheusStack.prometheus.prometheusSpec.podMonitorSelectorNilUsesHelmValues | bool | `false` |  |
+| prometheusStack.prometheus.prometheusSpec.probeSelectorNilUsesHelmValues | bool | `false` |  |
 | prometheusStack.prometheus.prometheusSpec.resources.requests.cpu | string | `"60m"` |  |
 | prometheusStack.prometheus.prometheusSpec.resources.requests.memory | string | `"2255Mi"` |  |
 | prometheusStack.prometheus.prometheusSpec.retention | string | `"1y"` |  |
 | prometheusStack.prometheus.prometheusSpec.routePrefix | string | `"/prometheus"` |  |
+| prometheusStack.prometheus.prometheusSpec.serviceMonitorSelectorNilUsesHelmValues | bool | `false` |  |
 | prometheusStack.prometheus.prometheusSpec.storageSpec.volumeClaimTemplate.spec.accessModes[0] | string | `"ReadWriteOnce"` |  |
 | prometheusStack.prometheus.prometheusSpec.storageSpec.volumeClaimTemplate.spec.resources.requests.storage | string | `"250G"` |  |
 | prometheusStack.prometheusOperator.admissionWebhooks.enabled | bool | `false` |  |
