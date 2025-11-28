@@ -10,7 +10,7 @@ dependencies:
     repository: https://prometheus-community.github.io/helm-charts
     version: 11.5.0
 description: |
-  A complete monitoring/alerting stack with Grafana Prometheus Alertmanager
+  A complete monitoring/alerting stack with Grafana, Prometheus, Alertmanager & Blackbox exporter
   
   ## Installing the Chart with iits ArgoCD
 
@@ -18,19 +18,13 @@ description: |
   prometheus-stack:
     namespace: monitoring
     repoURL: "https://charts.iits.tech"
-    targetRevision: "71.0.0"
-    ignoreDifferences:
-      - jsonPointers:
-          - /imagePullSecrets
-        kind: ServiceAccount
+    targetRevision: "79.8.2"
     syncOptions:
       - ServerSideApply=true
     parameters:
-      global.alertmanager.host: "admin.{{.Values.projectValues.rootDomain}}"
-      global.prometheus.host: "admin.{{.Values.projectValues.rootDomain}}"
-      global.grafana.host: "admin.{{.Values.projectValues.rootDomain}}"
+      global.ingress.host: "admin.{{ .Values.projectValues.rootDomain }}"
       prometheusStack.grafana.adminPassword: "REPLACE_ME"
   ```
 name: prometheus-stack
-version: 71.0.0
-appVersion: 71.0.0
+version: 79.8.2
+appVersion: 3.7.3
