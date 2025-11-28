@@ -1,8 +1,8 @@
 # prometheus-stack
 
-![Version: 63.1.4](https://img.shields.io/badge/Version-63.1.4-informational?style=flat-square)
+![Version: 79.8.2](https://img.shields.io/badge/Version-79.8.2-informational?style=flat-square) ![AppVersion: 3.7.3](https://img.shields.io/badge/AppVersion-3.7.3-informational?style=flat-square)
 
-A complete monitoring/alerting stack with Grafana Prometheus Alertmanager
+A complete monitoring/alerting stack with Grafana, Prometheus, Alertmanager & Blackbox exporter
 
 ## Installing the Chart with iits ArgoCD
 
@@ -10,17 +10,11 @@ A complete monitoring/alerting stack with Grafana Prometheus Alertmanager
 prometheus-stack:
   namespace: monitoring
   repoURL: "https://charts.iits.tech"
-  targetRevision: "63.1.4"
-  ignoreDifferences:
-    - jsonPointers:
-        - /imagePullSecrets
-      kind: ServiceAccount
+  targetRevision: "79.8.2"
   syncOptions:
     - ServerSideApply=true
   parameters:
-    global.alertmanager.host: "admin.{{.Values.projectValues.rootDomain}}"
-    global.prometheus.host: "admin.{{.Values.projectValues.rootDomain}}"
-    global.grafana.host: "admin.{{.Values.projectValues.rootDomain}}"
+    global.ingress.host: "admin.{{ .Values.projectValues.rootDomain }}"
     prometheusStack.grafana.adminPassword: "REPLACE_ME"
 ```
 
@@ -28,8 +22,8 @@ prometheus-stack:
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://prometheus-community.github.io/helm-charts | prometheusStack(kube-prometheus-stack) | 63.1.0 |
-| https://prometheus-community.github.io/helm-charts | blackboxExporter(prometheus-blackbox-exporter) | 9.4.0 |
+| https://prometheus-community.github.io/helm-charts | prometheusStack(kube-prometheus-stack) | 79.8.2 |
+| https://prometheus-community.github.io/helm-charts | blackboxExporter(prometheus-blackbox-exporter) | 11.5.0 |
 
 ## Values
 
@@ -109,7 +103,6 @@ prometheus-stack:
 | prometheusStack.defaultRules.create | bool | `true` |  |
 | prometheusStack.defaultRules.disabled.InfoInhibitor | bool | `true` |  |
 | prometheusStack.defaultRules.disabled.KubeClientCertificateExpiration | bool | `true` |  |
-| prometheusStack.defaultRules.disabled.KubeletDown | bool | `true` |  |
 | prometheusStack.defaultRules.disabled.NodeClockNotSynchronising | bool | `true` |  |
 | prometheusStack.defaultRules.rules.alertmanager | bool | `true` |  |
 | prometheusStack.defaultRules.rules.etcd | bool | `true` |  |
@@ -145,16 +138,16 @@ prometheus-stack:
 | prometheusStack.kubeControllerManager.enabled | bool | `false` |  |
 | prometheusStack.kubeProxy.enabled | bool | `false` |  |
 | prometheusStack.kubeScheduler.enabled | bool | `false` |  |
-| prometheusStack.kubelet.enabled | bool | `true` |  |
+| prometheusStack.kubelet.enabled | bool | `false` |  |
 | prometheusStack.nameOverride | string | `"prometheus-stack"` |  |
 | prometheusStack.prometheus.prometheusSpec.externalUrl | string | `"https://{{$.Values.global.ingress.host}}{{$.Values.global.ingress.paths.prometheus}}"` |  |
-| prometheusStack.prometheus.prometheusSpec.podMonitorSelector.matchLabels | string | `nil` |  |
-| prometheusStack.prometheus.prometheusSpec.probeSelector.matchLabels | string | `nil` |  |
+| prometheusStack.prometheus.prometheusSpec.podMonitorSelectorNilUsesHelmValues | bool | `false` |  |
+| prometheusStack.prometheus.prometheusSpec.probeSelectorNilUsesHelmValues | bool | `false` |  |
 | prometheusStack.prometheus.prometheusSpec.resources.requests.cpu | string | `"60m"` |  |
 | prometheusStack.prometheus.prometheusSpec.resources.requests.memory | string | `"2255Mi"` |  |
 | prometheusStack.prometheus.prometheusSpec.retention | string | `"1y"` |  |
 | prometheusStack.prometheus.prometheusSpec.routePrefix | string | `"/prometheus"` |  |
-| prometheusStack.prometheus.prometheusSpec.serviceMonitorSelector.matchLabels | string | `nil` |  |
+| prometheusStack.prometheus.prometheusSpec.serviceMonitorSelectorNilUsesHelmValues | bool | `false` |  |
 | prometheusStack.prometheus.prometheusSpec.storageSpec.volumeClaimTemplate.spec.accessModes[0] | string | `"ReadWriteOnce"` |  |
 | prometheusStack.prometheus.prometheusSpec.storageSpec.volumeClaimTemplate.spec.resources.requests.storage | string | `"250G"` |  |
 | prometheusStack.prometheusOperator.admissionWebhooks.enabled | bool | `false` |  |
