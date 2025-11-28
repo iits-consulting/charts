@@ -1,8 +1,8 @@
 # prometheus-stack
 
-![Version: 71.0.0](https://img.shields.io/badge/Version-71.0.0-informational?style=flat-square) ![AppVersion: 71.0.0](https://img.shields.io/badge/AppVersion-71.0.0-informational?style=flat-square)
+![Version: 79.8.2](https://img.shields.io/badge/Version-79.8.2-informational?style=flat-square) ![AppVersion: 3.7.3](https://img.shields.io/badge/AppVersion-3.7.3-informational?style=flat-square)
 
-A complete monitoring/alerting stack with Grafana Prometheus Alertmanager
+A complete monitoring/alerting stack with Grafana, Prometheus, Alertmanager & Blackbox exporter
 
 ## Installing the Chart with iits ArgoCD
 
@@ -10,17 +10,11 @@ A complete monitoring/alerting stack with Grafana Prometheus Alertmanager
 prometheus-stack:
   namespace: monitoring
   repoURL: "https://charts.iits.tech"
-  targetRevision: "71.0.0"
-  ignoreDifferences:
-    - jsonPointers:
-        - /imagePullSecrets
-      kind: ServiceAccount
+  targetRevision: "79.8.2"
   syncOptions:
     - ServerSideApply=true
   parameters:
-    global.alertmanager.host: "admin.{{.Values.projectValues.rootDomain}}"
-    global.prometheus.host: "admin.{{.Values.projectValues.rootDomain}}"
-    global.grafana.host: "admin.{{.Values.projectValues.rootDomain}}"
+    global.ingress.host: "admin.{{ .Values.projectValues.rootDomain }}"
     prometheusStack.grafana.adminPassword: "REPLACE_ME"
 ```
 
