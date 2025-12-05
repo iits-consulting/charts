@@ -26,6 +26,12 @@ argo-cd:
         memory: 1536Mi
         ephemeral-storage: 2Gi
 
+  redis-ha:
+    enabled: true
+
+  applicationSet:
+    replicas: 2
+
   dex:
     enabled: false
 

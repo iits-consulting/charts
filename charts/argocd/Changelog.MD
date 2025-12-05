@@ -2,6 +2,13 @@
 
 ## Chart Versions
 
+### 19.0.0
+
+- **Breaking:** HA setup as default, requires at least three different cluster nodes (see [this note](https://argo-cd.readthedocs.io/en/stable/operator-manual/high_availability/) in the ArgoCD docs)
+- Enabled Redis HA setup instead of Redis single node deployment
+- Run with 2 applicationSet-controller replicas per default
+
+
 ### 18.2.0
 
 - Fixing bugs in the values.yaml which appeared after changing the dependency chart. Because of this, some configs weren't taking effect
