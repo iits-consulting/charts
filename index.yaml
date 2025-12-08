@@ -6403,6 +6403,34 @@ entries:
     version: 1.0.0
   prometheus-stack:
   - apiVersion: v2
+    appVersion: 3.7.3
+    created: "2025-12-08T16:03:49.679622042Z"
+    dependencies:
+    - alias: prometheusStack
+      name: kube-prometheus-stack
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 79.8.2
+    - alias: blackboxExporter
+      condition: blackboxExporter.enabled
+      name: prometheus-blackbox-exporter
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 11.5.0
+    description: 'A complete monitoring/alerting stack with Grafana, Prometheus, Alertmanager
+      & Blackbox exporter  ## Installing the Chart with iits ArgoCD :warning: Make
+      sure that the CRD versions of the chart matches the chart version before upgrading!  ```yaml
+      prometheus-stack:   namespace: monitoring   repoURL: "https://charts.iits.tech"   targetRevision:
+      "79.8.2"   syncOptions:     - ServerSideApply=true   ignoreDifferences:     -
+      kind: Secret       name: prometheus-stack-grafana       jsonPointers:       -
+      /data/admin-password     - kind: Deployment       name: prometheus-stack-grafana       jsonPointers:       -
+      /spec/template/metadata/annotations/checksum~1secret   parameters:     global.ingress.host:
+      "admin.{{ .Values.projectValues.rootDomain }}"     prometheusStack.grafana.adminPassword:
+      "REPLACE_ME" ``` '
+    digest: 9a6dbffecab8e2b18b78b60c3f7b490e9b926ab839f5c2ae7536c1e64c64226f
+    name: prometheus-stack
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/prometheus-stack-79.8.2/prometheus-stack-79.8.2.tgz
+    version: 79.8.2
+  - apiVersion: v2
     appVersion: 68.4.5
     created: "2025-02-04T15:25:04.959623311Z"
     dependencies:
@@ -7612,4 +7640,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/waf-cert-uploader-0.1.1/waf-cert-uploader-0.1.1.tgz
     version: 0.1.1
-generated: "2025-12-05T15:19:32.403227046Z"
+generated: "2025-12-08T16:03:49.680414593Z"
