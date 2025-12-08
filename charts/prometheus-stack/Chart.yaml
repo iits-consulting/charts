@@ -3,33 +3,38 @@ dependencies:
   - alias: prometheusStack
     name: kube-prometheus-stack
     repository: https://prometheus-community.github.io/helm-charts
-    version: 63.1.0
+    version: 79.8.2
   - alias: blackboxExporter
     condition: blackboxExporter.enabled
     name: prometheus-blackbox-exporter
     repository: https://prometheus-community.github.io/helm-charts
-    version: 9.4.0
+    version: 11.5.0
 description: |
-  A complete monitoring/alerting stack with Grafana Prometheus Alertmanager
+  A complete monitoring/alerting stack with Grafana, Prometheus, Alertmanager & Blackbox exporter
   
   ## Installing the Chart with iits ArgoCD
+  :warning: Make sure that the CRD versions of the chart matches the chart version before upgrading!
 
   ```yaml
   prometheus-stack:
     namespace: monitoring
     repoURL: "https://charts.iits.tech"
-    targetRevision: "63.1.4"
-    ignoreDifferences:
-      - jsonPointers:
-          - /imagePullSecrets
-        kind: ServiceAccount
+    targetRevision: "79.8.2"
     syncOptions:
       - ServerSideApply=true
+    ignoreDifferences:
+      - kind: Secret
+        name: prometheus-stack-grafana
+        jsonPointers:
+        - /data/admin-password
+      - kind: Deployment
+        name: prometheus-stack-grafana
+        jsonPointers:
+        - /spec/template/metadata/annotations/checksum~1secret
     parameters:
-      global.alertmanager.host: "admin.{{.Values.projectValues.rootDomain}}"
-      global.prometheus.host: "admin.{{.Values.projectValues.rootDomain}}"
-      global.grafana.host: "admin.{{.Values.projectValues.rootDomain}}"
+      global.ingress.host: "admin.{{ .Values.projectValues.rootDomain }}"
       prometheusStack.grafana.adminPassword: "REPLACE_ME"
   ```
 name: prometheus-stack
-version: 63.1.4
+version: 79.8.2
+appVersion: 3.7.3
