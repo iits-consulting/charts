@@ -5,6 +5,7 @@
 A complete monitoring/alerting stack with Grafana, Prometheus, Alertmanager & Blackbox exporter
 
 ## Installing the Chart with iits ArgoCD
+:warning: Make sure that the CRD versions of the chart matches the chart version before upgrading!
 
 ```yaml
 prometheus-stack:
@@ -13,6 +14,15 @@ prometheus-stack:
   targetRevision: "79.8.2"
   syncOptions:
     - ServerSideApply=true
+  ignoreDifferences:
+    - kind: Secret
+      name: prometheus-stack-grafana
+      jsonPointers:
+      - /data/admin-password
+    - kind: Deployment
+      name: prometheus-stack-grafana
+      jsonPointers:
+      - /spec/template/metadata/annotations/checksum~1secret
   parameters:
     global.ingress.host: "admin.{{ .Values.projectValues.rootDomain }}"
     prometheusStack.grafana.adminPassword: "REPLACE_ME"
@@ -138,7 +148,7 @@ prometheus-stack:
 | prometheusStack.kubeControllerManager.enabled | bool | `false` |  |
 | prometheusStack.kubeProxy.enabled | bool | `false` |  |
 | prometheusStack.kubeScheduler.enabled | bool | `false` |  |
-| prometheusStack.kubelet.enabled | bool | `false` |  |
+| prometheusStack.kubelet.enabled | bool | `true` |  |
 | prometheusStack.nameOverride | string | `"prometheus-stack"` |  |
 | prometheusStack.prometheus.prometheusSpec.externalUrl | string | `"https://{{$.Values.global.ingress.host}}{{$.Values.global.ingress.paths.prometheus}}"` |  |
 | prometheusStack.prometheus.prometheusSpec.podMonitorSelectorNilUsesHelmValues | bool | `false` |  |
