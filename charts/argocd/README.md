@@ -1,6 +1,6 @@
 # argocd
 
-![Version: 18.2.0](https://img.shields.io/badge/Version-18.2.0-informational?style=flat-square) ![AppVersion: 3.1.8](https://img.shields.io/badge/AppVersion-3.1.8-informational?style=flat-square)
+![Version: 19.0.0](https://img.shields.io/badge/Version-19.0.0-informational?style=flat-square) ![AppVersion: 3.1.8](https://img.shields.io/badge/AppVersion-3.1.8-informational?style=flat-square)
 
 This chart is used to bootstrap a Kubernetes cluster with `argocd`.
 You can use this chart to deploy `argocd` through tools like `terraform`.
@@ -36,6 +36,7 @@ resource "helm_release" "argocd" {
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| argo-cd.applicationSet.replicas | int | `2` |  |
 | argo-cd.configs.cm."oidc.config" | string | `"name: keycloak\nissuer: $argocd-oidc:oidcURL\nclientID: $argocd-oidc:clientID\nclientSecret: $argocd-oidc:clientSecret\nrequestedScopes:\n  - openid\n  - profile\n  - email\n  - groups\nrequestedIDTokenClaims:\n  groups:\n    essential: true\n"` |  |
 | argo-cd.configs.cm."resource.customizations.health.networking.k8s.io_Ingress" | string | `"hs = {}\nhs.status = \"Healthy\"\nreturn hs\n"` |  |
 | argo-cd.configs.cm."resource.customizations.ignoreDifferences.admissionregistration.k8s.io_MutatingWebhookConfiguration" | string | `"# Ignores caBundle and template changes of the following resources\njqPathExpressions:\n  - .metadata.annotations.template\n  - '.webhooks'\n"` |  |
@@ -62,6 +63,7 @@ resource "helm_release" "argocd" {
 | argo-cd.global.logging.format | string | `"json"` |  |
 | argo-cd.global.logging.level | string | `"warn"` |  |
 | argo-cd.notifications.enabled | bool | `false` |  |
+| argo-cd.redis-ha.enabled | bool | `true` |  |
 | argo-cd.repoServer.env[0].name | string | `"TZ"` |  |
 | argo-cd.repoServer.env[0].value | string | `"Europe/Berlin"` |  |
 | argo-cd.repoServer.metrics.enabled | bool | `true` |  |
