@@ -17,7 +17,7 @@ prometheusStack:
   kubeScheduler:
     enabled: false
   kubelet:
-    enabled: false
+    enabled: true
   nameOverride: prometheus-stack
 
   crds:
