@@ -9,8 +9,10 @@ metadata:
 spec:
   type: filebeat
   version: {{ tpl .version $ }}
+  {{- if eq $.Values.logstash.enabled false }}
   elasticsearchRef:
     name: {{ $.Release.Name }}
+  {{- end }}
   kibanaRef:
     name: {{ $.Release.Name }}
   config:
@@ -19,11 +21,20 @@ spec:
         {{- .autodiscover | toYaml | nindent 8 }}
     processors:
         {{- concat .processors .extraProcessors | toYaml | nindent 6 }}
+    {{- if eq $.Values.logstash.enabled false }}
     output.elasticsearch:
       username: '${ELASTICSEARCH_USERNAME}'
       password: '${ELASTICSEARCH_PASSWORD}'
       indices:
         {{- concat .extraIndices .indices | toYaml | nindent 8}}
+    {{- end }}
+    {{- if eq $.Values.logstash.enabled true }}
+    output.logstash:
+      enabled: true
+      loadbalance: true
+      hosts: 
+        - {{$.Release.Name}}-ls-api.monitoring.svc:5044
+    {{- end }}
   daemonSet:
     podTemplate:
       metadata:

@@ -19,6 +19,8 @@
 The `container` input for Filebeat was deprecated in version `7.16` and is completely disabled by version `9.0.0` (see [#42295](https://github.com/elastic/beats/pull/42295)).
 Following the official [migration guide](https://www.elastic.co/docs/reference/beats/filebeat/migrate-to-filestream), in preparation for the migration from `container` input to `filestream`, a specific tag `take_over` must be set, so Filebeat can separate logs created by the container input from the filestream input. Otherwise an error is thrown and data may be duplicated.
 
+Important: If you want to upgrade to version 9.x, it requires a specific upgrade path (the latest upgrade path can be found here). Before installing version 9.0.0, a version update to 8.18.1 must be made, otherwise the upgrade will fail. Use version "8.18.1-fb-migr-filestream" from our stack for easy upgrading.
+
 - this Helm chart version adds the `filestream` input and sets the `take_over` tag as part of the migration
 - in version `9.0.0` the `take_over` tag will be removed to complete the migration
 
