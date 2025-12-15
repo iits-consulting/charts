@@ -1,0 +1,21 @@
+apiVersion: v2
+name: keycloak
+description: This chart is an umbrella Helm chart to apply customized values to the Keycloakx chart by Codecentric as default.
+home: "https://artifacthub.io/packages/helm/codecentric/keycloakx"
+maintainers:
+  - name: codecentric
+    email: info@codecentric.de
+    url: https://www.codecentric.de/
+  - name: Team KumoOps OTC
+    email: "otc-cloudops-as-a-service@iits-consulting.de"
+    url: "https://iits-consulting.slack.com/archives/C08JUM3F7JL"
+kubeVersion: ">=1.30.0"
+type: application
+# `version` and `appVersion` must always reflect the respective settings of the upstream Keycloakx chart.
+version: 7.1.5
+appVersion: "26.4.5"
+dependencies:
+  - name: keycloakx
+    alias: keycloak
+    repository: "https://codecentric.github.io/helm-charts"
+    version: 7.1.5
