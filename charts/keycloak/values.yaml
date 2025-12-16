@@ -1,124 +1,121 @@
-replicas: 2
+keycloak:
+  replicas: 2
 
-serviceAccount:
-  # Specifies whether a ServiceAccount should be created
-  # See if Keycloak-x works properly without this, as it does not need to write secrets
-  create: false # true
-  # Specifies whether the ServiceAccount can get and list pods
-  allowReadPods: false
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
-  name: ""
-  # Additional annotations for the ServiceAccount
-  annotations: {}
-  # Additional labels for the ServiceAccount
-  labels: {}
-  # Image pull secrets that are attached to the ServiceAccount
-  imagePullSecrets: []
-  # Automount API credentials for the Service Account
-  automountServiceAccountToken: true
+  serviceAccount:
+    # Specifies whether a ServiceAccount should be created
+    # See if Keycloak-x works properly without this, as it does not need to write secrets
+    create: false # true
+    # Specifies whether the ServiceAccount can get and list pods
+    allowReadPods: false
+    # The name of the service account to use.
+    # If not set and create is true, a name is generated using the fullname template
+    name: ""
+    # Additional annotations for the ServiceAccount
+    annotations: {}
+    # Additional labels for the ServiceAccount
+    labels: {}
+    # Image pull secrets that are attached to the ServiceAccount
+    imagePullSecrets: []
+    # Automount API credentials for the Service Account
+    automountServiceAccountToken: true
 
-## Default command to start Keycloak
-command:
-  - "/opt/keycloak/bin/kc.sh"
-  - "start"
-  - "--http-port=8080"
-  - "--hostname-strict=false"
+  ## Default command to start Keycloak
+  command:
+    - "/opt/keycloak/bin/kc.sh"
+    - "start"
+    - "--http-port=8080"
+    - "--hostname-strict=false"
 
-# Please note that the `|` is necessary here so the rendered value in the upstream chart is properly formattted.
-extraEnv: |
-  - name: KEYCLOAK_ADMIN
-    valueFrom:
-      secretKeyRef:
-        name: keycloak-credentials
-        key: username
-  - name: KEYCLOAK_ADMIN_PASSWORD
-    valueFrom:
-      secretKeyRef:
-        name: keycloak-credentials
-        key: password
-  - name: JAVA_OPTS_APPEND
-    value: >-
-      -Djgroups.dns.query={{ include "keycloak.fullname" . }}-headless
-  - name: KC_METRICS_ENABLED
-    value: "true"
-  - name: "KC_LOG_LEVEL_ORG_KEYCLOAK_EVENTS"
-    value: "trace"
-  - name: "KC_LOG_CONSOLE_LEVEL"
-    value: "trace"
+  # -- Must be specified as raw string, as it will be directly templated below the `env` key in the target YAML.
+  extraEnv: |
+    - name: JAVA_OPTS_APPEND
+      value: >-
+        -Djgroups.dns.query={{ include "keycloak.fullname" . }}-headless
+    - name: KC_METRICS_ENABLED
+      value: "true"
+    - name: "KC_LOG_LEVEL_ORG_KEYCLOAK_EVENTS"
+      value: "trace"
+    - name: "KC_LOG_CONSOLE_LEVEL"
+      value: "trace"
+    - name: KC_DB
+      value: postgres
 
-resources:
-  requests:
-    cpu: 100m
-    memory: 718Mi
-  limits:
-    memory: 718Mi
+  # -- Must be specified as raw string, as it will be directly templated below the `envFrom` key in the target YAML.
+  extraEnvFrom: |
+    - secretRef:
+        name: keycloak-root-creds
+    - secretRef:
+        name: keycloak-psql-creds
 
-# TODO: See if PVCs are needed, if so, create them in templates here
-# Add volume claim templates to the StatefulSet, e. g. for dynamic provisioning
-volumeClaimTemplates:
-  ""
-  # - metadata:
-  #     name: themes
-  #   spec:
-  #     accessModes: [ "ReadWriteOncePod" ]
-  #     storageClassName: "my-storage-class"
-  #     resources:
-  #       requests:
-  #         storage: 1Gi
+  resources:
+    requests:
+      cpu: 100m
+      memory: 718Mi
+    limits:
+      memory: 718Mi
 
-service:
-  annotations:
-    prometheus.io/scrape: "true"
-    prometheus.io/port: "8080"
-  type: ClusterIP
-  loadBalancerIP: null
-  httpPort: 80
-  httpNodePort: null
-  httpsPort: null
-  httpsNodePort: null
-  # When using Service type LoadBalancer, you can preserve the source IP seen in the container
-  # by changing the default (Cluster) to be Local.
-  # See https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip
-  externalTrafficPolicy: "Local"
-  # Session affinity
-  # See https://kubernetes.io/docs/concepts/services-networking/service/#proxy-mode-userspace
-  sessionAffinity: "ClientIP"
-  # Session affinity config, for example to set https://kubernetes.io/docs/reference/networking/virtual-ips/#session-stickiness-timeout
-  sessionAffinityConfig: {}
+  service:
+    annotations:
+      prometheus.io/scrape: "true"
+      prometheus.io/port: "9000"
+    type: ClusterIP
+    loadBalancerIP: null
+    httpPort: 80
+    httpNodePort: null
+    httpsPort: null
+    httpsNodePort: null
+    # When using Service type LoadBalancer, you can preserve the source IP seen in the container
+    # by changing the default (Cluster) to be Local.
+    # See https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip
+    externalTrafficPolicy: "Local"
+    # Session affinity
+    # See https://kubernetes.io/docs/concepts/services-networking/service/#proxy-mode-userspace
+    sessionAffinity: "ClientIP"
+    # Session affinity config, for example to set https://kubernetes.io/docs/reference/networking/virtual-ips/#session-stickiness-timeout
+    sessionAffinityConfig: {}
 
-ingress:
-  enabled: true
-  ingressClassName: "traefik"
-  servicePort: http
-  annotations:
-    traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-    traefik.ingress.kubernetes.io/router.tls: "true"
-  rules:
-    # TODO: Must be externally provided?
-    host: "{{ .Values.projectValues.authDomain }}"
-    paths:
-      - path: "/"
-        pathType: ImplementationSpecific
-
-database:
-  existingSecret: "keycloak-credentials"
-  existingSecretKey: "rds-password"
-  # E.g. dev-file, dev-mem, mariadb, mssql, mysql, oracle or postgres
-  vendor: "postgres"
-  hostname: "postgres.vpc.private"
-  port: "5432"
-  database: "keycloak"
-  username: "keycloak"
-
-proxy:
-  enabled: true
-  mode: passthrough
-  http:
+  ingress:
     enabled: true
+    ingressClassName: "traefik"
+    servicePort: http
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+      traefik.ingress.kubernetes.io/router.tls: "true"
+    rules:
+      # TODO: Must be externally provided?
+      - host: "REPLACE_ME"
+        paths:
+          - path: "/"
+            pathType: ImplementationSpecific
 
-http:
-  # For backwards compatibility reasons we set this to the value used by previous Keycloak versions.
-  relativePath: "/auth"
-  internalPort: http-internal
-  internalScheme: HTTP
+  # Example inspired by https://gitlab.iits.tech/team-otc-managed-service/projects/cognigy/cognigy-infrastructure-charts/-/blob/main/infrastructure-charts/value-files/keycloak/values.yaml?ref_type=heads#L57
+  # to show how this would translate to this chart
+  # networkPolicy:
+  #   enabled: true
+  #   extraFrom:
+  #     ingress:
+  #       - from:
+  #           - namespaceSelector:
+  #               matchLabels:
+  #                 kubernetes.io/metadata.name: monitoring
+  #             podSelector:
+  #               matchLabels:
+  #                 app.kubernetes.io/name: prometheus
+  #         ports:
+  #           - protocol: TCP
+  #             port: 9000
+
+  proxy:
+    enabled: true
+    mode: xforwarded
+    http:
+      enabled: true
+
+  http:
+    # For backwards compatibility reasons we set this to the value used by previous Keycloak versions.
+    relativePath: "/"
+    internalPort: http-internal
+    internalScheme: HTTP
+
+  serviceMonitor:
+    enabled: true
