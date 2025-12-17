@@ -1,24 +1,6 @@
 keycloak:
   replicas: 2
 
-  serviceAccount:
-    # Specifies whether a ServiceAccount should be created
-    # See if Keycloak-x works properly without this, as it does not need to write secrets
-    create: false # true
-    # Specifies whether the ServiceAccount can get and list pods
-    allowReadPods: false
-    # The name of the service account to use.
-    # If not set and create is true, a name is generated using the fullname template
-    name: ""
-    # Additional annotations for the ServiceAccount
-    annotations: {}
-    # Additional labels for the ServiceAccount
-    labels: {}
-    # Image pull secrets that are attached to the ServiceAccount
-    imagePullSecrets: []
-    # Automount API credentials for the Service Account
-    automountServiceAccountToken: true
-
   ## Default command to start Keycloak
   command:
     - "/opt/keycloak/bin/kc.sh"
@@ -82,7 +64,7 @@ keycloak:
       traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
       traefik.ingress.kubernetes.io/router.tls: "true"
     rules:
-      # TODO: Must be externally provided?
+      # Must be provided via external values, this is just a placeholder
       - host: "REPLACE_ME"
         paths:
           - path: "/"
@@ -107,12 +89,13 @@ keycloak:
 
   proxy:
     enabled: true
+    # This ensures proper source ip propagation with Traefik.
     mode: xforwarded
     http:
       enabled: true
 
   http:
-    # For backwards compatibility reasons we set this to the value used by previous Keycloak versions.
+    # Instead of being backwards-compatible, we want all paths on the Keycloak domain to be accessible without path prefix.
     relativePath: "/"
     internalPort: http-internal
     internalScheme: HTTP
