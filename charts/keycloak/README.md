@@ -27,7 +27,7 @@ To deploy it, you must provide two secrets of Type `Opaque` in the Kubernetes na
 
 ## Requirements
 
-Kubernetes: `>=1.30.0`
+Kubernetes: `>=1.29.0`
 
 | Repository | Name | Version |
 |------------|------|---------|
