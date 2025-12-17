@@ -60,13 +60,6 @@ Kubernetes: `>=1.30.0`
 | keycloak.service.sessionAffinity | string | `"ClientIP"` |  |
 | keycloak.service.sessionAffinityConfig | object | `{}` |  |
 | keycloak.service.type | string | `"ClusterIP"` |  |
-| keycloak.serviceAccount.allowReadPods | bool | `false` |  |
-| keycloak.serviceAccount.annotations | object | `{}` |  |
-| keycloak.serviceAccount.automountServiceAccountToken | bool | `true` |  |
-| keycloak.serviceAccount.create | bool | `false` |  |
-| keycloak.serviceAccount.imagePullSecrets | list | `[]` |  |
-| keycloak.serviceAccount.labels | object | `{}` |  |
-| keycloak.serviceAccount.name | string | `""` |  |
 | keycloak.serviceMonitor.enabled | bool | `true` |  |
 
 ----------------------------------------------
