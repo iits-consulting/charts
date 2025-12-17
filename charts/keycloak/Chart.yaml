@@ -1,6 +1,19 @@
 apiVersion: v2
 name: keycloak
-description: This chart is an umbrella Helm chart to apply customized values to the Keycloakx chart by Codecentric as default.
+description: |
+  This chart is an umbrella Helm chart to apply customized values to the Keycloakx chart by Codecentric as default.
+
+  To deploy it, you must provide two secrets of Type `Opaque` in the Kubernetes namespace of Keycloak that the chart will read from.
+
+  - `keycloak-root-creds`, with the keys
+    - `KC_BOOTSTRAP_ADMIN_USERNAME`: The Keycloak admin username
+    - `KC_BOOTSTRAP_ADMIN_PASSWORD`: The Keycloak admin password
+  - `keycloak-psql-creds`, with the keys
+    - `KC_DB_URL_HOST`: Address of the postgres instance
+    - `KC_DB_URL_PORT`: Port of the postgres instance
+    - `KC_DB_URL_DATABASE`: Database that Keycloak will use
+    - `KC_DB_USERNAME`: Username to authenticate on the postgres instance with
+    - `KC_DB_PASSWORD`: Password to authenticate on the postgres instance with
 home: "https://artifacthub.io/packages/helm/codecentric/keycloakx"
 maintainers:
   - name: codecentric
