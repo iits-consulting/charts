@@ -22,7 +22,7 @@ maintainers:
   - name: Team KumoOps OTC
     email: "otc-cloudops-as-a-service@iits-consulting.de"
     url: "https://iits-consulting.slack.com/archives/C08JUM3F7JL"
-kubeVersion: ">=1.30.0"
+kubeVersion: ">=1.29.0"
 type: application
 # `version` and `appVersion` must always reflect the respective settings of the upstream Keycloakx chart.
 version: 7.1.5
