@@ -1,6 +1,6 @@
 # keycloak
 
-![Version: 7.1.5](https://img.shields.io/badge/Version-7.1.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 26.4.5](https://img.shields.io/badge/AppVersion-26.4.5-informational?style=flat-square)
+![Version: 7.1.3](https://img.shields.io/badge/Version-7.1.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 26.3.3](https://img.shields.io/badge/AppVersion-26.3.3-informational?style=flat-square)
 
 This chart is an umbrella Helm chart to apply customized values to the Keycloakx chart by Codecentric as default.
 
@@ -31,7 +31,7 @@ Kubernetes: `>=1.29.0`
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://codecentric.github.io/helm-charts | keycloak(keycloakx) | 7.1.5 |
+| https://codecentric.github.io/helm-charts | keycloak(keycloakx) | 7.1.3 |
 
 ## Values
 
