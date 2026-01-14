@@ -2,7 +2,7 @@
 
 ![Version: 7.1.3](https://img.shields.io/badge/Version-7.1.3-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 26.3.3](https://img.shields.io/badge/AppVersion-26.3.3-informational?style=flat-square)
 
-This chart is an umbrella Helm chart to apply customized values to the Keycloakx chart by Codecentric as default.
+This chart is an umbrella Helm chart to apply customized values to the Keycloakx chart by Codecentric AG (licensed under [Apache 2.0](https://github.com/codecentric/helm-charts/blob/keycloakx-7.1.3/LICENSE)) by default.
 
 To deploy it, you must provide two secrets of Type `Opaque` in the Kubernetes namespace of Keycloak that the chart will read from.
 
@@ -16,13 +16,12 @@ To deploy it, you must provide two secrets of Type `Opaque` in the Kubernetes na
   - `KC_DB_USERNAME`: Username to authenticate on the postgres instance with
   - `KC_DB_PASSWORD`: Password to authenticate on the postgres instance with
 
-**Homepage:** <https://artifacthub.io/packages/helm/codecentric/keycloakx>
+**Homepage:** <https://github.com/iits-consulting/charts/tree/main/charts/keycloak>
 
 ## Maintainers
 
 | Name | Email | Url |
 | ---- | ------ | --- |
-| codecentric | <info@codecentric.de> | <https://www.codecentric.de/> |
 | Team KumoOps OTC | <otc-cloudops-as-a-service@iits-consulting.de> | <https://iits-consulting.slack.com/archives/C08JUM3F7JL> |
 
 ## Requirements
