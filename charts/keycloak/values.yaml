@@ -1,0 +1,104 @@
+keycloak:
+  replicas: 2
+
+  ## Default command to start Keycloak
+  command:
+    - "/opt/keycloak/bin/kc.sh"
+    - "start"
+    - "--http-port=8080"
+    - "--hostname-strict=false"
+
+  # -- Must be specified as raw string, as it will be directly templated below the `env` key in the target YAML.
+  extraEnv: |
+    - name: JAVA_OPTS_APPEND
+      value: >-
+        -Djgroups.dns.query={{ include "keycloak.fullname" . }}-headless
+    - name: KC_METRICS_ENABLED
+      value: "true"
+    - name: "KC_LOG_LEVEL_ORG_KEYCLOAK_EVENTS"
+      value: "trace"
+    - name: "KC_LOG_CONSOLE_LEVEL"
+      value: "trace"
+    - name: KC_DB
+      value: postgres
+
+  # -- Must be specified as raw string, as it will be directly templated below the `envFrom` key in the target YAML.
+  extraEnvFrom: |
+    - secretRef:
+        name: keycloak-root-creds
+    - secretRef:
+        name: keycloak-psql-creds
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 718Mi
+    limits:
+      memory: 718Mi
+
+  service:
+    annotations:
+      prometheus.io/scrape: "true"
+      prometheus.io/port: "9000"
+    type: ClusterIP
+    loadBalancerIP: null
+    httpPort: 80
+    httpNodePort: null
+    httpsPort: null
+    httpsNodePort: null
+    # When using Service type LoadBalancer, you can preserve the source IP seen in the container
+    # by changing the default (Cluster) to be Local.
+    # See https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip
+    externalTrafficPolicy: "Local"
+    # Session affinity
+    # See https://kubernetes.io/docs/concepts/services-networking/service/#proxy-mode-userspace
+    sessionAffinity: "ClientIP"
+    # Session affinity config, for example to set https://kubernetes.io/docs/reference/networking/virtual-ips/#session-stickiness-timeout
+    sessionAffinityConfig: {}
+
+  ingress:
+    enabled: true
+    ingressClassName: "traefik"
+    servicePort: http
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+      traefik.ingress.kubernetes.io/router.tls: "true"
+    rules:
+      # Must be provided via external values, this is just a placeholder
+      - host: "REPLACE_ME"
+        paths:
+          - path: "/"
+            pathType: ImplementationSpecific
+
+  # Example inspired by https://gitlab.iits.tech/team-otc-managed-service/projects/cognigy/cognigy-infrastructure-charts/-/blob/main/infrastructure-charts/value-files/keycloak/values.yaml?ref_type=heads#L57
+  # to show how this would translate to this chart
+  # networkPolicy:
+  #   enabled: true
+  #   extraFrom:
+  #     ingress:
+  #       - from:
+  #           - namespaceSelector:
+  #               matchLabels:
+  #                 kubernetes.io/metadata.name: monitoring
+  #             podSelector:
+  #               matchLabels:
+  #                 app.kubernetes.io/name: prometheus
+  #         ports:
+  #           - protocol: TCP
+  #             port: 9000
+
+  proxy:
+    enabled: true
+    # This ensures proper source ip propagation with Traefik.
+    mode: xforwarded
+    http:
+      enabled: true
+
+  http:
+    # Instead of being backwards-compatible, we want all paths on the Keycloak domain to be accessible without path prefix.
+    relativePath: "/"
+    internalPort: http-internal
+    internalScheme: HTTP
+
+  serviceMonitor:
+    enabled: true
