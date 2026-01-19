@@ -11,8 +11,7 @@ keycloak:
   # -- Must be specified as raw string, as it will be directly templated below the `env` key in the target YAML.
   extraEnv: |
     - name: JAVA_OPTS_APPEND
-      value: >-
-        -Djgroups.dns.query={{ include "keycloak.fullname" . }}-headless
+      value: "-Djgroups.dns.query=keycloakx-headless"
     - name: KC_METRICS_ENABLED
       value: "true"
     - name: "KC_LOG_LEVEL_ORG_KEYCLOAK_EVENTS"
