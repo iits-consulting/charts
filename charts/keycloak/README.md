@@ -40,7 +40,7 @@ Kubernetes: `>=1.29.0`
 | keycloak.command[1] | string | `"start"` |  |
 | keycloak.command[2] | string | `"--http-port=8080"` |  |
 | keycloak.command[3] | string | `"--hostname-strict=false"` |  |
-| keycloak.extraEnv | string | `"- name: JAVA_OPTS_APPEND\n  value: >-\n    -Djgroups.dns.query={{ include \"keycloak.fullname\" . }}-headless\n- name: KC_METRICS_ENABLED\n  value: \"true\"\n- name: \"KC_LOG_LEVEL_ORG_KEYCLOAK_EVENTS\"\n  value: \"trace\"\n- name: \"KC_LOG_CONSOLE_LEVEL\"\n  value: \"trace\"\n- name: KC_DB\n  value: postgres\n"` | Must be specified as raw string, as it will be directly templated below the `env` key in the target YAML. |
+| keycloak.extraEnv | string | `"- name: JAVA_OPTS_APPEND\n  value: \"-Djgroups.dns.query=keycloakx-headless\"\n- name: KC_METRICS_ENABLED\n  value: \"true\"\n- name: \"KC_LOG_LEVEL_ORG_KEYCLOAK_EVENTS\"\n  value: \"trace\"\n- name: \"KC_LOG_CONSOLE_LEVEL\"\n  value: \"trace\"\n- name: KC_DB\n  value: postgres\n"` | Must be specified as raw string, as it will be directly templated below the `env` key in the target YAML. |
 | keycloak.extraEnvFrom | string | `"- secretRef:\n    name: keycloak-root-creds\n- secretRef:\n    name: keycloak-psql-creds\n"` | Must be specified as raw string, as it will be directly templated below the `envFrom` key in the target YAML. |
 | keycloak.http.internalPort | string | `"http-internal"` |  |
 | keycloak.http.internalScheme | string | `"HTTP"` |  |
