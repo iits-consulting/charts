@@ -78,6 +78,7 @@ argo-cd:
 
   configs:
     cm:
+      # @default -- refer to values.yaml
       oidc.config: |
         name: keycloak
         issuer: $argocd-oidc:oidcURL
@@ -118,6 +119,7 @@ argo-cd:
         return hs
 
     rbac:
+      # @default -- refer to values.yaml
       policy.csv: |
         g, read-only, role:readonly
         g, full-access, role:admin
