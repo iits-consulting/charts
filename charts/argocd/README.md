@@ -37,7 +37,7 @@ resource "helm_release" "argocd" {
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | argo-cd.applicationSet.replicas | int | `2` |  |
-| argo-cd.configs.cm."oidc.config" | string | refer to values.yaml | Required oidc settings in a multiline string |
+| argo-cd.configs.cm."oidc.config" | string | refer to values.yaml | OIDC settings in a multiline string |
 | argo-cd.configs.cm."resource.customizations.health.networking.k8s.io_Ingress" | string | `"hs = {}\nhs.status = \"Healthy\"\nreturn hs\n"` |  |
 | argo-cd.configs.cm."resource.customizations.ignoreDifferences.admissionregistration.k8s.io_MutatingWebhookConfiguration" | string | `"# Ignores caBundle and template changes of the following resources\njqPathExpressions:\n  - .metadata.annotations.template\n  - '.webhooks'\n"` |  |
 | argo-cd.configs.cm."resource.customizations.ignoreDifferences.admissionregistration.k8s.io_ValidatingWebhookConfiguration" | string | `"jqPathExpressions:\n  - .metadata.annotations.template\n  - '.webhooks[]?.clientConfig.caBundle'\n  - '.webhooks'\n"` |  |
@@ -47,7 +47,7 @@ resource "helm_release" "argocd" {
 | argo-cd.configs.params."server.basehref" | string | `"/argocd"` |  |
 | argo-cd.configs.params."server.insecure" | bool | `true` |  |
 | argo-cd.configs.params."server.rootpath" | string | `"/argocd"` |  |
-| argo-cd.configs.rbac."policy.csv" | string | refer to values.yaml | Settings used for RBAC in ArgoCD in a multiline string |
+| argo-cd.configs.rbac."policy.csv" | string | refer to values.yaml | RBAC settings in a multiline string |
 | argo-cd.configs.rbac.scopes | string | `"[client_roles]"` |  |
 | argo-cd.controller.env[0].name | string | `"TZ"` |  |
 | argo-cd.controller.env[0].value | string | `"Europe/Berlin"` |  |
