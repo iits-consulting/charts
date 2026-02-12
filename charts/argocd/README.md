@@ -1,6 +1,6 @@
 # argocd
 
-![Version: 19.0.0](https://img.shields.io/badge/Version-19.0.0-informational?style=flat-square) ![AppVersion: 3.1.8](https://img.shields.io/badge/AppVersion-3.1.8-informational?style=flat-square)
+![Version: 20.0.0](https://img.shields.io/badge/Version-20.0.0-informational?style=flat-square) ![AppVersion: 3.1.8](https://img.shields.io/badge/AppVersion-3.1.8-informational?style=flat-square)
 
 This chart is used to bootstrap a Kubernetes cluster with `argocd`.
 You can use this chart to deploy `argocd` through tools like `terraform`.
@@ -14,7 +14,7 @@ resource "helm_release" "argocd" {
   name                  = "argocd"
   repository            = "https://charts.iits.tech"
   chart                 = "argocd"
-  version               = "18.2.0"
+  version               = "20.0.0"
   namespace             = "argocd"
   create_namespace      = true
   wait                  = true
@@ -37,7 +37,7 @@ resource "helm_release" "argocd" {
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | argo-cd.applicationSet.replicas | int | `2` |  |
-| argo-cd.configs.cm."oidc.config" | string | `"name: keycloak\nissuer: $argocd-oidc:oidcURL\nclientID: $argocd-oidc:clientID\nclientSecret: $argocd-oidc:clientSecret\nrequestedScopes:\n  - openid\n  - profile\n  - email\n  - groups\nrequestedIDTokenClaims:\n  groups:\n    essential: true\n"` |  |
+| argo-cd.configs.cm."oidc.config" | string | `"name: keycloak\nissuer: $argocd-oidc:oidcURL\nclientID: $argocd-oidc:clientID\nclientSecret: $argocd-oidc:clientSecret\nrequestedScopes:\n  - openid\n  - profile\n  - email\nrequestedIDTokenClaims:\n  groups:\n    essential: true\n"` |  |
 | argo-cd.configs.cm."resource.customizations.health.networking.k8s.io_Ingress" | string | `"hs = {}\nhs.status = \"Healthy\"\nreturn hs\n"` |  |
 | argo-cd.configs.cm."resource.customizations.ignoreDifferences.admissionregistration.k8s.io_MutatingWebhookConfiguration" | string | `"# Ignores caBundle and template changes of the following resources\njqPathExpressions:\n  - .metadata.annotations.template\n  - '.webhooks'\n"` |  |
 | argo-cd.configs.cm."resource.customizations.ignoreDifferences.admissionregistration.k8s.io_ValidatingWebhookConfiguration" | string | `"jqPathExpressions:\n  - .metadata.annotations.template\n  - '.webhooks[]?.clientConfig.caBundle'\n  - '.webhooks'\n"` |  |
@@ -47,7 +47,8 @@ resource "helm_release" "argocd" {
 | argo-cd.configs.params."server.basehref" | string | `"/argocd"` |  |
 | argo-cd.configs.params."server.insecure" | bool | `true` |  |
 | argo-cd.configs.params."server.rootpath" | string | `"/argocd"` |  |
-| argo-cd.configs.rbac."policy.csv" | string | `"g, ARGOCD-ADMIN, role:admin\ng, SYSTEM-ADMINISTRATOR, role:admin\n"` |  |
+| argo-cd.configs.rbac."policy.csv" | string | `"g, read-only, role:readonly\ng, full-access, role:admin\n\n# Grant rights to read and do rollouts + restarts limited to customer apps\np, role:app-deploy, *, get, app-charts/*, allow\np, role:app-deploy, applications, sync, app-charts/*, allow\np, role:app-deploy, *, action/apps/*/restart, app-charts/*, allow\ng, app-deploy, role:app-deploy\n\n# Grant rights to read and do rollouts + restarts limited to infrastructure apps\np, role:infra-deploy, *, get, infrastructure-charts/*, allow\np, role:infra-deploy, applications, sync, infrastructure-charts/*, allow\np, role:infra-deploy, *, action/apps/*/restart, infrastructure-charts/*, allow\ng, infra-deploy, role:infra-deploy\n"` |  |
+| argo-cd.configs.rbac.scopes | string | `"[client_roles]"` |  |
 | argo-cd.controller.env[0].name | string | `"TZ"` |  |
 | argo-cd.controller.env[0].value | string | `"Europe/Berlin"` |  |
 | argo-cd.controller.replicas | int | `2` |  |

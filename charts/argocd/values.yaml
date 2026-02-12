@@ -87,7 +87,6 @@ argo-cd:
           - openid
           - profile
           - email
-          - groups
         requestedIDTokenClaims:
           groups:
             essential: true
@@ -120,8 +119,21 @@ argo-cd:
 
     rbac:
       policy.csv: |
-        g, ARGOCD-ADMIN, role:admin
-        g, SYSTEM-ADMINISTRATOR, role:admin
+        g, read-only, role:readonly
+        g, full-access, role:admin
+
+        # Grant rights to read and do rollouts + restarts limited to customer apps
+        p, role:app-deploy, *, get, app-charts/*, allow
+        p, role:app-deploy, applications, sync, app-charts/*, allow
+        p, role:app-deploy, *, action/apps/*/restart, app-charts/*, allow
+        g, app-deploy, role:app-deploy
+
+        # Grant rights to read and do rollouts + restarts limited to infrastructure apps
+        p, role:infra-deploy, *, get, infrastructure-charts/*, allow
+        p, role:infra-deploy, applications, sync, infrastructure-charts/*, allow
+        p, role:infra-deploy, *, action/apps/*/restart, infrastructure-charts/*, allow
+        g, infra-deploy, role:infra-deploy
+      scopes: "[client_roles]"
 
     params:
       server.insecure: true
