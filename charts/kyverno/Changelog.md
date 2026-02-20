@@ -2,6 +2,13 @@
 
 ## Chart Versions
 
+### 3.2.0
+
+- Update Kyverno chart to 3.5.3
+- Update Kyverno-policies chart to 3.5.3
+- Update policy-reporter chart to 3.7.2
+- Reintroduce `autoInjectDockerPullSecrets.autogenControllers` that was removed on `7b4744466b49160aadd6a7c7f41527b606fe34e3`
+
 ### 3.1.1
 - Bugfix: cannot specify multiple image pull secret due to missing yaml seperator (---)
 

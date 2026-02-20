@@ -20,6 +20,7 @@ This chart wraps the upstream `kyverno` and `kyverno-policies` chart and adds a 
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| autoInjectDockerPullSecrets.autogenControllers | string | `"none"` | Auto gen rules for pod controllers. See https://kyverno.io/docs/writing-policies/autogen/ |
 | autoInjectDockerPullSecrets.enabled | bool | `false` |  |
 | autoInjectDockerPullSecrets.existingSecretRef | list | `[]` |  |
 | autoInjectDockerPullSecrets.secrets | object | `{}` |  |

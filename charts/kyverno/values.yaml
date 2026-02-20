@@ -338,6 +338,9 @@ enforceSecurityContext:
 autoInjectDockerPullSecrets:
   enabled: false
 
+  # -- Auto gen rules for pod controllers. See https://kyverno.io/docs/writing-policies/autogen/
+  autogenControllers: none
+
   # You can specify existing secrets of type "kubernetes.io/dockerconfigjson" under "existingSecretRef" to
   # clone and use instead of letting Kyverno create these secrets from the chart values. Note that the
   # secrets to copy must contain valid ".dockerconfigjson" data. Additionally, the existing secrets to
@@ -384,4 +387,3 @@ ingress:
       paths:
         - path: "/policies"
         - path: "/_nuxt"
-
