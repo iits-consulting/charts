@@ -2,6 +2,9 @@
 
 ## Chart Versions
 
+### 20.0.0
+- **Breaking:** Adjust the default RBAC role settings to match a new keycloak oidc pattern
+
 ### 19.0.0
 
 - **Breaking:** HA setup as default, requires at least three different cluster nodes (see [this note](https://argo-cd.readthedocs.io/en/stable/operator-manual/high_availability/) in the ArgoCD docs)
