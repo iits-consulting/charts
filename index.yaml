@@ -4702,6 +4702,20 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/keycloak-gatekeeper-1.0.0/keycloak-gatekeeper-1.0.0.tgz
     version: 1.0.0
+  keycloakx:
+  - apiVersion: v2
+    created: "2026-03-03T14:15:42.376506915Z"
+    dependencies:
+    - name: keycloakx
+      repository: https://codecentric.github.io/helm-charts
+      version: 7.1.8
+    description: Keycloak.X - Open Source Identity and Access Management for Modern
+      Applications and Services
+    digest: 528da0dc716654515d54251ab7b112b684fee70838a168be7d9f204f6e98a9da
+    name: keycloakx
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/keycloakx-7.1.8/keycloakx-7.1.8.tgz
+    version: 7.1.8
   kyverno:
   - apiVersion: v2
     appVersion: 1.15.3
@@ -7686,4 +7700,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/waf-cert-uploader-0.1.1/waf-cert-uploader-0.1.1.tgz
     version: 0.1.1
-generated: "2026-02-25T13:39:01.561610773Z"
+generated: "2026-03-03T14:15:42.377583447Z"
