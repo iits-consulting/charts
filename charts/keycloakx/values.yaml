@@ -1,0 +1,62 @@
+keycloakx:
+  secretEnv:
+    KC_BOOTSTRAP_ADMIN_USERNAME: "keycloakAdmin"
+    KC_BOOTSTRAP_ADMIN_PASSWORD: "REPLACE_ME"
+
+  configMapEnv:
+    JAVA_OPTS_APPEND: "-Djgroups.dns.query=keycloakx-headless"
+    KC_LOG_LEVEL_ORG_KEYCLOAK_EVENTS: "trace"
+    KC_LOG_CONSOLE_LEVEL: "trace"
+    KC_LOG_CONSOLE_OUTPUT: "json"
+
+  database:
+    vendor: "postgres"
+    hostname: "REPLACE_ME"
+    port: "REPLACE_ME"
+    database: "REPLACE_ME"
+    username: "REPLACE_ME"
+    password: "REPLACE_ME"
+
+  extraEnvFrom: |
+    - secretRef:
+        name: {{ include "keycloak.fullname" $ }}-env
+    - configMapRef:
+        name: {{ include "keycloak.fullname" $ }}-env
+
+  replicas: 2
+  command:
+    - "/opt/keycloak/bin/kc.sh"
+    - "start"
+    - "--http-port=8080"
+    - "--hostname-strict=false"
+
+  ingress:
+    enabled: true
+    ingressClassName: traefik
+    annotations:
+      "traefik.ingress.kubernetes.io/router.entrypoints": websecure
+    rules:
+      - host: "REPLACE_ME"
+        paths:
+          - path: "/"
+            pathType: Prefix
+
+  http:
+    relativePath: "/"
+  proxy:
+    mode: "xforwarded"
+
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "718Mi"
+    limits:
+      memory: "718Mi"
+
+  topologySpreadConstraints: |
+    - maxSkew: 1
+      topologyKey: topology.kubernetes.io/zone
+      whenUnsatisfiable: "DoNotSchedule"
+
+  serviceMonitor:
+    enabled: true

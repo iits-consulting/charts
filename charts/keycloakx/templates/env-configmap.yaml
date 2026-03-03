@@ -1,0 +1,11 @@
+{{- with .Values.keycloakx.configMapEnv -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "keycloak.fullname" $ }}-env
+  namespace: {{ $.Release.Namespace }}
+data:
+  {{- range $key, $value := . }}
+  {{- printf "%s: %s" $key (tpl $value $ | quote) | nindent 2 }}
+  {{- end }}
+{{- end }}
