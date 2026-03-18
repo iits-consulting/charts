@@ -28,6 +28,14 @@ Wrapper chart for cert-manager. Deploys a ClusterIssuer resource to bootstrap Le
 | clusterIssuers.http.name | string | `"letsencrypt"` |  |
 | clusterIssuers.http.server | string | `"https://acme-v02.api.letsencrypt.org/directory"` |  |
 | clusterIssuers.otcDNS | object | `{"accessKey":"","enabled":true,"existingSecretRef":"","name":"letsencrypt-dns","region":"eu-de","secretKey":"","server":"https://acme-v02.api.letsencrypt.org/directory"}` | Only available for OTC |
+| externalSecret.enabled | bool | `false` |  |
+| externalSecret.push.remoteRef.keys[0] | string | `"accessKey"` |  |
+| externalSecret.push.remoteRef.keys[1] | string | `"secretKey"` |  |
+| externalSecret.push.spec.deletionPolicy | string | `"Delete"` |  |
+| externalSecret.push.spec.refreshInterval | string | `"1h"` |  |
+| externalSecret.push.spec.updatePolicy | string | `"IfNotExists"` |  |
+| externalSecret.secretStore.kind | string | `"ClusterSecretStore"` |  |
+| externalSecret.secretStore.name | string | `"vault"` |  |
 | policyException.enabled | string | `"{{ .Values.clusterIssuers.otcDNS.enabled }}"` |  |
 
 ----------------------------------------------
