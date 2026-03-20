@@ -1,6 +1,6 @@
 # cert-manager
 
-![Version: 1.17.4-policy-exclusion](https://img.shields.io/badge/Version-1.17.4--policy--exclusion-informational?style=flat-square) ![AppVersion: v1.17.4](https://img.shields.io/badge/AppVersion-v1.17.4-informational?style=flat-square)
+![Version: 1.17.5](https://img.shields.io/badge/Version-1.17.5-informational?style=flat-square) ![AppVersion: v1.17.5](https://img.shields.io/badge/AppVersion-v1.17.5-informational?style=flat-square)
 
 Wrapper chart for cert-manager. Deploys a ClusterIssuer resource to bootstrap Let's encrypt cert generation
 
@@ -8,8 +8,8 @@ Wrapper chart for cert-manager. Deploys a ClusterIssuer resource to bootstrap Le
 
 | Repository | Name | Version |
 |------------|------|---------|
+| https://akyriako.github.io/cert-manager-webhook-opentelekomcloud | cert-manager-webhook-opentelekomcloud | v0.2.0 |
 | https://charts.jetstack.io | cert-manager | v1.17.4 |
-| https://iits-consulting.github.io/cert-manager-webhook-opentelekomcloud | cert-manager-webhook-opentelekomcloud | v0.1.5-security-context |
 
 ## Values
 
@@ -29,11 +29,8 @@ Wrapper chart for cert-manager. Deploys a ClusterIssuer resource to bootstrap Le
 | clusterIssuers.http.server | string | `"https://acme-v02.api.letsencrypt.org/directory"` |  |
 | clusterIssuers.otcDNS | object | `{"accessKey":"","enabled":true,"existingSecretRef":"","name":"letsencrypt-dns","region":"eu-de","secretKey":"","server":"https://acme-v02.api.letsencrypt.org/directory"}` | Only available for OTC |
 | externalSecret.enabled | bool | `false` |  |
-| externalSecret.push.remoteRef.keys[0] | string | `"accessKey"` |  |
-| externalSecret.push.remoteRef.keys[1] | string | `"secretKey"` |  |
-| externalSecret.push.spec.deletionPolicy | string | `"Delete"` |  |
-| externalSecret.push.spec.refreshInterval | string | `"1h"` |  |
-| externalSecret.push.spec.updatePolicy | string | `"IfNotExists"` |  |
+| externalSecret.pull | object | `{"enabled":false,"paths":{"accessKey":{"key":"accessKey","path":""},"secretKey":{"key":"secretKey","path":""}},"spec":{"creationPolicy":"Owner","deletionPolicy":"Delete","refreshInterval":"1m"}}` | Create an ExternalSecret resource. It describes what data should be fetched, how the data should be transformed and saved as a Kind=Secret. |
+| externalSecret.push | object | `{"enabled":false,"remoteRef":{"keys":["accessKey","secretKey"],"path":""},"spec":{"deletionPolicy":"Delete","refreshInterval":"1h","updatePolicy":"IfNotExists"}}` | Creates a PushSecret resource. It describes what data should be pushed to the SecretStore. This will be created also when pull is set to false. |
 | externalSecret.secretStore.kind | string | `"ClusterSecretStore"` |  |
 | externalSecret.secretStore.name | string | `"vault"` |  |
 | policyException.enabled | string | `"{{ .Values.clusterIssuers.otcDNS.enabled }}"` |  |
