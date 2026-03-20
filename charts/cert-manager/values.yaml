@@ -56,9 +56,12 @@ externalSecret:
     kind: ClusterSecretStore
     name: "vault"
   
+  # -- Creates a PushSecret resource. It describes what data should be pushed to the SecretStore. This will be created also when pull is set to false.
   push:
+    enabled: false
     remoteRef: 
-      # Name of the properties in the resulting Vault secret
+      path: ""
+      # Name of the properties of the resulting secret in the SecretStore
       keys:
       - accessKey
       - secretKey
@@ -68,11 +71,36 @@ externalSecret:
       deletionPolicy: Delete
 
       # The Interval to which External Secrets will try to push a secret definition
-      refreshInterval: "1h"
+      refreshInterval: 1h
 
       # UpdatePolicy to handle Secrets in the provider
       # Valid values: Replace, IfNotExists
       updatePolicy: IfNotExists
+  
+  # -- Create an ExternalSecret resource. It describes what data should be fetched, how the data should be transformed and saved as a Kind=Secret.
+  pull:
+    enabled: false
+    paths:
+      accessKey:
+        path: ""
+        key: "accessKey"
+      secretKey:
+        path: ""
+        key: "secretKey"
+    spec:
+      # RefreshInterval is the amount of time before the values are read again from the SecretStore provider
+      # Valid time units are "ns", "us" (or "µs"), "ms", "s", "m", "h"
+      # Example values: "1h", "2h30m", "10s"
+      # May be set to zero to fetch and create it once
+      refreshInterval: 1m
+
+      # CreationPolicy defines rules on how to create the resulting Secret.
+      # Owner, Orphan, Merge, None
+      creationPolicy: Owner
+
+      # DeletionPolicy defines rules on how to delete the resulting Secret
+      # Valid values: Delete, Merge, Retain
+      deletionPolicy: Delete
 
 policyException:
   # Only enabled if clusterIssuers.otcDNS.enabled is also true
