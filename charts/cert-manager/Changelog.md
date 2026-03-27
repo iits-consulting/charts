@@ -2,6 +2,10 @@
 
 ## Chart Versions
 
+### 1.17.5
+- Update dependency chart cert-manager-webhook-opentelekomcloud back to original repo 0.2.0
+- add opt-in for ESO for OTC DNS
+
 ### 1.17.4-policy-exclusion
 - Update dependency chart cert-manager-webhook-opentelekomcloud to v0.1.5-security-context
 - Adjust policy exclusions to match the new chart
