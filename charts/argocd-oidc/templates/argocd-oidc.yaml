@@ -10,28 +10,55 @@ stringData:
   clientID: {{ .Values.clientID | quote }}
   clientSecret: {{ .Values.clientSecret | quote }}
 ---
-{{- with .Values.externalSecret }}
-{{- if .enabled }}
+{{- if .Values.externalSecrets.enabled }}
+{{- range $secretName, $secretConfig := .Values.externalSecrets }}
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
-  name: {{ $.Release.Name }}-secrets
+  name: {{ $secretName }}
+  labels:
+    app.kubernetes.io/part-of: argocd
 spec:
-  refreshInterval: {{ .refreshInterval }}
-  target:
-    name: {{ $.Release.Name }}-secrets
-    creationPolicy: {{ .pull.spec.creationPolicy }}
-    deletionPolicy: {{ .pull.spec.deletionPolicy }}
+  refreshPolicy: Periodic
+  refreshInterval: 30s
+  {{- with $secretConfig.secretStoreRef }}
   secretStoreRef:
-    {{- with $.Values.externalSecret.secretStore }}
-    - {{ toYaml . | nindent 6 | trim }}
-    {{- end }} 
+    name: {{ .name }}
+    kind: {{ .kind }}
+  {{- end }}
+  target:
+    name: {{ $secretName }}
+    creationPolicy: Owner
+    deletionPolicy: Delete
+    template:
+      engineVersion: v2
+      metadata:
+        labels:
+          app.kubernetes.io/part-of: argocd
+          {{- with $secretConfig.labels }}
+          {{- toYaml . | nindent 10 }}
+          {{- end }}
+      data:
+      {{- range $key, $config := $secretConfig.secretKeys }}
+        {{- if and $config.literal $config.key $config.path }}
+          {{ fail (print ".Values.externalSecrets." $secretName ".secretKeys." $key ": \"literal\" and \"path & key\" are mutually exclusive and cannot be both set!") }}
+        {{- else if $config.literal }}
+          {{- $key | nindent 8}}: {{ $config.literal }}
+        {{- else if and $config.key $config.path }}
+          {{- $key | nindent 8}}: {{ print "'{{ ." $config.key " }}'" }}
+        {{- else }}
+          {{ fail (print ".Values.externalSecrets." $secretName ".secretKeys." $key ": Either \"literal\" or \"path & key\" must be set!") }}
+        {{- end }}
+      {{- end }}
   data:
-  {{- range $property, $values := .pull.paths }}
-    - secretKey: {{ $property | quote }}
+  {{- range $key, $config := $secretConfig.secretKeys }}
+    {{- if and $config.key $config.path }}
+    - secretKey: {{ $config.key }}
       remoteRef:
-        key: {{ $values.path | quote }}
-        property: {{ $values.key | quote }}
+        key: {{ $config.path }}
+        property: {{ $config.key }}
+    {{- end }}
   {{- end }}
-  {{- end }}
+---
+{{- end }}
 {{- end }}
