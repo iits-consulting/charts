@@ -1,6 +1,6 @@
 # cert-manager
 
-![Version: 1.17.5](https://img.shields.io/badge/Version-1.17.5-informational?style=flat-square) ![AppVersion: v1.17.5](https://img.shields.io/badge/AppVersion-v1.17.5-informational?style=flat-square)
+![Version: 1.17.4](https://img.shields.io/badge/Version-1.17.4-informational?style=flat-square) ![AppVersion: v1.17.4](https://img.shields.io/badge/AppVersion-v1.17.4-informational?style=flat-square)
 
 Wrapper chart for cert-manager. Deploys a ClusterIssuer resource to bootstrap Let's encrypt cert generation
 
