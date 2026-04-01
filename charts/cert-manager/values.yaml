@@ -45,9 +45,63 @@ clusterIssuers:
     server: https://acme-v02.api.letsencrypt.org/directory
     region: eu-de
     # Optional, if existingSecretRef is used
-    accessKey: ""
-    secretKey: ""
+    access_key: ""
+    secret_key: ""
 
+externalSecret:
+  enabled: false
+  
+  secretStore:
+    # Valid values: ClusterSecretStore or SecretStore
+    kind: ClusterSecretStore
+    name: "vault"
+  
+  # -- Creates a PushSecret resource. It describes what data should be pushed to the SecretStore. This will be created also when pull is set to false.
+  push:
+    enabled: false
+    spec:
+      # Deletion Policy to handle Secrets in the provider
+      # Valid values: Delete, None
+      deletionPolicy: Delete
+
+      # The Interval to which External Secrets will try to push a secret definition
+      refreshInterval: 1h
+
+      # UpdatePolicy to handle Secrets in the provider
+      # Valid values: Replace, IfNotExists
+      updatePolicy: IfNotExists
+ 
+    secrets: {}
+      # <secret-name>:
+      #   path: ""
+      #   keys: # list which is afterwards used 1:1 inside the template
+      #   - access_key
+      #   - secret_key
+
+  # -- Create ExternalSecret resources. It describes what data should be fetched, how the data should be transformed and saved as a Kind=Secret.
+  pull:
+    enabled: false
+    spec:
+      # RefreshInterval is the amount of time before the values are read again from the SecretStore provider
+      # Valid time units are "ns", "us" (or "µs"), "ms", "s", "m", "h"
+      # Example values: "1h", "2h30m", "10s"
+      # May be set to zero to fetch and create it once
+      refreshInterval: 1m
+
+      # CreationPolicy defines rules on how to create the resulting Secret.
+      # Owner, Orphan, Merge, None
+      creationPolicy: Owner
+
+      # DeletionPolicy defines rules on how to delete the resulting Secret
+      # Valid values: Delete, Merge, Retain
+      deletionPolicy: Delete
+    
+    secrets: {}
+      # <secret-name>:
+      #   path: ""
+      #   keys: # list which is afterwards used 1:1 inside the template
+      #   - access_key
+      #   - secret_key
 
 policyException:
   # Only enabled if clusterIssuers.otcDNS.enabled is also true
