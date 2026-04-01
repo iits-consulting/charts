@@ -45,8 +45,8 @@ clusterIssuers:
     server: https://acme-v02.api.letsencrypt.org/directory
     region: eu-de
     # Optional, if existingSecretRef is used
-    accessKey: ""
-    secretKey: ""
+    access_key: ""
+    secret_key: ""
 
 externalSecret:
   enabled: false
@@ -59,12 +59,6 @@ externalSecret:
   # -- Creates a PushSecret resource. It describes what data should be pushed to the SecretStore. This will be created also when pull is set to false.
   push:
     enabled: false
-    remoteRef: 
-      path: ""
-      # Name of the properties of the resulting secret in the SecretStore
-      keys:
-      - accessKey
-      - secretKey
     spec:
       # Deletion Policy to handle Secrets in the provider
       # Valid values: Delete, None
@@ -76,17 +70,17 @@ externalSecret:
       # UpdatePolicy to handle Secrets in the provider
       # Valid values: Replace, IfNotExists
       updatePolicy: IfNotExists
-  
-  # -- Create an ExternalSecret resource. It describes what data should be fetched, how the data should be transformed and saved as a Kind=Secret.
+ 
+    secrets: {}
+      # <secret-name>:
+      #   path: ""
+      #   keys: # list which is afterwards used 1:1 inside the template
+      #   - access_key
+      #   - secret_key
+
+  # -- Create ExternalSecret resources. It describes what data should be fetched, how the data should be transformed and saved as a Kind=Secret.
   pull:
     enabled: false
-    paths:
-      accessKey:
-        path: ""
-        key: "accessKey"
-      secretKey:
-        path: ""
-        key: "secretKey"
     spec:
       # RefreshInterval is the amount of time before the values are read again from the SecretStore provider
       # Valid time units are "ns", "us" (or "µs"), "ms", "s", "m", "h"
@@ -101,6 +95,13 @@ externalSecret:
       # DeletionPolicy defines rules on how to delete the resulting Secret
       # Valid values: Delete, Merge, Retain
       deletionPolicy: Delete
+    
+    secrets: {}
+      # <secret-name>:
+      #   path: ""
+      #   keys: # list which is afterwards used 1:1 inside the template
+      #   - access_key
+      #   - secret_key
 
 policyException:
   # Only enabled if clusterIssuers.otcDNS.enabled is also true
