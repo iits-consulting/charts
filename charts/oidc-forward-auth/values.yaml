@@ -96,6 +96,19 @@ gatekeeper:
       - require-any-role: true
         uri: /*
 
+# Directly setting env from secrets -> do not set them in config if enabled!
+# extraEnvVars:
+#   - name: PROXY_CLIENT_SECRET
+#     valueFrom:
+#       secretKeyRef:
+#         name: # TODO: Put ESO secret name here
+#         key: clientSecret
+#   - name: PROXY_ENCRYPTION_KEY
+#     valueFrom:
+#       secretKeyRef:
+#         name: # TODO: Put ESO secret name here
+#         key: encryptionKey
+
 # possible fields: https://doc.traefik.io/traefik/middlewares/http/forwardauth/
 middleware:
   address: "http://{{ include \"oidc-forward-auth.fullname\" $ }}-gatekeeper.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.gatekeeper.service.proxy.port }}"
@@ -125,3 +138,34 @@ ingress:
     - host: "{{ .Values.ingress.host }}"
       paths:
         - path: "/oauth"
+
+externalSecret:
+  enabled: false
+
+  secretStore:
+    # Valid values: ClusterSecretStore or SecretStore
+    kind: ClusterSecretStore
+    name: "vault"
+
+  # -- Create an ExternalSecret resource. It describes what data should be fetched, how the data should be transformed and saved as a Kind=Secret.
+  paths:
+    clientSecret:
+      path: ""
+      key: "clientSecret"
+    encryptionKey:
+      path: ""
+      key: "encryptionKey"
+  spec:
+    # RefreshInterval is the amount of time before the values are read again from the SecretStore provider
+    # Valid time units are "ns", "us" (or "µs"), "ms", "s", "m", "h"
+    # Example values: "1h", "2h30m", "10s"
+    # May be set to zero to fetch and create it once
+    refreshInterval: 1m
+
+    # CreationPolicy defines rules on how to create the resulting Secret.
+    # Owner, Orphan, Merge, None
+    creationPolicy: Owner
+
+    # DeletionPolicy defines rules on how to delete the resulting Secret
+    # Valid values: Delete, Merge, Retain
+    deletionPolicy: Delete
