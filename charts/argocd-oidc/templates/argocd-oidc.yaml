@@ -9,3 +9,56 @@ stringData:
   oidcURL: {{ .Values.oidcURL | quote }}
   clientID: {{ .Values.clientID | quote }}
   clientSecret: {{ .Values.clientSecret | quote }}
+---
+{{- if .Values.externalSecrets.enabled }}
+{{- range $secretName, $secretConfig := .Values.externalSecrets }}
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: {{ $secretName }}
+  labels:
+    app.kubernetes.io/part-of: argocd
+spec:
+  refreshPolicy: Periodic
+  refreshInterval: 30s
+  {{- with $secretConfig.secretStoreRef }}
+  secretStoreRef:
+    name: {{ .name }}
+    kind: {{ .kind }}
+  {{- end }}
+  target:
+    name: {{ $secretName }}
+    creationPolicy: Owner
+    deletionPolicy: Delete
+    template:
+      engineVersion: v2
+      metadata:
+        labels:
+          app.kubernetes.io/part-of: argocd
+          {{- with $secretConfig.labels }}
+          {{- toYaml . | nindent 10 }}
+          {{- end }}
+      data:
+      {{- range $key, $config := $secretConfig.secretKeys }}
+        {{- if and $config.literal $config.key $config.path }}
+          {{ fail (print ".Values.externalSecrets." $secretName ".secretKeys." $key ": \"literal\" and \"path & key\" are mutually exclusive and cannot be both set!") }}
+        {{- else if $config.literal }}
+          {{- $key | nindent 8}}: {{ $config.literal }}
+        {{- else if and $config.key $config.path }}
+          {{- $key | nindent 8}}: {{ print "'{{ ." $config.key " }}'" }}
+        {{- else }}
+          {{ fail (print ".Values.externalSecrets." $secretName ".secretKeys." $key ": Either \"literal\" or \"path & key\" must be set!") }}
+        {{- end }}
+      {{- end }}
+  data:
+  {{- range $key, $config := $secretConfig.secretKeys }}
+    {{- if and $config.key $config.path }}
+    - secretKey: {{ $config.key }}
+      remoteRef:
+        key: {{ $config.path }}
+        property: {{ $config.key }}
+    {{- end }}
+  {{- end }}
+---
+{{- end }}
+{{- end }}
