@@ -1,6 +1,6 @@
 # oidc-forward-auth
 
-![Version: 1.7.2](https://img.shields.io/badge/Version-1.7.2-informational?style=flat-square)
+![Version: 1.8.0](https://img.shields.io/badge/Version-1.8.0-informational?style=flat-square)
 
 Traefik forward auth with gogatekeeper.
 
