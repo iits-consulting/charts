@@ -1,6 +1,6 @@
 # oidc-forward-auth
 
-![Version: 1.7.2](https://img.shields.io/badge/Version-1.7.2-informational?style=flat-square)
+![Version: 1.8.0](https://img.shields.io/badge/Version-1.8.0-informational?style=flat-square)
 
 Traefik forward auth with gogatekeeper.
 
@@ -38,6 +38,9 @@ ingress:
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| externalSecret.enabled | bool | `false` |  |
+| externalSecret.secretStore.kind | string | `"ClusterSecretStore"` |  |
+| externalSecret.secretStore.name | string | `"vault"` |  |
 | gatekeeper.config.client-id | string | `nil` | Required: client id used to authenticate to the oauth service |
 | gatekeeper.config.client-secret | string | `nil` | Required: client secret used to authenticate to the oauth service |
 | gatekeeper.config.discovery-url | string | `nil` | Required: discovery url to retrieve the openid configuration, i.e. "https://keycloak.example.com/realms/<realm>" |
