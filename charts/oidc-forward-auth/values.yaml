@@ -96,18 +96,23 @@ gatekeeper:
       - require-any-role: true
         uri: /*
 
-# Directly setting env from secrets -> do not set them in config if enabled!
+# Reading env from secret created via ESO -> do not set them via normal chart values if ESO integration enabled!
 # extraEnvVars:
+#   - name: PROXY_CLIENT_ID
+#     valueFrom:
+#       secretKeyRef:
+#         name: "admin-forward-auth-secrets"
+#         key: clientid
 #   - name: PROXY_CLIENT_SECRET
 #     valueFrom:
 #       secretKeyRef:
-#         name: # TODO: Put ESO secret name here
-#         key: clientSecret
+#         name: "admin-forward-auth-secrets"
+#         key: clientsecret
 #   - name: PROXY_ENCRYPTION_KEY
 #     valueFrom:
 #       secretKeyRef:
-#         name: # TODO: Put ESO secret name here
-#         key: encryptionKey
+#         name: "admin-forward-auth-secrets"
+#         key: encryptionkey
 
 # possible fields: https://doc.traefik.io/traefik/middlewares/http/forwardauth/
 middleware:
@@ -148,24 +153,28 @@ externalSecret:
     name: "vault"
 
   # -- Create an ExternalSecret resource. It describes what data should be fetched, how the data should be transformed and saved as a Kind=Secret.
-  paths:
-    clientSecret:
-      path: ""
-      key: "clientSecret"
-    encryptionKey:
-      path: ""
-      key: "encryptionKey"
-  spec:
-    # RefreshInterval is the amount of time before the values are read again from the SecretStore provider
-    # Valid time units are "ns", "us" (or "µs"), "ms", "s", "m", "h"
-    # Example values: "1h", "2h30m", "10s"
-    # May be set to zero to fetch and create it once
-    refreshInterval: 1m
+  # pull:
+  #   paths:
+  #    clientid:
+  #      path: "{{ .Values.projectValues.stage }}/keycloak/clients/keycloak-gatekeeper-admin"
+  #      key: "client_id"
+  #    clientsecret:
+  #      path: "{{ .Values.projectValues.stage }}/keycloak/clients/keycloak-gatekeeper-admin"
+  #      key: "client_secret"
+  #    encryptionkey:
+  #      path: "{{ .Values.projectValues.stage }}/keycloak/clients/keycloak-gatekeeper-admin"
+  #      key: "encryption_key"
+  #   spec:
+  #     # RefreshInterval is the amount of time before the values are read again from the SecretStore provider
+  #     # Valid time units are "ns", "us" (or "µs"), "ms", "s", "m", "h"
+  #     # Example values: "1h", "2h30m", "10s"
+  #     # May be set to zero to fetch and create it once
+  #     refreshInterval: 1m
 
-    # CreationPolicy defines rules on how to create the resulting Secret.
-    # Owner, Orphan, Merge, None
-    creationPolicy: Owner
+  #     # CreationPolicy defines rules on how to create the resulting Secret.
+  #     # Owner, Orphan, Merge, None
+  #     creationPolicy: Owner
 
-    # DeletionPolicy defines rules on how to delete the resulting Secret
-    # Valid values: Delete, Merge, Retain
-    deletionPolicy: Delete
+  #     # DeletionPolicy defines rules on how to delete the resulting Secret
+  #     # Valid values: Delete, Merge, Retain
+  #     deletionPolicy: Delete
