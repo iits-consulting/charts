@@ -60,6 +60,14 @@ externalSecret:
   push:
     enabled: false
     spec:
+       # If empty, then the one defined in .externalSecrets.secretStore will be used.
+      secretStores: []
+      # - kind: ClusterSecretStore
+      #   name: "MySuperSecretStore"
+      #   # labelSelector: ...
+      #   #  matchExpressions: []
+      #   #  matchLabels: {}
+
       # Deletion Policy to handle Secrets in the provider
       # Valid values: Delete, None
       deletionPolicy: Delete
