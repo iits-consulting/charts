@@ -8,4 +8,4 @@ description: |
   Always read the [Changelog](Changelog.md) for information about possible migrations.
 name: traefik
 version: 35.2.0
-appVersion: v3.3.6
+appVersion: v3.6.12
