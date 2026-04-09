@@ -1,6 +1,6 @@
 # traefik
 
-![Version: 35.2.0](https://img.shields.io/badge/Version-35.2.0-informational?style=flat-square) ![AppVersion: v3.3.6](https://img.shields.io/badge/AppVersion-v3.3.6-informational?style=flat-square)
+![Version: 35.2.0](https://img.shields.io/badge/Version-35.2.0-informational?style=flat-square) ![AppVersion: v3.6.12](https://img.shields.io/badge/AppVersion-v3.6.12-informational?style=flat-square)
 
 The traefik ingress controller with some additional resources and sane default values for IITS projects.
 Always read the [Changelog](Changelog.md) for information about possible migrations.
