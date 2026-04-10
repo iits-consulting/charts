@@ -1,5 +1,5 @@
 # OIDC secrets based on default secret names selected in IITS ArgoCD helm chart
-url: ""
+oidcURL: ""
 clientID: ""
 clientSecret: ""
 
