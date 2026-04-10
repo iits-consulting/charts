@@ -4,7 +4,7 @@ clientID: ""
 clientSecret: ""
 
 externalSecret:
-  enabled: true
+  enabled: false
   SecretStore:
   # Valid values: ClusterSecretStore or SecretStore
     kind: ClusterSecretStore
