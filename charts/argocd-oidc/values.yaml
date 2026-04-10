@@ -2,3 +2,33 @@
 oidcURL: ""
 clientID: ""
 clientSecret: ""
+
+externalSecret:
+  enabled: false
+  SecretStore:
+  # Valid values: ClusterSecretStore or SecretStore
+    kind: ClusterSecretStore
+    name: "vault"
+  pull:
+    paths:
+      clientID:
+        path: ""
+        key: "clientID"
+      clientSecret:
+        path: ""
+        key: "clientSecret"
+    spec:
+      # RefreshInterval is the amount of time before the values are read again from the SecretStore provider
+      # Valid time units are "ns", "us" (or "µs"), "ms", "s", "m", "h"
+      # Example values: "1h", "2h30m", "10s"
+      # May be set to zero to fetch and create it once
+      refreshInterval: 1m
+
+      # CreationPolicy defines rules on how to create the resulting Secret.
+      # Owner, Orphan, Merge, None
+      creationPolicy: Owner
+
+      # DeletionPolicy defines rules on how to delete the resulting Secret
+      # Valid values: Delete, Merge, Retain
+      deletionPolicy: Delete
+    
