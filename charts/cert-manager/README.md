@@ -27,7 +27,7 @@ Wrapper chart for cert-manager. Deploys a ClusterIssuer resource to bootstrap Le
 | clusterIssuers.http.ingressClass | string | `"traefik"` |  |
 | clusterIssuers.http.name | string | `"letsencrypt"` |  |
 | clusterIssuers.http.server | string | `"https://acme-v02.api.letsencrypt.org/directory"` |  |
-| clusterIssuers.otcDNS | object | `{"access_key":"","enabled":true,"existingSecretRef":"","name":"letsencrypt-dns","region":"eu-de","secret_key":"","server":"https://acme-v02.api.letsencrypt.org/directory"}` | Only available for OTC |
+| clusterIssuers.otcDNS | object | `{"accessKey":"","enabled":true,"existingSecretRef":"","name":"letsencrypt-dns","region":"eu-de","secretKey":"","server":"https://acme-v02.api.letsencrypt.org/directory"}` | Only available for OTC |
 | externalSecret.enabled | bool | `false` |  |
 | externalSecret.pull | object | `{"enabled":false,"secrets":{},"spec":{"creationPolicy":"Owner","deletionPolicy":"Delete","refreshInterval":"1m"}}` | Create ExternalSecret resources. It describes what data should be fetched, how the data should be transformed and saved as a Kind=Secret. |
 | externalSecret.push | object | `{"enabled":false,"secrets":{},"spec":{"deletionPolicy":"Delete","refreshInterval":"1h","secretStores":[],"updatePolicy":"IfNotExists"}}` | Creates a PushSecret resource. It describes what data should be pushed to the SecretStore. This will be created also when pull is set to false. |
