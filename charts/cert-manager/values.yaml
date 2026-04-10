@@ -45,8 +45,8 @@ clusterIssuers:
     server: https://acme-v02.api.letsencrypt.org/directory
     region: eu-de
     # Optional, if existingSecretRef is used
-    access_key: ""
-    secret_key: ""
+    accessKey: ""
+    secretKey: ""
 
 externalSecret:
   enabled: false
@@ -60,7 +60,7 @@ externalSecret:
   push:
     enabled: false
     spec:
-       # If empty, then the one defined in .externalSecrets.secretStore will be used.
+      # If set, .externalSecrets.secretStore will be ignored
       secretStores: []
       # - kind: ClusterSecretStore
       #   name: "MySuperSecretStore"
@@ -83,8 +83,10 @@ externalSecret:
       # <secret-name>:
       #   path: ""
       #   keys: # list which is afterwards used 1:1 inside the template
-      #   - access_key
-      #   - secret_key
+      #   - name: accessKey
+      #     remoteKey: access_key # optional, if not specified "name" is used
+      #   - name: secretKey
+      #     remoteKey: secret_key # optional, if not specified "name" is used
 
   # -- Create ExternalSecret resources. It describes what data should be fetched, how the data should be transformed and saved as a Kind=Secret.
   pull:
@@ -108,8 +110,10 @@ externalSecret:
       # <secret-name>:
       #   path: ""
       #   keys: # list which is afterwards used 1:1 inside the template
-      #   - access_key
-      #   - secret_key
+      #   - name: accessKey
+      #     remoteKey: access_key # optional, if not specified "name" is used
+      #   - name: secretKey
+      #     remoteKey: secret_key # optional, if not specified "name" is used
 
 policyException:
   # Only enabled if clusterIssuers.otcDNS.enabled is also true
