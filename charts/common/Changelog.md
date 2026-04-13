@@ -3,5 +3,5 @@
 ## Chart Versions
 
 ### 0.0.1
-- Add option for External Secrets resources managed by an External Secrets Operator
+- Add option for External Secrets resources managed of the External Secrets Operator
 
