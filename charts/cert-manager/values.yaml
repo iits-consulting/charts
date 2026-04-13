@@ -105,10 +105,19 @@ externalSecret:
       # DeletionPolicy defines rules on how to delete the resulting Secret
       # Valid values: Delete, Merge, Retain
       deletionPolicy: Delete
+      # Strategy for converting secret key names before matching and rewriting. Can be Default, Unicode or ReverseUnicode. Defaults to Default
+      conversionStrategy: Default
+      # Set the following Decoding Strategies based on the need. Can be None, Base64, Base64URL or Auto. Defaults to None
+      decodingStrategy: None
+      # Policy for fetching tags/labels from provider secrets, possible options are Fetch, None. Defaults to None
+      metadataPolicy: None
     
     secrets: {}
       # <secret-name>:
       #   path: ""
+      #   conversionStrategy: Default # optional, if not specified, the common from .spec field is used
+      #   decodingStrategy:  None # optional, if not specified, the common from .spec field is used
+      #   metadataPolicy:  None # optional, if not specified, the common from .spec field is used
       #   keys: # list which is afterwards used 1:1 inside the template
       #   - name: accessKey
       #     remoteKey: access_key # optional, if not specified "name" is used
