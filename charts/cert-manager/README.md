@@ -10,6 +10,7 @@ Wrapper chart for cert-manager. Deploys a ClusterIssuer resource to bootstrap Le
 |------------|------|---------|
 | https://akyriako.github.io/cert-manager-webhook-opentelekomcloud | cert-manager-webhook-opentelekomcloud | v0.2.0 |
 | https://charts.jetstack.io | cert-manager | v1.20.1 |
+| https://iits-consulting.github.io/common | common | 0.0.1 |
 
 ## Values
 
@@ -28,11 +29,11 @@ Wrapper chart for cert-manager. Deploys a ClusterIssuer resource to bootstrap Le
 | clusterIssuers.http.name | string | `"letsencrypt"` |  |
 | clusterIssuers.http.server | string | `"https://acme-v02.api.letsencrypt.org/directory"` |  |
 | clusterIssuers.otcDNS | object | `{"accessKey":"","enabled":true,"existingSecretRef":"","name":"letsencrypt-dns","region":"eu-de","secretKey":"","server":"https://acme-v02.api.letsencrypt.org/directory"}` | Only available for OTC |
-| externalSecret.enabled | bool | `false` |  |
-| externalSecret.pull | object | `{"enabled":false,"secrets":{},"spec":{"conversionStrategy":"Default","creationPolicy":"Owner","decodingStrategy":"None","deletionPolicy":"Delete","metadataPolicy":"None","refreshInterval":"1m"}}` | Create ExternalSecret resources. It describes what data should be fetched, how the data should be transformed and saved as a Kind=Secret. |
-| externalSecret.push | object | `{"enabled":false,"secrets":{},"spec":{"deletionPolicy":"Delete","refreshInterval":"1h","secretStores":[],"updatePolicy":"IfNotExists"}}` | Creates a PushSecret resource. It describes what data should be pushed to the SecretStore. This will be created also when pull is set to false. |
-| externalSecret.secretStore.kind | string | `"ClusterSecretStore"` |  |
-| externalSecret.secretStore.name | string | `"vault"` |  |
+| common.externalSecret.enabled | bool | `false` |  |
+| common.externalSecret.pull | object | `{"enabled":false,"secrets":{},"spec":{"conversionStrategy":"Default","creationPolicy":"Owner","decodingStrategy":"None","deletionPolicy":"Delete","metadataPolicy":"None","refreshInterval":"1m"}}` | Create ExternalSecret resources. It describes what data should be fetched, how the data should be transformed and saved as a Kind=Secret. |
+| common.externalSecret.push | object | `{"enabled":false,"secrets":{},"spec":{"conversionStrategy":"Default","decodingStrategy":"None","deletionPolicy":"Delete","metadataPolicy":"None","refreshInterval":"1h","secretStores":[],"updatePolicy":"IfNotExists"}}` | Creates a PushSecret resource. It describes what data should be pushed to the SecretStore. This will be created also when pull is set to false. |
+| common.externalSecret.secretStore.kind | string | `"ClusterSecretStore"` |  |
+| common.externalSecret.secretStore.name | string | `"vault"` |  |
 | policyException.enabled | string | `"{{ .Values.clusterIssuers.otcDNS.enabled }}"` |  |
 
 ----------------------------------------------
