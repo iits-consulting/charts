@@ -7,6 +7,9 @@ dependencies:
     repository: https://akyriako.github.io/cert-manager-webhook-opentelekomcloud
     version: v0.2.0
     condition: clusterIssuers.otcDNS.enabled
+  - name: common
+    repository: https://iits-consulting.github.io/common
+    version: 0.0.1
 name: cert-manager
 description: Wrapper chart for cert-manager. Deploys a ClusterIssuer resource to bootstrap Let's encrypt cert generation
 appVersion: v1.20.1
