@@ -9,8 +9,8 @@ Wrapper chart for cert-manager. Deploys a ClusterIssuer resource to bootstrap Le
 | Repository | Name | Version |
 |------------|------|---------|
 | https://akyriako.github.io/cert-manager-webhook-opentelekomcloud | cert-manager-webhook-opentelekomcloud | v0.2.0 |
+| https://charts.iits.tech | common | 0.0.1 |
 | https://charts.jetstack.io | cert-manager | v1.20.1 |
-| https://iits-consulting.github.io/common | common | 0.0.1 |
 
 ## Values
 
