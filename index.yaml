@@ -1452,6 +1452,17 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/cert-manager-0.2.3/cert-manager-0.2.3.tgz
     version: 0.2.3
+  common:
+  - apiVersion: v2
+    appVersion: v0.0.1
+    created: "2026-04-14T11:54:00.542132942Z"
+    description: A Library Helm Chart for grouping common logic between charts. This
+      chart is not deployable by itself.
+    digest: c003177b0f0100869444871d833d97b8ff26dafeb4f2b38e9caaa4aa5c8afee7
+    name: common
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/common-0.0.1/common-0.0.1.tgz
+    version: 0.0.1
   crds:
   - apiVersion: v2
     created: "2024-04-29T17:54:06.067421378Z"
@@ -7685,4 +7696,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/waf-cert-uploader-0.1.1/waf-cert-uploader-0.1.1.tgz
     version: 0.1.1
-generated: "2026-03-18T08:19:42.377583447Z"
+generated: "2026-04-14T11:54:00.543239967Z"
