@@ -2,6 +2,12 @@
 
 ## Chart Versions
 
+### 1.20.1
+- Update dependency chart cert-manager-webhook-opentelekomcloud back to original repo 0.2.0
+- Update dependency chart cert-manager to 1.20.1
+- Updated Chart & App Version to 1.20.1
+- Added common chart lib as dependency chart
+
 ### 1.17.4-policy-exclusion
 - Update dependency chart cert-manager-webhook-opentelekomcloud to v0.1.5-security-context
 - Adjust policy exclusions to match the new chart

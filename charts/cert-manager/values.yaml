@@ -48,7 +48,12 @@ clusterIssuers:
     accessKey: ""
     secretKey: ""
 
-
 policyException:
   # Only enabled if clusterIssuers.otcDNS.enabled is also true
   enabled: "{{ .Values.clusterIssuers.otcDNS.enabled }}"
+
+# https://github.com/iits-consulting/charts/tree/main/charts/common
+# Global functionality can be used from the common library chart, e.g. creating External Secrets
+common:
+  externalSecret:
+    enabled: false
