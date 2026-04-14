@@ -5,5 +5,8 @@ dependencies:
 - name: cert-manager-webhook-opentelekomcloud
   repository: https://akyriako.github.io/cert-manager-webhook-opentelekomcloud
   version: 0.2.0
-digest: sha256:354140eda63fa180addaa509ec6fcb6ffee07ace6247d05f2f47000c99eed438
-generated: "2026-03-31T14:08:16.247325+02:00"
+- name: common
+  repository: https://charts.iits.tech
+  version: 0.0.1
+digest: sha256:9ca9500ac7722d9679a6ccc84979597c38170ebd2a7022e92e169505705ed8d1
+generated: "2026-04-14T17:43:18.687542+02:00"
