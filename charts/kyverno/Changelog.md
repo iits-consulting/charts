@@ -2,6 +2,9 @@
 
 ## Chart Versions
 
+### 3.2.1
+- Handle naming collisions in imagePullSecrets
+
 ### 3.2.0
 
 - Update Kyverno chart to 3.5.3
