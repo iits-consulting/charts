@@ -1,6 +1,6 @@
 # cert-manager
 
-![Version: 1.17.4-policy-exclusion](https://img.shields.io/badge/Version-1.17.4--policy--exclusion-informational?style=flat-square) ![AppVersion: v1.17.4](https://img.shields.io/badge/AppVersion-v1.17.4-informational?style=flat-square)
+![Version: 1.20.1](https://img.shields.io/badge/Version-1.20.1-informational?style=flat-square) ![AppVersion: v1.20.1](https://img.shields.io/badge/AppVersion-v1.20.1-informational?style=flat-square)
 
 Wrapper chart for cert-manager. Deploys a ClusterIssuer resource to bootstrap Let's encrypt cert generation
 
@@ -8,8 +8,9 @@ Wrapper chart for cert-manager. Deploys a ClusterIssuer resource to bootstrap Le
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://charts.jetstack.io | cert-manager | v1.17.4 |
-| https://iits-consulting.github.io/cert-manager-webhook-opentelekomcloud | cert-manager-webhook-opentelekomcloud | v0.1.5-security-context |
+| https://akyriako.github.io/cert-manager-webhook-opentelekomcloud | cert-manager-webhook-opentelekomcloud | v0.2.0 |
+| https://charts.iits.tech | common | 0.0.1 |
+| https://charts.jetstack.io | cert-manager | v1.20.1 |
 
 ## Values
 
@@ -28,6 +29,7 @@ Wrapper chart for cert-manager. Deploys a ClusterIssuer resource to bootstrap Le
 | clusterIssuers.http.name | string | `"letsencrypt"` |  |
 | clusterIssuers.http.server | string | `"https://acme-v02.api.letsencrypt.org/directory"` |  |
 | clusterIssuers.otcDNS | object | `{"accessKey":"","enabled":true,"existingSecretRef":"","name":"letsencrypt-dns","region":"eu-de","secretKey":"","server":"https://acme-v02.api.letsencrypt.org/directory"}` | Only available for OTC |
+| common.externalSecret.enabled | bool | `false` |  |
 | policyException.enabled | string | `"{{ .Values.clusterIssuers.otcDNS.enabled }}"` |  |
 
 ----------------------------------------------
