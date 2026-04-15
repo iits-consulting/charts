@@ -6,7 +6,8 @@
     {{- /* Grab the existing secret references as they are */ -}}
     {{- $existing := list }}
       {{- range $existingElement := .Values.autoInjectDockerPullSecrets.existingSecretRef | default dict }}
-        {{- $existing = append $existing (printf "%s-%s" $existingElement.namespace $existingElement.name)  }}
+      # namespace necessary even if that's not technically how the secret exists on cluster because that's how we construct the policy & all other secrets in add-image-pull-secrets
+        {{- $existing = append $existing (printf "%s-%s" $existingElement.name $existingElement.namespace)  }} 
       {{- end }}
 
     {{- /* Iterate over the keys of the `secrets` map */ -}}
@@ -20,10 +21,11 @@
     {{- range $secretName := $existing -}}
       {{- /* If the Dict $duplicates already contains a secret with the name $secretName we call Helm fail */ -}}
       {{- if hasKey $duplicates $secretName }}
-        {{- fail (printf "Helm Fail! Reason: Image Pull Secret %s already exists and would cause Kyverno ClusterPolicy naming conflict.", $secretName) -}}
+        {{- fail (printf "Helm Fail! Reason: Image Pull Secret %s already exists and would cause Kyverno ClusterPolicy naming conflict." $secretName) -}}
       {{- /* Otherwise insert the secret into the Dict (set returns the modified Dict) */ -}}
       {{- else }}
         {{- $_ := set $duplicates $secretName true -}}
+      {{- end -}}
     {{- end -}}
 
     {{- /* Comma separate the list output so it can be parsed properly */ -}}
