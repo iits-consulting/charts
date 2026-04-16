@@ -32,3 +32,6 @@ dependencies:
   - name: gatekeeper
     repository: https://gogatekeeper.github.io/helm-gogatekeeper
     version: 0.1.54
+  - name: common
+    repository: https://charts.iits.tech
+    version: 0.0.1

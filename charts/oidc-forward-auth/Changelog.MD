@@ -4,7 +4,7 @@
 
 ### 1.8.0
 
-- Add optional ESO integration
+- Add optional ESO integration via common chart
 
 ### 1.7.2
 

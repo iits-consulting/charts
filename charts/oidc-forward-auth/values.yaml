@@ -124,6 +124,8 @@ middleware:
 
   addAuthCookiesToResponse:
     - "kc-access"
+    - "kc-access-1"
+    - "kc-access-2"
     - "kc-state"
 
 ingress:
@@ -144,37 +146,25 @@ ingress:
       paths:
         - path: "/oauth"
 
-externalSecret:
-  enabled: false
+common:
+  externalSecret:
+    enabled: false
 
-  secretStore:
-    # Valid values: ClusterSecretStore or SecretStore
-    kind: ClusterSecretStore
-    name: "vault"
+    # secretStore:
+    #   # Valid values: ClusterSecretStore or SecretStore
+    #   kind: ClusterSecretStore
+    #   name: "vault"
 
-  # -- Create an ExternalSecret resource. It describes what data should be fetched, how the data should be transformed and saved as a Kind=Secret.
-  # pull:
-  #   paths:
-  #    clientid:
-  #      path: "{{ .Values.projectValues.stage }}/keycloak/clients/keycloak-gatekeeper-admin"
-  #      key: "client_id"
-  #    clientsecret:
-  #      path: "{{ .Values.projectValues.stage }}/keycloak/clients/keycloak-gatekeeper-admin"
-  #      key: "client_secret"
-  #    encryptionkey:
-  #      path: "{{ .Values.projectValues.stage }}/keycloak/clients/keycloak-gatekeeper-admin"
-  #      key: "encryption_key"
-  #   spec:
-  #     # RefreshInterval is the amount of time before the values are read again from the SecretStore provider
-  #     # Valid time units are "ns", "us" (or "µs"), "ms", "s", "m", "h"
-  #     # Example values: "1h", "2h30m", "10s"
-  #     # May be set to zero to fetch and create it once
-  #     refreshInterval: 1m
-
-  #     # CreationPolicy defines rules on how to create the resulting Secret.
-  #     # Owner, Orphan, Merge, None
-  #     creationPolicy: Owner
-
-  #     # DeletionPolicy defines rules on how to delete the resulting Secret
-  #     # Valid values: Delete, Merge, Retain
-  #     deletionPolicy: Delete
+    # -- Create an ExternalSecret resource. It describes what data should be fetched, how the data should be transformed and saved as a Kind=Secret.
+    # pull:
+    #   enabled: true
+    #   secrets:
+    #    admin-forward-auth-secrets:
+    #       path: "{{ .Values.projectValues.stage }}/keycloak/clients/keycloak-gatekeeper-admin"
+    #       keys:
+    #          - name: "clientid"
+    #            remoteKey: "client_id"
+    #          - name: "clientsecret"
+    #            remoteKey: "client_secret"
+    #          - name: "encryptionkey"
+    #            remoteKey: "encryption_key"
