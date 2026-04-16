@@ -32,15 +32,14 @@ ingress:
 
 | Repository | Name | Version |
 |------------|------|---------|
+| https://charts.iits.tech | common | 0.0.1 |
 | https://gogatekeeper.github.io/helm-gogatekeeper | gatekeeper | 0.1.54 |
 
 ## Values
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| externalSecret.enabled | bool | `false` |  |
-| externalSecret.secretStore.kind | string | `"ClusterSecretStore"` |  |
-| externalSecret.secretStore.name | string | `"vault"` |  |
+| common.externalSecret.enabled | bool | `false` |  |
 | gatekeeper.config.client-id | string | `nil` | Required: client id used to authenticate to the oauth service |
 | gatekeeper.config.client-secret | string | `nil` | Required: client secret used to authenticate to the oauth service |
 | gatekeeper.config.discovery-url | string | `nil` | Required: discovery url to retrieve the openid configuration, i.e. "https://keycloak.example.com/realms/<realm>" |
@@ -81,7 +80,9 @@ ingress:
 | ingress.hosts[0].host | string | `"{{ .Values.ingress.host }}"` |  |
 | ingress.hosts[0].paths[0].path | string | `"/oauth"` |  |
 | middleware.addAuthCookiesToResponse[0] | string | `"kc-access"` |  |
-| middleware.addAuthCookiesToResponse[1] | string | `"kc-state"` |  |
+| middleware.addAuthCookiesToResponse[1] | string | `"kc-access-1"` |  |
+| middleware.addAuthCookiesToResponse[2] | string | `"kc-access-2"` |  |
+| middleware.addAuthCookiesToResponse[3] | string | `"kc-state"` |  |
 | middleware.address | string | `"http://{{ include \"oidc-forward-auth.fullname\" $ }}-gatekeeper.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.gatekeeper.service.proxy.port }}"` |  |
 | middleware.authRequestHeaders[0] | string | `"Accept"` |  |
 | middleware.authRequestHeaders[1] | string | `"Authorization"` |  |
