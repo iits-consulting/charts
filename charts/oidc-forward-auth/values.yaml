@@ -147,24 +147,6 @@ ingress:
         - path: "/oauth"
 
 common:
+  # If using ESO, make sure the keys match what is set in extraEnvVars above
   externalSecret:
     enabled: false
-
-    # secretStore:
-    #   # Valid values: ClusterSecretStore or SecretStore
-    #   kind: ClusterSecretStore
-    #   name: "vault"
-
-    # -- Create an ExternalSecret resource. It describes what data should be fetched, how the data should be transformed and saved as a Kind=Secret.
-    # pull:
-    #   enabled: true
-    #   secrets:
-    #    admin-forward-auth-secrets:
-    #       path: "{{ .Values.projectValues.stage }}/keycloak/clients/keycloak-gatekeeper-admin"
-    #       keys:
-    #          - name: "clientid"
-    #            remoteKey: "client_id"
-    #          - name: "clientsecret"
-    #            remoteKey: "client_secret"
-    #          - name: "encryptionkey"
-    #            remoteKey: "encryption_key"
