@@ -9,3 +9,41 @@ stringData:
   oidcURL: {{ .Values.oidcURL | quote }}
   clientID: {{ .Values.clientID | quote }}
   clientSecret: {{ .Values.clientSecret | quote }}
+---
+{{- with .Values.externalSecret }}
+{{- if .enabled }}
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: {{ $.Release.Name }}-secrets
+spec:
+  refreshInterval: {{ .pull.spec.refreshInterval }}
+  target:
+    name: {{ $.Release.Name }}-secrets
+    creationPolicy: {{ .pull.spec.creationPolicy }}
+    deletionPolicy: {{ .pull.spec.deletionPolicy }}
+    {{- if .pull.literals }}
+    {{- with .pull.literals }}
+    template:
+      data:
+        {{- range $key, $value := . }}
+        {{ $key }}: {{ $value | quote }}
+        {{- end }}
+    {{- end }}
+    {{- end }}
+  secretStoreRef:
+  {{- with $.Values.externalSecret.secretStore }}
+    {{ toYaml . | nindent 4 | trim }}
+  {{- end }}
+  data:
+  {{- range $property, $values := .pull.paths }}
+    - secretKey: {{ $property | quote }}
+      remoteRef:
+        key: {{ $values.path | quote }}
+        property: {{ $values.key | quote }}
+        conversionStrategy: Default	
+        decodingStrategy: None
+        metadataPolicy: None
+  {{- end }}
+{{- end }}
+{{- end }}

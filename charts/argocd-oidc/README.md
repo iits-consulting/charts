@@ -10,6 +10,16 @@ Secrets for ArgoCD configuration
 |-----|------|---------|-------------|
 | clientID | string | `""` |  |
 | clientSecret | string | `""` |  |
+| externalSecret.SecretStore.kind | string | `"ClusterSecretStore"` |  |
+| externalSecret.SecretStore.name | string | `"vault"` |  |
+| externalSecret.enabled | bool | `false` |  |
+| externalSecret.pull.paths.clientID.key | string | `"clientID"` |  |
+| externalSecret.pull.paths.clientID.path | string | `""` |  |
+| externalSecret.pull.paths.clientSecret.key | string | `"clientSecret"` |  |
+| externalSecret.pull.paths.clientSecret.path | string | `""` |  |
+| externalSecret.pull.spec.creationPolicy | string | `"Owner"` |  |
+| externalSecret.pull.spec.deletionPolicy | string | `"Delete"` |  |
+| externalSecret.pull.spec.refreshInterval | string | `"1m"` |  |
 | oidcURL | string | `""` |  |
 
 ----------------------------------------------
