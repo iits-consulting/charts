@@ -145,7 +145,9 @@ ingress:
     - host: "{{ .Values.ingress.host }}"
       paths:
         - path: "/oauth"
-
+        
+# https://github.com/iits-consulting/charts/tree/main/charts/common
+# Global functionality can be used from the common library chart, e.g. creating External Secrets
 common:
   # If using ESO, make sure the keys match what is set in extraEnvVars above
   externalSecret:
