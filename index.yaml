@@ -5504,6 +5504,29 @@ entries:
     version: 1.0.0
   oidc-forward-auth:
   - apiVersion: v2
+    created: "2026-04-22T09:56:03.881263651Z"
+    dependencies:
+    - name: gatekeeper
+      repository: https://gogatekeeper.github.io/helm-gogatekeeper
+      version: 0.1.54
+    - name: common
+      repository: https://charts.iits.tech
+      version: 0.0.1
+    description: 'Traefik forward auth with gogatekeeper.  ## Installing the Chart
+      with iits ArgoCD  ```yaml charts:   oidc-forward-auth:     namespace: routing     targetRevision:
+      "1.7.2"     parameters:       gatekeeper.config.client-id: "${vault:whatever/data/keycloak/keycloak_proxy_admin#client_id}"       gatekeeper.config.client-secret:
+      "${vault:whatever/data/keycloak/keycloak_proxy_admin#client_secret}"       gatekeeper.config.encryption-key:
+      "${vault:whatever/data/keycloak/keycloak_proxy_admin#encryption-key}"       gatekeeper.config.discovery-url:
+      "https://{{.Values.projectValues.authDomain}}/realms/{{.Values.projectValues.context}}"       ingress.host:
+      "my.protected.domain" ```  ## Then use it like this   ```yaml ingress:     annotations:     #
+      Value Pattern: <namespace>-<name>@kubernetescrd     traefik.ingress.kubernetes.io/router.middlewares:
+      routing-oidc-forward-auth@kubernetescrd ``` '
+    digest: ca868128646fe8f21fb6b81bfb974370598c92266e91ee558b39965d21adae9a
+    name: oidc-forward-auth
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/oidc-forward-auth-1.8.0/oidc-forward-auth-1.8.0.tgz
+    version: 1.8.0
+  - apiVersion: v2
     created: "2025-05-07T12:41:15.553086666Z"
     dependencies:
     - name: gatekeeper
@@ -7717,4 +7740,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/waf-cert-uploader-0.1.1/waf-cert-uploader-0.1.1.tgz
     version: 0.1.1
-generated: "2026-04-15T07:36:01.077760562Z"
+generated: "2026-04-22T09:56:03.881973781Z"
