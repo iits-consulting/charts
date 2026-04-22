@@ -77,8 +77,8 @@ externalSecret:
       # Policy for fetching tags/labels from provider secrets, possible options are Fetch, None. Defaults to None
       metadataPolicy: None
     
-    # Literals to add to the secret
-    literals: {}
+    # Hardcoded data to be added to the secret
+    templateData: {}
       # key: value
 
     secrets: {}
