@@ -3,6 +3,11 @@
 ## Changelog Versions
 
 ### 1.8.0
+
+- Add optional ESO integration via common chart
+
+### 1.7.2
+
 - Update gogatekeeper helm chart version to 0.1.54
 - Update AppVersion to 3.3.0
 

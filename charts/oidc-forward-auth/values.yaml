@@ -96,6 +96,24 @@ gatekeeper:
       - require-any-role: true
         uri: /*
 
+# Reading env from secret created via ESO -> do not set them via normal chart values if ESO integration enabled!
+# extraEnvVars:
+#   - name: PROXY_CLIENT_ID
+#     valueFrom:
+#       secretKeyRef:
+#         name: "admin-forward-auth-secrets"
+#         key: clientid
+#   - name: PROXY_CLIENT_SECRET
+#     valueFrom:
+#       secretKeyRef:
+#         name: "admin-forward-auth-secrets"
+#         key: clientsecret
+#   - name: PROXY_ENCRYPTION_KEY
+#     valueFrom:
+#       secretKeyRef:
+#         name: "admin-forward-auth-secrets"
+#         key: encryptionkey
+
 # possible fields: https://doc.traefik.io/traefik/middlewares/http/forwardauth/
 middleware:
   address: "http://{{ include \"oidc-forward-auth.fullname\" $ }}-gatekeeper.{{ .Release.Namespace }}.svc.cluster.local:{{ .Values.gatekeeper.service.proxy.port }}"
@@ -106,6 +124,8 @@ middleware:
 
   addAuthCookiesToResponse:
     - "kc-access"
+    - "kc-access-1"
+    - "kc-access-2"
     - "kc-state"
 
 ingress:
@@ -125,3 +145,10 @@ ingress:
     - host: "{{ .Values.ingress.host }}"
       paths:
         - path: "/oauth"
+        
+# https://github.com/iits-consulting/charts/tree/main/charts/common
+# Global functionality can be used from the common library chart, e.g. creating External Secrets
+common:
+  # If using ESO, make sure the keys match what is set in extraEnvVars above
+  externalSecret:
+    enabled: false
