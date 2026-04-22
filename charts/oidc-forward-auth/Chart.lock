@@ -2,5 +2,8 @@ dependencies:
 - name: gatekeeper
   repository: https://gogatekeeper.github.io/helm-gogatekeeper
   version: 0.1.54
-digest: sha256:b843e6fde578d68b600123a83d1219258a014e102a29971ee23d5b7fde2ece81
-generated: "2025-04-30T09:08:54.125865+02:00"
+- name: common
+  repository: https://charts.iits.tech
+  version: 0.0.1
+digest: sha256:c4cdd31c2579a0f71e91415f059acd000f74de793f6567e6ebd50adce79adf14
+generated: "2026-04-22T11:44:29.807588383+02:00"
