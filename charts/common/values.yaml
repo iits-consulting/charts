@@ -92,6 +92,6 @@ externalSecret:
       #     remoteKey: secret_key # optional, if not specified "name" is used
       
       # Hardcoded data to be added to the secret
-      # template:
-        # data: {}
-        # templateFrom: []
+        # template:
+        #   data: {}
+        #   templateFrom: []
