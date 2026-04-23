@@ -9,7 +9,7 @@ A Library Helm Chart for grouping common logic between charts. This chart is not
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | externalSecret.enabled | bool | `false` |  |
-| externalSecret.pull | object | `{"enabled":false,"secrets":{},"spec":{"conversionStrategy":"Default","creationPolicy":"Owner","decodingStrategy":"None","deletionPolicy":"Delete","metadataPolicy":"None","refreshInterval":"1m"},"templateData":{}}` | Create ExternalSecret resources. It describes what data should be fetched, how the data should be transformed and saved as a Kind=Secret. |
+| externalSecret.pull | object | `{"enabled":false,"secrets":{},"spec":{"conversionStrategy":"Default","creationPolicy":"Owner","decodingStrategy":"None","deletionPolicy":"Delete","metadataPolicy":"None","refreshInterval":"1m"},"template":{"data":{}}}` | Create ExternalSecret resources. It describes what data should be fetched, how the data should be transformed and saved as a Kind=Secret. |
 | externalSecret.push | object | `{"enabled":false,"secrets":{},"spec":{"conversionStrategy":"Default","decodingStrategy":"None","deletionPolicy":"Delete","metadataPolicy":"None","refreshInterval":"1h","secretStores":[],"updatePolicy":"IfNotExists"}}` | Creates a PushSecret resource. It describes what data should be pushed to the SecretStore. This will be created also when pull is set to false. |
 | externalSecret.secretStore.kind | string | `"ClusterSecretStore"` |  |
 | externalSecret.secretStore.name | string | `"vault"` |  |
