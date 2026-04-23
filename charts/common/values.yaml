@@ -8,6 +8,7 @@ externalSecret:
   
   # -- Creates Password generator CRDs. Used with PushSecrets that have generatorRef selectors.
   generators:
+    enabled: false
     passwords: {}
       # <name>:
       #   spec:
@@ -55,6 +56,9 @@ externalSecret:
       #     apiVersion: generators.external-secrets.io/v1alpha1
       #     kind: Password
       #     name: "generator-name"
+      #   refreshInterval: 1h # optional, overrides spec-level refreshInterval
+      #   deletionPolicy: Delete # optional, overrides spec-level deletionPolicy
+      #   updatePolicy: IfNotExists # optional, overrides spec-level updatePolicy
       #   conversionStrategy: Default # optional, if not specified, the common from .spec field is used
       #   decodingStrategy:  None # optional, if not specified, the common from .spec field is used
       #   metadataPolicy:  None # optional, if not specified, the common from .spec field is used
@@ -93,10 +97,14 @@ externalSecret:
     
     secrets: {}
       # <secret-name>:
-      #   path: ""
-      #   targetName: "" # optional, overrides target.name (default: map key)
+      #   path: "" # required unless using generatorRef
+      #   targetName: "" # optional, overrides target Secret name (defaults to map key). Useful when merging into an existing operator-managed Secret with a different name.
       #   creationPolicy: Owner # optional, overrides spec-level creationPolicy
       #   deletionPolicy: Delete # optional, overrides spec-level deletionPolicy
+      #   generatorRef: # optional, if set uses dataFrom.sourceRef.generatorRef instead of data[].remoteRef
+      #     apiVersion: generators.external-secrets.io/v1alpha1
+      #     kind: Password
+      #     name: "generator-name"
       #   conversionStrategy: Default # optional, if not specified, the common from .spec field is used
       #   decodingStrategy:  None # optional, if not specified, the common from .spec field is used
       #   metadataPolicy:  None # optional, if not specified, the common from .spec field is used
