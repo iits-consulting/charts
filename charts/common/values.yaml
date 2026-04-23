@@ -78,7 +78,8 @@ externalSecret:
       metadataPolicy: None
     
     # Hardcoded data to be added to the secret
-    templateData: {}
+    template:
+      data: {}
       # key: value
 
     secrets: {}
