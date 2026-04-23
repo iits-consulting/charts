@@ -94,4 +94,4 @@ externalSecret:
       # Hardcoded data to be added to the secret
       # template:
         # data: {}
-        # key: value
+        # templateFrom: []
