@@ -6,7 +6,7 @@
     {{- /* Grab the existing secret references as they are */ -}}
     {{- $existing := list }}
       {{- range $existingElement := .Values.autoInjectDockerPullSecrets.existingSecretRef | default dict }}
-        {{- $existing = append $existing (printf "%s-%s" $existingElement.name $existingElement.namespace)  }} 
+        {{- $existing = append $existing (printf $existingElement.name)  }} 
       {{- end }}
 
     {{- /* Iterate over the keys of the `secrets` map */ -}}
