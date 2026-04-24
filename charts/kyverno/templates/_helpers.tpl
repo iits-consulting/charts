@@ -6,7 +6,6 @@
     {{- /* Grab the existing secret references as they are */ -}}
     {{- $existing := list }}
       {{- range $existingElement := .Values.autoInjectDockerPullSecrets.existingSecretRef | default dict }}
-      # namespace necessary even if that's not technically how the secret exists on cluster because that's how we construct the policy & all other secrets in add-image-pull-secrets
         {{- $existing = append $existing (printf "%s-%s" $existingElement.name $existingElement.namespace)  }} 
       {{- end }}
 
