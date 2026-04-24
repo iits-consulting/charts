@@ -2,6 +2,10 @@
 
 ## Chart Versions
 
+### 79.9.0
+
+- Make Prometheus pick also pick up `PrometheusRule` CRs outside of this deployment
+
 ### 79.8.2
 - Updates kube-prometheus-stack to 79.8.2
 - Updates blackbox exporter to 11.5.0
