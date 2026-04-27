@@ -58,6 +58,7 @@ prometheusStack:
     prometheusSpec:
       externalUrl: https://{{$.Values.global.ingress.host}}{{$.Values.global.ingress.paths.prometheus}}
       routePrefix: "/prometheus"
+      ruleSelectorNilUsesHelmValues: false
       serviceMonitorSelectorNilUsesHelmValues: false
       podMonitorSelectorNilUsesHelmValues: false
       probeSelectorNilUsesHelmValues: false

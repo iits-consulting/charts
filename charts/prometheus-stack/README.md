@@ -1,6 +1,6 @@
 # prometheus-stack
 
-![Version: 79.8.2](https://img.shields.io/badge/Version-79.8.2-informational?style=flat-square) ![AppVersion: 3.7.3](https://img.shields.io/badge/AppVersion-3.7.3-informational?style=flat-square)
+![Version: 79.9.0](https://img.shields.io/badge/Version-79.9.0-informational?style=flat-square) ![AppVersion: 3.7.3](https://img.shields.io/badge/AppVersion-3.7.3-informational?style=flat-square)
 
 A complete monitoring/alerting stack with Grafana, Prometheus, Alertmanager & Blackbox exporter
 
@@ -32,7 +32,7 @@ prometheus-stack:
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://prometheus-community.github.io/helm-charts | prometheusStack(kube-prometheus-stack) | 79.8.2 |
+| https://prometheus-community.github.io/helm-charts | prometheusStack(kube-prometheus-stack) | 79.9.0 |
 | https://prometheus-community.github.io/helm-charts | blackboxExporter(prometheus-blackbox-exporter) | 11.5.0 |
 
 ## Values
@@ -157,6 +157,7 @@ prometheus-stack:
 | prometheusStack.prometheus.prometheusSpec.resources.requests.memory | string | `"2255Mi"` |  |
 | prometheusStack.prometheus.prometheusSpec.retention | string | `"1y"` |  |
 | prometheusStack.prometheus.prometheusSpec.routePrefix | string | `"/prometheus"` |  |
+| prometheusStack.prometheus.prometheusSpec.ruleSelectorNilUsesHelmValues | bool | `false` |  |
 | prometheusStack.prometheus.prometheusSpec.serviceMonitorSelectorNilUsesHelmValues | bool | `false` |  |
 | prometheusStack.prometheus.prometheusSpec.storageSpec.volumeClaimTemplate.spec.accessModes[0] | string | `"ReadWriteOnce"` |  |
 | prometheusStack.prometheus.prometheusSpec.storageSpec.volumeClaimTemplate.spec.resources.requests.storage | string | `"250G"` |  |
