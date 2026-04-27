@@ -485,6 +485,8 @@ backup:
   # endpoint: "https://obs.eu-de.otc.t-systems.com"
   # # -- Required
   # bucket: "REPLACE_ME"
+  # # -- Optional - recommended for non AWS as it prevents warnings from Elasticsearch on using S3 from non AWS
+  # region: "REPLACE_ME" # e.g. eu-de
 
   # # Azure blob storage
   # container: "REPLACE_ME"
