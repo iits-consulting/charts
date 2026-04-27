@@ -6,6 +6,8 @@
 
 - Make Prometheus pick also pick up `PrometheusRule` CRs outside of this deployment
 - Increase version of `kube-prometheus-stack` to 79.9.0
+- Added common chart lib as dependency chart
+- Adds custom configMap template for Blackbox Exporter config via External Secrets, when enabled
 
 ### 79.8.2
 - Updates kube-prometheus-stack to 79.8.2

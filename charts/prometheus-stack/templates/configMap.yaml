@@ -1,0 +1,17 @@
+{{/*
+The ConfigMap below is not mounted into BlackBox Exporter directly — it's only used by External Secrets Operator as a rendering template. 
+BlackBox Exporter only ever sees the final rendered Secret. The ConfigMap does not contain any sensitive values that might exist 
+on the config itself (ie. basic_auth, oauth2 etc.), but only placeholders where ESO is using to inject the real values dynamically
+*/}}
+{{- with .Values.common.externalSecret }}
+{{- if and .enabled $.Values.blackboxExporter.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $.Values.blackboxExporter.configFromTemplate.name }}
+data:
+  blackbox.yaml: |
+{{- toYaml $.Values.blackboxExporter.configFromTemplate.config | nindent 4 }}
+{{- end }}
+{{- end }}
+        
