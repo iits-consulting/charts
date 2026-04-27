@@ -1,10 +1,6 @@
 # prometheus-stack
 
-<<<<<<< HEAD
-![Version: 79.9.0](https://img.shields.io/badge/Version-79.9.0-informational?style=flat-square) ![AppVersion: 3.7.3](https://img.shields.io/badge/AppVersion-3.7.3-informational?style=flat-square)
-=======
 ![Version: 79.9.0](https://img.shields.io/badge/Version-79.9.0-informational?style=flat-square) ![AppVersion: 3.9.0](https://img.shields.io/badge/AppVersion-3.9.0-informational?style=flat-square)
->>>>>>> 3bd67be (Auto update of README.md files)
 
 A complete monitoring/alerting stack with Grafana, Prometheus, Alertmanager & Blackbox exporter
 
@@ -36,8 +32,8 @@ prometheus-stack:
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://prometheus-community.github.io/helm-charts | prometheusStack(kube-prometheus-stack) | 79.9.0 |
 | https://charts.iits.tech | common | 0.2.0 |
+| https://prometheus-community.github.io/helm-charts | prometheusStack(kube-prometheus-stack) | 79.9.0 |
 | https://prometheus-community.github.io/helm-charts | blackboxExporter(prometheus-blackbox-exporter) | 11.5.0 |
 
 ## Values
