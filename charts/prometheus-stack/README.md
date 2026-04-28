@@ -1,6 +1,6 @@
 # prometheus-stack
 
-![Version: 79.9.0](https://img.shields.io/badge/Version-79.9.0-informational?style=flat-square) ![AppVersion: 3.7.3](https://img.shields.io/badge/AppVersion-3.7.3-informational?style=flat-square)
+![Version: 79.9.0](https://img.shields.io/badge/Version-79.9.0-informational?style=flat-square) ![AppVersion: 3.9.0](https://img.shields.io/badge/AppVersion-3.9.0-informational?style=flat-square)
 
 A complete monitoring/alerting stack with Grafana, Prometheus, Alertmanager & Blackbox exporter
 
@@ -32,6 +32,7 @@ prometheus-stack:
 
 | Repository | Name | Version |
 |------------|------|---------|
+| https://charts.iits.tech | common | 0.2.0 |
 | https://prometheus-community.github.io/helm-charts | prometheusStack(kube-prometheus-stack) | 79.9.0 |
 | https://prometheus-community.github.io/helm-charts | blackboxExporter(prometheus-blackbox-exporter) | 11.5.0 |
 
@@ -65,6 +66,7 @@ prometheus-stack:
 | blackboxExporter.serviceMonitor.targets | string | `nil` |  |
 | blackboxExporter.strategy.rollingUpdate | string | `nil` |  |
 | blackboxExporter.strategy.type | string | `"Recreate"` |  |
+| common.externalSecret.enabled | bool | `false` |  |
 | dashboards.enabled | bool | `true` |  |
 | global.ingress.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
 | global.ingress.annotations."traefik.ingress.kubernetes.io/router.middlewares" | string | `"routing-oidc-forward-auth@kubernetescrd"` |  |
