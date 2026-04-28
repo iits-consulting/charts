@@ -95,6 +95,8 @@ externalSecret:
       # Policy for fetching tags/labels from provider secrets, possible options are Fetch, None. Defaults to None
       metadataPolicy: None
     
+    
+
     secrets: {}
       # <secret-name>:
       #   path: "" # required unless using generatorRef
@@ -113,3 +115,8 @@ externalSecret:
       #     remoteKey: access_key # optional, if not specified "name" is used
       #   - name: secretKey
       #     remoteKey: secret_key # optional, if not specified "name" is used
+      
+      # Hardcoded data to be added to the secret
+        # template:
+        #   data: {}
+        #   templateFrom: []
