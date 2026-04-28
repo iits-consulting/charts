@@ -1,0 +1,10 @@
+common:
+  externalSecret:
+    enabled: true
+    pull:
+      enabled: true
+      secrets:
+        elastalert-slack-webhook:
+          path: "myProject/data/common/slack"
+          keys:
+            - name: slack_webhook_url
