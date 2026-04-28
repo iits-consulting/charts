@@ -1,17 +1,47 @@
 # elastalert
 
-![Version: 0.4.0](https://img.shields.io/badge/Version-0.4.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.5.0](https://img.shields.io/badge/Version-0.5.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 Wrapper chart for elastalert2 with custom rules to kickstart IITS projects
 
 ## Installing the Chart with iits ArgoCD
 
+There are two ways to provide the Slack webhook URL.
+
+### Option 1: ExternalSecretsOperator
+
+Use the built-in ESO integration to pull the webhook URL from Vault into a Kubernetes Secret.
+The pod reads it as `SLACK_WEBHOOK_URL` via an environment variable.
+
 ```yaml
 elastalert:
   namespace: monitoring
   repoURL: "https://charts.iits.tech"
-  targetRevision: "0.3.0"
-  # If you need custom rules
+  targetRevision: "0.5.0"
+  valueFile: "value-files/elastalert/values.yaml"
+```
+
+`value-files/elastalert/values.yaml`:
+```yaml
+common:
+  externalSecret:
+    enabled: true
+    pull:
+      enabled: true
+      secrets:
+        elastalert-slack-webhook:
+          path: "myProject/data/common/slack"
+          keys:
+            - name: slack_webhook_url
+```
+
+### Option 2: ArgoCD vault plugin (direct parameter)
+
+```yaml
+elastalert:
+  namespace: monitoring
+  repoURL: "https://charts.iits.tech"
+  targetRevision: "0.5.0"
   valueFile: "value-files/elastalert/values.yaml"
   parameters:
     customRules.slack.webhookUrl: "${vault:mySecretPath/data/common/slack#webhookUrl}"
@@ -21,12 +51,19 @@ elastalert:
 
 | Repository | Name | Version |
 |------------|------|---------|
+| https://charts.iits.tech | common | 0.1.0 |
 | https://jertel.github.io/elastalert2/ | elastalert2 | 2.24.0 |
 
 ## Values
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| common.externalSecret.enabled | bool | `false` |  |
+| common.externalSecret.pull.enabled | bool | `false` |  |
+| common.externalSecret.pull.secrets.elastalert-slack-webhook.keys[0].name | string | `"slack_webhook_url"` |  |
+| common.externalSecret.pull.secrets.elastalert-slack-webhook.path | string | `""` |  |
+| common.externalSecret.secretStore.kind | string | `"ClusterSecretStore"` |  |
+| common.externalSecret.secretStore.name | string | `"vault"` |  |
 | customRules.alerting.argoCD.alert[0] | string | `"slack"` |  |
 | customRules.alerting.argoCD.alert_text_args[0] | string | `"@timestamp"` |  |
 | customRules.alerting.argoCD.alert_text_type | string | `"aggregation_summary_only"` |  |
@@ -46,7 +83,6 @@ elastalert:
 | customRules.alerting.argoCD.slack_alert_fields[3].title | string | `"Message"` |  |
 | customRules.alerting.argoCD.slack_alert_fields[3].value | string | `"message"` |  |
 | customRules.alerting.argoCD.slack_title | string | `"ArgoCD Error"` |  |
-| customRules.alerting.argoCD.slack_webhook_url | string | `"{{ $.Values.customRules.slack.webhookUrl }}"` |  |
 | customRules.alerting.argoCD.type | string | `"any"` |  |
 | customRules.alerting.botKube.alert[0] | string | `"slack"` |  |
 | customRules.alerting.botKube.alert_text_type | string | `"aggregation_summary_only"` |  |
@@ -72,7 +108,6 @@ elastalert:
 | customRules.alerting.botKube.slack_alert_fields[6].title | string | `"Reason"` |  |
 | customRules.alerting.botKube.slack_alert_fields[6].value | string | `"Reason"` |  |
 | customRules.alerting.botKube.slack_title | string | `"Botkube Error"` |  |
-| customRules.alerting.botKube.slack_webhook_url | string | `"{{ $.Values.customRules.slack.webhookUrl }}"` |  |
 | customRules.alerting.botKube.timestamp_field | string | `"TimeStamp"` |  |
 | customRules.alerting.botKube.type | string | `"any"` |  |
 | customRules.alerting.kafkaTopicCreatedNotification.alert[0] | string | `"slack"` |  |
@@ -104,7 +139,6 @@ elastalert:
 | customRules.alerting.kafkaTopicCreatedNotification.slack_alert_fields[7].title | string | `"User"` |  |
 | customRules.alerting.kafkaTopicCreatedNotification.slack_alert_fields[7].value | string | `"user"` |  |
 | customRules.alerting.kafkaTopicCreatedNotification.slack_title | string | `"Kafka Topic Notification"` |  |
-| customRules.alerting.kafkaTopicCreatedNotification.slack_webhook_url | string | `"{{ $.Values.customRules.slack.webhookUrl }}"` |  |
 | customRules.alerting.kafkaTopicCreatedNotification.type | string | `"any"` |  |
 | customRules.alerting.kyverno.alert[0] | string | `"slack"` |  |
 | customRules.alerting.kyverno.alert_text_args[0] | string | `"@timestamp"` |  |
@@ -125,7 +159,6 @@ elastalert:
 | customRules.alerting.kyverno.slack_alert_fields[3].title | string | `"Message"` |  |
 | customRules.alerting.kyverno.slack_alert_fields[3].value | string | `"message"` |  |
 | customRules.alerting.kyverno.slack_title | string | `"Kyverno Error"` |  |
-| customRules.alerting.kyverno.slack_webhook_url | string | `"{{ $.Values.customRules.slack.webhookUrl }}"` |  |
 | customRules.alerting.kyverno.type | string | `"any"` |  |
 | customRules.alerting.vaultInjection.alert[0] | string | `"slack"` |  |
 | customRules.alerting.vaultInjection.alert_text_args[0] | string | `"@time"` |  |
@@ -146,10 +179,13 @@ elastalert:
 | customRules.alerting.vaultInjection.slack_alert_fields[3].title | string | `"Error"` |  |
 | customRules.alerting.vaultInjection.slack_alert_fields[3].value | string | `"error"` |  |
 | customRules.alerting.vaultInjection.slack_title | string | `"Vault Injection Error"` |  |
-| customRules.alerting.vaultInjection.slack_webhook_url | string | `"{{ $.Values.customRules.slack.webhookUrl }}"` |  |
 | customRules.alerting.vaultInjection.type | string | `"any"` |  |
-| customRules.slack.webhookUrl | string | `nil` | Required |
+| customRules.slack.webhookUrl | string | `nil` | Slack webhook URL injected directly. Used when common.externalSecret.enabled=false. For ArgoCD vault plugin: parameters: customRules.slack.webhookUrl: "${vault:...}" |
 | elastalert2.elasticsearch.host | string | `"elasticsearch-master"` | needs to be in the same namespaces as elastic stack if used like this |
+| elastalert2.optEnv[0].name | string | `"SLACK_WEBHOOK_URL"` |  |
+| elastalert2.optEnv[0].valueFrom.secretKeyRef.key | string | `"slack_webhook_url"` |  |
+| elastalert2.optEnv[0].valueFrom.secretKeyRef.name | string | `"elastalert-slack-webhook"` |  |
+| elastalert2.optEnv[0].valueFrom.secretKeyRef.optional | bool | `true` |  |
 | elastalert2.secretRulesList[0] | string | `"argoCD"` |  |
 | elastalert2.secretRulesList[1] | string | `"botKube"` |  |
 | elastalert2.secretRulesList[2] | string | `"vaultInjection"` |  |

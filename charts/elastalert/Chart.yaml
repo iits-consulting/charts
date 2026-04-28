@@ -1,24 +1,57 @@
 apiVersion: v2
 description: |
   Wrapper chart for elastalert2 with custom rules to kickstart IITS projects
-  
+
   ## Installing the Chart with iits ArgoCD
-  
+
+  There are two ways to provide the Slack webhook URL.
+
+  ### Option 1: ExternalSecretsOperator
+
+  Use the built-in ESO integration to pull the webhook URL from Vault into a Kubernetes Secret.
+  The pod reads it as `SLACK_WEBHOOK_URL` via an environment variable.
+
   ```yaml
   elastalert:
     namespace: monitoring
     repoURL: "https://charts.iits.tech"
-    targetRevision: "0.3.0"
-    # If you need custom rules
+    targetRevision: "0.5.0"
+    valueFile: "value-files/elastalert/values.yaml"
+  ```
+
+  `value-files/elastalert/values.yaml`:
+  ```yaml
+  common:
+    externalSecret:
+      enabled: true
+      pull:
+        enabled: true
+        secrets:
+          elastalert-slack-webhook:
+            path: "myProject/data/common/slack"
+            keys:
+              - name: slack_webhook_url
+  ```
+
+  ### Option 2: ArgoCD vault plugin (direct parameter)
+
+  ```yaml
+  elastalert:
+    namespace: monitoring
+    repoURL: "https://charts.iits.tech"
+    targetRevision: "0.5.0"
     valueFile: "value-files/elastalert/values.yaml"
     parameters:
       customRules.slack.webhookUrl: "${vault:mySecretPath/data/common/slack#webhookUrl}"
   ```
 
 name: elastalert
-version: 0.4.0
+version: 0.5.0
 dependencies:
   - name: elastalert2
     repository: https://jertel.github.io/elastalert2/
     version: 2.24.0
+  - name: common
+    repository: https://charts.iits.tech
+    version: 0.1.0
 type: application
