@@ -1475,6 +1475,16 @@ entries:
     version: 0.2.3
   common:
   - apiVersion: v2
+    appVersion: v0.2.0
+    created: "2026-04-28T12:17:55.201399998Z"
+    description: A Library Helm Chart for grouping common logic between charts. This
+      chart is not deployable by itself.
+    digest: 60b1ecb5f0812eac48a5d3c3abc8ead56c3f4cc6d070e92a0b3c55ef2afb4033
+    name: common
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/common-0.2.0/common-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
     appVersion: v0.1.0
     created: "2026-04-24T10:52:55.427340318Z"
     description: A Library Helm Chart for grouping common logic between charts. This
@@ -7803,4 +7813,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/waf-cert-uploader-0.1.1/waf-cert-uploader-0.1.1.tgz
     version: 0.1.1
-generated: "2026-04-27T12:00:12.922328371Z"
+generated: "2026-04-28T12:17:55.202633862Z"
