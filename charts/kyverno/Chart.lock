@@ -8,5 +8,8 @@ dependencies:
 - name: policy-reporter
   repository: https://kyverno.github.io/policy-reporter
   version: 3.7.2
+- name: common
+  repository: https://charts.iits.tech
+  version: 0.2.0
 digest: sha256:6cd06dbf893dc38284b14ed9a4066f66efa203155546194667ba5210bdec2647
 generated: "2026-02-20T09:43:53.964397785+01:00"
