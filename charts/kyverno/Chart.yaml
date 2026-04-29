@@ -18,7 +18,7 @@ dependencies:
     version: 3.7.2
     condition: policy-reporter.install
   - name: common
-    repository: https://charts.iits.tech
+    repository: "https://charts.iits.tech"
     version: 0.2.0
 type: application
 version: 3.2.1
