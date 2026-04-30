@@ -11,7 +11,7 @@ externalSecret:
     enabled: false
     passwords: {}
       # <name>:
-      #   annotations: {} # optional, merged into metadata.annotations (e.g. argocd.argoproj.io/sync-wave: "11")
+      #   annotations: {} # optional, merged into metadata.annotations
       #   spec:
       #     length: 32
       #     digits: 8
@@ -52,7 +52,7 @@ externalSecret:
     secrets: {}
       # <secret-name>:
       #   path: ""
-      #   annotations: {} # optional, merged into metadata.annotations (e.g. argocd.argoproj.io/sync-wave: "12")
+      #   annotations: {} # optional, merged into metadata.annotations
       #   sourceSecretName: "" # optional, overrides selector.secret.name (default: map key)
       #   generatorRef: # optional, if set uses generatorRef selector instead of secret selector
       #     apiVersion: generators.external-secrets.io/v1alpha1
@@ -102,7 +102,7 @@ externalSecret:
     secrets: {}
       # <secret-name>:
       #   path: "" # required unless using generatorRef
-      #   annotations: {} # optional, merged into metadata.annotations (e.g. argocd.argoproj.io/sync-wave: "13")
+      #   annotations: {} # optional, merged into metadata.annotations
       #   targetName: "" # optional, overrides target Secret name (defaults to map key). Useful when merging into an existing operator-managed Secret with a different name.
       #   creationPolicy: Owner # optional, overrides spec-level creationPolicy
       #   deletionPolicy: Delete # optional, overrides spec-level deletionPolicy
