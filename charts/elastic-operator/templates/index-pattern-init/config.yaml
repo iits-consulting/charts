@@ -1,3 +1,4 @@
+{{- if .Values.indexPatternInit.enabled }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -7,13 +8,31 @@ metadata:
     argocd.argoproj.io/hook-delete-policy: HookSucceeded
 data:
   index-pattern-init.sh: |
-    #!/bin/sh
-
+    #!/bin/bash
     KIBANA_BASE_PATH="{{ .Values.ingress.kibana.path }}"
+    
+    {{- if .Values.indexPatternInit.skipExisting }}
+    KIBANA_DATA_VIEWS=$(curl --silent \
+      --user "$ELASTICSEARCH_USERNAME:$ELASTICSEARCH_PASSWORD" \
+      --cacert /kb-cert/ca.crt \
+      --request GET https://$KIBANA_ENDPOINT$KIBANA_BASE_PATH/api/data_views | jq -r '.data_view[].name')
+    {{- end }}
+
+    echo $KIBANA_DATA_VIEWS
 
 {{- range $indexName,$indexValues  := .Values.indexPatternInit.indices }}
-    # Apply default Index Pattern into Kibana
-    echo "create index pattern {{$indexName}}"
-    curl -u "$ELASTICSEARCH_USERNAME:$ELASTICSEARCH_PASSWORD" --cacert /kb-cert/ca.crt -X POST -v https://$KIBANA_ENDPOINT$KIBANA_BASE_PATH/api/index_patterns/index_pattern -H 'kbn-xsrf: true' -H 'Content-Type: application/json' -d '{"index_pattern": { "id": "{{$indexName}}", "title": "{{ coalesce $indexValues.index (printf "%s*" $indexName) }}","timeFieldName": "{{$indexValues.timestampField}}"},"override":true,"refresh_fields":true}'
-    echo "create index pattern {{$indexName}} finished"
-{{ end }}
+    if {{$.Values.indexPatternInit.skipExisting}} && printf "%s\n" "${KIBANA_DATA_VIEWS[@]}" | grep -q -x {{$indexName}}; then
+      echo "Index pattern \"{{ $indexName }}\" already exists in Kibana"
+    else
+      # Apply default Index Pattern into Kibana
+      echo -e "Index pattern \"{{ $indexName }}\" does not exist in Kibana. Creating it ... \n"
+      curl --silent \
+        --user "$ELASTICSEARCH_USERNAME:$ELASTICSEARCH_PASSWORD" \
+        --cacert /kb-cert/ca.crt \
+        --request POST https://$KIBANA_ENDPOINT$KIBANA_BASE_PATH/api/data_views/data_view \
+        --header "Content-Type: application/json; Elastic-Api-Version=2023-10-31" \
+        --header "kbn-xsrf: string" \
+        --data '{"data_view": {"name": "{{$indexName}}","title": "{{ coalesce $indexValues.index (printf "%s*" $indexName) }}","timeFieldName": "{{$indexValues.timestampField}}"},"override":true}'
+    fi
+{{- end }}
+{{- end }}
