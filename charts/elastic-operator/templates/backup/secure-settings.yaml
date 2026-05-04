@@ -1,4 +1,4 @@
-{{- if .Values.backup.enabled }}
+{{- if and .Values.backup.enabled (not .Values.common.externalSecret.enabled) }}
 apiVersion: v1
 kind: Secret
 metadata:
