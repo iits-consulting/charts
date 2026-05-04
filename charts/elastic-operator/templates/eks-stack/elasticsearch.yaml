@@ -46,12 +46,6 @@ spec:
     count: {{ .nodeCount }}
     config:
       {{- .config | toYaml | nindent 6 }}
-      {{- if and $.Values.backup.enabled ($.Values.backup.repositorySettings).region }}
-      s3:
-        client:
-          default:
-            region: {{ $.Values.backup.repositorySettings.region }}
-      {{- end }}
     podTemplate:
       spec:
         {{- tpl (.podTemplateSpec | toYaml) $ | nindent 8 }}

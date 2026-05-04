@@ -5,7 +5,6 @@
 ### 9.3.3
 - Changed operator version to 3.3.2
 - Changed elastic stack (appVersion) to version 9.3.3
-- Set s3 client region in Elasticsearch config based on specified backup region
 
 ### 9.0.5-bitnamilegacy
 
