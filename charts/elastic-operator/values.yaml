@@ -485,6 +485,7 @@ backup:
   # endpoint: "https://obs.eu-de.otc.t-systems.com"
   # # -- Required
   # bucket: "REPLACE_ME"
+  # # To set the S3 client region use elasticsearch.config e.g.: s3.client.default.region: "eu-de"
 
   # # Azure blob storage
   # container: "REPLACE_ME"
