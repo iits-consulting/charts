@@ -1,0 +1,86 @@
+suite: custom_rules Secret
+templates:
+  - custom_rules.yaml
+
+release:
+  name: elastalert
+
+tests:
+  - it: should embed webhook URL directly when ESO is disabled
+    set:
+      customRules.slack.webhookUrl: "https://hooks.slack.com/services/TEST"
+    asserts:
+      - isKind:
+          of: Secret
+      - equal:
+          path: metadata.name
+          value: elastalert-custom-rules
+      - matchRegex:
+          path: stringData.argoCD
+          pattern: "slack_webhook_url: https://hooks.slack.com/services/TEST"
+      - matchRegex:
+          path: stringData.botKube
+          pattern: "slack_webhook_url: https://hooks.slack.com/services/TEST"
+
+  - it: should use env var reference for all rules when ESO is enabled
+    set:
+      common.externalSecret.enabled: true
+    asserts:
+      - matchRegex:
+          path: stringData.argoCD
+          pattern: "slack_webhook_url: \\$\\{SLACK_WEBHOOK_URL\\}"
+      - matchRegex:
+          path: stringData.botKube
+          pattern: "slack_webhook_url: \\$\\{SLACK_WEBHOOK_URL\\}"
+      - matchRegex:
+          path: stringData.vaultInjection
+          pattern: "slack_webhook_url: \\$\\{SLACK_WEBHOOK_URL\\}"
+      - matchRegex:
+          path: stringData.kyverno
+          pattern: "slack_webhook_url: \\$\\{SLACK_WEBHOOK_URL\\}"
+      - matchRegex:
+          path: stringData.kafkaTopicCreatedNotification
+          pattern: "slack_webhook_url: \\$\\{SLACK_WEBHOOK_URL\\}"
+
+  - it: should use empty webhook URL when ESO is disabled and no URL provided
+    asserts:
+      - matchRegex:
+          path: stringData.argoCD
+          pattern: "slack_webhook_url: \"\""
+
+  - it: should fail when ESO mode and webhookUrl are both set
+    values:
+      - eso_values.yaml
+    set:
+      customRules.slack.webhookUrl: "https://hooks.slack.com/services/TEST"
+    asserts:
+      - failedTemplate:
+          errorMessage: "Cannot set both ESO mode (common.externalSecret.enabled + pull.enabled + elastalert-slack-webhook) and customRules.slack.webhookUrl — use one webhook injection method."
+
+  - it: should not fail when ESO is enabled but pull is disabled and webhookUrl is set
+    set:
+      common.externalSecret.enabled: true
+      common.externalSecret.pull.enabled: false
+      customRules.slack.webhookUrl: "https://hooks.slack.com/services/TEST"
+    asserts:
+      - isKind:
+          of: Secret
+
+  - it: should not fail when ESO is fully enabled but webhookUrl is not set
+    values:
+      - eso_values.yaml
+    asserts:
+      - isKind:
+          of: Secret
+
+  - it: should keep per-rule slack_webhook_url when rule defines its own
+    set:
+      customRules.slack.webhookUrl: "https://hooks.slack.com/services/GLOBAL"
+      customRules.alerting.argoCD.slack_webhook_url: "https://hooks.slack.com/services/OVERRIDE"
+    asserts:
+      - matchRegex:
+          path: stringData.argoCD
+          pattern: "slack_webhook_url: https://hooks.slack.com/services/OVERRIDE"
+      - matchRegex:
+          path: stringData.botKube
+          pattern: "slack_webhook_url: https://hooks.slack.com/services/GLOBAL"

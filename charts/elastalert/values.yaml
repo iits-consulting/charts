@@ -2,6 +2,16 @@ elastalert2:
   elasticsearch:
     # -- needs to be in the same namespaces as elastic stack if used like this
     host: elasticsearch-master
+  # Mounts SLACK_WEBHOOK_URL from the ESO-created secret. optional=true keeps the pod
+  # running when ESO is disabled and the secret does not exist.
+  # Override secretKeyRef.name to match common.externalSecret.pull.secrets key if changed.
+  optEnv:
+    - name: SLACK_WEBHOOK_URL
+      valueFrom:
+        secretKeyRef:
+          name: elastalert-slack-webhook
+          key: slack_webhook_url
+          optional: true
   secretRulesName: elastalert-custom-rules
   secretRulesList:
     - argoCD
@@ -29,8 +39,17 @@ elastalert2:
   #   credentialsSecretPasswordKey: password
 customRules:
   slack:
-    # -- Required
+    # -- Slack webhook URL injected directly. Used when common.externalSecret.enabled=false.
+    # For ArgoCD vault plugin: parameters: customRules.slack.webhookUrl: "${vault:...}"
     webhookUrl:
+  # Alert rules. Each entry is rendered as a separate elastalert2 rule file.
+  # The global slack.webhookUrl (or ${SLACK_WEBHOOK_URL} in ESO mode) is injected into
+  # every rule automatically. Individual rules can override this by setting their own
+  # slack_webhook_url, which takes precedence over the global value:
+  #   alerting:
+  #     myRule:
+  #       slack_webhook_url: "https://hooks.slack.com/services/other-channel"
+  #       ...
   alerting:
     argoCD:
       name: ArgoCD Error
@@ -51,7 +70,6 @@ customRules:
         - query_string:
             query: "level: \"*error*\" OR message: \"*level=error*\""
       slack_title: ArgoCD Error
-      slack_webhook_url: "{{ $.Values.customRules.slack.webhookUrl }}"
       slack_alert_fields:
         - title: Stage
           value: labels.stage
@@ -80,7 +98,6 @@ customRules:
         - query_string:
             query: "Type:\"error\""
       slack_title: Botkube Error
-      slack_webhook_url: "{{ $.Values.customRules.slack.webhookUrl }}"
       slack_alert_fields:
         - title: Cluster
           value: Cluster
@@ -114,7 +131,6 @@ customRules:
       filter:
         - eql: any where message like~ "\\[ERROR\\]"
       slack_title: Vault Injection Error
-      slack_webhook_url: "{{ $.Values.customRules.slack.webhookUrl }}"
       slack_alert_fields:
         - title: Stage
           value: labels.stage
@@ -143,7 +159,6 @@ customRules:
         - query_string:
             query: "message: \"validation failed\" OR message: \"policy validation errors\""
       slack_title: Kyverno Error
-      slack_webhook_url: "{{ $.Values.customRules.slack.webhookUrl }}"
       slack_alert_fields:
         - title: Stage
           value: labels.stage
@@ -173,7 +188,6 @@ customRules:
               query: "message: \"Creating topic\" AND \"with configuration\" AND \"and initial partition assignment\""
         slack:
         slack_title: Kafka Topic Notification
-        slack_webhook_url: "{{ $.Values.customRules.slack.webhookUrl }}"
         slack_alert_fields:
         - title: Stage
           value: labels.stage
@@ -192,3 +206,28 @@ customRules:
           value: stacktrace
         - title: User
           value: user
+
+# Opt-in ESO integration via the common sub-chart.
+# When enabled, an ExternalSecret pulls the Slack webhook URL from the secret store
+# and writes it into the elastalert-slack-webhook K8s Secret as key "slack_webhook_url".
+# The pod then reads it as SLACK_WEBHOOK_URL via elastalert2.optEnv above.
+# Must also set common.externalSecret.pull.enabled=true and configure the secrets path.
+#
+# remoteKey is optional: if omitted it defaults to the key name ("slack_webhook_url").
+# Set it explicitly when the key in your secret store has a different name, e.g.:
+#   keys:
+#     - name: slack_webhook_url
+#       remoteKey: different_key_in_vault
+common:
+  externalSecret:
+    enabled: false
+    secretStore:
+      kind: ClusterSecretStore
+      name: vault
+    pull:
+      enabled: false
+      secrets:
+        elastalert-slack-webhook:
+          path: ""  # -- Required: path to the secret in your store, e.g. "context/data/stage/alerting"
+          keys:
+            - name: slack_webhook_url
