@@ -2,6 +2,17 @@
 
 ## Chart Versions
 
+### 9.1.0
+
+- Add ESO support via the `common` library chart (>=0.3.0):
+  - PushSecret resources for user credentials (username + password) populated by ECK-created user Secrets
+  - PushSecret for the operator-issued CA certificate
+  - ExternalSecret for backup S3 credentials (vault-managed)
+  - `common.externalSecret.enabled` is opt-in (default `false`)
+- `generate-passwords` Job now patches the password field into ECK-created user Secrets directly. The bash job is the source of truth for password creation
+- `backup/secure-settings` Secret is skipped when ESO is enabled, so the backup ExternalSecret can own that name
+- Bump curl image used by backup job from `8.12.1` to `8.13.0`
+
 ### 9.0.5-bitnamilegacy
 
 - Changed Bitnami image for password generation job to `docker.io/bitnamilegacy/kubectl` (temporary solution to keep chart functional, migrate to other image in a later release)

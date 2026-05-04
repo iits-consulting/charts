@@ -60,17 +60,14 @@ ingress:
 auth:
   users:
     custom_filebeat:
-      # if you provide an existing password, generatePasswords should be disabled
       existingPassword: ""
       roles:
         - custom_filebeat
     custom_kibana_guest:
-      # if you provide an existing password, generatePasswords should be disabled
       existingPassword: ""
       roles:
         - viewer
     custom_elastalert:
-      # if you provide an existing password, generatePasswords should be disabled
       existingPassword: ""
       roles:
         - custom_elastalert
@@ -387,7 +384,7 @@ kibana:
 indexPatternInit:
   image:
     repository: docker.io/curlimages/curl
-    tag: 8.12.1
+    tag: 8.13.0
     userId: 100
   tolerations: [ ]
   nodeSelector: { }
@@ -501,3 +498,37 @@ backup:
 
 policyException:
   enabled: true
+
+common:
+  externalSecret:
+    enabled: false
+
+    secretStore:
+      kind: ClusterSecretStore
+      name: "vault"
+
+    generators:
+      enabled: false
+      passwords: {}
+
+    push:
+      enabled: false
+      spec:
+        refreshInterval: "1h"
+        deletionPolicy: Delete
+        updatePolicy: IfNotExists
+        conversionStrategy: Default
+        decodingStrategy: None
+        metadataPolicy: None
+      secrets: {}
+
+    pull:
+      enabled: false
+      spec:
+        refreshInterval: "1h"
+        creationPolicy: Owner
+        deletionPolicy: Delete
+        conversionStrategy: Default
+        decodingStrategy: None
+        metadataPolicy: None
+      secrets: {}
