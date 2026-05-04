@@ -396,7 +396,7 @@ ingress:
 # https://github.com/iits-consulting/charts/tree/main/charts/common
 # Global functionality can be used from the common library chart, e.g. creating External Secrets. Examples below to use
 # ExternalSecrets for openIDConnect config of kyverno components or dockerconfijson type of secrets. In case of `autoInjectDockerPullSecrets`, 
-# please check relevant quidelines of `existingSecretRef` key above.
+# please check relevant guidelines of `existingSecretRef` key above.
 # common:
 #   externalSecret:
 #     enabled: true
