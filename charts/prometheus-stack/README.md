@@ -1,6 +1,6 @@
 # prometheus-stack
 
-![Version: 79.9.0](https://img.shields.io/badge/Version-79.9.0-informational?style=flat-square) ![AppVersion: 3.9.0](https://img.shields.io/badge/AppVersion-3.9.0-informational?style=flat-square)
+![Version: 79.10.0](https://img.shields.io/badge/Version-79.10.0-informational?style=flat-square) ![AppVersion: 3.9.0](https://img.shields.io/badge/AppVersion-3.9.0-informational?style=flat-square)
 
 A complete monitoring/alerting stack with Grafana, Prometheus, Alertmanager & Blackbox exporter
 
