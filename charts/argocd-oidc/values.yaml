@@ -2,3 +2,9 @@
 oidcURL: ""
 clientID: ""
 clientSecret: ""
+
+# https://github.com/iits-consulting/charts/tree/main/charts/common
+# Global functionality can be used from the common library chart, e.g. creating External Secrets
+common:
+  externalSecret:
+    enabled: false
