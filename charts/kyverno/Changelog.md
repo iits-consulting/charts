@@ -2,6 +2,9 @@
 
 ## Chart Versions
 
+### 3.3.0
+- Added common chart lib as dependency chart
+
 ## [3.2.2]
 ### Fixed
 - template range loop for ClusterPolicy causing secrets to be cloned into all namespaces even when autoInjectDockerPullSecrets feature was explicitly disabled
