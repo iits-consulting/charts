@@ -32,7 +32,7 @@ prometheus-stack:
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://charts.iits.tech | common | 0.2.0 |
+| https://charts.iits.tech | common | 0.3.1 |
 | https://prometheus-community.github.io/helm-charts | prometheusStack(kube-prometheus-stack) | 79.9.0 |
 | https://prometheus-community.github.io/helm-charts | blackboxExporter(prometheus-blackbox-exporter) | 11.5.0 |
 
