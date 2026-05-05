@@ -2,6 +2,9 @@
 
 ## Chart Versions
 
+### 0.3.1
+- Fix ExternalSecret `template.type` being read from the wrong values level (`$secretConfig.type` instead of `$secretConfig.template.type`)
+
 ### 0.3.0
 - Remove hardcoded `argocd.argoproj.io/sync-wave` annotations from ExternalSecret/PushSecret/Password resources. Consumers needing sync ordering must now supply via per-secret/per-generator `annotations` field.
 - Add `annotations` field on each secret/generator config — merged into resource `metadata.annotations`.
