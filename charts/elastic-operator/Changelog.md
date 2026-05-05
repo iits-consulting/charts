@@ -2,6 +2,10 @@
 
 ## Chart Versions
 
+### 9.3.3
+- Changed operator version to 3.3.2
+- Changed elastic stack (appVersion) to version 9.3.3
+
 ### 9.0.5-bitnamilegacy
 
 - Changed Bitnami image for password generation job to `docker.io/bitnamilegacy/kubectl` (temporary solution to keep chart functional, migrate to other image in a later release)
