@@ -6,7 +6,7 @@
     {{- /* Grab the existing secret references as they are */ -}}
     {{- $existing := list }}
       {{- range $existingElement := .Values.autoInjectDockerPullSecrets.existingSecretRef | default dict }}
-        {{- $existing = append $existing (printf $existingElement.name)  }} 
+        {{- $existing = append $existing (printf $existingElement.name)  }}
       {{- end }}
 
     {{- /* Iterate over the keys of the `secrets` map */ -}}
@@ -27,8 +27,17 @@
       {{- end -}}
     {{- end -}}
 
+    {{- /* Check ESO secret names don't collide with chart-created pull-secret-<key> names.
+           a clash with a chart-created secret would produce two ClusterPolicies with the same name. */ -}}
+    {{- range $esoSecretName := (keys ((.Values.common).externalSecret).pull.secrets | default (list)) -}}
+      {{- range $key := (keys $.Values.autoInjectDockerPullSecrets.secrets | default (list)) -}}
+        {{- if eq $esoSecretName (printf "pull-secret-%s" $key) -}}
+          {{- fail (printf "Helm Fail! Reason: Image Pull Secret %s already exists and would cause Kyverno ClusterPolicy naming conflict." $esoSecretName) -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+
     {{- /* Comma separate the list output so it can be parsed properly */ -}}
     {{- join "," $existing -}}
   {{- end -}}
 {{- end -}}
-

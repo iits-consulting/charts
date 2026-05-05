@@ -397,21 +397,32 @@ ingress:
 # Global functionality can be used from the common library chart, e.g. creating External Secrets. Examples below to use
 # ExternalSecrets for openIDConnect config of kyverno components or dockerconfijson type of secrets. In case of `autoInjectDockerPullSecrets`, 
 # please check relevant guidelines of `existingSecretRef` key above.
+# 
+# Example: Reference the ESO-created secret (see below) so Kyverno clones it into every namespace:
+# autoInjectDockerPullSecrets:
+#   enabled: true
+#   existingSecretRef:
+#     - name: kyverno-pull-secret-dockerhub
+#       namespace: kyverno
+#
 # common:
 #   externalSecret:
 #     enabled: true
+#     secretStore:
+#       kind: ClusterSecretStore
+#       name: <your-secret-store-name>
 #     pull:
 #       enabled: true
 #       secrets:
 #         kyverno-policy-reporter-ui-oidc:
-#           path: ""  
+#           path: "path/to/your/secret"  
 #           keys:
 #             - name: clientId
 #               remoteKey: client_id
 #             - name: clientSecret
 #               remoteKey: client_secret
 #         kyverno-pull-secret-dockerhub:
-#           path: ""
+#           path: "path/to/your/secret"
 #           keys:
 #             - name: username
 #             - name: password
@@ -427,7 +438,7 @@ ingress:
 #                   }
 #                 }
 #         kyverno-common-signed-docker-images:
-#           path: ""
+#           path: "path/to/your/secret"
 #           keys:
 #             - name: registryUrl
 #               remoteKey: registry_url
