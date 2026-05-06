@@ -6,7 +6,6 @@ metadata:
   name: {{ $.Release.Name }}
   annotations:
     eck.k8s.elastic.co/license: basic
-    argocd.argoproj.io/sync-wave: "10"
 spec:
   version: {{  tpl .version $ }}
 {{- with $.Values.auth }}

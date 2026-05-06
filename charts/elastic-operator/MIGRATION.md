@@ -52,6 +52,34 @@ Generally updates should just work in-place. But:
     to stop argocd from deleting PVs
 8. Deploy elastic-operator chart
 
+## Migrating to ESO mode (chart `9.1.0+`)
+
+When `common.externalSecret.enabled: true`, vault becomes canonical for user passwords and the chart no longer renders user secrets directly. **Existing deployments must perform the steps below before upgrading**, or the ExternalSecret will fail to create the user secrets it needs to own.
+
+### Preconditions
+
+* External Secrets Operator (ESO) is installed in the cluster
+* A `ClusterSecretStore` (or `SecretStore`) exists pointing at vault, referenced via `common.externalSecret.secretStore.{kind,name}`
+* The vault paths consumed by this chart already have credentials, OR you accept that ESO password generators will produce new ones on first sync
+
+### Vault paths used
+
+| Path | Direction | Owner |
+|------|-----------|-------|
+| `<stage>/elastic-operator/<user>-user` | round-trip (push from generator → pull into K8s) | this chart |
+| `<stage>/elastic-operator/ca` | push-only (from ECK-issued cert secret) | this chart |
+| `<stage>/elastic-operator/elasticsearch_backup_bucket` | pull-only (externally populated, e.g. by Terraform) | infra |
+
+### What to verify post-upgrade
+
+* `kubectl get pushsecret,externalsecret -n <ns>` — all `Synced` (the CA PushSecret may take a few minutes if ECK is still provisioning)
+* The ECK-managed Elasticsearch cluster reaches `Ready`
+* Downstream consumers (e.g. falco, filebeat) successfully authenticate against ES
+
+### Rolling back
+
+Set `common.externalSecret.enabled: false` and re-sync. The chart reverts to the bash `generate-passwords` Job + Helm-rendered user secrets path. ESO-managed secrets persist unless you also delete them.
+
 ## PVC names in the two charts
 
 * Naming of PVCs of **elasticsearch** chart:
