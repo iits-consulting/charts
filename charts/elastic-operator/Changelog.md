@@ -2,7 +2,7 @@
 
 ## Chart Versions
 
-### 9.1.0
+### 9.4.0
 
 - Add ESO support via the `common` library chart (>=0.3.0). When `common.externalSecret.enabled: true`, vault becomes the source of truth for user passwords via a round-trip design:
   - ESO `Password` generators replace the bash `generate-passwords` Job. Job, ConfigMap, and RBAC are skipped.
@@ -16,6 +16,10 @@
 - `backup/secure-settings` Secret is skipped when ESO is enabled, so the backup ExternalSecret can own that name.
 - Bump curl image used by backup job from `8.12.1` to `8.13.0`.
 - Migration: existing deployments must delete Helm-rendered user secrets (`*-user-custom-X`) before upgrading so ExternalSecret can create them. Vault retains existing passwords; round-trip pulls them back.
+
+### 9.3.3
+- Changed operator version to 3.3.2
+- Changed elastic stack (appVersion) to version 9.3.3
 
 ### 9.0.5-bitnamilegacy
 
