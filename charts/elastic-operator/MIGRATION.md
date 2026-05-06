@@ -52,7 +52,7 @@ Generally updates should just work in-place. But:
     to stop argocd from deleting PVs
 8. Deploy elastic-operator chart
 
-## Migrating to ESO mode (chart `9.1.0+`)
+## Migrating to ESO mode (chart `9.4.0+`)
 
 When `common.externalSecret.enabled: true`, vault becomes canonical for user passwords and the chart no longer renders user secrets directly. **Existing deployments must perform the steps below before upgrading**, or the ExternalSecret will fail to create the user secrets it needs to own.
 
