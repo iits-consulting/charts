@@ -90,6 +90,10 @@ policy-reporter:
     enabled: true
     logging:
       encoding: json
+    # openIDConnect:
+      # supported keys: `discoveryUrl`, `clientId`, `clientSecret`, `certificate`, `skipTLS`
+      # For reference, if External Secrets is used for OIDC. Value has to match the name of the generated ESO secret under `common.externalSecret.pull`
+      # secretRef: "kyverno-policy-reporter-ui-oidc"
 
   metrics:
     enabled: true
@@ -387,3 +391,68 @@ ingress:
       paths:
         - path: "/policies"
         - path: "/_nuxt"
+
+
+# https://github.com/iits-consulting/charts/tree/main/charts/common
+# Global functionality can be used from the common library chart, e.g. creating External Secrets. Examples below to use
+# ExternalSecrets for openIDConnect config of kyverno components or dockerconfijson type of secrets. In case of `autoInjectDockerPullSecrets`, 
+# please check relevant guidelines of `existingSecretRef` key above.
+# 
+# Example: Reference the ESO-created secret (see below) so Kyverno clones it into every namespace:
+# autoInjectDockerPullSecrets:
+#   enabled: true
+#   existingSecretRef:
+#     - name: kyverno-pull-secret-dockerhub
+#       namespace: kyverno
+#
+# common:
+#   externalSecret:
+#     enabled: true
+#     secretStore:
+#       kind: ClusterSecretStore
+#       name: <your-secret-store-name>
+#     pull:
+#       enabled: true
+#       secrets:
+#         kyverno-policy-reporter-ui-oidc:
+#           path: "path/to/your/secret"  
+#           keys:
+#             - name: clientId
+#               remoteKey: client_id
+#             - name: clientSecret
+#               remoteKey: client_secret
+#         kyverno-pull-secret-dockerhub:
+#           path: "path/to/your/secret"
+#           keys:
+#             - name: username
+#             - name: password
+#           template:
+#             type: "kubernetes.io/dockerconfigjson"
+#             data:       
+#               .dockerconfigjson: >-
+#                 {
+#                   "auths": {
+#                     "docker.io": {
+#                       "auth": "{{ `{{ printf "%s:%s" .username .password | b64enc }}` }}"
+#                     }
+#                   }
+#                 }
+#         kyverno-common-signed-docker-images:
+#           path: "path/to/your/secret"
+#           keys:
+#             - name: registryUrl
+#               remoteKey: registry_url
+#             - name: username
+#             - name: password
+#               remoteKey: token
+#           template:
+#             type: "kubernetes.io/dockerconfigjson"
+#             data:       
+#               .dockerconfigjson: >-
+#                 {
+#                   "auths": {
+#                     "{{ `{{ .registryUrl }}` }}": {
+#                       "auth": "{{ `{{ printf "%s:%s" .username .password | b64enc }}` }}"
+#                     }
+#                   }
+#                 }
