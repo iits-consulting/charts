@@ -99,6 +99,17 @@ prometheusStack:
       patch:
         enabled: false
   grafana:
+    # Example below client_id and client_secret via envFromSecret in case External Secrets is used. 
+    # In this case secretKeyRef.name has to match with ESO's secret-name key under common.externalSecret.pull config
+    # envValueFrom:
+    #   GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET:
+    #     secretKeyRef:
+    #       name: <grafana-secret-name>
+    #       key: clientsecret
+    #   GF_AUTH_GENERIC_OAUTH_CLIENT_ID:
+    #     secretKeyRef:
+    #       name: <grafana-secret-name>
+    #       key: clientid
     sidecar:
       dashboards:
         enabled: true
@@ -124,6 +135,10 @@ prometheusStack:
     config:
       global:
         resolve_timeout: 5m
+        # Remove `slack_api_url` in case External Secrets is used. 
+        # Instead, make use of _file directive to mount ESO's the releavant secret as volume mount, like below. 
+        # Secret mounts can be defined under `alertmanagerSpec.secrets`
+        # slack_api_url_file: /etc/alertmanager/secrets/<alertmanager-secret-name>/slack_api_url
         slack_api_url: "http://myhost.local"
       route:
         group_by: [ 'job' ]
@@ -161,6 +176,10 @@ prometheusStack:
       templates:
         - /etc/alertmanager/config/*.tmpl
     alertmanagerSpec:
+      # Mount the ESO-managed secret into the Alertmanager pod. 
+      # In this case <alertmanager-secret-name> has to match with ESO's <alertmanager-secret-name> key under common.externalSecret.pull config
+      # secrets:
+      #   - <alertmanager-secret-name>
       externalUrl: https://{{$.Values.global.ingress.host}}{{$.Values.global.ingress.paths.alertmanager}}
       routePrefix: "/alertmanager"
       resources:
@@ -189,6 +208,20 @@ blackboxExporter:
       memory: 100Mi
     limits:
       memory: 100Mi
+  
+  # To make use of ESO generated config, disable the built-in Helm-managed config and move everything under `configFromTemplate.config`. 
+  # This will generate a configMap resource as template, for ESO to consume. Example below as reference:
+  # config: {}
+  # configFromTemplate:
+  #   name: <blackbox-exporter-config-template> # has to match ESO's template.templateFrom[].configMap.name:
+  #   config: 
+  #     ...
+  #           oauth2:
+  #             client_id: "{{ `{{ .client_id }}` }}" # for Helm/ESO secret injection
+  #             client_secret: "{{ `{{ .client_secret }}` }}" # for Helm/ESO secret injection
+  #     ...
+  # configExistingSecretName: <blackbox-exporter-secret-name>: # has to match the name of the generated ESO secret under common.externalSecret.pull config
+  
   config:
     modules:
       http_2xx:
@@ -269,3 +302,37 @@ uptimeMonitors:
   targets: []
     # - name: my-target
     #   url: https://app.example.com/
+
+# https://github.com/iits-consulting/charts/tree/main/charts/common
+# Global functionality can be used from the common library chart, e.g. creating External Secrets. 
+# Below example to use as template for this stack.
+common:
+  externalSecret:
+    enabled: false
+#     pull:
+#       enabled: true
+#       secrets:
+#         <alertmanager-secret-name>: # has to be present in `alertmanagerSpec.secrets` to be mounted as volume
+#           path: ""
+#           keys:
+#             - name: "slack_api_url"
+#         <grafana-secret-name>: # has to match envFrom.<ENV>.secretKeyRef.name
+#           path: ""
+#           keys:
+#             - name: "clientid"
+#               remoteKey: "client_id"  
+#             - name: "clientsecret"
+#               remoteKey: "client_secret"
+#         <blackbox-exporter-secret-name>:
+#           path: ""
+#           keys:
+#             - name: client_id
+#             - name: client_secret
+#           template:
+#             templateFrom:
+#               - target: Data
+#                 configMap:
+#                   name: <blackbox-exporter-config-template> # has to match `configFromTemplate.name`
+#                   items:
+#                     - key: blackbox.yaml # matches the `blackbox.yaml` key in relevant configMap in templates
+#                       templateAs: Values
