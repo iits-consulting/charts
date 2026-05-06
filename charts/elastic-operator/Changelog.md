@@ -4,14 +4,18 @@
 
 ### 9.1.0
 
-- Add ESO support via the `common` library chart (>=0.3.0):
-  - PushSecret resources for user credentials (username + password) populated by ECK-created user Secrets
-  - PushSecret for the operator-issued CA certificate
-  - ExternalSecret for backup S3 credentials (vault-managed)
-  - `common.externalSecret.enabled` is opt-in (default `false`)
-- `generate-passwords` Job now patches the password field into ECK-created user Secrets directly. The bash job is the source of truth for password creation
-- `backup/secure-settings` Secret is skipped when ESO is enabled, so the backup ExternalSecret can own that name
-- Bump curl image used by backup job from `8.12.1` to `8.13.0`
+- Add ESO support via the `common` library chart (>=0.3.0). When `common.externalSecret.enabled: true`, vault becomes the source of truth for user passwords via a round-trip design:
+  - ESO `Password` generators replace the bash `generate-passwords` Job. Job, ConfigMap, and RBAC are skipped.
+  - PushSecret references the generator (`selector.generatorRef`) with `updatePolicy: IfNotExists`, locking vault to the first generated value (cluster rebuilds preserve passwords).
+  - ExternalSecret pulls the password from vault and materializes the `*-user-custom-X` basic-auth secret consumed by ECK, with username/roles emitted from chart values via `template.data`.
+  - Helm-rendered user secrets in `eks-stack/elasticsearch-users.yaml` are skipped (avoids ownership conflict with ExternalSecret).
+  - `auth.users.X.existingPassword` is ignored in this mode (vault is canonical).
+  - CA cert PushSecret uses `updatePolicy: Replace` so ECK CA rotation propagates to vault. No ExternalSecret pull-back (CA is not secret data).
+  - ExternalSecret for backup S3 credentials (vault-managed, externally populated).
+- When `common.externalSecret.enabled: false`, behavior is unchanged: bash job patches passwords into Helm-rendered user secrets (Azure / no-ESO path).
+- `backup/secure-settings` Secret is skipped when ESO is enabled, so the backup ExternalSecret can own that name.
+- Bump curl image used by backup job from `8.12.1` to `8.13.0`.
+- Migration: existing deployments must delete Helm-rendered user secrets (`*-user-custom-X`) before upgrading so ExternalSecret can create them. Vault retains existing passwords; round-trip pulls them back.
 
 ### 9.0.5-bitnamilegacy
 
