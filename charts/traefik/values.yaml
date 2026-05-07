@@ -1,6 +1,4 @@
 traefik:
-  globalArguments:
-    - "--global.checknewversion"
   additionalArguments:
     - "--ping"
 
