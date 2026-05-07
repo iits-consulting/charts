@@ -1,8 +1,4 @@
 keycloakx:
-  secretEnv:
-    KC_BOOTSTRAP_ADMIN_USERNAME: "keycloakAdmin"
-    KC_BOOTSTRAP_ADMIN_PASSWORD: "REPLACE_ME"
-
   configMapEnv:
     JAVA_OPTS_APPEND: "-Djgroups.dns.query=keycloakx-headless"
     KC_LOG_LEVEL_ORG_KEYCLOAK_EVENTS: "trace"
@@ -11,15 +7,12 @@ keycloakx:
 
   database:
     vendor: "postgres"
-    hostname: "REPLACE_ME"
-    port: "REPLACE_ME"
-    database: "REPLACE_ME"
-    username: "REPLACE_ME"
-    password: "REPLACE_ME"
 
   extraEnvFrom: |
     - secretRef:
         name: {{ include "keycloak.fullname" $ }}-env
+    - secretRef:
+        name: {{ include "keycloak.fullname" $ }}-database
     - configMapRef:
         name: {{ include "keycloak.fullname" $ }}-env
 
@@ -60,3 +53,32 @@ keycloakx:
 
   serviceMonitor:
     enabled: true
+
+# https://github.com/iits-consulting/charts/tree/main/charts/common
+# Global functionality can be used from the common library chart, e.g. creating External Secrets
+# common:
+#   externalSecret:
+#     enabled: true
+#     pull:
+#       enabled: true
+#       secrets:
+#         keycloakx-env:
+#           path: "{{ .Values.projectValues.context }}/data/{{ .Values.projectValues.stage }}/keycloak/keycloak_admin_credentials"
+#           keys:
+#             - name: KC_BOOTSTRAP_ADMIN_USERNAME
+#               remoteKey: username
+#             - name: KC_BOOTSTRAP_ADMIN_PASSWORD
+#               remoteKey: password
+#         keycloakx-database:
+#           path: "{{ .Values.projectValues.context }}/data/{{ .Values.projectValues.stage }}/keycloak/keycloak_database_credentials"
+#           keys:
+#             - name: KC_DB_URL_HOST
+#               remoteKey: address
+#             - name: KC_DB_URL_PORT
+#               remoteKey: port
+#             - name: KC_DB_URL_DATABASE
+#               remoteKey: keycloak_dbName
+#             - name: KC_DB_USERNAME
+#               remoteKey: keycloak_username
+#             - name: KC_DB_PASSWORD
+#               remoteKey: keycloak_password
