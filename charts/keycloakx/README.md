@@ -1,6 +1,6 @@
 # keycloakx
 
-![Version: 7.1.8](https://img.shields.io/badge/Version-7.1.8-informational?style=flat-square)
+![Version: 7.2.0](https://img.shields.io/badge/Version-7.2.0-informational?style=flat-square)
 
 Keycloak.X - Open Source Identity and Access Management for Modern Applications and Services
 
@@ -8,6 +8,7 @@ Keycloak.X - Open Source Identity and Access Management for Modern Applications 
 
 | Repository | Name | Version |
 |------------|------|---------|
+| https://charts.iits.tech | common | 0.3.1 |
 | https://codecentric.github.io/helm-charts | keycloakx | 7.1.8 |
 
 ## Values
@@ -22,13 +23,8 @@ Keycloak.X - Open Source Identity and Access Management for Modern Applications 
 | keycloakx.configMapEnv.KC_LOG_CONSOLE_LEVEL | string | `"trace"` |  |
 | keycloakx.configMapEnv.KC_LOG_CONSOLE_OUTPUT | string | `"json"` |  |
 | keycloakx.configMapEnv.KC_LOG_LEVEL_ORG_KEYCLOAK_EVENTS | string | `"trace"` |  |
-| keycloakx.database.database | string | `"REPLACE_ME"` |  |
-| keycloakx.database.hostname | string | `"REPLACE_ME"` |  |
-| keycloakx.database.password | string | `"REPLACE_ME"` |  |
-| keycloakx.database.port | string | `"REPLACE_ME"` |  |
-| keycloakx.database.username | string | `"REPLACE_ME"` |  |
 | keycloakx.database.vendor | string | `"postgres"` |  |
-| keycloakx.extraEnvFrom | string | `"- secretRef:\n    name: {{ include \"keycloak.fullname\" $ }}-env\n- configMapRef:\n    name: {{ include \"keycloak.fullname\" $ }}-env\n"` |  |
+| keycloakx.extraEnvFrom | string | `"- secretRef:\n    name: {{ include \"keycloak.fullname\" $ }}-env\n- secretRef:\n    name: {{ include \"keycloak.fullname\" $ }}-database\n- configMapRef:\n    name: {{ include \"keycloak.fullname\" $ }}-env\n"` |  |
 | keycloakx.http.relativePath | string | `"/"` |  |
 | keycloakx.ingress.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
 | keycloakx.ingress.enabled | bool | `true` |  |
@@ -41,8 +37,6 @@ Keycloak.X - Open Source Identity and Access Management for Modern Applications 
 | keycloakx.resources.limits.memory | string | `"718Mi"` |  |
 | keycloakx.resources.requests.cpu | string | `"100m"` |  |
 | keycloakx.resources.requests.memory | string | `"718Mi"` |  |
-| keycloakx.secretEnv.KC_BOOTSTRAP_ADMIN_PASSWORD | string | `"REPLACE_ME"` |  |
-| keycloakx.secretEnv.KC_BOOTSTRAP_ADMIN_USERNAME | string | `"keycloakAdmin"` |  |
 | keycloakx.serviceMonitor.enabled | bool | `true` |  |
 | keycloakx.topologySpreadConstraints | string | `"- maxSkew: 1\n  topologyKey: topology.kubernetes.io/zone\n  whenUnsatisfiable: \"DoNotSchedule\"\n"` |  |
 
