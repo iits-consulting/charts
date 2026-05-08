@@ -27,12 +27,12 @@ Keycloak.X - Open Source Identity and Access Management for Modern Applications 
 | common.externalSecret.pull.secrets.keycloakx-eso-database.keys[3].remoteKey | string | `"keycloak_username"` |  |
 | common.externalSecret.pull.secrets.keycloakx-eso-database.keys[4].name | string | `"KC_DB_PASSWORD"` |  |
 | common.externalSecret.pull.secrets.keycloakx-eso-database.keys[4].remoteKey | string | `"keycloak_password"` |  |
-| common.externalSecret.pull.secrets.keycloakx-eso-database.path | string | `"{{ .Values.projectValues.context }}/data/{{ .Values.projectValues.stage }}/keycloak/keycloak_database_credentials"` |  |
+| common.externalSecret.pull.secrets.keycloakx-eso-database.path | string | `"{{ .Values.projectValues.context }}/data/infra/keycloak/keycloak_database_credentials"` |  |
 | common.externalSecret.pull.secrets.keycloakx-eso-env.keys[0].name | string | `"KC_BOOTSTRAP_ADMIN_USERNAME"` |  |
 | common.externalSecret.pull.secrets.keycloakx-eso-env.keys[0].remoteKey | string | `"username"` |  |
 | common.externalSecret.pull.secrets.keycloakx-eso-env.keys[1].name | string | `"KC_BOOTSTRAP_ADMIN_PASSWORD"` |  |
 | common.externalSecret.pull.secrets.keycloakx-eso-env.keys[1].remoteKey | string | `"password"` |  |
-| common.externalSecret.pull.secrets.keycloakx-eso-env.path | string | `"{{ .Values.projectValues.context }}/data/{{ .Values.projectValues.stage }}/keycloak/keycloak_admin_credentials"` |  |
+| common.externalSecret.pull.secrets.keycloakx-eso-env.path | string | `"{{ .Values.projectValues.context }}/data/infra/keycloak/keycloak_admin_credentials"` |  |
 | keycloakx.command[0] | string | `"/opt/keycloak/bin/kc.sh"` |  |
 | keycloakx.command[1] | string | `"start"` |  |
 | keycloakx.command[2] | string | `"--http-port=8080"` |  |
