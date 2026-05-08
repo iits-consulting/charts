@@ -24,9 +24,9 @@ Keycloak.X - Open Source Identity and Access Management for Modern Applications 
 | common.externalSecret.pull.secrets.keycloakx-eso-database.keys[2].name | string | `"KC_DB_URL_DATABASE"` |  |
 | common.externalSecret.pull.secrets.keycloakx-eso-database.keys[2].remoteKey | string | `"keycloak_dbName"` |  |
 | common.externalSecret.pull.secrets.keycloakx-eso-database.keys[3].name | string | `"KC_DB_USERNAME"` |  |
-| common.externalSecret.pull.secrets.keycloakx-eso-database.keys[3].remoteKey | string | `"keycloak_username"` |  |
+| common.externalSecret.pull.secrets.keycloakx-eso-database.keys[3].remoteKey | string | `"username"` |  |
 | common.externalSecret.pull.secrets.keycloakx-eso-database.keys[4].name | string | `"KC_DB_PASSWORD"` |  |
-| common.externalSecret.pull.secrets.keycloakx-eso-database.keys[4].remoteKey | string | `"keycloak_password"` |  |
+| common.externalSecret.pull.secrets.keycloakx-eso-database.keys[4].remoteKey | string | `"password"` |  |
 | common.externalSecret.pull.secrets.keycloakx-eso-database.path | string | `"playground/data/dev/keycloak/keycloak_database_credentials"` |  |
 | common.externalSecret.pull.secrets.keycloakx-eso-env.keys[0].name | string | `"KC_BOOTSTRAP_ADMIN_USERNAME"` |  |
 | common.externalSecret.pull.secrets.keycloakx-eso-env.keys[0].remoteKey | string | `"username"` |  |
