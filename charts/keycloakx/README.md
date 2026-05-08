@@ -51,7 +51,7 @@ Keycloak.X - Open Source Identity and Access Management for Modern Applications 
 | keycloakx.ingress.rules[0].paths[0].path | string | `"/"` |  |
 | keycloakx.ingress.rules[0].paths[0].pathType | string | `"Prefix"` |  |
 | keycloakx.proxy.mode | string | `"xforwarded"` |  |
-| keycloakx.replicas | int | `2` |  |
+| keycloakx.replicas | int | `0` |  |
 | keycloakx.resources.limits.memory | string | `"718Mi"` |  |
 | keycloakx.resources.requests.cpu | string | `"100m"` |  |
 | keycloakx.resources.requests.memory | string | `"718Mi"` |  |
