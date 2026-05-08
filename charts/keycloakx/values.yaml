@@ -76,14 +76,14 @@ common:
       enabled: true
       secrets:
         keycloakx-eso-env:
-          path: "playground/data/infra/keycloak/keycloak_admin_credentials"
+          path: "playground/data/dev/keycloak/keycloak_admin_credentials"
           keys:
             - name: KC_BOOTSTRAP_ADMIN_USERNAME
               remoteKey: username
             - name: KC_BOOTSTRAP_ADMIN_PASSWORD
               remoteKey: password
         keycloakx-eso-database:
-          path: "playground/data/infra/keycloak/keycloak_database_credentials"
+          path: "playground/data/dev/keycloak/keycloak_database_credentials"
           keys:
             - name: KC_DB_URL_HOST
               remoteKey: address
