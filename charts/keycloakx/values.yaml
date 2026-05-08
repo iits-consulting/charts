@@ -29,7 +29,7 @@ keycloakx:
     - configMapRef:
         name: {{ include "keycloak.fullname" $ }}-env
 
-  replicas: 2
+  replicas: 0
   command:
     - "/opt/keycloak/bin/kc.sh"
     - "start"
