@@ -92,6 +92,6 @@ common:
             - name: KC_DB_URL_DATABASE
               remoteKey: keycloak_dbName
             - name: KC_DB_USERNAME
-              remoteKey: username
+              remoteKey: keycloak_username
             - name: KC_DB_PASSWORD
-              remoteKey: password
+              remoteKey: keycloak_password
