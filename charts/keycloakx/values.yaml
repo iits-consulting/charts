@@ -75,14 +75,14 @@ keycloakx:
 #     pull:
 #       enabled: true
 #       secrets:
-#         keycloakx-eso-env:
+#         keycloakx-env:
 #           path: "<path to keycloak admin credentials in secret store>"
 #           keys:
 #             - name: KC_BOOTSTRAP_ADMIN_USERNAME
 #               remoteKey: <remote-key>
 #             - name: KC_BOOTSTRAP_ADMIN_PASSWORD
 #               remoteKey: <remote-key>
-#         keycloakx-eso-database:
+#         keycloakx-database:
 #           path: "<path to keycloak database credentials in secret store>"
 #           keys:
 #             - name: KC_DB_URL_HOST
