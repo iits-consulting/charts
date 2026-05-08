@@ -29,7 +29,7 @@ keycloakx:
     - configMapRef:
         name: {{ include "keycloak.fullname" $ }}-env
 
-  replicas: 0
+  replicas: 2
   command:
     - "/opt/keycloak/bin/kc.sh"
     - "start"
@@ -76,14 +76,14 @@ common:
       enabled: true
       secrets:
         keycloakx-eso-env:
-          path: "playground/data/dev/keycloak/keycloak_admin_credentials"
+          path: "playground/data/infra/keycloak/keycloak_admin_credentials"
           keys:
             - name: KC_BOOTSTRAP_ADMIN_USERNAME
               remoteKey: username
             - name: KC_BOOTSTRAP_ADMIN_PASSWORD
               remoteKey: password
         keycloakx-eso-database:
-          path: "playground/data/dev/keycloak/keycloak_database_credentials"
+          path: "playground/data/infra/keycloak/keycloak_database_credentials"
           keys:
             - name: KC_DB_URL_HOST
               remoteKey: address
@@ -92,6 +92,6 @@ common:
             - name: KC_DB_URL_DATABASE
               remoteKey: keycloak_dbName
             - name: KC_DB_USERNAME
-              remoteKey: keycloak_username
+              remoteKey: username
             - name: KC_DB_PASSWORD
-              remoteKey: keycloak_password
+              remoteKey: password
