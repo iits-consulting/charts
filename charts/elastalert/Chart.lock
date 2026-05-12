@@ -2,5 +2,8 @@ dependencies:
 - name: elastalert2
   repository: https://jertel.github.io/elastalert2/
   version: 2.24.0
-digest: sha256:555b347fa73d43d163f31b09b71f2e3d04ec916c948811d07766746c5b4750c0
-generated: "2025-04-29T10:11:28.496359+02:00"
+- name: common
+  repository: https://charts.iits.tech
+  version: 0.3.1
+digest: sha256:016107250906721e8c5b688601658f55881e3282466d830432ee87e1d26dfd33
+generated: "2026-05-12T11:43:18.259487+02:00"
