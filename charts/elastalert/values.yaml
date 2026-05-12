@@ -2,16 +2,15 @@ elastalert2:
   elasticsearch:
     # -- needs to be in the same namespaces as elastic stack if used like this
     host: elasticsearch-master
-  # Mounts SLACK_WEBHOOK_URL from the ESO-created secret. optional=true keeps the pod
-  # running when ESO is disabled and the secret does not exist.
+  # Mounts SLACK_WEBHOOK_URL from the ESO-created secret.
   # Override secretKeyRef.name to match common.externalSecret.pull.secrets key if changed.
-  optEnv:
-    - name: SLACK_WEBHOOK_URL
-      valueFrom:
-        secretKeyRef:
-          name: elastalert-slack-webhook
-          key: slack_webhook_url
-          optional: true
+  # optEnv:
+  #   - name: SLACK_WEBHOOK_URL
+  #     valueFrom:
+  #       secretKeyRef:
+  #         name: elastalert-slack-webhook
+  #         key: slack_webhook_url
+
   secretRulesName: elastalert-custom-rules
   secretRulesList:
     - argoCD
