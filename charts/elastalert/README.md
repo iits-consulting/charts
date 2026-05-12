@@ -51,7 +51,7 @@ elastalert:
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://charts.iits.tech | common | 0.1.0 |
+| https://charts.iits.tech | common | 0.3.1 |
 | https://jertel.github.io/elastalert2/ | elastalert2 | 2.24.0 |
 
 ## Values
@@ -182,10 +182,6 @@ elastalert:
 | customRules.alerting.vaultInjection.type | string | `"any"` |  |
 | customRules.slack.webhookUrl | string | `nil` | Slack webhook URL injected directly. Used when common.externalSecret.enabled=false. For ArgoCD vault plugin: parameters: customRules.slack.webhookUrl: "${vault:...}" |
 | elastalert2.elasticsearch.host | string | `"elasticsearch-master"` | needs to be in the same namespaces as elastic stack if used like this |
-| elastalert2.optEnv[0].name | string | `"SLACK_WEBHOOK_URL"` |  |
-| elastalert2.optEnv[0].valueFrom.secretKeyRef.key | string | `"slack_webhook_url"` |  |
-| elastalert2.optEnv[0].valueFrom.secretKeyRef.name | string | `"elastalert-slack-webhook"` |  |
-| elastalert2.optEnv[0].valueFrom.secretKeyRef.optional | bool | `true` |  |
 | elastalert2.secretRulesList[0] | string | `"argoCD"` |  |
 | elastalert2.secretRulesList[1] | string | `"botKube"` |  |
 | elastalert2.secretRulesList[2] | string | `"vaultInjection"` |  |
