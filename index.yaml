@@ -1636,6 +1636,34 @@ entries:
     version: 0.1.0
   elastalert:
   - apiVersion: v2
+    created: "2026-05-12T10:13:37.462931921Z"
+    dependencies:
+    - name: elastalert2
+      repository: https://jertel.github.io/elastalert2/
+      version: 2.24.0
+    - name: common
+      repository: https://charts.iits.tech
+      version: 0.3.1
+    description: 'Wrapper chart for elastalert2 with custom rules to kickstart IITS
+      projects  ## Installing the Chart with iits ArgoCD  There are two ways to provide
+      the Slack webhook URL.  ### Option 1: ExternalSecretsOperator  Use the built-in
+      ESO integration to pull the webhook URL from Vault into a Kubernetes Secret.
+      The pod reads it as `SLACK_WEBHOOK_URL` via an environment variable.  ```yaml
+      elastalert:   namespace: monitoring   repoURL: "https://charts.iits.tech"   targetRevision:
+      "0.5.0"   valueFile: "value-files/elastalert/values.yaml" ```  `value-files/elastalert/values.yaml`:
+      ```yaml common:   externalSecret:     enabled: true     pull:       enabled:
+      true       secrets:         elastalert-slack-webhook:           path: "myProject/data/common/slack"           keys:             -
+      name: slack_webhook_url ```  ### Option 2: ArgoCD vault plugin (direct parameter)  ```yaml
+      elastalert:   namespace: monitoring   repoURL: "https://charts.iits.tech"   targetRevision:
+      "0.5.0"   valueFile: "value-files/elastalert/values.yaml"   parameters:     customRules.slack.webhookUrl:
+      "${vault:mySecretPath/data/common/slack#webhookUrl}" ``` '
+    digest: 5049ffdb98f588c8a93ee5db62b0a790b875e7454c3a354bb54cd80ebbbe029d
+    name: elastalert
+    type: application
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/elastalert-0.5.0/elastalert-0.5.0.tgz
+    version: 0.5.0
+  - apiVersion: v2
     created: "2025-04-29T16:28:00.998687377Z"
     dependencies:
     - name: elastalert2
@@ -7932,4 +7960,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/waf-cert-uploader-0.1.1/waf-cert-uploader-0.1.1.tgz
     version: 0.1.1
-generated: "2026-05-06T13:09:33.074285438Z"
+generated: "2026-05-12T10:13:37.46360462Z"
