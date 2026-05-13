@@ -4,18 +4,13 @@
 
 ### 9.4.0
 
-- Add ESO support via the `common` library chart (>=0.3.0). When `common.externalSecret.enabled: true`, vault becomes the source of truth for user passwords via a round-trip design:
-  - ESO `Password` generators replace the bash `generate-passwords` Job. Job, ConfigMap, and RBAC are skipped.
-  - PushSecret references the generator (`selector.generatorRef`) with `updatePolicy: IfNotExists`, locking vault to the first generated value (cluster rebuilds preserve passwords).
-  - ExternalSecret pulls the password from vault and materializes the `*-user-custom-X` basic-auth secret consumed by ECK, with username/roles emitted from chart values via `template.data`.
-  - Helm-rendered user secrets in `eks-stack/elasticsearch-users.yaml` are skipped (avoids ownership conflict with ExternalSecret).
-  - `auth.users.X.existingPassword` is ignored in this mode (vault is canonical).
-  - CA cert PushSecret uses `updatePolicy: Replace` so ECK CA rotation propagates to vault. No ExternalSecret pull-back (CA is not secret data).
-  - ExternalSecret for backup S3 credentials (vault-managed, externally populated).
-- When `common.externalSecret.enabled: false`, behavior is unchanged: bash job patches passwords into Helm-rendered user secrets (Azure / no-ESO path).
-- `backup/secure-settings` Secret is skipped when ESO is enabled, so the backup ExternalSecret can own that name.
-- Bump curl image used by backup job from `8.12.1` to `8.13.0`.
-- Migration: existing deployments must delete Helm-rendered user secrets (`*-user-custom-X`) before upgrading so ExternalSecret can create them. Vault retains existing passwords; round-trip pulls them back.
+- Add opt-in ESO support gated by `common.externalSecret.enabled` (default `false` —> behavior unchanged)
+- Add `templates/validation.yaml`: fails chart rendering on incoherent `common.externalSecret` sub-flag combinations.
+- Drop `argocd.argoproj.io/sync-wave: "10"` annotation on the Elasticsearch CR.
+- Bump `indexPatternInit` curl image tag `8.12.1` → `8.13.0`.
+- Add `common` chart `0.3.0` as dependency.
+- Add helm-unittest suites: `validation`, `elasticsearch-users`, `backup-secure-settings`; expand `generate-passwords` to cover the ESO guard.
+- Migration: pre-seed each `common.externalSecret.pull.secrets.*.path` in vault before flipping the flag; Argo prunes the old Helm-rendered Secret and ESO recreates it from vault. See `MIGRATION.md`.
 
 ### 9.3.3
 - Changed operator version to 3.3.2
