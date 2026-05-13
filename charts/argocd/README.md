@@ -1,6 +1,6 @@
 # argocd
 
-![Version: 20.1.0](https://img.shields.io/badge/Version-20.1.0-informational?style=flat-square) ![AppVersion: 3.3.10](https://img.shields.io/badge/AppVersion-3.3.10-informational?style=flat-square)
+![Version: 20.1.0](https://img.shields.io/badge/Version-20.1.0-informational?style=flat-square) ![AppVersion: 3.2.11](https://img.shields.io/badge/AppVersion-3.2.11-informational?style=flat-square)
 
 This chart is used to bootstrap a Kubernetes cluster with `argocd`.
 You can use this chart to deploy `argocd` through tools like `terraform`.
@@ -61,6 +61,7 @@ resource "helm_release" "argocd" {
 | argo-cd.dex.enabled | bool | `false` |  |
 | argo-cd.fullnameOverride | string | `"argocd"` |  |
 | argo-cd.global.domain | string | `"REPLACE_THIS/argocd"` |  |
+| argo-cd.global.image.tag | string | `"3.2.11"` | Overrides the global Argo CD image tag whose default is the chart appVersion |
 | argo-cd.global.logging.format | string | `"json"` |  |
 | argo-cd.global.logging.level | string | `"warn"` |  |
 | argo-cd.notifications.enabled | bool | `false` |  |
