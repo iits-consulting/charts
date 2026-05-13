@@ -1,0 +1,56 @@
+suite: validation
+templates:
+  - validation.yaml
+
+release:
+  name: elastic-operator
+
+tests:
+  - it: should pass with ESO disabled (default)
+    set:
+      common.externalSecret.enabled: false
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: should pass when ESO fully configured
+    set:
+      common.externalSecret.enabled: true
+      common.externalSecret.generators.enabled: true
+      common.externalSecret.generators.passwords:
+        foo:
+          spec:
+            length: 32
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: should fail when ESO enabled but no password source
+    set:
+      common.externalSecret.enabled: true
+      common.externalSecret.generators.enabled: false
+      common.externalSecret.generators.passwords: {}
+    asserts:
+      - failedTemplate:
+          errorMessage: "common.externalSecret.enabled is true but no password source is configured — set generators.enabled + generators.passwords, or disable common.externalSecret"
+
+  - it: should fail when generators.enabled but passwords empty
+    set:
+      common.externalSecret.enabled: true
+      common.externalSecret.generators.enabled: true
+      common.externalSecret.generators.passwords: {}
+    asserts:
+      - failedTemplate:
+          errorMessage: "common.externalSecret.generators.enabled is true but common.externalSecret.generators.passwords is empty — define at least one password generator or disable generators"
+
+  - it: should fail when passwords set but generators.enabled false
+    set:
+      common.externalSecret.enabled: true
+      common.externalSecret.generators.enabled: false
+      common.externalSecret.generators.passwords:
+        foo:
+          spec:
+            length: 32
+    asserts:
+      - failedTemplate:
+          errorMessage: "common.externalSecret.generators.passwords is set but common.externalSecret.generators.enabled is false — the Password CRDs would not render"

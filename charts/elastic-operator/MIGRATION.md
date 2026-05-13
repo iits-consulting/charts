@@ -54,31 +54,29 @@ Generally updates should just work in-place. But:
 
 ## Migrating to ESO mode (chart `9.4.0+`)
 
-When `common.externalSecret.enabled: true`, vault becomes canonical for user passwords and the chart no longer renders user secrets directly. **Existing deployments must perform the steps below before upgrading**, or the ExternalSecret will fail to create the user secrets it needs to own.
+When `common.externalSecret.enabled: true`, vault is canonical for user passwords. To preserve existing passwords across the flip, pre-seed vault first; otherwise the Password generator produces new values on first sync.
+
+### Steps
+
+1. For each entry in `common.externalSecret.pull.secrets.*`, write the existing password to its `path` in vault under the key from `keys[].remoteKey` (or `keys[].name` if unset).
+2. Flip `common.externalSecret.enabled: true` and sync.
+
+PushSecret uses `updatePolicy: IfNotExists`, so pre-seeded vault values survive; ExternalSecret pulls them back into the K8s Secret. With Argo's default `prune: true` + `selfHeal: true`, the old Helm-rendered Secret is pruned and ESO recreates it automatically — expect a small gap during reconciliation.
 
 ### Preconditions
 
-* External Secrets Operator (ESO) is installed in the cluster
-* A `ClusterSecretStore` (or `SecretStore`) exists pointing at vault, referenced via `common.externalSecret.secretStore.{kind,name}`
-* The vault paths consumed by this chart already have credentials, OR you accept that ESO password generators will produce new ones on first sync
+* External Secrets Operator (ESO) is installed
+* A `ClusterSecretStore` (or `SecretStore`) for vault exists, referenced via `common.externalSecret.secretStore.{kind,name}`
 
-### Vault paths used
+### Verify post-upgrade
 
-| Path | Direction | Owner |
-|------|-----------|-------|
-| `<stage>/elastic-operator/<user>-user` | round-trip (push from generator → pull into K8s) | this chart |
-| `<stage>/elastic-operator/ca` | push-only (from ECK-issued cert secret) | this chart |
-| `<stage>/elastic-operator/elasticsearch_backup_bucket` | pull-only (externally populated, e.g. by Terraform) | infra |
-
-### What to verify post-upgrade
-
-* `kubectl get pushsecret,externalsecret -n <ns>` — all `Synced` (the CA PushSecret may take a few minutes if ECK is still provisioning)
-* The ECK-managed Elasticsearch cluster reaches `Ready`
-* Downstream consumers (e.g. falco, filebeat) successfully authenticate against ES
+* `kubectl get pushsecret,externalsecret -n <ns>` — all `Synced`
+* ECK-managed Elasticsearch reaches `Ready`
+* Downstream consumers (filebeat, falco, etc.) continue authenticating
 
 ### Rolling back
 
-Set `common.externalSecret.enabled: false` and re-sync. The chart reverts to the bash `generate-passwords` Job + Helm-rendered user secrets path. ESO-managed secrets persist unless you also delete them.
+Set `common.externalSecret.enabled: false` and re-sync — chart reverts to the bash `generate-passwords` Job + Helm-rendered Secrets path. ESO CRs are pruned by Argo; the K8s Secrets they created stay until pruned or replaced by the Helm-rendered ones.
 
 ## PVC names in the two charts
 

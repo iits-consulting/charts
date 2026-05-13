@@ -60,14 +60,17 @@ ingress:
 auth:
   users:
     custom_filebeat:
+      # if you provide an existing password, generatePasswords should be disabled
       existingPassword: ""
       roles:
         - custom_filebeat
     custom_kibana_guest:
+      # if you provide an existing password, generatePasswords should be disabled
       existingPassword: ""
       roles:
         - viewer
     custom_elastalert:
+      # if you provide an existing password, generatePasswords should be disabled
       existingPassword: ""
       roles:
         - custom_elastalert

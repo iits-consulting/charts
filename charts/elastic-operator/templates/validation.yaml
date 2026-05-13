@@ -1,0 +1,16 @@
+{{- /* Config sanity checks — fail-loud on misconfigurations that would otherwise
+       produce a half-on ESO/bash state. common.externalSecret.enabled is the master
+       switch (see MIGRATION.md); these checks guard the sub-flags that must be
+       coherent when the master is on. */}}
+
+{{- with .Values.common.externalSecret }}
+{{- if and .enabled .generators.enabled (not .generators.passwords) }}
+{{- fail "common.externalSecret.generators.enabled is true but common.externalSecret.generators.passwords is empty — define at least one password generator or disable generators" }}
+{{- end }}
+{{- if and .enabled (not .generators.enabled) .generators.passwords }}
+{{- fail "common.externalSecret.generators.passwords is set but common.externalSecret.generators.enabled is false — the Password CRDs would not render" }}
+{{- end }}
+{{- if and .enabled (not .generators.enabled) (not .generators.passwords) }}
+{{- fail "common.externalSecret.enabled is true but no password source is configured — set generators.enabled + generators.passwords, or disable common.externalSecret" }}
+{{- end }}
+{{- end }}
