@@ -1,5 +1,4 @@
 {{- with .Values.generatePasswords }}
-{{- /* ESO mode replaces the bash job with ESO Password CRDs + PushSecret + ExternalSecret. */}}
 {{- if and .enabled (not $.Values.common.externalSecret.enabled) }}
 apiVersion: batch/v1
 kind: Job

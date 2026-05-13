@@ -1,7 +1,5 @@
-{{- $esoEnabled := .Values.common.externalSecret.enabled }}
+{{- if not .Values.common.externalSecret.enabled }}
 {{- range $userName, $userDescription := .Values.auth.users }}
-{{- /* When ESO is enabled, ExternalSecret materializes the user secret with username/password/roles via template. Skip Helm-rendered secret to avoid ownership conflict. */}}
-{{- if not $esoEnabled }}
 apiVersion: v1
 kind: Secret
 metadata:
