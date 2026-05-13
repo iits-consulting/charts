@@ -61,7 +61,7 @@ resource "helm_release" "argocd" {
 | argo-cd.dex.enabled | bool | `false` |  |
 | argo-cd.fullnameOverride | string | `"argocd"` |  |
 | argo-cd.global.domain | string | `"REPLACE_THIS/argocd"` |  |
-| argo-cd.global.image.tag | string | `"3.2.11"` | Overrides the global Argo CD image tag whose default is the chart appVersion |
+| argo-cd.global.image.tag | string | `"v3.2.11"` | Overrides the global Argo CD image tag whose default is the chart appVersion |
 | argo-cd.global.logging.format | string | `"json"` |  |
 | argo-cd.global.logging.level | string | `"warn"` |  |
 | argo-cd.notifications.enabled | bool | `false` |  |
