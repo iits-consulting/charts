@@ -10,7 +10,7 @@ argo-cd:
     domain: "REPLACE_THIS/argocd"
     image:
       # -- Overrides the global Argo CD image tag whose default is the chart appVersion
-      tag: "3.2.11"
+      tag: "v3.2.11"
 
   controller:
     replicas: 2
