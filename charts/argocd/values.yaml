@@ -8,6 +8,9 @@ argo-cd:
     # the /argocd suffix is required for oidc to resolve callback url correct
     # there is an unfixed bug report in argocd: https://github.com/argoproj/argo-cd/issues/23694
     domain: "REPLACE_THIS/argocd"
+    image:
+      # -- Overrides the global Argo CD image tag whose default is the chart appVersion
+      tag: "3.2.11"
 
   controller:
     replicas: 2
