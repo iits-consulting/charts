@@ -2,6 +2,9 @@
 
 ## Chart Versions
 
+### 20.1.0
+-  AppVersion upgrade to 3.3.10
+
 ### 20.0.0
 - **Breaking:** Adjust the default RBAC role settings to match a new keycloak oidc pattern
 
