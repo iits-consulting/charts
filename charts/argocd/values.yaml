@@ -157,3 +157,4 @@ argo-cd:
 # Kyverno Policy Exception
 policyException:
   enabled: true
+
