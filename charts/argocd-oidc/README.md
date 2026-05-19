@@ -1,8 +1,14 @@
 # argocd-oidc
 
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square)
+![Version: 0.2.0](https://img.shields.io/badge/Version-0.2.0-informational?style=flat-square)
 
 Secrets for ArgoCD configuration
+
+## Requirements
+
+| Repository | Name | Version |
+|------------|------|---------|
+| https://charts.iits.tech | common | 0.3.1 |
 
 ## Values
 
@@ -10,6 +16,7 @@ Secrets for ArgoCD configuration
 |-----|------|---------|-------------|
 | clientID | string | `""` |  |
 | clientSecret | string | `""` |  |
+| common.externalSecret.enabled | bool | `false` |  |
 | oidcURL | string | `""` |  |
 
 ----------------------------------------------
