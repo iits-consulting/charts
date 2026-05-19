@@ -7970,6 +7970,17 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/traefik-0.2.4-multiple-upload/traefik-0.2.4-multiple-upload.tgz
     version: 0.2.4-multiple-upload
+  vulnerability-checks:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2026-05-19T12:31:08.63406156Z"
+    description: A Helm chart for Kubernetes
+    digest: e814c81c07d4670fdeebabe5864d58a2583690140c72ce95fc3e0e53d529c131
+    name: vulnerability-checks
+    type: application
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/vulnerability-checks-0.1.0/vulnerability-checks-0.1.0.tgz
+    version: 0.1.0
   waf-cert-uploader:
   - apiVersion: v2
     appVersion: v0.1.1
@@ -7981,4 +7992,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/waf-cert-uploader-0.1.1/waf-cert-uploader-0.1.1.tgz
     version: 0.1.1
-generated: "2026-05-18T12:59:59.546937054Z"
+generated: "2026-05-19T12:31:08.634705759Z"
