@@ -1160,6 +1160,18 @@ entries:
     version: 0.2.4-multiple-upload
   argocd-oidc:
   - apiVersion: v2
+    created: "2026-05-19T15:27:08.71854049Z"
+    dependencies:
+    - name: common
+      repository: https://charts.iits.tech
+      version: 0.3.1
+    description: Secrets for ArgoCD configuration
+    digest: 370dbfb54e6e1dda55d0a402c4b5e350ae47e1bdbdf093d04742c993bb0d4147
+    name: argocd-oidc
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/argocd-oidc-0.2.0/argocd-oidc-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
     created: "2024-04-29T17:54:05.638766716Z"
     description: Secrets for ArgoCD configuration
     digest: 22cce46190de7dedb19d6ab73736b1238e3851fe56a851b3a9eba3ded702d4eb
@@ -7992,4 +8004,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/waf-cert-uploader-0.1.1/waf-cert-uploader-0.1.1.tgz
     version: 0.1.1
-generated: "2026-05-19T12:31:08.634705759Z"
+generated: "2026-05-19T15:27:08.719155098Z"
