@@ -8,3 +8,24 @@ clientSecret: ""
 common:
   externalSecret:
     enabled: false
+    # -- example setup for pulling the oidc secrets from vault
+    # enabled: true
+    # secretStore:
+    #   kind: ClusterSecretStore
+    #   name: cluster-secret-store
+    # pull:
+    #   enabled: true
+    #   secrets:
+    #     argocd-oidc:
+    #       path: "" # path/to/secret
+    #       template:
+    #         metadata:
+    #           labels:
+    #             app.kubernetes.io/part-of: argocd
+    #         data:
+    #           oidcURL: "https://your.oidc.url/realms/realm"
+    #           clientID: "{{ `{{ .clientID }}` }}" 
+    #           clientSecret: "{{ `{{ .clientSecret }}` }}" 
+    #       keys:
+    #         - name: clientID
+    #         - name: clientSecret
