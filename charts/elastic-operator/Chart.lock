@@ -4,6 +4,6 @@ dependencies:
   version: 3.4.0
 - name: common
   repository: https://charts.iits.tech
-  version: 0.3.0
-digest: sha256:6fad8b84df1d1f055d563e91a371578c70bb11bbb59dbb7348373edc43c647a1
-generated: "2026-06-23T13:49:07.045258+02:00"
+  version: 0.3.1
+digest: sha256:7d1d7021d55519f08b08d50fc249677eac10fabeba280ed832308b5cbf4f3f6c
+generated: "2026-06-23T13:55:46.599293+02:00"

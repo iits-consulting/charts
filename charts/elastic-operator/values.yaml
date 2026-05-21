@@ -387,7 +387,7 @@ kibana:
 indexPatternInit:
   image:
     repository: docker.io/curlimages/curl
-    tag: 8.13.0
+    tag: 8.12.1
     userId: 100
   tolerations: [ ]
   nodeSelector: { }

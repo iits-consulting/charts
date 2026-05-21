@@ -1,15 +1,26 @@
-{{- /* Fail-loud on misconfig'd ESO sub-flags. common.externalSecret.enabled is the
-       master switch (see MIGRATION.md); when it's on, generators.enabled and
-       generators.passwords must agree. */}}
+{{- $eso := .Values.common.externalSecret }}
 
-{{- with .Values.common.externalSecret }}
-{{- if .enabled }}
-  {{- if and .generators.enabled (not .generators.passwords) }}
-    {{- fail "common.externalSecret.generators.enabled is true but common.externalSecret.generators.passwords is empty — define at least one password generator or disable generators" }}
-  {{- else if and (not .generators.enabled) .generators.passwords }}
-    {{- fail "common.externalSecret.generators.passwords is set but common.externalSecret.generators.enabled is false — the Password CRDs would not render" }}
-  {{- else if and (not .generators.enabled) (not .generators.passwords) }}
+{{- if $eso.enabled }}
+  {{- if and (not $eso.generators.enabled) (not $eso.generators.passwords) }}
     {{- fail "common.externalSecret.enabled is true but no password source is configured — set generators.enabled + generators.passwords, or disable common.externalSecret" }}
   {{- end }}
-{{- end }}
+
+  {{- range $userName := keys .Values.auth.users | sortAlpha }}
+    {{- $userDescription := index $.Values.auth.users $userName }}
+    {{- if and $userDescription (not (empty $userDescription.existingPassword)) }}
+      {{- fail (printf "auth.users.%s.existingPassword is set but common.externalSecret.enabled is true — existingPassword has no effect in ESO mode (vault is canonical); remove it or disable common.externalSecret" $userName) }}
+    {{- end }}
+  {{- end }}
+
+  {{- $pullSecrets := ($eso.pull).secrets | default dict }}
+  {{- $producedNames := list }}
+  {{- range $key, $cfg := $pullSecrets }}
+    {{- $producedNames = append $producedNames ($cfg.targetName | default $key) }}
+  {{- end }}
+  {{- range $userName := keys .Values.auth.users | sortAlpha }}
+    {{- $expected := printf "%s-user-%s" $.Release.Name (kebabcase $userName) }}
+    {{- if not (has $expected $producedNames) }}
+      {{- fail (printf "auth.users.%s has no matching common.externalSecret.pull.secrets entry producing %q — ECK/filebeat/kibana env refs will fail to resolve" $userName $expected) }}
+    {{- end }}
+  {{- end }}
 {{- end }}

@@ -1,0 +1,53 @@
+suite: validation
+templates:
+  - validation.yaml
+
+tests:
+  - it: should pass when externalSecret disabled
+    set:
+      externalSecret.enabled: false
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: should pass when generators fully configured
+    set:
+      externalSecret.enabled: true
+      externalSecret.generators.enabled: true
+      externalSecret.generators.passwords:
+        foo:
+          spec:
+            length: 32
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: should pass when generators disabled and no passwords
+    set:
+      externalSecret.enabled: true
+      externalSecret.generators.enabled: false
+      externalSecret.generators.passwords: {}
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: should fail when generators.enabled but passwords empty
+    set:
+      externalSecret.enabled: true
+      externalSecret.generators.enabled: true
+      externalSecret.generators.passwords: {}
+    asserts:
+      - failedTemplate:
+          errorMessage: "externalSecret.generators.enabled is true but externalSecret.generators.passwords is empty — define at least one password generator or disable generators"
+
+  - it: should fail when passwords set but generators.enabled false
+    set:
+      externalSecret.enabled: true
+      externalSecret.generators.enabled: false
+      externalSecret.generators.passwords:
+        foo:
+          spec:
+            length: 32
+    asserts:
+      - failedTemplate:
+          errorMessage: "externalSecret.generators.passwords is set but externalSecret.generators.enabled is false — the Password CRDs would not render"
