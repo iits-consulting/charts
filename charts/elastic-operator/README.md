@@ -9,7 +9,7 @@ It comes also with a backup functionality. This is the version using ECK-operato
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://charts.iits.tech | common | 0.3.0 |
+| https://charts.iits.tech | common | 0.3.1 |
 | https://helm.elastic.co | eck-operator | 3.4.0 |
 
 ## Values
@@ -204,7 +204,7 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | ilm.policies.short.indexPatterns[3] | string | `"monitoring*"` |  |
 | ilm.tolerations | list | `[]` |  |
 | indexPatternInit.image.repository | string | `"docker.io/curlimages/curl"` |  |
-| indexPatternInit.image.tag | string | `"8.13.0"` |  |
+| indexPatternInit.image.tag | string | `"8.12.1"` |  |
 | indexPatternInit.image.userId | int | `100` |  |
 | indexPatternInit.indices.admin.timestampField | string | `"@timestamp"` |  |
 | indexPatternInit.indices.argocd.timestampField | string | `"@timestamp"` |  |
