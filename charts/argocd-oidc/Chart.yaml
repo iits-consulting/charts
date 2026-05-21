@@ -1,4 +1,8 @@
 apiVersion: v2
 description: Secrets for ArgoCD configuration
 name: argocd-oidc
-version: 0.1.0
+version: 0.2.0
+dependencies:
+  - name: common
+    repository: https://charts.iits.tech
+    version: 0.3.1
