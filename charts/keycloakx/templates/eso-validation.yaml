@@ -1,0 +1,11 @@
+{{- if .Values.common.externalSecret.enabled -}}
+{{- $db := .Values.keycloakx.database -}}
+{{- if or $db.hostname $db.port $db.database $db.username $db.password -}}
+{{- fail "if common.externalSecret.enabled=true, keycloakx.database.{hostname,port,database,username,password} must be empty/unset" -}}
+{{- end -}}
+{{- with .Values.keycloakx.secretEnv -}}
+{{- if or .KC_BOOTSTRAP_ADMIN_USERNAME .KC_BOOTSTRAP_ADMIN_PASSWORD -}}
+{{- fail "if common.externalSecret.enabled=true, keycloakx.secretEnv.KC_BOOTSTRAP_ADMIN_USERNAME and KC_BOOTSTRAP_ADMIN_PASSWORD must be empty/unset" -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}
