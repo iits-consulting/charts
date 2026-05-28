@@ -1,9 +1,10 @@
 # elastic-operator
 
-![Version: 9.3.3](https://img.shields.io/badge/Version-9.3.3-informational?style=flat-square) ![AppVersion: 9.3.3](https://img.shields.io/badge/AppVersion-9.3.3-informational?style=flat-square)
+![Version: 9.4.0](https://img.shields.io/badge/Version-9.4.0-informational?style=flat-square) ![AppVersion: 9.3.3](https://img.shields.io/badge/AppVersion-9.3.3-informational?style=flat-square)
 
-Elasticsearch + filebeat + kibana with default common used indexes and Index Lifecycle Management.
+Elasticsearch + Filebeat + Kibana + Logstash with default common used indexes and Index Lifecycle Management.
 It comes also with a backup functionality. This is the version using ECK-operator to deploy and monitor the stack.
+Supports ECK Logstash CRD for log processing and transformation.
 
 ## Requirements
 
@@ -103,6 +104,7 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | filebeat.indices[1].index | string | `"%{[kubernetes.namespace]:not-defined}-%{[kubernetes.labels.app]}-%{[agent.version]}-%{+yyyy.MM}"` |  |
 | filebeat.indices[1].when.has_fields[0] | string | `"kubernetes.labels.app"` |  |
 | filebeat.indices[2].index | string | `"%{[kubernetes.namespace]:not-defined}-not-defined-%{[agent.version]}-%{+yyyy.MM}"` |  |
+| filebeat.logstashOutput | object | `{}` | Logstash output configuration (only used when useLogstashOutput is true) If not specified, defaults to {{ .Release.Name }}-ls-beats:5044 |
 | filebeat.processors[0].add_kubernetes_metadata | object | `{}` |  |
 | filebeat.processors[1].decode_json_fields.add_error_key | bool | `true` |  |
 | filebeat.processors[1].decode_json_fields.fields[0] | string | `"message"` |  |
@@ -137,6 +139,7 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | filebeat.resources.requests.cpu | string | `"100m"` |  |
 | filebeat.resources.requests.memory | string | `"100M"` |  |
 | filebeat.tolerations | list | `[]` |  |
+| filebeat.useLogstashOutput | bool | `false` | Enable Logstash output instead of direct Elasticsearch output When enabled, Filebeat sends logs to Logstash instead of Elasticsearch Note: elasticsearchRef and kibanaRef are automatically removed when this is true |
 | filebeat.version | string | `"{{ .Chart.AppVersion }}"` |  |
 | filebeat.volumeMounts[0].mountPath | string | `"/var/lib/containerd/container_logs"` |  |
 | filebeat.volumeMounts[0].name | string | `"varlibcontainerdcontainerlogs"` |  |
@@ -213,6 +216,15 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | ingress.kibana.labels | string | `nil` |  |
 | ingress.kibana.path | string | `"/kibana"` |  |
 | ingress.kibana.tls[0].hosts[0] | string | `"{{ .Values.ingress.kibana.host }}"` |  |
+| ingress.logstash.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
+| ingress.logstash.annotations."traefik.ingress.kubernetes.io/router.middlewares" | string | `"routing-oidc-forward-auth@kubernetescrd"` |  |
+| ingress.logstash.annotations."traefik.ingress.kubernetes.io/router.tls" | string | `"true"` |  |
+| ingress.logstash.className | string | `"traefik"` |  |
+| ingress.logstash.enabled | bool | `false` |  |
+| ingress.logstash.host | string | `"REPLACE_ME"` | Required, if enabled |
+| ingress.logstash.labels | string | `nil` |  |
+| ingress.logstash.path | string | `"/logstash"` |  |
+| ingress.logstash.tls[0].hosts[0] | string | `"{{ .Values.ingress.logstash.host }}"` |  |
 | kibana.config.monitoring.ui.container.elasticsearch.enabled | bool | `true` |  |
 | kibana.config.monitoring.ui.enabled | bool | `true` |  |
 | kibana.config.server.basePath | string | `"{{ .Values.ingress.kibana.path }}"` |  |
@@ -255,6 +267,17 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | kibana.resources.requests.cpu | string | `"100m"` |  |
 | kibana.resources.requests.memory | string | `"1G"` |  |
 | kibana.version | string | `"{{ .Chart.AppVersion }}"` |  |
+| logstash | object | `{"config":{"http.host":"0.0.0.0","pipeline.batch.size":125,"xpack.monitoring.enabled":false},"count":1,"elasticsearchRef":{"clusterName":"eck","name":"{{ .Release.Name }}"},"enabled":false,"javaOpts":"-Xms1g -Xmx1g","pipelines":[{"config.string":"input {\n  beats {\n    port => 5044\n    ssl_enabled => false\n  }\n}\noutput {\n  elasticsearch {\n    hosts => [ \"${ECK_ES_HOSTS}\" ]\n    user => \"${ECK_ES_USER}\"\n    password => \"${ECK_ES_PASSWORD}\"\n    ssl_certificate_authorities => \"${ECK_ES_SSL_CERTIFICATE_AUTHORITY}\"\n  }\n}\n","pipeline.id":"main"}],"podTemplateSpec":{},"resources":{"limits":{"cpu":"2000m","memory":"2Gi"},"requests":{"cpu":"500m","memory":"1Gi"}},"services":[{"name":"beats","service":{"spec":{"ports":[{"name":"filebeat","port":5044,"protocol":"TCP"},{"name":"api","port":9600,"protocol":"TCP"}]}}}],"version":"{{ .Chart.AppVersion }}"}` | Logstash configuration using ECK Logstash CRD |
+| logstash.config | object | `{"http.host":"0.0.0.0","pipeline.batch.size":125,"xpack.monitoring.enabled":false}` | Logstash configuration See: https://www.elastic.co/guide/en/logstash/current/logstash-settings-file.html |
+| logstash.count | int | `1` | Number of Logstash replicas |
+| logstash.elasticsearchRef | object | `{"clusterName":"eck","name":"{{ .Release.Name }}"}` | Elasticsearch cluster reference for Logstash This automatically injects ECK_ES_HOSTS, ECK_ES_USER, ECK_ES_PASSWORD, and ECK_ES_SSL_CERTIFICATE_AUTHORITY |
+| logstash.enabled | bool | `false` | Enable Logstash deployment via ECK CRD |
+| logstash.javaOpts | string | `"-Xms1g -Xmx1g"` | JVM options for Logstash |
+| logstash.pipelines | list | `[{"config.string":"input {\n  beats {\n    port => 5044\n    ssl_enabled => false\n  }\n}\noutput {\n  elasticsearch {\n    hosts => [ \"${ECK_ES_HOSTS}\" ]\n    user => \"${ECK_ES_USER}\"\n    password => \"${ECK_ES_PASSWORD}\"\n    ssl_certificate_authorities => \"${ECK_ES_SSL_CERTIFICATE_AUTHORITY}\"\n  }\n}\n","pipeline.id":"main"}]` | Logstash pipeline configuration You can define pipelines inline or reference a Secret via pipelinesRef See: https://www.elastic.co/guide/en/cloud-on-k8s/current/k8s-logstash-configuration.html |
+| logstash.podTemplateSpec | object | `{}` | Pod template spec for additional customization Leave empty to use default configuration with javaOpts and resources |
+| logstash.resources | object | `{"limits":{"cpu":"2000m","memory":"2Gi"},"requests":{"cpu":"500m","memory":"1Gi"}}` | Resource limits and requests for Logstash pods |
+| logstash.services | list | `[{"name":"beats","service":{"spec":{"ports":[{"name":"filebeat","port":5044,"protocol":"TCP"},{"name":"api","port":9600,"protocol":"TCP"}]}}}]` | Service configuration for Logstash Exposes ports for Beats input and Logstash API |
+| logstash.version | string | `"{{ .Chart.AppVersion }}"` | Logstash version to deploy |
 | policyException.enabled | bool | `true` |  |
 
 ----------------------------------------------

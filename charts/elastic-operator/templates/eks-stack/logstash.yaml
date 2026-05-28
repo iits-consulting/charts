@@ -1,0 +1,72 @@
+{{- with .Values.logstash }}
+{{- if .enabled }}
+apiVersion: logstash.k8s.elastic.co/v1alpha1
+kind: Logstash
+metadata:
+  name: {{ $.Release.Name }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "20"
+spec:
+  version: {{ tpl .version $ }}
+  count: {{ .count }}
+  
+  {{- if .elasticsearchRef }}
+  elasticsearchRefs:
+    - clusterName: {{ .elasticsearchRef.clusterName }}
+      name: {{ tpl .elasticsearchRef.name $ }}
+  {{- end }}
+  
+  {{- if .config }}
+  config:
+    {{- tpl (.config | toYaml) $ | nindent 4 }}
+  {{- end }}
+  
+  {{- if .pipelinesRef }}
+  pipelinesRef:
+    secretName: {{ .pipelinesRef.secretName }}
+  {{- else if .pipelines }}
+  pipelines:
+    {{- tpl (.pipelines | toYaml) $ | nindent 4 }}
+  {{- end }}
+  
+  {{- if .services }}
+  services:
+    {{- tpl (.services | toYaml) $ | nindent 4 }}
+  {{- end }}
+  
+  {{- with $.Values.ingress.logstash }}
+  {{- if and (eq .enabled true) (eq .className "traefik") }}
+  http:
+    service:
+      metadata:
+        annotations:
+          traefik.ingress.kubernetes.io/service.serverstransport: "{{ $.Release.Namespace }}-{{ $.Release.Name }}-logstash@kubernetescrd"
+          traefik.ingress.kubernetes.io/service.serversscheme: "https"
+  {{- end }}
+  {{- end }}
+  
+  podTemplate:
+    metadata:
+      {{- if $.Values.elasticsearch }}
+      annotations:
+        checksum/users: {{ include (print $.Template.BasePath "/eks-stack/elasticsearch-users.yaml") $ | sha256sum | substr 0 50 }}
+        checksum/roles: {{ include (print $.Template.BasePath "/eks-stack/elasticsearch-roles.yaml") $ | sha256sum | substr 0 50 }}
+      {{- end }}
+    spec:
+      {{- if .podTemplateSpec }}
+      {{- tpl (.podTemplateSpec | toYaml) $ | nindent 6 }}
+      {{- else }}
+      containers:
+      - name: logstash
+        {{- if .javaOpts }}
+        env:
+        - name: LS_JAVA_OPTS
+          value: {{ .javaOpts | quote }}
+        {{- end }}
+        {{- if .resources }}
+        resources:
+          {{- .resources | toYaml | nindent 10 }}
+        {{- end }}
+      {{- end }}
+{{- end }}
+{{- end }}
