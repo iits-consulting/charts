@@ -2,6 +2,9 @@
 
 ## Chart Versions
 
+### 0.3.2
+- Refactor externalSecret templates to be usable through "include" by caller
+
 ### 0.3.1
 - Fix ExternalSecret `template.type` being read from the wrong values level (`$secretConfig.type` instead of `$secretConfig.template.type`)
 

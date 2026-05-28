@@ -40,8 +40,8 @@ externalSecret:
       # Valid values: Replace, IfNotExists
       updatePolicy: IfNotExists
 
-      # Strategy for converting secret key names before matching and rewriting. Can be Default, Unicode or ReverseUnicode. Defaults to Default
-      conversionStrategy: Default
+      # Strategy for converting secret key names before matching and rewriting. Can be None or ReverseUnicode. Defaults to None
+      conversionStrategy: None
       
       # Set the following Decoding Strategies based on the need. Can be None, Base64, Base64URL or Auto. Defaults to None
       decodingStrategy: None
