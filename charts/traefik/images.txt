@@ -1,1 +1,0 @@
-docker.io/traefik:v3.3.3
