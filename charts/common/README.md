@@ -1,6 +1,6 @@
 # common
 
-![Version: 0.3.1](https://img.shields.io/badge/Version-0.3.1-informational?style=flat-square) ![AppVersion: v0.3.1](https://img.shields.io/badge/AppVersion-v0.3.1-informational?style=flat-square)
+![Version: 0.3.2](https://img.shields.io/badge/Version-0.3.2-informational?style=flat-square) ![AppVersion: v0.3.2](https://img.shields.io/badge/AppVersion-v0.3.2-informational?style=flat-square)
 
 A Library Helm Chart for grouping common logic between charts. This chart is not deployable by itself.
 
@@ -11,7 +11,7 @@ A Library Helm Chart for grouping common logic between charts. This chart is not
 | externalSecret.enabled | bool | `false` |  |
 | externalSecret.generators | object | `{"enabled":false,"passwords":{}}` | Creates Password generator CRDs. Used with PushSecrets that have generatorRef selectors. |
 | externalSecret.pull | object | `{"enabled":false,"secrets":{},"spec":{"conversionStrategy":"Default","creationPolicy":"Owner","decodingStrategy":"None","deletionPolicy":"Delete","metadataPolicy":"None","refreshInterval":"1m"}}` | Create ExternalSecret resources. It describes what data should be fetched, how the data should be transformed and saved as a Kind=Secret. |
-| externalSecret.push | object | `{"enabled":false,"secrets":{},"spec":{"conversionStrategy":"Default","decodingStrategy":"None","deletionPolicy":"Delete","metadataPolicy":"None","refreshInterval":"1h","secretStores":[],"updatePolicy":"IfNotExists"}}` | Creates a PushSecret resource. It describes what data should be pushed to the SecretStore. This will be created also when pull is set to false. |
+| externalSecret.push | object | `{"enabled":false,"secrets":{},"spec":{"conversionStrategy":"None","decodingStrategy":"None","deletionPolicy":"Delete","metadataPolicy":"None","refreshInterval":"1h","secretStores":[],"updatePolicy":"IfNotExists"}}` | Creates a PushSecret resource. It describes what data should be pushed to the SecretStore. This will be created also when pull is set to false. |
 | externalSecret.secretStore.kind | string | `"ClusterSecretStore"` |  |
 | externalSecret.secretStore.name | string | `"vault"` |  |
 
