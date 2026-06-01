@@ -89,6 +89,52 @@ prometheusStack:
                 sum by (instance) (sum_over_time(probe_success{}[90s])) < 1
               labels:
                 severity: critical
+    restarts-daily:
+      - name: container-restarts-daily
+        interval: 24h
+        rules:
+          - record: container:restarts_24h
+            expr: |
+              sum_over_time(kube_pod_container_status_restarts_total[24h])
+              * on(namespace, pod) group_left()
+              kube_pod_status_phase{phase="Running"}
+              > 5
+          - alert: ContainerRestartDetected
+            expr: container:restarts_24h > 0
+            for: 5m
+            labels:
+              severity: info
+            annotations:
+              summary: 'Pod {{ `{{` }} $labels.namespace {{ `}}` }}/{{ `{{` }} $labels.pod {{ `}}` }} has restarted >5 times in the last 24 h'
+              description: |
+                The container **{{ `{{` }} $labels.container {{ `}}` }}** (pod {{ `{{` }} $labels.namespace {{ `}}` }}/{{ `{{` }} $labels.pod {{ `}}` }}) has performed **{{ `{{` }} $value {{ `}}` }}** restart(s) in the last 24 hours.
+                Only pods that are currently running are considered.
+    oom-killed:
+      - name: pod-oom-killed
+        rules:
+          - alert: PodOOMKilled
+            expr: |
+              (
+                sum by (namespace, pod, container) (
+                  increase(kube_pod_container_status_last_termination_reason{reason="OOMKilled"}[5m])
+                )
+              )
+              or
+              (
+                sum by (namespace, pod, container) (
+                  increase(kube_pod_container_status_last_termination_exit_code{exit_code="137"}[5m])
+                )
+              ) > 0
+            for: 1m
+            labels:
+              severity: warning
+            annotations:
+              summary: 'Pod {{ `{{` }} $labels.namespace {{ `}}` }}/{{ `{{` }} $labels.pod {{ `}}` }} experienced an OOM kill'
+              description: |
+                Either the termination reason is reported as “OOMKilled” or the container
+                exited with code 137 (SIGKILL). Investigate memory
+                requests/limits and node pressure.
+
 
   prometheusOperator:
     enabled: true
