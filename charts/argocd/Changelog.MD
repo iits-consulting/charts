@@ -2,6 +2,9 @@
 
 ## Chart Versions
 
+### 20.1.1
+-  AppVersion upgrade to 3.2.12 to fix security issues
+
 ### 20.1.0
 -  AppVersion upgrade to 3.2.11
 
