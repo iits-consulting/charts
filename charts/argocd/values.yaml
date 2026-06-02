@@ -11,10 +11,11 @@ argo-cd:
     image:
       # -- Overrides the global Argo CD image tag whose default is the chart appVersion
       # Note: Remove this when chart upgrade takes place in Epic OTC-278!
-      # See OTC-443 for more details, but it was used temporarily here 
+      # See OTC-443 for more details, but it was used temporarily here
       # as a quick remedy to address CVE-2026-42880 -> https://github.com/argoproj/argo-cd/security/advisories/GHSA-3v3m-wc6v-x4x3,
       # and avoid a rather long chart upgrade path, which is to be tackled in the relevant Epic explicitly
-      tag: "v3.2.11"
+      # also related to other CVE's in https://iits.atlassian.net/browse/OTC-487
+      tag: "v3.2.12"
 
   controller:
     replicas: 2
