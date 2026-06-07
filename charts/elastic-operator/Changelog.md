@@ -2,6 +2,15 @@
 
 ## Chart Versions
 
+### 9.4.0
+
+- Add opt-in ESO support gated by `common.externalSecret.enabled` (default `false` —> behavior unchanged).
+- Add `templates/validation.yaml`: fails chart rendering on chart-specific ESO misconfigurations (no password source, `auth.users.X.existingPassword` set in ESO mode, or `auth.users` entry with no matching `pull.secrets` target).
+- Drop `argocd.argoproj.io/sync-wave: "10"` annotation on the Elasticsearch CR.
+- Add `common` chart `0.3.1` as dependency.
+- Add helm-unittest suites: `validation`, `elasticsearch-users`, `backup-secure-settings`; expand `generate-passwords` to cover the ESO guard.
+- Migration: pre-seed each `common.externalSecret.pull.secrets.*.path` in vault before flipping the flag; Argo prunes the old Helm-rendered Secret and ESO recreates it from vault. See `MIGRATION.md`.
+
 ### 9.3.3
 - Changed operator version to 3.3.2
 - Changed elastic stack (appVersion) to version 9.3.3

@@ -1,6 +1,6 @@
 # elastic-operator
 
-![Version: 9.3.3](https://img.shields.io/badge/Version-9.3.3-informational?style=flat-square) ![AppVersion: 9.3.3](https://img.shields.io/badge/AppVersion-9.3.3-informational?style=flat-square)
+![Version: 9.4.0](https://img.shields.io/badge/Version-9.4.0-informational?style=flat-square) ![AppVersion: 9.4.0](https://img.shields.io/badge/AppVersion-9.4.0-informational?style=flat-square)
 
 Elasticsearch + filebeat + kibana with default common used indexes and Index Lifecycle Management.
 It comes also with a backup functionality. This is the version using ECK-operator to deploy and monitor the stack.
@@ -9,6 +9,7 @@ It comes also with a backup functionality. This is the version using ECK-operato
 
 | Repository | Name | Version |
 |------------|------|---------|
+| https://charts.iits.tech | common | 0.3.1 |
 | https://helm.elastic.co | eck-operator | 3.3.2 |
 
 ## Values
@@ -55,6 +56,27 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | backup.repositorySettings | string | `nil` |  |
 | backup.secureSettings | string | `nil` |  |
 | backup.tolerations | list | `[]` |  |
+| common.externalSecret.enabled | bool | `false` |  |
+| common.externalSecret.generators.enabled | bool | `false` |  |
+| common.externalSecret.generators.passwords | object | `{}` |  |
+| common.externalSecret.pull.enabled | bool | `false` |  |
+| common.externalSecret.pull.secrets | object | `{}` |  |
+| common.externalSecret.pull.spec.conversionStrategy | string | `"Default"` |  |
+| common.externalSecret.pull.spec.creationPolicy | string | `"Owner"` |  |
+| common.externalSecret.pull.spec.decodingStrategy | string | `"None"` |  |
+| common.externalSecret.pull.spec.deletionPolicy | string | `"Delete"` |  |
+| common.externalSecret.pull.spec.metadataPolicy | string | `"None"` |  |
+| common.externalSecret.pull.spec.refreshInterval | string | `"1h"` |  |
+| common.externalSecret.push.enabled | bool | `false` |  |
+| common.externalSecret.push.secrets | object | `{}` |  |
+| common.externalSecret.push.spec.conversionStrategy | string | `"Default"` |  |
+| common.externalSecret.push.spec.decodingStrategy | string | `"None"` |  |
+| common.externalSecret.push.spec.deletionPolicy | string | `"Delete"` |  |
+| common.externalSecret.push.spec.metadataPolicy | string | `"None"` |  |
+| common.externalSecret.push.spec.refreshInterval | string | `"1h"` |  |
+| common.externalSecret.push.spec.updatePolicy | string | `"IfNotExists"` |  |
+| common.externalSecret.secretStore.kind | string | `"ClusterSecretStore"` |  |
+| common.externalSecret.secretStore.name | string | `"vault"` |  |
 | eck-operator.securityContext.seccompProfile.type | string | `"RuntimeDefault"` |  |
 | elasticsearch.config.cluster.max_shards_per_node | int | `30000` |  |
 | elasticsearch.config.http.max_header_size | string | `"16kb"` |  |

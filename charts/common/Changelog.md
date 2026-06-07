@@ -2,6 +2,9 @@
 
 ## Chart Versions
 
+### 0.3.2
+- Add `templates/validation.yaml`: fails chart rendering on incoherent `externalSecret.generators` sub-flag combinations (one of `enabled` / `passwords` set without the other).
+
 ### 0.3.1
 - Fix ExternalSecret `template.type` being read from the wrong values level (`$secretConfig.type` instead of `$secretConfig.template.type`)
 

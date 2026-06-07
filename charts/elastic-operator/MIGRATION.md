@@ -52,6 +52,32 @@ Generally updates should just work in-place. But:
     to stop argocd from deleting PVs
 8. Deploy elastic-operator chart
 
+## Migrating to ESO mode (chart `9.4.0+`)
+
+When `common.externalSecret.enabled: true`, vault is canonical for user passwords. To preserve existing passwords across the flip, pre-seed vault first; otherwise the Password generator produces new values on first sync.
+
+### Steps
+
+1. For each entry in `common.externalSecret.pull.secrets.*`, write the existing password to its `path` in vault under the key from `keys[].remoteKey` (or `keys[].name` if unset).
+2. Flip `common.externalSecret.enabled: true` and sync.
+
+PushSecret uses `updatePolicy: IfNotExists`, so pre-seeded vault values survive; ExternalSecret pulls them back into the K8s Secret. With Argo's default `prune: true` + `selfHeal: true`, the old Helm-rendered Secret is pruned and ESO recreates it automatically — expect a small gap during reconciliation.
+
+### Preconditions
+
+* External Secrets Operator (ESO) is installed
+* A `ClusterSecretStore` (or `SecretStore`) for vault exists, referenced via `common.externalSecret.secretStore.{kind,name}`
+
+### Verify post-upgrade
+
+* `kubectl get pushsecret,externalsecret -n <ns>` — all `Synced`
+* ECK-managed Elasticsearch reaches `Ready`
+* Downstream consumers (filebeat, falco, etc.) continue authenticating
+
+### Rolling back
+
+Set `common.externalSecret.enabled: false` and re-sync — chart reverts to the bash `generate-passwords` Job + Helm-rendered Secrets path. ESO CRs are pruned by Argo; the K8s Secrets they created stay until pruned or replaced by the Helm-rendered ones.
+
 ## PVC names in the two charts
 
 * Naming of PVCs of **elasticsearch** chart:

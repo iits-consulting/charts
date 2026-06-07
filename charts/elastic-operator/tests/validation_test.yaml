@@ -1,0 +1,90 @@
+suite: validation
+templates:
+  - validation.yaml
+
+release:
+  name: elastic-operator
+
+tests:
+  - it: should pass with ESO disabled (default)
+    set:
+      common.externalSecret.enabled: false
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: should pass when ESO fully configured with matching pull.secrets for every auth.users
+    set:
+      common.externalSecret.enabled: true
+      common.externalSecret.generators.enabled: true
+      common.externalSecret.generators.passwords:
+        foo:
+          spec:
+            length: 32
+      common.externalSecret.pull.secrets:
+        elastic-operator-user-custom-filebeat:
+          path: "x"
+        elastic-operator-user-custom-kibana-guest:
+          path: "x"
+        elastic-operator-user-custom-elastalert:
+          path: "x"
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: should fail when ESO enabled but no password source
+    set:
+      common.externalSecret.enabled: true
+      common.externalSecret.generators.enabled: false
+      common.externalSecret.generators.passwords: {}
+    asserts:
+      - failedTemplate:
+          errorMessage: "common.externalSecret.enabled is true but no password source is configured — set generators.enabled + generators.passwords, or disable common.externalSecret"
+
+  - it: should fail when auth.users.X.existingPassword set in ESO mode
+    set:
+      common.externalSecret.enabled: true
+      common.externalSecret.generators.enabled: true
+      common.externalSecret.generators.passwords:
+        foo:
+          spec:
+            length: 32
+      auth.users.custom_filebeat.existingPassword: "static"
+    asserts:
+      - failedTemplate:
+          errorMessage: "auth.users.custom_filebeat.existingPassword is set but common.externalSecret.enabled is true — existingPassword has no effect in ESO mode (vault is canonical); remove it or disable common.externalSecret"
+
+  - it: should fail when auth.users entry has no matching pull.secrets target
+    set:
+      common.externalSecret.enabled: true
+      common.externalSecret.generators.enabled: true
+      common.externalSecret.generators.passwords:
+        foo:
+          spec:
+            length: 32
+      common.externalSecret.pull.secrets: {}
+    asserts:
+      - failedTemplate:
+          errorMessage: "auth.users.custom_elastalert has no matching common.externalSecret.pull.secrets entry producing \"elastic-operator-user-custom-elastalert\" — ECK/filebeat/kibana env refs will fail to resolve"
+
+  - it: should match pull.secrets via targetName override
+    set:
+      common.externalSecret.enabled: true
+      common.externalSecret.generators.enabled: true
+      common.externalSecret.generators.passwords:
+        foo:
+          spec:
+            length: 32
+      common.externalSecret.pull.secrets:
+        renamed-filebeat:
+          path: "x"
+          targetName: "elastic-operator-user-custom-filebeat"
+        renamed-kibana:
+          path: "x"
+          targetName: "elastic-operator-user-custom-kibana-guest"
+        renamed-elastalert:
+          path: "x"
+          targetName: "elastic-operator-user-custom-elastalert"
+    asserts:
+      - hasDocuments:
+          count: 0
