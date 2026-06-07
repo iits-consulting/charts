@@ -33,12 +33,23 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | auth.roles.custom_filebeat.indices[0].privileges[2] | string | `"create_doc"` |  |
 | auth.roles.custom_filebeat.indices[0].privileges[3] | string | `"view_index_metadata"` |  |
 | auth.roles.custom_filebeat.indices[0].privileges[4] | string | `"manage_follow_index"` |  |
+| auth.roles.logstash.cluster[0] | string | `"manage_index_templates"` |  |
+| auth.roles.logstash.cluster[1] | string | `"monitor"` |  |
+| auth.roles.logstash.cluster[2] | string | `"manage_ilm"` |  |
+| auth.roles.logstash.indices[0].names[0] | string | `"*"` |  |
+| auth.roles.logstash.indices[0].privileges[0] | string | `"write"` |  |
+| auth.roles.logstash.indices[0].privileges[1] | string | `"create"` |  |
+| auth.roles.logstash.indices[0].privileges[2] | string | `"create_index"` |  |
+| auth.roles.logstash.indices[0].privileges[3] | string | `"manage"` |  |
+| auth.roles.logstash.indices[0].privileges[4] | string | `"manage_ilm"` |  |
 | auth.users.custom_elastalert.existingPassword | string | `""` |  |
 | auth.users.custom_elastalert.roles[0] | string | `"custom_elastalert"` |  |
 | auth.users.custom_filebeat.existingPassword | string | `""` |  |
 | auth.users.custom_filebeat.roles[0] | string | `"custom_filebeat"` |  |
 | auth.users.custom_kibana_guest.existingPassword | string | `""` |  |
 | auth.users.custom_kibana_guest.roles[0] | string | `"viewer"` |  |
+| auth.users.logstash.existingPassword | string | `""` |  |
+| auth.users.logstash.roles[0] | string | `"logstash"` |  |
 | backup.enabled | bool | `false` |  |
 | backup.image.repository | string | `"docker.io/curlimages/curl"` |  |
 | backup.image.tag | string | `"8.13.0"` |  |
@@ -161,6 +172,8 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | generatePasswords.secrets[2].key | string | `"password"` |  |
 | generatePasswords.secrets[2].name | string | `"{{ .Release.Name }}-user-custom-elastalert"` |  |
 | generatePasswords.tolerations | list | `[]` |  |
+| generateTLS.enabled | bool | `false` |  |
+| generateTLS.secretName | string | `"tls-elastic"` |  |
 | ilm.image.repository | string | `"docker.io/curlimages/curl"` |  |
 | ilm.image.tag | string | `"8.13.0"` |  |
 | ilm.image.userId | int | `100` |  |
@@ -181,9 +194,10 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | ilm.policies.short.indexPatterns[2] | string | `"kyverno*"` |  |
 | ilm.policies.short.indexPatterns[3] | string | `"monitoring*"` |  |
 | ilm.tolerations | list | `[]` |  |
-| indexPatternInit.image.repository | string | `"docker.io/curlimages/curl"` |  |
-| indexPatternInit.image.tag | string | `"8.12.1"` |  |
-| indexPatternInit.image.userId | int | `100` |  |
+| indexPatternInit.enabled | bool | `true` |  |
+| indexPatternInit.image.repository | string | `"toolbox"` |  |
+| indexPatternInit.image.tag | string | `"1.0.0"` |  |
+| indexPatternInit.image.userId | int | `10001` |  |
 | indexPatternInit.indices.admin.timestampField | string | `"@timestamp"` |  |
 | indexPatternInit.indices.argocd.timestampField | string | `"@timestamp"` |  |
 | indexPatternInit.indices.auth.timestampField | string | `"@timestamp"` |  |
@@ -194,6 +208,7 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | indexPatternInit.indices.routing.timestampField | string | `"@timestamp"` |  |
 | indexPatternInit.indices.vault.timestampField | string | `"@timestamp"` |  |
 | indexPatternInit.nodeSelector | object | `{}` |  |
+| indexPatternInit.skipExisting | bool | `false` |  |
 | indexPatternInit.tolerations | list | `[]` |  |
 | ingress.elasticsearch.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
 | ingress.elasticsearch.annotations."traefik.ingress.kubernetes.io/router.middlewares" | string | `"routing-oidc-forward-auth@kubernetescrd"` |  |
@@ -255,6 +270,22 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | kibana.resources.requests.cpu | string | `"100m"` |  |
 | kibana.resources.requests.memory | string | `"1G"` |  |
 | kibana.version | string | `"{{ .Chart.AppVersion }}"` |  |
+| logstash.config."pipeline.batch.size" | int | `125` |  |
+| logstash.elasticsearchRefs[0].clusterName | string | `"default"` |  |
+| logstash.elasticsearchRefs[0].name | string | `"{{ .Release.Name }}"` |  |
+| logstash.enabled | bool | `false` |  |
+| logstash.env[0].name | string | `"NODE_NAME"` |  |
+| logstash.env[0].valueFrom.fieldRef.apiVersion | string | `"v1"` |  |
+| logstash.env[0].valueFrom.fieldRef.fieldPath | string | `"spec.nodeName"` |  |
+| logstash.env[1].name | string | `"LOGSTASH_USERNAME"` |  |
+| logstash.env[1].valueFrom.secretKeyRef.key | string | `"username"` |  |
+| logstash.env[1].valueFrom.secretKeyRef.name | string | `"{{ .Release.Name }}-user-logstash"` |  |
+| logstash.env[2].name | string | `"LOGSTASH_PASSWORD"` |  |
+| logstash.env[2].valueFrom.secretKeyRef.key | string | `"password"` |  |
+| logstash.env[2].valueFrom.secretKeyRef.name | string | `"{{ .Release.Name }}-user-logstash"` |  |
+| logstash.pipelines[0]."config.string" | string | `"input {\n  beats {\n    port => 5044\n  }\n}\nfilter {\n  ### The config works from top to bottom, everytime it finds a match, the target_index will be overwritten\n  mutate {\n    add_field => { \"[@metadata][target_index]\" => \"not-defined-%{[agent][version]}-%{+yyyy.MM}\" }\n  }\n  ### Example: Overrides the default index, if the namespace is argocd\n  if [kubernetes][namespace] == \"argocd\" {\n    mutate { replace => { \"[@metadata][target_index]\" => \"argocd_%{[agent][version]}-%{+yyyy.MM}\" } }\n  }\n}\n\noutput {\n  elasticsearch {\n    hosts => [ \"${DEFAULT_ES_HOSTS}\" ]\n    user => \"${LOGSTASH_USERNAME}\"\n    password => \"${LOGSTASH_PASSWORD}\"\n    cacert => \"${DEFAULT_ES_SSL_CERTIFICATE_AUTHORITY}\"\n    index => \"%{[@metadata][target_index]}\"\n  }\n}\n"` |  |
+| logstash.pipelines[0]."pipeline.id" | string | `"default-elasticsearch"` |  |
+| logstash.version | string | `"{{ .Chart.AppVersion }}"` |  |
 | policyException.enabled | bool | `true` |  |
 
 ----------------------------------------------
