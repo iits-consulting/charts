@@ -3,37 +3,48 @@ Renders an ExternalSecrets ExternalSecret resource.
 Pulls data from a SecretStore into a k8s Secret, optionally via a generator or with a template.
 Args (dict):
   name    - ExternalSecret metadata.name (also default target.name)
-  config  - merged per-secret config: path, keys, generatorRef, targetName, template, annotations, labels,
-            refreshInterval, creationPolicy, deletionPolicy, conversionStrategy, decodingStrategy, metadataPolicy,
-            secretStoreRef (optional, overrides the chart-wide secretStore)
-  context - root context ($) used to resolve .Values.externalSecret.secretStore when config.secretStoreRef is unset
+  config  - per-secret config: path, keys, generatorRef, targetName, template, annotations, labels,
+            namespace, finalizers, refreshInterval, creationPolicy, deletionPolicy, conversionStrategy,
+            decodingStrategy, metadataPolicy, and secretStoreRef ({kind,name}). The caller supplies the
+            effective store: the values loop injects the chart default, a per-secret secretStoreRef overrides it.
+  commonLabels/commonAnnotations - optional maps merged into metadata.labels/annotations (per-secret values win)
 */}}
 {{- define "common.externalSecrets.externalSecret" -}}
 {{- $name := .name -}}
 {{- $config := .config -}}
-{{- $context := .context -}}
+{{- $labels := merge (dict) (default dict $config.labels) (default dict .commonLabels) -}}
+{{- $annotations := merge (dict) (default dict $config.annotations) (default dict .commonAnnotations) -}}
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
   name: {{ $name }}
-  {{- with $config.annotations }}
+  {{- with $config.namespace }}
+  namespace: {{ . }}
+  {{- end }}
+  {{- with $annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
-  {{- with $config.labels }}
+  {{- with $labels }}
   labels:
     {{- toYaml . | nindent 4 }}
   {{- end }}
+  {{- with $config.finalizers }}
+  finalizers:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
-  refreshInterval: {{ default "1h0m0s" $config.refreshInterval }}
-  refreshPolicy: {{ default "Periodic" $config.refreshPolicy }}
+  refreshInterval: {{ default "1m" $config.refreshInterval }}
+  {{- with $config.refreshPolicy }}
+  refreshPolicy: {{ . }}
+  {{- end }}
   secretStoreRef:
-    kind: {{ default $context.Values.externalSecret.secretStore.kind ($config.secretStoreRef).kind }}
-    name: {{ default $context.Values.externalSecret.secretStore.name ($config.secretStoreRef).name }}
+    kind: {{ required "secretStoreRef.kind is required" $config.secretStoreRef.kind }}
+    name: {{ required "secretStoreRef.name is required" $config.secretStoreRef.name }}
   target:
     name: {{ default $name $config.targetName }}
     creationPolicy: {{ default "Owner" $config.creationPolicy }}
-    deletionPolicy: {{ default "Retain" $config.deletionPolicy }}
+    deletionPolicy: {{ default "Delete" $config.deletionPolicy }}
     {{- if $config.template }}
     template:
       engineVersion: {{ default "v2" $config.template.engineVersion }}
@@ -66,9 +77,11 @@ spec:
         key: {{ required "Path to pull secret is required" $config.path | quote }}
         property: {{ default .name .remoteKey | quote }}
         conversionStrategy: {{ default "Default" $config.conversionStrategy }}
-        decodingStrategy: {{ default "Auto" $config.decodingStrategy }}
+        decodingStrategy: {{ default "None" $config.decodingStrategy }}
         metadataPolicy: {{ default "None" $config.metadataPolicy }}
-        nullBytePolicy: {{ default "Fail" $config.nullBytePolicy }}
+        {{- with $config.nullBytePolicy }}
+        nullBytePolicy: {{ . }}
+        {{- end }}
   {{- end }}
 {{- end }}
 {{- end -}}
