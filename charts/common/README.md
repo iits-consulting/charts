@@ -8,10 +8,14 @@ A Library Helm Chart for grouping common logic between charts. This chart is not
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| externalSecret.commonAnnotations | object | `{}` | Annotations added to metadata.annotations of every rendered resource. A resource's own annotations win on conflict. |
+| externalSecret.commonLabels | object | `{}` | Labels added to metadata.labels of every rendered resource (generators, pull, push). A resource's own labels win on conflict. |
 | externalSecret.enabled | bool | `false` |  |
 | externalSecret.generators | object | `{"enabled":false,"passwords":{}}` | Creates Password generator CRDs. Used with PushSecrets that have generatorRef selectors. |
-| externalSecret.pull | object | `{"enabled":false,"secrets":{},"spec":{"conversionStrategy":"Default","creationPolicy":"Owner","decodingStrategy":"None","deletionPolicy":"Delete","metadataPolicy":"None","refreshInterval":"1m"}}` | Create ExternalSecret resources. It describes what data should be fetched, how the data should be transformed and saved as a Kind=Secret. |
-| externalSecret.push | object | `{"enabled":false,"secrets":{},"spec":{"conversionStrategy":"None","decodingStrategy":"None","deletionPolicy":"Delete","metadataPolicy":"None","refreshInterval":"1h","secretStores":[],"updatePolicy":"IfNotExists"}}` | Creates a PushSecret resource. It describes what data should be pushed to the SecretStore. This will be created also when pull is set to false. |
+| externalSecret.pull | object | `{"enabled":false,"secrets":{},"spec":{}}` | Create ExternalSecret resources. It describes what data should be fetched, how the data should be transformed and saved as a Kind=Secret. |
+| externalSecret.pull.spec | object | `{}` | Defaults merged into every entry under `secrets` (a per-secret value wins). The chart renders the defaults shown below; uncomment to override for all pull secrets. |
+| externalSecret.push | object | `{"enabled":false,"secrets":{},"spec":{}}` | Creates a PushSecret resource. It describes what data should be pushed to the SecretStore. This will be created also when pull is set to false. |
+| externalSecret.push.spec | object | `{}` | Defaults merged into every entry under `secrets` (a per-secret value wins). The chart renders the defaults shown below; uncomment to override for all push secrets. |
 | externalSecret.secretStore.kind | string | `"ClusterSecretStore"` |  |
 | externalSecret.secretStore.name | string | `"vault"` |  |
 
