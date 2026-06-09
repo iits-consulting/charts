@@ -13,7 +13,8 @@ Args (dict):
 {{- $name := .name -}}
 {{- $config := .config -}}
 {{- $labels := merge (dict) (default dict $config.labels) (default dict .commonLabels) -}}
-{{- $annotations := merge (dict) (default dict $config.annotations) (default dict .commonAnnotations) -}}
+{{- $annotations := merge (dict) (default dict $config.annotations) (default dict .commonAnnotations) }}
+---
 apiVersion: external-secrets.io/v1alpha1
 kind: PushSecret
 metadata:
