@@ -39,9 +39,10 @@ spec:
   {{- with $config.refreshPolicy }}
   refreshPolicy: {{ . }}
   {{- end }}
+  {{- $store := required "secretStoreRef is required: set externalSecret.secretStore or a per-secret secretStoreRef" $config.secretStoreRef }}
   secretStoreRef:
-    kind: {{ required "secretStoreRef.kind is required" $config.secretStoreRef.kind }}
-    name: {{ required "secretStoreRef.name is required" $config.secretStoreRef.name }}
+    kind: {{ required "secretStoreRef.kind is required" $store.kind }}
+    name: {{ required "secretStoreRef.name is required" $store.name }}
   target:
     name: {{ default $name $config.targetName }}
     creationPolicy: {{ default "Owner" $config.creationPolicy }}
