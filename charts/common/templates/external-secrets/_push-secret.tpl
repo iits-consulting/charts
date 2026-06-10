@@ -47,10 +47,9 @@ spec:
   refreshInterval: {{ default "1h" $config.refreshInterval }}
   deletionPolicy: {{ default "Delete" $config.deletionPolicy }}
   updatePolicy: {{ default "IfNotExists" $config.updatePolicy }}
-  {{- with $config.secretStores }}
+  {{- $stores := required "secretStores is required: set externalSecret.secretStore or a per-secret secretStores" $config.secretStores }}
   secretStoreRefs:
-    {{- toYaml . | nindent 4 }}
-  {{- end }}
+    {{- toYaml $stores | nindent 4 }}
   {{- with $config.keys }}
   data:
     {{- range . }}
