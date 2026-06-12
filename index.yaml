@@ -2457,6 +2457,25 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/elasticsearch-8.5.1/elasticsearch-8.5.1.tgz
     version: 8.5.1
+  ext-postgres-operator:
+  - apiVersion: v2
+    appVersion: 2.4.0
+    created: "2026-06-12T11:16:36.887859274Z"
+    dependencies:
+    - name: ext-postgres-operator
+      repository: https://movetokube.github.io/postgres-operator/
+      version: 3.0.0
+    - name: common
+      repository: https://charts.iits.tech
+      version: 0.3.1
+    description: iits wrapper around movetokube/postgres-operator with ESO-driven
+      RDS root credentials via the iits common chart.
+    digest: ca0a642aff9de0e76edbe5825b78d56e3638b0d137b056f7b1b8b2e5c0ef8290
+    name: ext-postgres-operator
+    type: application
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/ext-postgres-operator-1.0.0/ext-postgres-operator-1.0.0.tgz
+    version: 1.0.0
   iits-admin-dashboard:
   - apiVersion: v2
     appVersion: 2.1.0
@@ -8025,4 +8044,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/waf-cert-uploader-0.1.1/waf-cert-uploader-0.1.1.tgz
     version: 0.1.1
-generated: "2026-06-02T15:18:33.924212567Z"
+generated: "2026-06-12T11:16:36.888639853Z"
