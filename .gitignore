@@ -22,3 +22,6 @@
 ### Helm ###
 **/requirements.lock
 **/*.tgz
+
+### MacOS ###
+.DS_Store

@@ -1,0 +1,51 @@
+ext-postgres-operator:
+  existingSecret: postgres-operator-credentials
+  # Multi-instance pattern — for clusters running multiple operator
+  # deployments (one per RDS), set POSTGRES_INSTANCE to a unique value
+  # per deployment. The operator will then only reconcile `Postgres`
+  # and `PostgresUser` CRs that carry a matching
+  # `postgres-operator/instance: <value>` annotation. Leave the map
+  # empty for the catch-all default (operator reconciles un-annotated
+  # CRs only).
+  #
+  # Example for a second deployment scoped to a "reporting" RDS:
+  #   env:
+  #     POSTGRES_INSTANCE: "reporting"
+  env: {}
+
+common:
+  externalSecret:
+    enabled: true
+    pull:
+      enabled: true
+      secrets:
+        postgres-operator-credentials:
+          # Consumer (`infrastructure-charts/value-files/ext-postgres-operator/values.yaml`)
+          # sets `path` to the Vault path holding the operator's RDS root
+          # credentials. Templating like `{{ .Values.projectValues.stage }}` is
+          # resolved by the umbrella's `tpl-values` helper before the value
+          # reaches this chart.
+          path: ""
+          # Render the resulting Secret with all six env vars the operator
+          # expects. ESO substitutes `{{ .NAME }}` template variables (resolved
+          # against the `data:` block below) at runtime via engineVersion: v2.
+          # The remaining three are non-secret operator config; defaults work
+          # for OTC RDS (no cloud-provider tag, no extra connection args,
+          # admin database is the standard `postgres`).
+          template:
+            data:
+              POSTGRES_HOST: "{{ .POSTGRES_HOST }}"
+              POSTGRES_USER: "{{ .POSTGRES_USER }}"
+              POSTGRES_PASS: "{{ .POSTGRES_PASS }}"
+              POSTGRES_URI_ARGS: ""
+              POSTGRES_CLOUD_PROVIDER: ""
+              POSTGRES_DEFAULT_DATABASE: "postgres"
+          # Defaults match the canonical Vault property names. Override the
+          # entire `keys:` array per stage if your Vault layout differs.
+          keys:
+            - name: POSTGRES_HOST
+              remoteKey: address
+            - name: POSTGRES_USER
+              remoteKey: root_username
+            - name: POSTGRES_PASS
+              remoteKey: root_password
