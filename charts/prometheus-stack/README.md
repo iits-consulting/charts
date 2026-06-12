@@ -1,6 +1,6 @@
 # prometheus-stack
 
-![Version: 79.10.0](https://img.shields.io/badge/Version-79.10.0-informational?style=flat-square) ![AppVersion: 3.9.0](https://img.shields.io/badge/AppVersion-3.9.0-informational?style=flat-square)
+![Version: 79.11.0](https://img.shields.io/badge/Version-79.11.0-informational?style=flat-square) ![AppVersion: 3.9.0](https://img.shields.io/badge/AppVersion-3.9.0-informational?style=flat-square)
 
 A complete monitoring/alerting stack with Grafana, Prometheus, Alertmanager & Blackbox exporter
 
@@ -33,7 +33,7 @@ prometheus-stack:
 | Repository | Name | Version |
 |------------|------|---------|
 | https://charts.iits.tech | common | 0.3.1 |
-| https://prometheus-community.github.io/helm-charts | prometheusStack(kube-prometheus-stack) | 79.9.0 |
+| https://prometheus-community.github.io/helm-charts | prometheusStack(kube-prometheus-stack) | 79.11.0 |
 | https://prometheus-community.github.io/helm-charts | blackboxExporter(prometheus-blackbox-exporter) | 11.5.0 |
 
 ## Values
@@ -77,6 +77,23 @@ prometheus-stack:
 | global.ingress.paths.grafana | string | `"/grafana"` |  |
 | global.ingress.paths.prometheus | string | `"/prometheus"` |  |
 | policyException.enabled | bool | `true` |  |
+| prometheusStack.additionalPrometheusRulesMap.oom-killed.groups[0].name | string | `"pod-oom-killed"` |  |
+| prometheusStack.additionalPrometheusRulesMap.oom-killed.groups[0].rules[0].alert | string | `"PodOOMKilled"` |  |
+| prometheusStack.additionalPrometheusRulesMap.oom-killed.groups[0].rules[0].annotations.description | string | `"Either the termination reason is reported as “OOMKilled” or the container\nexited with code 137 (SIGKILL). Investigate memory\nrequests/limits and node pressure.\n"` |  |
+| prometheusStack.additionalPrometheusRulesMap.oom-killed.groups[0].rules[0].annotations.summary | string | `"Pod {{ $labels.namespace }}/{{ $labels.pod }} experienced an OOM kill"` |  |
+| prometheusStack.additionalPrometheusRulesMap.oom-killed.groups[0].rules[0].expr | string | `"(\n  sum by (namespace, pod, container) (\n    increase(kube_pod_container_status_last_terminated_reason{reason=\"OOMKilled\"}[5m])\n  )\n)\nor\n(\n  sum by (namespace, pod, container) (\n    increase(kube_pod_container_status_last_terminated_exit_code{exit_code=\"137\"}[5m])\n  )\n) > 0\n"` |  |
+| prometheusStack.additionalPrometheusRulesMap.oom-killed.groups[0].rules[0].for | string | `"1m"` |  |
+| prometheusStack.additionalPrometheusRulesMap.oom-killed.groups[0].rules[0].labels.severity | string | `"warning"` |  |
+| prometheusStack.additionalPrometheusRulesMap.restarts-daily.groups[0].interval | string | `"24h"` |  |
+| prometheusStack.additionalPrometheusRulesMap.restarts-daily.groups[0].name | string | `"container-restarts-daily"` |  |
+| prometheusStack.additionalPrometheusRulesMap.restarts-daily.groups[0].rules[0].expr | string | `"sum_over_time(kube_pod_container_status_restarts_total[24h])\n* on(namespace, pod) group_left()\nkube_pod_status_phase{phase=\"Running\"}\n> 5\n"` |  |
+| prometheusStack.additionalPrometheusRulesMap.restarts-daily.groups[0].rules[0].record | string | `"container:restarts_24h"` |  |
+| prometheusStack.additionalPrometheusRulesMap.restarts-daily.groups[0].rules[1].alert | string | `"ContainerRestartDetected"` |  |
+| prometheusStack.additionalPrometheusRulesMap.restarts-daily.groups[0].rules[1].annotations.description | string | `"The container **{{ $labels.container }}** (pod {{ $labels.namespace }}/{{ $labels.pod }}) has performed **{{ $value }}** restart(s) in the last 24 hours.\nOnly pods that are currently running are considered.\n"` |  |
+| prometheusStack.additionalPrometheusRulesMap.restarts-daily.groups[0].rules[1].annotations.summary | string | `"Pod {{ $labels.namespace }}/{{ $labels.pod }} has restarted >5 times in the last 24 h"` |  |
+| prometheusStack.additionalPrometheusRulesMap.restarts-daily.groups[0].rules[1].expr | string | `"container:restarts_24h > 0"` |  |
+| prometheusStack.additionalPrometheusRulesMap.restarts-daily.groups[0].rules[1].for | string | `"5m"` |  |
+| prometheusStack.additionalPrometheusRulesMap.restarts-daily.groups[0].rules[1].labels.severity | string | `"info"` |  |
 | prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].name | string | `"uptime-monitoring"` |  |
 | prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].rules[0].alert | string | `"ServiceIsDown"` |  |
 | prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].rules[0].annotations.description | string | `"Uptime of {{ $labels.instance }} is reporting down for 3 consecutive checks."` |  |
