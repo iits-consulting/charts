@@ -57,6 +57,21 @@ ingress:
       - hosts:
           - "{{ .Values.ingress.elasticsearch.host }}"
 
+  logstash:
+    enabled: false
+    # -- Required, if enabled
+    host: "REPLACE_ME"
+    path: /logstash
+    className: traefik
+    labels:
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+      traefik.ingress.kubernetes.io/router.tls: "true"
+      traefik.ingress.kubernetes.io/router.middlewares: "routing-oidc-forward-auth@kubernetescrd"
+    tls:
+      - hosts:
+          - "{{ .Values.ingress.logstash.host }}"
+
 auth:
   users:
     custom_filebeat:
@@ -107,6 +122,31 @@ auth:
             - read
             - monitor
             - view_index_metadata
+    # -- ECK Logstash user role - extends default permissions
+    # Uncomment and customize this role when using Logstash to grant additional permissions
+    # See: https://www.elastic.co/guide/en/cloud-on-k8s/current/k8s-logstash-configuration.html#k8s-logstash-es
+    # eck_logstash_user_role:
+    #   cluster:
+    #     - monitor
+    #     - manage_ilm
+    #     - read_ilm
+    #     - ...
+    #   indices:
+    #     - names:
+    #         - "logstash*"
+    #         - "ecs-logstash*"
+    #         - "..."
+    #         # Add your application-specific index patterns
+    #         # - "messenger*"
+    #         # - "keycloak*"
+    #       privileges:
+    #         - manage
+    #         - write
+    #         - create_index
+    #         - read
+    #         - view_index_metadata
+    #         - create_doc
+    #         - index
 
 elasticsearch:
   enabled: true
@@ -145,6 +185,17 @@ elasticsearch:
 filebeat:
   enabled: true
   version: "{{ .Chart.AppVersion }}"
+  # -- Enable Logstash output instead of direct Elasticsearch output
+  # When enabled, Filebeat sends logs to Logstash instead of Elasticsearch
+  # Note: elasticsearchRef and kibanaRef are automatically removed when this is true
+  useLogstashOutput: false
+  # -- Logstash output configuration (only used when useLogstashOutput is true)
+  # If not specified, defaults to {{ .Release.Name }}-ls-beats:5044
+  logstashOutput: {}
+  #  hosts: ["{{ .Release.Name }}-ls-beats:5044"]
+  #  # Optional additional Logstash output settings
+  #  # loadbalance: true
+  #  # worker: 2
   autodiscover:
     providers:
       - type: kubernetes
@@ -383,6 +434,84 @@ kibana:
               - ALL
           seccompProfile:
             type: RuntimeDefault
+
+# -- Logstash configuration using ECK Logstash CRD
+logstash:
+  # -- Enable Logstash deployment via ECK CRD
+  enabled: false
+  # -- Logstash version to deploy
+  version: "{{ .Chart.AppVersion }}"
+  # -- Number of Logstash replicas
+  count: 1
+  
+  # -- Elasticsearch cluster reference for Logstash
+  # This automatically injects ECK_ES_HOSTS, ECK_ES_USER, ECK_ES_PASSWORD, and ECK_ES_SSL_CERTIFICATE_AUTHORITY
+  elasticsearchRef:
+    clusterName: "eck"
+    name: "{{ .Release.Name }}"
+  
+  # -- Logstash configuration
+  # See: https://www.elastic.co/guide/en/logstash/current/logstash-settings-file.html
+  config:
+    pipeline.batch.size: 125
+    http.host: 0.0.0.0
+    xpack.monitoring.enabled: false
+  
+  # -- JVM options for Logstash
+  javaOpts: "-Xms1g -Xmx1g"
+  
+  # -- Resource limits and requests for Logstash pods
+  resources:
+    requests:
+      cpu: "500m"
+      memory: "1Gi"
+    limits:
+      cpu: "2000m"
+      memory: "2Gi"
+  
+  # -- Logstash pipeline configuration
+  # You can define pipelines inline or reference a Secret via pipelinesRef
+  # See: https://www.elastic.co/guide/en/cloud-on-k8s/current/k8s-logstash-configuration.html
+  pipelines:
+    - pipeline.id: main
+      config.string: |
+        input {
+          beats {
+            port => 5044
+            ssl_enabled => false
+          }
+        }
+        output {
+          elasticsearch {
+            hosts => [ "${ECK_ES_HOSTS}" ]
+            user => "${ECK_ES_USER}"
+            password => "${ECK_ES_PASSWORD}"
+            ssl_certificate_authorities => "${ECK_ES_SSL_CERTIFICATE_AUTHORITY}"
+          }
+        }
+  
+  # -- Alternative: Reference a Secret containing pipelines.yml
+  # Uncomment to use Secret-based configuration instead of inline pipelines
+  # pipelinesRef:
+  #   secretName: logstash-pipeline
+  
+  # -- Service configuration for Logstash
+  # Exposes ports for Beats input and Logstash API
+  services:
+    - name: beats
+      service:
+        spec:
+          ports:
+            - port: 5044
+              name: "filebeat"
+              protocol: TCP
+            - port: 9600
+              name: "api"
+              protocol: TCP
+  
+  # -- Pod template spec for additional customization
+  # Leave empty to use default configuration with javaOpts and resources
+  podTemplateSpec: {}
 
 indexPatternInit:
   image:

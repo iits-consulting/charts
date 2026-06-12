@@ -9,21 +9,33 @@ metadata:
 spec:
   type: filebeat
   version: {{ tpl .version $ }}
+  {{- if not .useLogstashOutput }}
   elasticsearchRef:
     name: {{ $.Release.Name }}
   kibanaRef:
     name: {{ $.Release.Name }}
+  {{- end }}
   config:
     filebeat:
       autodiscover:
         {{- .autodiscover | toYaml | nindent 8 }}
     processors:
         {{- concat .processors .extraProcessors | toYaml | nindent 6 }}
+    {{- if .useLogstashOutput }}
+    {{- if .logstashOutput }}
+    output.logstash:
+      {{- .logstashOutput | toYaml | nindent 6 }}
+    {{- else }}
+    output.logstash:
+      hosts: ["{{ $.Release.Name }}-ls-beats:5044"]
+    {{- end }}
+    {{- else }}
     output.elasticsearch:
       username: '${ELASTICSEARCH_USERNAME}'
       password: '${ELASTICSEARCH_PASSWORD}'
       indices:
         {{- concat .extraIndices .indices | toYaml | nindent 8}}
+    {{- end }}
   daemonSet:
     podTemplate:
       metadata:
