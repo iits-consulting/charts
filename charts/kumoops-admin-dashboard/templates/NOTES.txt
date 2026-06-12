@@ -1,0 +1,68 @@
+
+============================================
+  KumoOps Admin Dashboard Deployed! 🎉
+============================================
+
+Dashboard URL:
+{{- if .Values.ingress.enabled }}
+{{- if .Values.ingress.host }}
+  https://{{ .Values.ingress.host }}
+{{- else }}
+  ⚠️  WARNING: Ingress enabled but no host configured!
+  Please set .Values.ingress.host in your values.yaml
+{{- end }}
+{{- else }}
+  Ingress is disabled. To enable it:
+    helm upgrade {{ .Release.Name }} . --set ingress.enabled=true --set ingress.host=your-domain.com
+{{- end }}
+
+Dashboard Configuration:
+  Title: {{ include "kumoops-dashboard.getTitle" . }}
+  {{- if .Values.defaultDashboard }}
+  {{- if .Values.defaultDashboard.subtitle }}
+  Subtitle: {{ .Values.defaultDashboard.subtitle }}
+  {{- end }}
+  {{- end }}
+
+Tiles Configuration:
+{{- if .Values.defaultDashboard }}
+{{- if .Values.defaultDashboard.tiles }}
+  {{- $enabledCount := 0 }}
+  {{- $invalidCount := 0 }}
+  {{- range $key, $tile := .Values.defaultDashboard.tiles }}
+  {{- if $tile.enabled }}
+  {{- $enabledCount = add1 $enabledCount }}
+  {{- if or (not $tile.href) (not $tile.imgSrc) (not $tile.imgAlt) (not $tile.category) }}
+  {{- $invalidCount = add1 $invalidCount }}
+  {{- end }}
+  {{- end }}
+  {{- end }}
+  ✓ Total enabled tiles: {{ $enabledCount }}
+  {{- if gt $invalidCount 0 }}
+  ⚠️  WARNING: {{ $invalidCount }} tile(s) have missing required fields (href, imgSrc, imgAlt, category)
+  These tiles will be skipped in the dashboard.
+  {{- end }}
+{{- else }}
+  ⚠️  WARNING: No tiles configured!
+  Add tiles to .Values.defaultDashboard.tiles in your values.yaml
+{{- end }}
+{{- else }}
+  ⚠️  WARNING: defaultDashboard not configured!
+  Please configure .Values.defaultDashboard in your values.yaml
+{{- end }}
+
+Service:
+  Name: {{ include "kumoops-dashboard.fullname" . }}
+  Namespace: {{ .Release.Namespace }}
+  Replicas: {{ .Values.deployment.replicaCount | default 2 }}
+
+To test the deployment:
+  helm test {{ .Release.Name }}
+
+To view the ConfigMap:
+  kubectl get configmap {{ include "kumoops-dashboard.fullname" . }} -n {{ .Release.Namespace }} -o yaml
+
+For more information:
+  https://github.com/iits-consulting/charts
+
+============================================

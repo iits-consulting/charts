@@ -1,0 +1,289 @@
+nameOverride: ""
+fullnameOverride: ""
+
+defaultDashboard:
+  logoSrc: "https://brand-book.kumo-ops.com/assets/kumoops-logo-full-light-800px.png"
+  logoDarkSrc: "https://brand-book.kumo-ops.com/assets/kumoops-logo-full-dark-800px.png"
+  logoAlt: "KumoOps Logo"
+  title: "KumoOps Admin"
+  subtitle: "CloudSecOps-as-a-Service"
+  tiles:
+    portal:
+      enabled: false
+      href: "https://my-portal.kumo-ops.com/"
+      imgSrc: "https://iits-consulting.de/wp-content/uploads/2026/01/kumoops-portal.png"
+      imgAlt: "KumoOps Portal"
+      category: "KumoOps"
+      description: "Main KumoOps portal dashboard"
+    support:
+      enabled: false
+      href: "support@kumo-ops.com"
+      imgSrc: "https://iits-consulting.de/wp-content/uploads/2026/01/kumo-support.png"
+      imgAlt: "KumoOps Support"
+      category: "KumoOps"
+    kibana:
+      enabled: true
+      href: "kibana/app/discover"
+      imgSrc: "https://iits-consulting.de/wp-content/uploads/2026/01/definitly_not_kibana.svg"
+      imgAlt: "Kibana"
+      category: "Observability"
+      description: "Log exploration and visualization"
+    traefikDashboard:
+      enabled: true
+      href: "dashboard/"
+      imgSrc: "https://iits-consulting.de/wp-content/uploads/2026/01/traefik.svg"
+      imgAlt: "Traefik Dashboard"
+      category: "DevOps"
+      description: "Traefik proxy and routing dashboard"
+    argocd:
+      enabled: true
+      href: "argocd/auth/login"
+      imgSrc: "https://iits-consulting.de/wp-content/uploads/2026/01/argo.svg"
+      imgAlt: "ArgoCD"
+      category: "DevOps"
+      description: "GitOps continuous delivery for Kubernetes"
+    gitlab:
+      enabled: false
+      href: "https://gitlab.kumo-ops.com"
+      imgSrc: "https://iits-consulting.de/wp-content/uploads/2026/01/gitlab.svg"
+      imgAlt: "GitLab"
+      category: "DevOps"
+      description: "DevOps platform for Git repositories and CI/CD"
+    harbor:
+      enabled: false
+      href: "harbor/"
+      imgSrc: "https://iits-consulting.de/wp-content/uploads/2026/01/harbor-logo.png"
+      imgAlt: "Harbor"
+      category: "DevOps"
+      description: "Container registry with security scanning and signing"
+    grafana:
+      enabled: true
+      href: "grafana/login/generic_oauth"
+      imgSrc: "https://iits-consulting.de/wp-content/uploads/2026/01/definitly_not_grafana.svg"
+      imgAlt: "Grafana"
+      category: "Observability"
+      description: "Metrics visualization and monitoring"
+    prometheus:
+      enabled: true
+      href: "prometheus"
+      imgSrc: "https://iits-consulting.de/wp-content/uploads/2026/01/definitly_not_prometheus.svg"
+      imgAlt: "Prometheus"
+      category: "Observability"
+      description: "Time-series database and monitoring"
+    elasticsearch:
+      enabled: true
+      href: "elasticsearch"
+      imgSrc: "https://iits-consulting.de/wp-content/uploads/2026/01/elasticsearch.svg"
+      imgAlt: "Elasticsearch"
+      category: "Observability"
+      description: "Search and analytics engine"
+    kyverno:
+      enabled: true
+      href: "policies"
+      imgSrc: "https://iits-consulting.de/wp-content/uploads/2026/01/kyverno.svg"
+      imgAlt: "Kyverno"
+      category: "Security"
+      description: "Kubernetes policy management"
+    vault:
+      enabled: true
+      href: "vault/"
+      imgSrc: "https://iits-consulting.de/wp-content/uploads/2026/01/vault.svg"
+      imgAlt: "Vault"
+      category: "Security"
+      description: "Secrets and encryption management"
+    sonarqube:
+      enabled: false
+      href: "sonarqube/"
+      imgSrc: "https://iits-consulting.de/wp-content/uploads/2026/01/sonarqube.webp"
+      imgAlt: "SonarQube"
+      category: "Security"
+      description: "Code quality and security analysis platform"
+    trivy:
+      enabled: false
+      href: "trivy/"
+      imgSrc: "https://iits-consulting.de/wp-content/uploads/2026/01/trivy_logo.png"
+      imgAlt: "Trivy"
+      category: "Security"
+      description: "Comprehensive vulnerability scanner for containers"
+    keycloak:
+      enabled: true
+      href: "keycloak/"
+      imgSrc: "https://iits-consulting.de/wp-content/uploads/2026/01/keycloak.svg"
+      imgAlt: "Keycloak"
+      category: "Identity Management"
+      description: "Identity and access management"
+    otc:
+      enabled: true
+      href: "otcOIDC/"
+      imgSrc: "https://iits-consulting.de/wp-content/uploads/2026/01/otc-logo.svg"
+      imgAlt: "T Cloud Public(TCP)"
+      category: "Cloud Provider"
+      description: "T Cloud Public(TCP) console"
+    akhq:
+      enabled: true
+      href: "akhq/ui/"
+      imgSrc: "https://iits-consulting.de/wp-content/uploads/2026/01/kafka.svg"
+      imgAlt: "akhq (kafka headquarter)"
+      category: "Messaging"
+      description: "Kafka cluster management UI"
+    homeport:
+      enabled: false
+      href: "https://homeport.ai"
+      imgSrc: "https://iits-consulting.de/wp-content/uploads/2026/01/homeport-1.png"
+      imgAlt: "Homeport private GenAI Tool"
+      description: "Homeport.ai provides you private genAI tools and services"
+      category: "AI"
+    n8n:
+      enabled: false
+      href: "n8n/"
+      imgSrc: "https://iits-consulting.de/wp-content/uploads/2026/01/n8n-logo.webp"
+      imgAlt: "n8n Automation"
+      category: "AI"
+      description: "Workflow automation platform"
+    alertManager:
+      enabled: true
+      href: "/alertmanager"
+      imgSrc: "https://iits-consulting.de/wp-content/uploads/2026/01/definitly_not_alertmanager.svg"
+      imgAlt: "Alertmanager"
+      category: "Observability"
+      description: "Alert handling and routing"
+    logout:
+      enabled: true
+      href: "/logout"
+      imgSrc: "https://iits-consulting.de/wp-content/uploads/2026/01/logout.svg"
+      imgAlt: "Logout"
+      category: "Identity Management"
+      description: "Sign out from all services"
+    docs:
+      enabled: false
+      href: "docs/"
+      imgSrc: "https://picsum.photos/id/24/200/200"
+      imgAlt: "Docs"
+      description: "Technical Documentation about KumoOps"
+      category: "KumoOps"
+    # Add other tiles here...
+
+# You can add here a custom HTML website
+#website: |
+#  <!DOCTYPE html>
+#  <html lang="en">
+#
+#  <head>
+#      <meta charset="UTF-8">
+#      <title>Tech Admin Board</title>
+#      <link rel="stylesheet" href="styles.css"> <!-- Link the new CSS file -->
+#  </head>
+#
+#  <body>
+#  <div class="container">
+#      <img class="logo" src="https://iits-consulting.de/wp-content/uploads/2021/08/iits-logo-2021-red-square-xl.svg"
+#           alt="IITS Consulting Logo"/>
+#      <h1>Tech Admin Board</h1>
+#      <div class="tiles">
+#          <a href="argocd" class="tile">
+#              <img src="https://cncf-branding.netlify.app/img/projects/argo/stacked/color/argo-stacked-color.svg" alt="ArgoCD">
+#          </a>
+#          <a href="akhq/ui/kafka/topic" class="tile">
+#              <img src="https://kafka.apache.org/apache-kafka.svg" alt="akhq (kafka headquarter)">
+#          </a>
+#          <a href="dashboard/" class="tile">
+#              <img src="https://raw.githubusercontent.com/docker-library/docs/a6cc2c5f4bc6658168f2a0abbb0307acaefff80e/traefik/logo.svg" alt="Traefik Dashboard">
+#          </a>
+#      </div>
+#  </div>
+#  </body>
+#  </html>
+
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: { }
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+ingress:
+  enabled: true
+
+  # -- Required, replace it with your host address
+  host:
+
+  labels:
+
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+    traefik.ingress.kubernetes.io/router.tls: "true"
+
+  hosts:
+    - host: "{{ .Values.ingress.host }}"
+      paths:
+        - path: "/"
+          #pathType: "Prefix"
+
+
+deployment:
+  replicaCount: 1
+  onePodForEachNode: false
+
+  imagePullSecrets: [ ]
+
+  annotations:
+
+  resources:
+    requests:
+      memory: "4Mi"
+      cpu: "1m"
+    limits:
+      memory: "8Mi"
+      cpu: "10m"
+
+  podAnnotations: { }
+
+  podSecurityContext:
+  # fsGroup: 2000
+
+  securityContext:
+    allowPrivilegeEscalation: false
+    runAsNonRoot: true
+    capabilities:
+      drop:
+        - ALL
+    readOnlyRootFilesystem: true
+    runAsUser: 1001
+
+  #nodeSelector:
+  #tolerations:
+
+  extraVolumes: [ ]
+  extraVolumeMounts: [ ]
+
+  #affinity:
+
+  containerPort: 3000
+
+  health:
+    startupProbe:
+      path: "/"
+      initialDelaySeconds: 5
+      periodSeconds: 5
+      failureThreshold: 3
+
+    liveness:
+      path: "/"
+      initialDelaySeconds: 5
+      periodSeconds: 20
+      failureThreshold: 3
+
+    readiness:
+      path: "/"
+      initialDelaySeconds: 5
+      periodSeconds: 20
+      failureThreshold: 3
+
+service:
+  annotations:
+  labels:
+  type: "ClusterIP"
+  port: 80
