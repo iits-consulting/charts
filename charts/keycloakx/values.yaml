@@ -10,12 +10,12 @@ keycloakx:
     KC_LOG_CONSOLE_OUTPUT: "json"
 
   database:
-    vendor: "postgres"
-    hostname: "REPLACE_ME"
-    port: "REPLACE_ME"
-    database: "REPLACE_ME"
-    username: "REPLACE_ME"
-    password: "REPLACE_ME"
+    vendor: ""
+    hostname: ""
+    port: ""
+    database: ""
+    username: ""
+    password: ""
 
   extraEnvFrom: |
     - secretRef:
@@ -60,3 +60,41 @@ keycloakx:
 
   serviceMonitor:
     enabled: true
+
+postgresOperator:
+  enabled: false
+  # Default annotations applied to every Postgres + PostgresUser CR this
+  # chart renders. Most common use: scope CRs to a specific operator
+  # deployment via `postgres-operator/instance: <name>` (matches the
+  # operator's POSTGRES_INSTANCE env var). Override per-CR via
+  # `databases.<name>.annotations` or
+  # `databases.<name>.users.<role>.annotations`.
+  annotations: {}
+  # When enabled, a Postgres CR is rendered for each entry in `databases`,
+  # and a PostgresUser CR for each user under that database. CRs are emitted
+  # into the chart's release namespace (i.e. the Keycloak namespace), where
+  # the cluster-scoped movetokube/postgres-operator reconciles them.
+  #
+  # Example:
+  #   postgresOperator:
+  #     enabled: true
+  #     annotations:
+  #       postgres.db.movetokube.com/instance: "my-scoped-instance"   # global, optional
+  #     databases:
+  #       keycloak:
+  #         dropOnDelete: false
+  #         schemas: []      # optional list
+  #         extensions: []   # optional list
+  #         annotations: {}  # optional, overrides global on the Postgres CR
+  #         users:
+  #           keycloak:
+  #             privileges: OWNER       # OWNER | READ | WRITE
+  #             secretName: keycloak    # operator writes Secret <secretName>-<role>
+  #             annotations: {}         # optional, overrides global on the PostgresUser CR
+  databases:
+    keycloak:
+      dropOnDelete: false
+      users:
+        keycloak:
+          privileges: OWNER       # OWNER | READ | WRITE
+          secretName: keycloak    # operator writes Secret <secretName>-<role>
