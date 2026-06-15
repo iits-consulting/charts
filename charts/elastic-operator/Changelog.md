@@ -2,6 +2,10 @@
 
 ## Chart Versions
 
+### 9.4.0
+- Changed operator version to 3.4.0
+- Changed elastic stack (appVersion) to version 9.4.0
+
 ### 9.3.3
 - Changed operator version to 3.3.2
 - Changed elastic stack (appVersion) to version 9.3.3
