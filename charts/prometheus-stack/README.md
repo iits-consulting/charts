@@ -81,12 +81,12 @@ prometheus-stack:
 | prometheusStack.additionalPrometheusRulesMap.oom-killed.groups[0].rules[0].alert | string | `"PodOOMKilled"` |  |
 | prometheusStack.additionalPrometheusRulesMap.oom-killed.groups[0].rules[0].annotations.description | string | `"Either the termination reason is reported as “OOMKilled” or the container\nexited with code 137 (SIGKILL). Investigate memory\nrequests/limits and node pressure.\n"` |  |
 | prometheusStack.additionalPrometheusRulesMap.oom-killed.groups[0].rules[0].annotations.summary | string | `"Pod {{ $labels.namespace }}/{{ $labels.pod }} experienced an OOM kill"` |  |
-| prometheusStack.additionalPrometheusRulesMap.oom-killed.groups[0].rules[0].expr | string | `"(\n  sum by (namespace, pod, container) (\n    increase(kube_pod_container_status_last_terminated_reason{reason=\"OOMKilled\"}[5m])\n  )\n)\nor\n(\n  sum by (namespace, pod, container) (\n    increase(kube_pod_container_status_last_terminated_exit_code{exit_code=\"137\"}[5m])\n  )\n) > 0\n"` |  |
+| prometheusStack.additionalPrometheusRulesMap.oom-killed.groups[0].rules[0].expr | string | `"(\n  (\n    kube_pod_container_status_last_terminated_reason{reason=\"OOMKilled\"} == 1\n    and on(namespace, pod, container)\n    increase(kube_pod_container_status_restarts_total[15m]) > 0\n  )\n  or\n  (\n    kube_pod_container_status_last_terminated_exitcode == 137\n    and on(namespace, pod, container)\n    increase(kube_pod_container_status_restarts_total[15m]) > 0  \n  )\n) > 0\n"` |  |
 | prometheusStack.additionalPrometheusRulesMap.oom-killed.groups[0].rules[0].for | string | `"1m"` |  |
 | prometheusStack.additionalPrometheusRulesMap.oom-killed.groups[0].rules[0].labels.severity | string | `"warning"` |  |
-| prometheusStack.additionalPrometheusRulesMap.restarts-daily.groups[0].interval | string | `"24h"` |  |
+| prometheusStack.additionalPrometheusRulesMap.restarts-daily.groups[0].interval | string | `"5m"` |  |
 | prometheusStack.additionalPrometheusRulesMap.restarts-daily.groups[0].name | string | `"container-restarts-daily"` |  |
-| prometheusStack.additionalPrometheusRulesMap.restarts-daily.groups[0].rules[0].expr | string | `"sum_over_time(kube_pod_container_status_restarts_total[24h])\n* on(namespace, pod) group_left()\nkube_pod_status_phase{phase=\"Running\"}\n> 5\n"` |  |
+| prometheusStack.additionalPrometheusRulesMap.restarts-daily.groups[0].rules[0].expr | string | `"increase(kube_pod_container_status_restarts_total[24h])\n* on(namespace, pod) group_left()\nkube_pod_status_phase{phase=\"Running\"}\n> 0\n"` |  |
 | prometheusStack.additionalPrometheusRulesMap.restarts-daily.groups[0].rules[0].record | string | `"container:restarts_24h"` |  |
 | prometheusStack.additionalPrometheusRulesMap.restarts-daily.groups[0].rules[1].alert | string | `"ContainerRestartDetected"` |  |
 | prometheusStack.additionalPrometheusRulesMap.restarts-daily.groups[0].rules[1].annotations.description | string | `"The container **{{ $labels.container }}** (pod {{ $labels.namespace }}/{{ $labels.pod }}) has performed **{{ $value }}** restart(s) in the last 24 hours.\nOnly pods that are currently running are considered.\n"` |  |
@@ -126,7 +126,12 @@ prometheus-stack:
 | prometheusStack.alertmanager.config.route.routes[1].matchers[0] | string | `"severity=\"critical\""` |  |
 | prometheusStack.alertmanager.config.route.routes[1].receiver | string | `"slack"` |  |
 | prometheusStack.alertmanager.config.route.routes[1].repeat_interval | string | `"30m"` |  |
+| prometheusStack.alertmanager.config.route.routes[2].group_interval | string | `"24h"` |  |
+| prometheusStack.alertmanager.config.route.routes[2].group_wait | string | `"1s"` |  |
+| prometheusStack.alertmanager.config.route.routes[2].matchers[0] | string | `"alertname=\"ContainerRestartDetected\""` |  |
 | prometheusStack.alertmanager.config.route.routes[2].receiver | string | `"slack"` |  |
+| prometheusStack.alertmanager.config.route.routes[2].repeat_interval | string | `"24h"` |  |
+| prometheusStack.alertmanager.config.route.routes[3].receiver | string | `"slack"` |  |
 | prometheusStack.alertmanager.config.templates[0] | string | `"/etc/alertmanager/config/*.tmpl"` |  |
 | prometheusStack.crds.enabled | bool | `false` |  |
 | prometheusStack.defaultRules.create | bool | `true` |  |
