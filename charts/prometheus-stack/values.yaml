@@ -92,14 +92,14 @@ prometheusStack:
     restarts-daily:
       groups:
         - name: container-restarts-daily
-          interval: 24h
+          interval: 5m
           rules:
             - record: container:restarts_24h
               expr: |
-                sum_over_time(kube_pod_container_status_restarts_total[24h])
+                increase(kube_pod_container_status_restarts_total[24h])
                 * on(namespace, pod) group_left()
                 kube_pod_status_phase{phase="Running"}
-                > 5
+                > 0
             - alert: ContainerRestartDetected
               expr: container:restarts_24h > 0
               for: 5m
@@ -117,14 +117,16 @@ prometheusStack:
             - alert: PodOOMKilled
               expr: |
                 (
-                  sum by (namespace, pod, container) (
-                    increase(kube_pod_container_status_last_terminated_reason{reason="OOMKilled"}[5m])
+                  (
+                    kube_pod_container_status_last_terminated_reason{reason="OOMKilled"} == 1
+                    and on(namespace, pod, container)
+                    increase(kube_pod_container_status_restarts_total[15m]) > 0
                   )
-                )
-                or
-                (
-                  sum by (namespace, pod, container) (
-                    increase(kube_pod_container_status_last_terminated_exit_code{exit_code="137"}[5m])
+                  or
+                  (
+                    kube_pod_container_status_last_terminated_exitcode == 137
+                    and on(namespace, pod, container)
+                    increase(kube_pod_container_status_restarts_total[15m]) > 0  
                   )
                 ) > 0
               for: 1m
@@ -204,6 +206,12 @@ prometheusStack:
             repeat_interval: 30m
             matchers:
               - severity="critical"
+          - receiver: 'slack'
+            group_wait: 1s
+            group_interval: 24h
+            repeat_interval: 24h
+            matchers:
+              - alertname="ContainerRestartDetected"
           - receiver: 'slack'
       receivers:
         - name: 'null'
