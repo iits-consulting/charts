@@ -2,7 +2,7 @@ apiVersion: v2
 name: ext-postgres-operator
 description: iits wrapper around movetokube/postgres-operator with ESO-driven RDS root credentials via the iits common chart.
 type: application
-version: 1.0.0
+version: 2.0.0
 appVersion: "2.4.0"
 dependencies:
   - name: ext-postgres-operator
