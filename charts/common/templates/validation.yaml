@@ -1,9 +1,0 @@
-{{- with .Values.externalSecret }}
-{{- if .enabled }}
-  {{- if and .generators.enabled (not .generators.passwords) }}
-    {{- fail "externalSecret.generators.enabled is true but externalSecret.generators.passwords is empty — define at least one password generator or disable generators" }}
-  {{- else if and (not .generators.enabled) .generators.passwords }}
-    {{- fail "externalSecret.generators.passwords is set but externalSecret.generators.enabled is false — the Password CRDs would not render" }}
-  {{- end }}
-{{- end }}
-{{- end }}
