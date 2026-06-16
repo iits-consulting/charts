@@ -2460,6 +2460,24 @@ entries:
   ext-postgres-operator:
   - apiVersion: v2
     appVersion: 2.4.0
+    created: "2026-06-16T11:20:29.072045766Z"
+    dependencies:
+    - name: ext-postgres-operator
+      repository: https://movetokube.github.io/postgres-operator/
+      version: 3.0.0
+    - name: common
+      repository: https://charts.iits.tech
+      version: 0.3.1
+    description: iits wrapper around movetokube/postgres-operator with ESO-driven
+      RDS root credentials via the iits common chart.
+    digest: 7394b88f457d1a809bcc3664d7fa93677c6322dc8eceaafafe3e87f8115b96f4
+    name: ext-postgres-operator
+    type: application
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/ext-postgres-operator-2.0.0/ext-postgres-operator-2.0.0.tgz
+    version: 2.0.0
+  - apiVersion: v2
+    appVersion: 2.4.0
     created: "2026-06-12T11:16:36.887859274Z"
     dependencies:
     - name: ext-postgres-operator
@@ -8058,4 +8076,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/waf-cert-uploader-0.1.1/waf-cert-uploader-0.1.1.tgz
     version: 0.1.1
-generated: "2026-06-12T11:18:52.236179423Z"
+generated: "2026-06-16T11:20:29.275174967Z"
