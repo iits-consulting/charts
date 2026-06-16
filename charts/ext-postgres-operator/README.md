@@ -1,6 +1,6 @@
 # ext-postgres-operator
 
-![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.4.0](https://img.shields.io/badge/AppVersion-2.4.0-informational?style=flat-square)
+![Version: 2.0.0](https://img.shields.io/badge/Version-2.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.4.0](https://img.shields.io/badge/AppVersion-2.4.0-informational?style=flat-square)
 
 iits wrapper around movetokube/postgres-operator with ESO-driven RDS root credentials via the iits common chart.
 
@@ -15,7 +15,7 @@ iits wrapper around movetokube/postgres-operator with ESO-driven RDS root creden
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| common.externalSecret.enabled | bool | `true` |  |
+| common.externalSecret.enabled | bool | `false` |  |
 | common.externalSecret.pull.enabled | bool | `true` |  |
 | common.externalSecret.pull.secrets.postgres-operator-credentials.keys[0].name | string | `"POSTGRES_HOST"` |  |
 | common.externalSecret.pull.secrets.postgres-operator-credentials.keys[0].remoteKey | string | `"address"` |  |
