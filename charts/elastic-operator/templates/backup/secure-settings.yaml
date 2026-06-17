@@ -1,4 +1,5 @@
-{{- if and .Values.backup.enabled (not .Values.common.externalSecret.enabled) }}
+{{- if and .Values.backup.enabled .Values.backup.secureSettings }}
+{{- if not .Values.common.externalSecret.enabled }}
 apiVersion: v1
 kind: Secret
 metadata:
@@ -6,6 +7,24 @@ metadata:
 type: Opaque
 data:
 {{- range $settingName,$settingValue := .Values.backup.secureSettings }}
-  {{ $.Values.backup.repoType}}.client.default.{{ $settingName }}: {{ $settingValue | b64enc }}
+  {{ $.Values.backup.repoType}}.client.default.{{ $settingName }}: {{ $settingValue | default "" | b64enc }}
+{{- end }}
+{{- else }}
+{{/*
+ESO mode: same Opaque secret as above, but each <repoType>.client.default.<setting> key is pulled
+from vault instead of inlined. Backup credentials are externally managed (e.g. Terraform), so this
+is pull-only. In ESO mode the secureSettings value is the vault property
+to read (remoteKey); leave it empty to default the property to the setting name.
+*/}}
+{{- $store := .Values.common.externalSecret.secretStore }}
+{{- $path := required "backup.path is required when common.externalSecret.enabled and backup.enabled are true" .Values.backup.path }}
+{{- $keys := list }}
+{{- range $settingName, $remoteKey := .Values.backup.secureSettings }}
+{{- $keys = append $keys (dict "name" (printf "%s.client.default.%s" $.Values.backup.repoType $settingName) "remoteKey" (default $settingName $remoteKey)) }}
+{{- end }}
+{{- include "common.externalSecrets.externalSecret" (dict "name" (printf "%s-backup-secure-settings" .Release.Name) "config" (dict
+    "secretStoreRef" $store
+    "path" $path
+    "keys" $keys)) }}
 {{- end }}
 {{- end }}

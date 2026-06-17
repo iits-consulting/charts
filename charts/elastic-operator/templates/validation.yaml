@@ -1,8 +1,9 @@
 {{- $eso := .Values.common.externalSecret }}
 
 {{- if $eso.enabled }}
-  {{- if and (not $eso.generators.enabled) (not $eso.generators.passwords) }}
-    {{- fail "common.externalSecret.enabled is true but no password source is configured — set generators.enabled + generators.passwords, or disable common.externalSecret" }}
+  {{- $store := $eso.secretStore | default dict }}
+  {{- if or (not $store.kind) (not $store.name) }}
+    {{- fail "common.externalSecret.enabled is true but common.externalSecret.secretStore.{kind,name} is not set" }}
   {{- end }}
 
   {{- range $userName := keys .Values.auth.users | sortAlpha }}
@@ -10,17 +11,8 @@
     {{- if and $userDescription (not (empty $userDescription.existingPassword)) }}
       {{- fail (printf "auth.users.%s.existingPassword is set but common.externalSecret.enabled is true — existingPassword has no effect in ESO mode (vault is canonical); remove it or disable common.externalSecret" $userName) }}
     {{- end }}
-  {{- end }}
-
-  {{- $pullSecrets := ($eso.pull).secrets | default dict }}
-  {{- $producedNames := list }}
-  {{- range $key, $cfg := $pullSecrets }}
-    {{- $producedNames = append $producedNames ($cfg.targetName | default $key) }}
-  {{- end }}
-  {{- range $userName := keys .Values.auth.users | sortAlpha }}
-    {{- $expected := printf "%s-user-%s" $.Release.Name (kebabcase $userName) }}
-    {{- if not (has $expected $producedNames) }}
-      {{- fail (printf "auth.users.%s has no matching common.externalSecret.pull.secrets entry producing %q — ECK/filebeat/kibana env refs will fail to resolve" $userName $expected) }}
+    {{- if not $userDescription.path }}
+      {{- fail (printf "auth.users.%s.path is required when common.externalSecret.enabled is true — set the vault path for this user's password round-trip" $userName) }}
     {{- end }}
   {{- end }}
 {{- end }}
