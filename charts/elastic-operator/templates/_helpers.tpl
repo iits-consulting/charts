@@ -1,3 +1,11 @@
+{{- define "elasticOperator.elasticSearch.users.checksum" -}}
+{{- if .Values.common.externalSecret.enabled }}
+{{- .Values.auth.users | toYaml | sha256sum | substr 0 50 }}
+{{- else }}
+{{- include (print $.Template.BasePath "/eks-stack/elasticsearch-users.yaml") $ | sha256sum | substr 0 50 }}
+{{- end }}
+{{- end -}}
+
 {{/* Elasticsearch data volumeClaimTemplate for OTC/CCE everest-provisioned storage */}}
 {{- define "template.otcPVC" -}}
 metadata:
