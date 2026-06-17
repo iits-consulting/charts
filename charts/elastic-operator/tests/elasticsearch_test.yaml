@@ -1,0 +1,44 @@
+suite: elasticsearch
+templates:
+  - eks-stack/elasticsearch.yaml
+
+release:
+  name: elastic-operator
+
+tests:
+  - it: omits secureSettings when backup disabled and no extraSecureSettings
+    set:
+      backup.enabled: false
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: Elasticsearch
+      - notExists:
+          path: spec.secureSettings
+
+  - it: references the backup secret when backup enabled with secureSettings
+    set:
+      backup.enabled: true
+      backup.secureSettings.access_key: "AKIAEXAMPLE"
+    asserts:
+      - equal:
+          path: spec.secureSettings[0].secretName
+          value: elastic-operator-backup-secure-settings
+
+  - it: omits the backup secret reference when backup enabled but secureSettings empty (IAM-role case)
+    set:
+      backup.enabled: true
+    asserts:
+      - notExists:
+          path: spec.secureSettings
+
+  - it: references extraSecureSettings even when backup disabled
+    set:
+      backup.enabled: false
+      elasticsearch.extraSecureSettings:
+        - my-extra
+    asserts:
+      - equal:
+          path: spec.secureSettings[0].secretName
+          value: my-extra
