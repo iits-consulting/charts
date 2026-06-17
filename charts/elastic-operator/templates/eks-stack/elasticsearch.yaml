@@ -35,10 +35,15 @@ spec:
           traefik.ingress.kubernetes.io/service.serversscheme: "https"
   {{- end }}
 {{- end }}
+{{- $backupSecret := and $.Values.backup.enabled $.Values.backup.secureSettings }}
+{{- if or $backupSecret .extraSecureSettings }}
   secureSettings:
+{{- if $backupSecret }}
     - secretName: "{{ $.Release.Name }}-backup-secure-settings"
+{{- end }}
 {{- range $extraSetting := .extraSecureSettings }}
     - secretName: {{ $extraSetting }}
+{{- end }}
 {{- end }}
   nodeSets:
   - name: default
