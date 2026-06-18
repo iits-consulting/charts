@@ -12,8 +12,24 @@ data:
     KIBANA_BASE_PATH="{{ .Values.ingress.kibana.path }}"
 
 {{- range $indexName,$indexValues  := .Values.indexPatternInit.indices }}
-    # Apply default Index Pattern into Kibana
-    echo "create index pattern {{$indexName}}"
-    curl -u "$ELASTICSEARCH_USERNAME:$ELASTICSEARCH_PASSWORD" --cacert /kb-cert/ca.crt -X POST -v https://$KIBANA_ENDPOINT$KIBANA_BASE_PATH/api/index_patterns/index_pattern -H 'kbn-xsrf: true' -H 'Content-Type: application/json' -d '{"index_pattern": { "id": "{{$indexName}}", "title": "{{ coalesce $indexValues.index (printf "%s*" $indexName) }}","timeFieldName": "{{$indexValues.timestampField}}"},"override":true,"refresh_fields":true}'
-    echo "create index pattern {{$indexName}} finished"
+    # Create Data View in Kibana using new Data Views API
+    echo "create data view {{$indexName}}"
+    curl -u "$ELASTICSEARCH_USERNAME:$ELASTICSEARCH_PASSWORD" \
+      --cacert /kb-cert/ca.crt \
+      -X POST -v \
+      "https://$KIBANA_ENDPOINT$KIBANA_BASE_PATH/api/data_views/data_view" \
+      -H 'kbn-xsrf: true' \
+      -H 'Content-Type: application/json' \
+      -d '{
+        "data_view": {
+          "title": "{{ coalesce $indexValues.index (printf "%s*" $indexName) }}",
+          {{- if $indexValues.name }}
+          "name": "{{ $indexValues.name }}",
+          {{- end }}
+          "timeFieldName": "{{$indexValues.timestampField}}"
+        },
+        "override": true
+      }'
+    echo ""
+    echo "create data view {{$indexName}} finished"
 {{ end }}

@@ -2,6 +2,13 @@
 
 ## Chart Versions
 
+### 9.4.0
+- Added ECK Logstash CRD support for log processing and transformation
+- Added Logstash template (`templates/eks-stack/logstash.yaml`)
+- Added Filebeat Logstash output support via `useLogstashOutput` flag
+- Added Logstash ingress configuration
+- Updated Chart description to include Logstash
+
 ### 9.3.3
 - Changed operator version to 3.3.2
 - Changed elastic stack (appVersion) to version 9.3.3
