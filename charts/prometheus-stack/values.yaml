@@ -106,7 +106,7 @@ prometheusStack:
               labels:
                 severity: info
               annotations:
-                summary: 'Pod {{ $labels.namespace }}/{{ $labels.pod }} has restarted >5 times in the last 24 h'
+                summary: 'Pod {{ $labels.namespace }}/{{ $labels.pod }} has restarted in the last 24 h'
                 description: |
                   The container **{{ $labels.container }}** (pod {{ $labels.namespace }}/{{ $labels.pod }}) has performed **{{ $value }}** restart(s) in the last 24 hours.
                   Only pods that are currently running are considered.
