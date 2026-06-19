@@ -90,7 +90,7 @@ prometheus-stack:
 | prometheusStack.additionalPrometheusRulesMap.restarts-daily.groups[0].rules[0].record | string | `"container:restarts_24h"` |  |
 | prometheusStack.additionalPrometheusRulesMap.restarts-daily.groups[0].rules[1].alert | string | `"ContainerRestartDetected"` |  |
 | prometheusStack.additionalPrometheusRulesMap.restarts-daily.groups[0].rules[1].annotations.description | string | `"The container **{{ $labels.container }}** (pod {{ $labels.namespace }}/{{ $labels.pod }}) has performed **{{ $value }}** restart(s) in the last 24 hours.\nOnly pods that are currently running are considered.\n"` |  |
-| prometheusStack.additionalPrometheusRulesMap.restarts-daily.groups[0].rules[1].annotations.summary | string | `"Pod {{ $labels.namespace }}/{{ $labels.pod }} has restarted >5 times in the last 24 h"` |  |
+| prometheusStack.additionalPrometheusRulesMap.restarts-daily.groups[0].rules[1].annotations.summary | string | `"Pod {{ $labels.namespace }}/{{ $labels.pod }} has restarted in the last 24 h"` |  |
 | prometheusStack.additionalPrometheusRulesMap.restarts-daily.groups[0].rules[1].expr | string | `"container:restarts_24h > 0"` |  |
 | prometheusStack.additionalPrometheusRulesMap.restarts-daily.groups[0].rules[1].for | string | `"5m"` |  |
 | prometheusStack.additionalPrometheusRulesMap.restarts-daily.groups[0].rules[1].labels.severity | string | `"info"` |  |
