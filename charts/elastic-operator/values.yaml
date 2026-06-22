@@ -297,7 +297,7 @@ kibana:
       cpu: "100m"
       memory: "1G"
     limits:
-      memory: "1G"
+      memory: "2G"
 
   config:
     server:
