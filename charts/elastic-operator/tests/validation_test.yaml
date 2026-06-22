@@ -35,3 +35,48 @@ tests:
     asserts:
       - failedTemplate:
           errorMessage: "auth.users.custom_elastalert.path is required when common.externalSecret.enabled is true — set the vault path for this user's password round-trip"
+
+  - it: passes with a valid backup ESO config
+    set:
+      common.externalSecret.enabled: true
+      backup.enabled: true
+      backup.path: "elastic-operator/elasticsearch_backup_bucket"
+      backup.secureSettings:
+        access_key: "bucket_access_key"
+        secret_key: "bucket_secret_key"
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: fails when backup pulls from vault but backup.path is unset in ESO mode
+    set:
+      common.externalSecret.enabled: true
+      backup.enabled: true
+      backup.path: ""
+      backup.secureSettings:
+        access_key: "bucket_access_key"
+    asserts:
+      - failedTemplate:
+          errorMessage: 'backup.path is required when common.externalSecret.enabled and backup.enabled are true — set the vault path the backup secret is pulled from (e.g. "elastic-operator/elasticsearch_backup_bucket")'
+
+  - it: fails on legacy ${vault:...} syntax in backup.secureSettings in ESO mode
+    set:
+      common.externalSecret.enabled: true
+      backup.enabled: true
+      backup.path: "elastic-operator/elasticsearch_backup_bucket"
+      backup.secureSettings:
+        access_key: "${vault:ctx/data/stage/elastic-operator/elasticsearch_backup_bucket#bucket_access_key}"
+    asserts:
+      - failedTemplate:
+          errorMessage: 'backup.secureSettings.access_key uses the legacy ${vault:...} webhook-injection syntax but common.externalSecret.enabled is true — in ESO mode the value must be the bare vault property name to read (e.g. "bucket_access_key"), or empty to default it to the setting name'
+
+  - it: fails on legacy ${vault:...} syntax in backup.repositorySettings in ESO mode
+    set:
+      common.externalSecret.enabled: true
+      backup.enabled: true
+      backup.path: "elastic-operator/elasticsearch_backup_bucket"
+      backup.repositorySettings:
+        bucket: "${vault:ctx/data/stage/elastic-operator/elasticsearch_backup_bucket#bucket_name}"
+    asserts:
+      - failedTemplate:
+          errorMessage: 'backup.repositorySettings.bucket uses the legacy ${vault:...} webhook-injection syntax but common.externalSecret.enabled is true — move it into backup.repositorySettingsFromVault.keys (key -> vault property) so the External Secrets Operator pulls it instead of inlining a placeholder'

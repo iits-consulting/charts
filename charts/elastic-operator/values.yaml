@@ -490,7 +490,7 @@ backup:
 
   # -- vault path for the secure settings, used only in ESO mode (common.externalSecret.enabled).
   # The settings below are then pulled from this path instead of being inlined.
-  # path: "elastic-operator/elasticsearch_backup_bucket"
+  # path: "REPLACE_ME"
 
   # In ESO mode (common.externalSecret.enabled) the value of each setting is the vault property to
   # read (remoteKey), not the literal secret — leave empty to default the property to the setting name.
