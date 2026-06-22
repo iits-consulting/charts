@@ -63,8 +63,8 @@ auth:
       # if you provide an existing password, generatePasswords should be disabled
       existingPassword: ""
       # -- Required, if common.externalSecret.enabled. Vault path for this user's password
-      # round-trip, e.g. "elastic-operator/filebeat-user" (the caller chart may prefix a stage).
-      path: "REPLACE_ME"
+      # round-trip.
+      # path: "REPLACE_ME"
       # -- field within the vault secret to read/write (default "password"). Override to pack
       # several users into one vault secret distinguished by property.
       # property: "filebeat_password"
@@ -74,14 +74,14 @@ auth:
       # if you provide an existing password, generatePasswords should be disabled
       existingPassword: ""
       # -- Required, if common.externalSecret.enabled.
-      path: "REPLACE_ME"
+      # path: "REPLACE_ME"
       roles:
         - viewer
     custom_elastalert:
       # if you provide an existing password, generatePasswords should be disabled
       existingPassword: ""
       # -- Required, if common.externalSecret.enabled.
-      path: "REPLACE_ME"
+      # path: "REPLACE_ME"
       roles:
         - custom_elastalert
   roles:

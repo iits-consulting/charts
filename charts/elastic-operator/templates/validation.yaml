@@ -1,5 +1,4 @@
 {{- $eso := .Values.common.externalSecret }}
-
 {{- if $eso.enabled }}
   {{- $store := $eso.secretStore | default dict }}
   {{- if or (not $store.kind) (not $store.name) }}

@@ -5,6 +5,12 @@ templates:
 release:
   name: elastic-operator
 
+set:
+  ingress.kibana.host: "kibana.example.com"
+  auth.users.custom_filebeat.path: "elastic-operator/filebeat-user"
+  auth.users.custom_kibana_guest.path: "elastic-operator/kibana-guest-user"
+  auth.users.custom_elastalert.path: "elastic-operator/elastalert-user"
+
 tests:
   - it: renders nothing with ESO disabled (default)
     set:
