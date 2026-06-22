@@ -35,14 +35,11 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | auth.roles.custom_filebeat.indices[0].privileges[3] | string | `"view_index_metadata"` |  |
 | auth.roles.custom_filebeat.indices[0].privileges[4] | string | `"manage_follow_index"` |  |
 | auth.users.custom_elastalert.existingPassword | string | `""` |  |
-| auth.users.custom_elastalert.path | string | `"REPLACE_ME"` | Required, if common.externalSecret.enabled. |
-| auth.users.custom_elastalert.roles[0] | string | `"custom_elastalert"` |  |
+| auth.users.custom_elastalert.roles | list | `["custom_elastalert"]` | Required, if common.externalSecret.enabled. path: "REPLACE_ME" |
 | auth.users.custom_filebeat.existingPassword | string | `""` |  |
-| auth.users.custom_filebeat.path | string | `"REPLACE_ME"` | Required, if common.externalSecret.enabled. Vault path for this user's password round-trip, e.g. "elastic-operator/filebeat-user" (the caller chart may prefix a stage). |
 | auth.users.custom_filebeat.roles | list | `["custom_filebeat"]` | field within the vault secret to read/write (default "password"). Override to pack several users into one vault secret distinguished by property. property: "filebeat_password" |
 | auth.users.custom_kibana_guest.existingPassword | string | `""` |  |
-| auth.users.custom_kibana_guest.path | string | `"REPLACE_ME"` | Required, if common.externalSecret.enabled. |
-| auth.users.custom_kibana_guest.roles[0] | string | `"viewer"` |  |
+| auth.users.custom_kibana_guest.roles | list | `["viewer"]` | Required, if common.externalSecret.enabled. path: "REPLACE_ME" |
 | backup.enabled | bool | `false` |  |
 | backup.image.repository | string | `"docker.io/curlimages/curl"` |  |
 | backup.image.tag | string | `"8.13.0"` |  |
