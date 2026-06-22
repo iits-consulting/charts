@@ -57,7 +57,7 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | backup.repoName | string | `"elastic-backups"` |  |
 | backup.repoType | string | `"s3"` | for Azure blob storage use "azure" |
 | backup.repositorySettings | string | `nil` |  |
-| backup.secureSettings | string | `nil` | vault path for the secure settings, used only in ESO mode (common.externalSecret.enabled). The settings below are then pulled from this path instead of being inlined. path: "elastic-operator/elasticsearch_backup_bucket" In ESO mode (common.externalSecret.enabled) the value of each setting is the vault property to read (remoteKey), not the literal secret — leave empty to default the property to the setting name. |
+| backup.secureSettings | string | `nil` | vault path for the secure settings, used only in ESO mode (common.externalSecret.enabled). The settings below are then pulled from this path instead of being inlined. path: "REPLACE_ME" In ESO mode (common.externalSecret.enabled) the value of each setting is the vault property to read (remoteKey), not the literal secret — leave empty to default the property to the setting name. |
 | backup.tolerations | list | `[]` |  |
 | common.externalSecret.enabled | bool | `false` | Enable ESO mode. When true, the bash generate-passwords job and the static basic-auth Secrets are replaced by a single Password generator plus a per-user push/pull round-trip against the secretStore below. Per-user vault paths come from auth.users.<user>.path. |
 | common.externalSecret.secretStore | object | `{"kind":"ClusterSecretStore","name":"vault"}` | Sets the Store for all externalSecret resources from common chart |
