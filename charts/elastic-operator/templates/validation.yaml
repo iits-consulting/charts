@@ -18,8 +18,8 @@
   {{- if $backup.enabled }}
     {{/* In ESO mode anything backup pulls from vault needs a path, plain property names, and no
          leftover ${vault:...} webhook-injection placeholders or unfilled REPLACE_ME values.
-         secureSettings pull from backup.path; repositorySettingsFromVault pull from their own
-         repositorySettingsFromVault.path, falling back to backup.path. */}}
+         secureSettings pull from backup.path; repositorySettings are not pulled from vault in ESO
+         mode and must be inlined as literal values. */}}
     {{- if and (not (empty $backup.secureSettings)) (or (not $backup.path) (eq (toString $backup.path) "REPLACE_ME")) }}
       {{- fail "backup.path is required when common.externalSecret.enabled and backup.enabled are true — set the vault path the backup secret is pulled from (e.g. \"elastic-operator/elasticsearch_backup_bucket\")" }}
     {{- end }}
@@ -33,7 +33,7 @@
     {{- end }}
     {{- range $name, $value := $backup.repositorySettings }}
       {{- if and $value (contains "${vault:" (toString $value)) }}
-        {{- fail (printf "backup.repositorySettings.%s uses the legacy ${vault:...} webhook-injection syntax but common.externalSecret.enabled is true — move it into backup.repositorySettingsFromVault.keys (key -> vault property) so the External Secrets Operator pulls it instead of inlining a placeholder" $name) }}
+        {{- fail (printf "backup.repositorySettings.%s uses the legacy ${vault:...} webhook-injection syntax but common.externalSecret.enabled is true — in ESO mode repository settings are not pulled from vault; replace it with the literal hardcoded value" $name) }}
       {{- end }}
     {{- end }}
   {{- end }}

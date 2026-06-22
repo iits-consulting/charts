@@ -85,4 +85,4 @@ tests:
         bucket: "${vault:ctx/data/stage/elastic-operator/elasticsearch_backup_bucket#bucket_name}"
     asserts:
       - failedTemplate:
-          errorMessage: 'backup.repositorySettings.bucket uses the legacy ${vault:...} webhook-injection syntax but common.externalSecret.enabled is true — move it into backup.repositorySettingsFromVault.keys (key -> vault property) so the External Secrets Operator pulls it instead of inlining a placeholder'
+          errorMessage: 'backup.repositorySettings.bucket uses the legacy ${vault:...} webhook-injection syntax but common.externalSecret.enabled is true — in ESO mode repository settings are not pulled from vault; replace it with the literal hardcoded value'
