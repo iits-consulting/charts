@@ -154,9 +154,17 @@
         "enabled": { "type": "boolean" },
         "spec": {
           "type": "object",
-          "description": "ESO Password generator spec, rendered verbatim (length, digits, symbols, noUpper, allowRepeat, ...). Left open to allow any generator spec field."
+          "description": "ESO Password generator spec, rendered verbatim (length, digits, symbols, noUpper, allowRepeat, ...)."
         },
-        "refreshInterval": { "type": "string" },
+        "refreshInterval": {
+          "type": "string",
+          "description": "ESO mode only: how often the per-user push/pull secrets reconcile. Leave empty to use the common chart's per-resource defaults."
+        },
+        "deletionPolicy": { 
+          "type": "string",
+          "pattern": "^(Delete|None)$",
+          "description": "ESO mode only: defines if secrets pushed to the secretStore are deleted or kept in the provider after the ESO pushSecret is deleted."
+        },
         "image": { "$ref": "#/$defs/image" },
         "tolerations": { "type": "array" },
         "nodeSelector": { "type": "object" },
