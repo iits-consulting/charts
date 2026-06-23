@@ -15,7 +15,7 @@ ext-postgres-operator:
 
 common:
   externalSecret:
-    enabled: true
+    enabled: false
     pull:
       enabled: true
       secrets:
