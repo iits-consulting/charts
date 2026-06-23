@@ -459,6 +459,9 @@ generatePasswords:
   # -- ESO mode only: how often the per-user push/pull secrets reconcile. Leave empty to use the
   # common chart's per-resource defaults (push "1h", pull "1m").
   refreshInterval: "1h"
+  # -- ESO mode only: defines if secrets pushed to the secretStore are deleted or kept in the provider
+  # after the ESO pushSecret is deleted.
+  deletionPolicy: "Delete"
   image:
     repository: docker.io/bitnamilegacy/kubectl
     tag: 1.32.4
