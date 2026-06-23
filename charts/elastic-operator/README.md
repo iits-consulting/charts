@@ -251,7 +251,7 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | kibana.podTemplateSpec.initContainers[0].securityContext.runAsUser | int | `1000` |  |
 | kibana.podTemplateSpec.initContainers[0].securityContext.seccompProfile.type | string | `"RuntimeDefault"` |  |
 | kibana.podTemplateSpec.securityContext.seccompProfile.type | string | `"RuntimeDefault"` |  |
-| kibana.resources.limits.memory | string | `"1G"` |  |
+| kibana.resources.limits.memory | string | `"2G"` |  |
 | kibana.resources.requests.cpu | string | `"100m"` |  |
 | kibana.resources.requests.memory | string | `"1G"` |  |
 | kibana.version | string | `"{{ .Chart.AppVersion }}"` |  |
