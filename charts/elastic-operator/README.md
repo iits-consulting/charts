@@ -1,6 +1,6 @@
 # elastic-operator
 
-![Version: 9.3.3](https://img.shields.io/badge/Version-9.3.3-informational?style=flat-square) ![AppVersion: 9.3.3](https://img.shields.io/badge/AppVersion-9.3.3-informational?style=flat-square)
+![Version: 9.3.5](https://img.shields.io/badge/Version-9.3.5-informational?style=flat-square) ![AppVersion: 9.3.5](https://img.shields.io/badge/AppVersion-9.3.5-informational?style=flat-square)
 
 Elasticsearch + filebeat + kibana with default common used indexes and Index Lifecycle Management.
 It comes also with a backup functionality. This is the version using ECK-operator to deploy and monitor the stack.
@@ -9,7 +9,7 @@ It comes also with a backup functionality. This is the version using ECK-operato
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://helm.elastic.co | eck-operator | 3.3.2 |
+| https://helm.elastic.co | eck-operator | 3.4.0 |
 
 ## Values
 
