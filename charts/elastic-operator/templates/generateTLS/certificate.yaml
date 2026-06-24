@@ -1,0 +1,47 @@
+{{ with .Values.generateTLS }}
+{{ if .enabled }}
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: {{$.Release.Name}}-selfsigned-root-issuer
+  namespace: {{$.Release.Namespace}}
+  annotations:
+    "helm.sh/resource-policy": keep
+    argocd.argoproj.io/sync-wave: "5"
+spec:
+  selfSigned: {}
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: {{$.Release.Name}}-selfsigned-issuer
+  namespace: {{$.Release.Namespace}}
+  annotations:
+    "helm.sh/resource-policy": keep
+    argocd.argoproj.io/sync-wave: "7"
+spec:
+  ca:
+    secretName: {{$.Release.Name}}-selfsigned-root-ca-secret
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{$.Release.Name}}-selfsigned-root-ca
+  annotations:
+    "helm.sh/resource-policy": keep
+    argocd.argoproj.io/sync-wave: "6"
+spec:
+  isCA: true
+  commonName: {{$.Release.Name}}-selfsigned-root-ca
+  secretName: {{$.Release.Name}}-selfsigned-root-ca-secret
+  privateKey:
+    algorithm: ECDSA 
+    size: 256      
+  duration: 43800h # 5 years (long-lived)
+  renewBefore: 720h  
+  issuerRef:
+    name: {{$.Release.Name}}-selfsigned-root-issuer
+    kind: Issuer 
+---
+{{- end }}
+{{- end }}

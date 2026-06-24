@@ -1,0 +1,24 @@
+{{ with .Values.generateTLS }}
+{{ if .enabled }}
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{$.Release.Name}}-es-cert
+  annotations:
+    "helm.sh/resource-policy": keep
+    argocd.argoproj.io/sync-wave: "10"
+spec:
+  dnsNames:
+    - localhost
+    - {{$.Release.Name}}-es-http
+    - {{$.Release.Name}}-es-http.{{$.Release.Namespace}}.svc
+    - {{$.Release.Name}}-es-http.{{$.Release.Namespace}}.svc.cluster.local
+  issuerRef:
+    kind: Issuer
+    name: {{$.Release.Name}}-selfsigned-issuer
+  secretName: {{$.Release.Name}}-{{.secretName}}
+  subject:
+    organizations:
+      - elastic 
+{{- end }}
+{{- end }}
