@@ -2,13 +2,12 @@ traefik:
   additionalArguments:
     - "--ping"
 
-  logs:
-    general:
-      format: json
-      level: INFO
-    access:
-      format: json
-      enabled: false
+  log:
+    format: json
+    level: INFO
+  accessLog:
+    format: json
+    enabled: false
 
   deployment:
     replicas: 2
