@@ -1,0 +1,54 @@
+{{- $eso := .Values.common.externalSecret }}
+{{- if $eso.enabled }}
+  {{- $store := $eso.secretStore | default dict }}
+  {{- if or (not $store.kind) (not $store.name) }}
+    {{- fail "common.externalSecret.enabled is true but common.externalSecret.secretStore.{kind,name} is not set" }}
+  {{- end }}
+
+  {{- range $userName := keys .Values.auth.users | sortAlpha }}
+    {{- $userDescription := index $.Values.auth.users $userName }}
+    {{- if and $userDescription (not (empty $userDescription.existingPassword)) }}
+      {{- fail (printf "auth.users.%s.existingPassword is set but common.externalSecret.enabled is true — existingPassword has no effect in ESO mode (vault is canonical); remove it or disable common.externalSecret" $userName) }}
+    {{- end }}
+    {{- if not $userDescription.path }}
+      {{- fail (printf "auth.users.%s.path is required when common.externalSecret.enabled is true — set the vault path for this user's password round-trip" $userName) }}
+    {{- end }}
+  {{- end }}
+  {{- $backup := .Values.backup }}
+  {{- if $backup.enabled }}
+    {{/* In ESO mode anything backup pulls from vault needs a path, plain property names, and no
+         leftover ${vault:...} webhook-injection placeholders or unfilled REPLACE_ME values.
+         secureSettings pull from backup.path; repositorySettings are not pulled from vault in ESO
+         mode and must be inlined as literal values. */}}
+    {{- if and (not (empty $backup.secureSettings)) (or (not $backup.path) (eq (toString $backup.path) "REPLACE_ME")) }}
+      {{- fail "backup.path is required when common.externalSecret.enabled and backup.enabled are true — set the vault path the backup secret is pulled from (e.g. \"elastic-operator/elasticsearch_backup_bucket\")" }}
+    {{- end }}
+    {{- range $name, $value := $backup.secureSettings }}
+      {{- if and $value (contains "${vault:" (toString $value)) }}
+        {{- fail (printf "backup.secureSettings.%s uses the legacy ${vault:...} webhook-injection syntax but common.externalSecret.enabled is true — in ESO mode the value must be the bare vault property name to read (e.g. \"bucket_access_key\"), or empty to default it to the setting name" $name) }}
+      {{- end }}
+      {{- if eq (toString $value) "REPLACE_ME" }}
+        {{- fail (printf "backup.secureSettings.%s is still \"REPLACE_ME\" — set the vault property name to read in ESO mode" $name) }}
+      {{- end }}
+    {{- end }}
+    {{- range $name, $value := $backup.repositorySettings }}
+      {{- if and $value (contains "${vault:" (toString $value)) }}
+        {{- fail (printf "backup.repositorySettings.%s uses the legacy ${vault:...} webhook-injection syntax but common.externalSecret.enabled is true — in ESO mode repository settings are not pulled from vault; replace it with the literal hardcoded value" $name) }}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+  {{/* cce.elasticsearch.volumes id/az/kmsId are inline PV fields a Secret can't fill, so ESO can't
+       pull them — in ESO mode they must be plain literals, not ${vault:...} placeholders. */}}
+  {{- with .Values.cce }}
+    {{- with .elasticsearch }}
+      {{- range $i, $vol := .volumes }}
+        {{- range $field := list "id" "az" "kmsId" }}
+          {{- $val := index $vol $field }}
+          {{- if and $val (contains "${vault:" (toString $val)) }}
+            {{- fail (printf "cce.elasticsearch.volumes[%d].%s uses the legacy ${vault:...} injection syntax but common.externalSecret.enabled is true — a PersistentVolume cannot source values from a Secret, so in ESO mode set the literal disk id/availability zone/kms key id here as a plain per-stage value" (int $i) $field) }}
+          {{- end }}
+        {{- end }}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+{{- end }}

@@ -1,0 +1,265 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "title": "elastic-operator values",
+  "description": "Schema for the elastic-operator chart's own values. The root is intentionally open (additionalProperties not restricted) so subchart sections (common, eck-operator) pass through and are validated by their own schemas. The dual-mode (ESO vs webhook/plain) blocks auth.users, generatePasswords and backup are strict (additionalProperties: false); free-form ECK/Beats config blocks (config, podTemplateSpec, processors, ...) are left open.",
+  "type": "object",
+  "properties": {
+    "cce": {
+      "type": ["object", "null"],
+      "description": "OTC/CCE static volume provisioning. When set, PVs are created from elasticsearch.volumes.",
+      "properties": {
+        "elasticsearch": {
+          "type": "object",
+          "properties": {
+            "region": { "type": "string" },
+            "storageClassName": { "type": "string" },
+            "volumeType": { "type": "string" },
+            "volumes": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": { "type": "string" },
+                  "az": { "type": "string" },
+                  "kmsId": { "type": "string" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "aks": {
+      "type": ["object", "null"],
+      "description": "AKS static volume binding via a volume name prefix.",
+      "properties": {
+        "elasticsearch": {
+          "type": "object",
+          "properties": {
+            "volumeNamePrefix": { "type": "string" }
+          }
+        }
+      }
+    },
+    "ingress": {
+      "type": "object",
+      "properties": {
+        "kibana": { "$ref": "#/$defs/ingressEntry" },
+        "elasticsearch": { "$ref": "#/$defs/ingressEntry" }
+      }
+    },
+    "auth": {
+      "type": "object",
+      "properties": {
+        "users": {
+          "type": "object",
+          "description": "Map of users keyed by username. The k8s Secret name is <release>-user-<kebab username>.",
+          "additionalProperties": { "$ref": "#/$defs/user" }
+        },
+        "roles": {
+          "type": "object",
+          "description": "Map of Elasticsearch role definitions keyed by role name. Rendered verbatim into a role Secret.",
+          "additionalProperties": { "type": "object" }
+        }
+      }
+    },
+    "elasticsearch": {
+      "type": "object",
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "volumeSize": { "type": "string" },
+        "version": { "type": "string" },
+        "nodeCount": { "type": "integer" },
+        "config": { "type": "object" },
+        "extraSecureSettings": { "type": "array" },
+        "javaOpts": { "type": "string" },
+        "resources": { "type": "object" },
+        "podTemplateSpec": { "type": "object" }
+      }
+    },
+    "filebeat": {
+      "type": "object",
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "version": { "type": "string" },
+        "autodiscover": { "type": "object" },
+        "processors": { "type": "array" },
+        "extraProcessors": { "type": "array" },
+        "indices": { "type": "array" },
+        "extraIndices": { "type": "array" },
+        "resources": { "type": "object" },
+        "readinessProbe": { "type": "object" },
+        "env": { "type": "array" },
+        "extraEnv": { "type": "array" },
+        "volumes": { "type": "array" },
+        "extraVolumes": { "type": "array" },
+        "volumeMounts": { "type": "array" },
+        "extraVolumeMounts": { "type": "array" },
+        "tolerations": { "type": "array" }
+      }
+    },
+    "kibana": {
+      "type": "object",
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "version": { "type": "string" },
+        "count": { "type": "integer" },
+        "resources": { "type": "object" },
+        "config": { "type": "object" },
+        "podTemplateSpec": { "type": "object" }
+      }
+    },
+    "indexPatternInit": {
+      "type": "object",
+      "properties": {
+        "image": { "$ref": "#/$defs/image" },
+        "tolerations": { "type": "array" },
+        "nodeSelector": { "type": "object" },
+        "indices": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "timestampField": { "type": "string" },
+              "index": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "ilm": {
+      "type": "object",
+      "properties": {
+        "image": { "$ref": "#/$defs/image" },
+        "tolerations": { "type": "array" },
+        "nodeSelector": { "type": "object" },
+        "policies": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "indexPatterns": { "type": "array", "items": { "type": "string" } },
+              "coldAfter": { "type": "string" },
+              "deleteAfter": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "generatePasswords": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Password generation. Toggles the bash job in non-ESO mode; the shared Password generator + push in ESO mode.",
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "spec": {
+          "type": "object",
+          "description": "ESO Password generator spec, rendered verbatim (length, digits, symbols, noUpper, allowRepeat, ...)."
+        },
+        "refreshInterval": {
+          "type": "string",
+          "description": "ESO mode only: how often the per-user push/pull secrets reconcile. Leave empty to use the common chart's per-resource defaults."
+        },
+        "deletionPolicy": { 
+          "type": "string",
+          "pattern": "^(Delete|None)$",
+          "description": "ESO mode only: defines if secrets pushed to the secretStore are deleted or kept in the provider after the ESO pushSecret is deleted."
+        },
+        "image": { "$ref": "#/$defs/image" },
+        "tolerations": { "type": "array" },
+        "nodeSelector": { "type": "object" },
+        "secrets": {
+          "type": "array",
+          "description": "Non-ESO bash job: secrets to patch with a generated password.",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "name": { "type": "string" },
+              "key": { "type": "string" },
+              "length": { "type": "integer" }
+            }
+          }
+        }
+      }
+    },
+    "backup": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "image": { "$ref": "#/$defs/image" },
+        "tolerations": { "type": "array" },
+        "nodeSelector": { "type": "object" },
+        "repoName": { "type": "string" },
+        "repoType": { "type": "string" },
+        "path": {
+          "type": "string",
+          "description": "ESO mode: default vault path the backup secrets are pulled from. secureSettings read from here."
+        },
+        "secureSettings": {
+          "type": ["object", "null"],
+          "description": "Map of secure settings. Non-ESO: value is the literal secret. ESO: value is the vault property to read (empty defaults the property to the setting name).",
+          "additionalProperties": { "type": ["string", "null"] }
+        },
+        "repositorySettings": { "type": ["object", "null"] },
+        "policy": {
+          "type": "object",
+          "properties": {
+            "name": { "type": "string" },
+            "schedule": { "type": "string" },
+            "indices": { "type": ["array", "string"] },
+            "retention": {
+              "type": "object",
+              "properties": {
+                "expireAfter": { "type": "string" },
+                "minCount": { "type": "integer" },
+                "maxCount": { "type": "integer" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "policyException": {
+      "type": "object",
+      "properties": {
+        "enabled": { "type": "boolean" }
+      }
+    }
+  },
+  "$defs": {
+    "image": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "repository": { "type": "string" },
+        "tag": { "type": ["string", "number"] },
+        "userId": { "type": "integer" }
+      }
+    },
+    "ingressEntry": {
+      "type": "object",
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "host": { "type": "string" },
+        "path": { "type": "string" },
+        "className": { "type": "string" },
+        "labels": { "type": ["object", "null"] },
+        "annotations": { "type": ["object", "null"] },
+        "tls": { "type": "array" }
+      }
+    },
+    "user": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "A single Elasticsearch user. existingPassword is the webhook/plain mode; path/property drive the ESO vault round-trip.",
+      "properties": {
+        "existingPassword": { "type": "string" },
+        "path": { "type": "string" },
+        "property": { "type": "string" },
+        "roles": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

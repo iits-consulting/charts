@@ -1,6 +1,6 @@
 # elastic-operator
 
-![Version: 9.3.5](https://img.shields.io/badge/Version-9.3.5-informational?style=flat-square) ![AppVersion: 9.3.5](https://img.shields.io/badge/AppVersion-9.3.5-informational?style=flat-square)
+![Version: 9.3.5-eso](https://img.shields.io/badge/Version-9.3.5--eso-informational?style=flat-square) ![AppVersion: 9.3.5](https://img.shields.io/badge/AppVersion-9.3.5-informational?style=flat-square)
 
 Elasticsearch + filebeat + kibana with default common used indexes and Index Lifecycle Management.
 It comes also with a backup functionality. This is the version using ECK-operator to deploy and monitor the stack.
@@ -9,6 +9,7 @@ It comes also with a backup functionality. This is the version using ECK-operato
 
 | Repository | Name | Version |
 |------------|------|---------|
+| https://charts.iits.tech | common | 0.4.0 |
 | https://helm.elastic.co | eck-operator | 3.4.0 |
 
 ## Values
@@ -34,11 +35,11 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | auth.roles.custom_filebeat.indices[0].privileges[3] | string | `"view_index_metadata"` |  |
 | auth.roles.custom_filebeat.indices[0].privileges[4] | string | `"manage_follow_index"` |  |
 | auth.users.custom_elastalert.existingPassword | string | `""` |  |
-| auth.users.custom_elastalert.roles[0] | string | `"custom_elastalert"` |  |
+| auth.users.custom_elastalert.roles | list | `["custom_elastalert"]` | Required, if common.externalSecret.enabled. path: "REPLACE_ME" |
 | auth.users.custom_filebeat.existingPassword | string | `""` |  |
-| auth.users.custom_filebeat.roles[0] | string | `"custom_filebeat"` |  |
+| auth.users.custom_filebeat.roles | list | `["custom_filebeat"]` | field within the vault secret to read/write (default "password"). Override to pack several users into one vault secret distinguished by property. property: "filebeat_password" |
 | auth.users.custom_kibana_guest.existingPassword | string | `""` |  |
-| auth.users.custom_kibana_guest.roles[0] | string | `"viewer"` |  |
+| auth.users.custom_kibana_guest.roles | list | `["viewer"]` | Required, if common.externalSecret.enabled. path: "REPLACE_ME" |
 | backup.enabled | bool | `false` |  |
 | backup.image.repository | string | `"docker.io/curlimages/curl"` |  |
 | backup.image.tag | string | `"8.13.0"` |  |
@@ -53,8 +54,10 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | backup.repoName | string | `"elastic-backups"` |  |
 | backup.repoType | string | `"s3"` | for Azure blob storage use "azure" |
 | backup.repositorySettings | string | `nil` |  |
-| backup.secureSettings | string | `nil` |  |
+| backup.secureSettings | string | `nil` | vault path for the secure settings, used only in ESO mode (common.externalSecret.enabled). The settings below are then pulled from this path instead of being inlined. path: "REPLACE_ME" In ESO mode (common.externalSecret.enabled) the value of each setting is the vault property to read (remoteKey), not the literal secret — leave empty to default the property to the setting name. |
 | backup.tolerations | list | `[]` |  |
+| common.externalSecret.enabled | bool | `false` | Enable ESO mode. When true, the bash generate-passwords job and the static basic-auth Secrets are replaced by a single Password generator plus a per-user push/pull round-trip against the secretStore below. Per-user vault paths come from auth.users.<user>.path. |
+| common.externalSecret.secretStore | object | `{"kind":"ClusterSecretStore","name":"vault"}` | Sets the Store for all externalSecret resources from common chart |
 | eck-operator.securityContext.seccompProfile.type | string | `"RuntimeDefault"` |  |
 | elasticsearch.config.cluster.max_shards_per_node | int | `30000` |  |
 | elasticsearch.config.http.max_header_size | string | `"16kb"` |  |
@@ -149,17 +152,20 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | filebeat.volumes[1].hostPath.path | string | `"/var/log"` |  |
 | filebeat.volumes[1].hostPath.type | string | `""` |  |
 | filebeat.volumes[1].name | string | `"varlog"` |  |
-| generatePasswords.enabled | bool | `true` |  |
+| generatePasswords.deletionPolicy | string | `"Delete"` | ESO mode only: defines if secrets pushed to the secretStore are deleted or kept in the provider after the ESO pushSecret is deleted. |
+| generatePasswords.enabled | bool | `true` | Generate user passwords. In non-ESO mode this toggles the bash generate-passwords job. In ESO mode (common.externalSecret.enabled) it toggles the Password generator + push: true generates and round-trips through vault; false is BYO (pull-only, passwords pre-seeded in vault). |
 | generatePasswords.image.repository | string | `"docker.io/bitnamilegacy/kubectl"` |  |
 | generatePasswords.image.tag | string | `"1.32.4"` |  |
 | generatePasswords.image.userId | int | `100` |  |
 | generatePasswords.nodeSelector | object | `{}` |  |
+| generatePasswords.refreshInterval | string | `"1h"` | ESO mode only: how often the per-user push/pull secrets reconcile. Leave empty to use the common chart's per-resource defaults (push "1h", pull "1m"). |
 | generatePasswords.secrets[0].key | string | `"password"` |  |
 | generatePasswords.secrets[0].name | string | `"{{ .Release.Name }}-user-custom-kibana-guest"` |  |
 | generatePasswords.secrets[1].key | string | `"password"` |  |
 | generatePasswords.secrets[1].name | string | `"{{ .Release.Name }}-user-custom-filebeat"` |  |
 | generatePasswords.secrets[2].key | string | `"password"` |  |
 | generatePasswords.secrets[2].name | string | `"{{ .Release.Name }}-user-custom-elastalert"` |  |
+| generatePasswords.spec | object | `{"allowRepeat":true,"digits":5,"length":32,"noUpper":false,"symbols":0}` | Password generation policy. In ESO mode (common.externalSecret.enabled) this maps directly to the shared ExternalSecrets Password generator spec; length also feeds the bash job default. |
 | generatePasswords.tolerations | list | `[]` |  |
 | ilm.image.repository | string | `"docker.io/curlimages/curl"` |  |
 | ilm.image.tag | string | `"8.13.0"` |  |

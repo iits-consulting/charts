@@ -2,5 +2,8 @@ dependencies:
 - name: eck-operator
   repository: https://helm.elastic.co
   version: 3.4.0
-digest: sha256:b4787630154471f65ceeb12f65fa24616eab9470e61e089b8e656e42f05f74f1
-generated: "2026-06-15T15:20:27.865783+02:00"
+- name: common
+  repository: https://charts.iits.tech
+  version: 0.4.0
+digest: sha256:fd1b8c5dfa8ced4da0918e1d484db7f18efa2273ffb0b0caa8b60f71ba750243
+generated: "2026-06-23T13:59:30.065706+02:00"

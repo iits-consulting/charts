@@ -28,7 +28,7 @@ spec:
     podTemplate:
       metadata:
         annotations:
-          checksum/users: {{ include (print $.Template.BasePath "/eks-stack/elasticsearch-users.yaml") $ | sha256sum | substr 0 50 }}
+          checksum/users: {{ include "elasticOperator.elasticSearch.users.checksum" $ }}
           checksum/roles: {{ include (print $.Template.BasePath "/eks-stack/elasticsearch-roles.yaml") $ | sha256sum | substr 0 50 }}
       spec:
         # needed for autodiscover
