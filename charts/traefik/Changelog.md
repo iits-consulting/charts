@@ -2,6 +2,11 @@
 
 ## Chart Versions
 
+### 41.0.0
+- Update to traefik 3.7.5
+    - There were changes in the CRDs of the Traefik in the base chart.
+    - Check the [Release Notes](https://github.com/traefik/traefik-helm-chart/releases/tag/v40.0.0) of traefik for the relevant migrations.
+
 ### 35.2.0
 
 - Update to traefik 3.3.6
