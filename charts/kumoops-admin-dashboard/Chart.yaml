@@ -1,19 +1,27 @@
 apiVersion: v2
-name: iits-admin-dashboard
-version: 1.7.1
-appVersion: 2.1.0
+name: kumoops-admin-dashboard
+version: 1.0.0
+appVersion: 2.6.0
+icon: https://brand-book.kumo-ops.com/assets/kumoops-logo-full-light-800px.png
+home: https://github.com/iits-consulting/charts
+sources:
+  - https://github.com/iits-consulting/charts
+license: GPL-3.0-or-later
+maintainers:
+  - name: iits-consulting
+    url: https://iits-consulting.de
 description: |
   This chart deploys a super simple webserver that provides a simple website containing links to a set
   of dashboards that are usually deployed in our infrastructure setup as well as some nifty external
   tools.
-  
+
   ## Installing the Chart with iits ArgoCD
 
   ```yaml
-  iits-admin-dashboard:
+  kumoops-admin-dashboard:
     namespace: admin
     repoURL: "https://charts.iits.tech"
-    targetRevision: "1.7.1"
+    targetRevision: "1.0.0"
     parameters:
       ingress.host: "REPLACE_ME"
   ```
