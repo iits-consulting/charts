@@ -2,6 +2,11 @@
 
 ## Chart Versions
 
+### 79.11.0
+
+- Add default alert rules for container exits
+- Update prometheus-stack dependency chart
+
 ### 79.9.0
 
 - Make Prometheus pick also pick up `PrometheusRule` CRs outside of this deployment
