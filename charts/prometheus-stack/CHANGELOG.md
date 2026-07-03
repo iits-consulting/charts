@@ -2,6 +2,10 @@
 
 ## Chart Versions
 
+### 79.12.0
+- Increase version of `kube-prometheus-stack` to 79.12.0
+- Increase container restart report firing to >4
+
 ### 79.11.0
 
 - Add default alert rules for container exits
