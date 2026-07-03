@@ -6823,6 +6823,37 @@ entries:
   prometheus-stack:
   - apiVersion: v2
     appVersion: 3.9.0
+    created: "2026-07-03T09:54:56.741491417Z"
+    dependencies:
+    - alias: prometheusStack
+      name: kube-prometheus-stack
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 79.12.0
+    - alias: blackboxExporter
+      condition: blackboxExporter.enabled
+      name: prometheus-blackbox-exporter
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 11.5.0
+    - name: common
+      repository: https://charts.iits.tech
+      version: 0.3.1
+    description: 'A complete monitoring/alerting stack with Grafana, Prometheus, Alertmanager
+      & Blackbox exporter  ## Installing the Chart with iits ArgoCD :warning: Make
+      sure that the CRD versions of the chart matches the chart version before upgrading!  ```yaml
+      prometheus-stack:   namespace: monitoring   repoURL: "https://charts.iits.tech"   targetRevision:
+      "79.8.2"   syncOptions:     - ServerSideApply=true   ignoreDifferences:     -
+      kind: Secret       name: prometheus-stack-grafana       jsonPointers:       -
+      /data/admin-password     - kind: Deployment       name: prometheus-stack-grafana       jsonPointers:       -
+      /spec/template/metadata/annotations/checksum~1secret   parameters:     global.ingress.host:
+      "admin.{{ .Values.projectValues.rootDomain }}"     prometheusStack.grafana.adminPassword:
+      "REPLACE_ME" ``` '
+    digest: cfcc813cc9ca6e370f6ed28e561440e64daa59d351b823a08e3763b0a7936c50
+    name: prometheus-stack
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/prometheus-stack-79.12.0/prometheus-stack-79.12.0.tgz
+    version: 79.12.0
+  - apiVersion: v2
+    appVersion: 3.9.0
     created: "2026-06-23T10:56:45.664591533Z"
     dependencies:
     - alias: prometheusStack
@@ -8160,4 +8191,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/waf-cert-uploader-0.1.1/waf-cert-uploader-0.1.1.tgz
     version: 0.1.1
-generated: "2026-06-26T14:14:07.683032869Z"
+generated: "2026-07-03T09:54:56.742204864Z"
