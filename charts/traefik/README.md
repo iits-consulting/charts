@@ -18,7 +18,8 @@ Always read the [Changelog](Changelog.md) for information about possible migrati
 | defaultCert.dnsNames | array | `nil` | Required, set the domains you want to request, i.e.  dnsNames:  - "dev.example.com" # Required if you also want to serve on the "root" url  - "*.dev.example.com" # If you want wildcard certificates, you have to do an DNS01 Request for the certificate |
 | defaultCert.enabled | bool | `true` |  |
 | defaultCert.issuerName | string | `"letsencrypt-dns"` | Defaults are 'letsencrypt' for HTTP01 and 'letsencrypt-dns' for DNS01 For wildcard-certificates you need to use the DNS01 Challenge |
-| traefik.additionalArguments[0] | string | `"--ping"` |  |
+| traefik.accessLog.enabled | bool | `false` |  |
+| traefik.accessLog.format | string | `"json"` |  |
 | traefik.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[0].labelSelector.matchLabels."app.kubernetes.io/instance" | string | `"{{ .Release.Name }}-{{ include \"traefik.namespace\" . }}"` |  |
 | traefik.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[0].labelSelector.matchLabels."app.kubernetes.io/name" | string | `"{{ template \"traefik.name\" . }}"` |  |
 | traefik.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[0].topologyKey | string | `"kubernetes.io/hostname"` |  |
@@ -34,8 +35,6 @@ Always read the [Changelog](Changelog.md) for information about possible migrati
 | traefik.ingressRoute.healthcheck.enabled | bool | `false` |  |
 | traefik.ingressRoute.healthcheck.entryPoints[0] | string | `"traefik"` |  |
 | traefik.ingressRoute.healthcheck.entryPoints[1] | string | `"websecure"` |  |
-| traefik.accessLog.enabled | bool | `false` |  |
-| traefik.accessLog.format | string | `"json"` |  |
 | traefik.log.format | string | `"json"` |  |
 | traefik.log.level | string | `"INFO"` |  |
 | traefik.metrics.prometheus.service.enabled | bool | `true` |  |
