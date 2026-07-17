@@ -1,7 +1,4 @@
 traefik:
-  global:
-    checkNewVersion: true
-
   log:
     format: json
     level: INFO
