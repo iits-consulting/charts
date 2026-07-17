@@ -2,6 +2,14 @@
 
 ## Chart Versions
 
+
+### 41.0.2
+
+- Update to traefik 3.7.6
+- Check the [Release Notes](https://github.com/traefik/traefik-helm-chart/releases/tag/v41.0.2) from version 36 to 41 of traefik for the relevant migrations.
+  - globalArguments has been refactored with release 36.0.0
+  - logs has been refactored with release 41.0.0
+
 ### 35.2.0
 
 - Update to traefik 3.3.6

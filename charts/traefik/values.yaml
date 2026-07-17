@@ -1,16 +1,14 @@
 traefik:
-  globalArguments:
-    - "--global.checknewversion"
-  additionalArguments:
-    - "--ping"
+  global:
+    checkNewVersion: true
 
-  logs:
-    general:
-      format: json
-      level: INFO
-    access:
-      format: json
-      enabled: false
+  log:
+    format: json
+    level: INFO
+
+  accessLog:
+    enabled: false
+    format: json
 
   deployment:
     replicas: 2
