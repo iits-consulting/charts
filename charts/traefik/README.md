@@ -24,7 +24,6 @@ Always read the [Changelog](Changelog.md) for information about possible migrati
 | traefik.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[0].labelSelector.matchLabels."app.kubernetes.io/name" | string | `"{{ template \"traefik.name\" . }}"` |  |
 | traefik.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[0].topologyKey | string | `"kubernetes.io/hostname"` |  |
 | traefik.deployment.replicas | int | `2` |  |
-| traefik.global.checkNewVersion | bool | `true` |  |
 | traefik.ingressClass.enabled | bool | `true` |  |
 | traefik.ingressClass.isDefaultClass | bool | `true` |  |
 | traefik.ingressRoute.dashboard.enabled | bool | `true` |  |
