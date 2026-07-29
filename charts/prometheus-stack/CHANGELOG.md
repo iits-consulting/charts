@@ -2,6 +2,9 @@
 
 ## Chart Versions
 
+### 87.21.0
+- Update `kube-prometheus-stack` to 87.21.0
+
 ### 79.12.0
 - Increase version of `kube-prometheus-stack` to 79.12.0
 - Increase container restart report firing to >4
