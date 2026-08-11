@@ -2,6 +2,10 @@
 
 ## Chart Versions
 
+### 9.3.7
+- Changed elastic stack (appVersion) to version 9.3.7
+- Update serverTransport ingress CR to new version
+
 ### 9.3.5
 - Changed operator version to 3.4.0
 - Changed elastic stack (appVersion) to version 9.3.5

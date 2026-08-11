@@ -6,7 +6,7 @@ metadata:
   name: {{ $.Release.Name }}-elasticsearch
 spec:
   serverName: {{ $.Release.Name }}-es-http
-  rootCAsSecrets:
-    - {{ $.Release.Name }}-es-http-certs-public
+  rootCAs:
+    - secret: {{ $.Release.Name }}-es-http-certs-public
 {{- end }}
 {{- end }}
