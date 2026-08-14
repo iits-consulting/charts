@@ -8,6 +8,8 @@ argo-cd:
     # the /argocd suffix is required for oidc to resolve callback url correct
     # there is an unfixed bug report in argocd: https://github.com/argoproj/argo-cd/issues/23694
     domain: "REPLACE_THIS/argocd"
+    networkPolicy:
+      create: false
 
   controller:
     replicas: 2
@@ -143,6 +145,7 @@ argo-cd:
       server.insecure: true
       server.rootpath: *ingressPath
       server.basehref: *ingressPath
+      applicationsetcontroller.policy: 'sync'
 
 # Please use argocd-secret chart instead if you are using keycloak deployed in the same stage to avoid cyclic dependencies.
 #     secret:
