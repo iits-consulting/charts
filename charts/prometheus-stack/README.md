@@ -67,8 +67,8 @@ prometheus-stack:
 | blackboxExporter.strategy.rollingUpdate | string | `nil` |  |
 | blackboxExporter.strategy.type | string | `"Recreate"` |  |
 | common.externalSecret.enabled | bool | `false` |  |
-| dashboards.dashboards[0] | string | `"blackbox-exporter"` |  |
 | dashboards.enabled | bool | `true` |  |
+| dashboards.include[0] | string | `"blackbox-exporter"` |  |
 | global.ingress.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
 | global.ingress.annotations."traefik.ingress.kubernetes.io/router.middlewares" | string | `"routing-oidc-forward-auth@kubernetescrd"` |  |
 | global.ingress.annotations."traefik.ingress.kubernetes.io/router.tls" | string | `"true"` |  |
@@ -169,6 +169,7 @@ prometheus-stack:
 | prometheusStack.grafana.serviceMonitor.path | string | `"/grafana/metrics"` |  |
 | prometheusStack.grafana.sidecar.dashboards.enabled | bool | `true` |  |
 | prometheusStack.grafana.sidecar.dashboards.folderAnnotation | string | `"k8s-sidecar-target-directory"` |  |
+| prometheusStack.grafana.sidecar.dashboards.label | string | `"grafana_alert"` |  |
 | prometheusStack.grafana.sidecar.dashboards.provider.foldersFromFilesStructure | bool | `true` |  |
 | prometheusStack.kubeControllerManager.enabled | bool | `false` |  |
 | prometheusStack.kubeProxy.enabled | bool | `false` |  |
