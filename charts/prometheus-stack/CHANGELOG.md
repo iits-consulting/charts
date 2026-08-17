@@ -2,6 +2,10 @@
 
 ## Chart Versions
 
+### 79.13.0
+- Introduce `.Values.dashboards.include` to define subfolders in dashboards/ to render Grafana Dashboard resources for 
+- Add optional Keycloak Grafana dashboard
+
 ### 79.12.0
 - Increase version of `kube-prometheus-stack` to 79.12.0
 - Increase container restart report firing to >4
