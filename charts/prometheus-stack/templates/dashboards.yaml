@@ -1,11 +1,12 @@
 {{- if .Values.dashboards.enabled -}}
-  {{- /* Picks all folders under dashboards and puts them into $dashboard as list  */ -}}
+  {{- /* Picks all folders under dashboards and puts them into $dashboards as list  */ -}}
   {{- $dashboards := list -}}
   {{- range $path, $_ := .Files.Glob "dashboards/*/*.json" -}}
     {{- $dashboards = append $dashboards (dir $path) -}}
   {{- end -}}
   {{- $dashboards = $dashboards | sortAlpha | uniq -}}
 
+  {{- /* Iterate over all found subfolders with fullpath. If files exist and subfolder is in ".Values.dashboards.include" list -> render.  */ -}}
   {{- range $idx, $fullPath := $dashboards }}
     {{- $folder := trimPrefix "dashboards/" $fullPath }}
     {{- $files := $.Files.Glob (printf "dashboards/%s/*.json" $folder) }}
