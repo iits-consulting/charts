@@ -2,6 +2,10 @@
 
 ## Chart Versions
 
+### 21.0.0
+- AppVersion upgrade to 3.5.1
+- **Breaking:** New selector was added on deployment argocd-redis-ha-haproxy which cannot be updated in place! Mitigation steps: 1. orphan delete the deployment BEFORE sync, 2. manually delete its replicaset directly on cluster
+
 ### 20.1.1
 -  AppVersion upgrade to 3.2.12 to fix security issues
 
