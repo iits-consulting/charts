@@ -323,7 +323,7 @@ blackboxExporter:
 # Load dashboard(s) for the blackbox uptime monitor
 dashboards:
   enabled: true
-  dashboards:
+  include:
     # Add desired dashboards (as name of folders in dashboards/) here
     - blackbox-exporter
 
