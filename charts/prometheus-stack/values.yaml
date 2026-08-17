@@ -322,6 +322,9 @@ blackboxExporter:
 # Load dashboard(s) for the blackbox uptime monitor
 dashboards:
   enabled: true
+  dashboards:
+    # Add desired dashboards (as name of folders in dashboards/) here
+    - blackbox-exporter
 
 uptimeMonitors:
   ## If true, a ServiceMonitor CRD is created for a prometheus operator
