@@ -67,6 +67,7 @@ prometheus-stack:
 | blackboxExporter.strategy.rollingUpdate | string | `nil` |  |
 | blackboxExporter.strategy.type | string | `"Recreate"` |  |
 | common.externalSecret.enabled | bool | `false` |  |
+| dashboards.dashboards[0] | string | `"blackbox-exporter"` |  |
 | dashboards.enabled | bool | `true` |  |
 | global.ingress.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
 | global.ingress.annotations."traefik.ingress.kubernetes.io/router.middlewares" | string | `"routing-oidc-forward-auth@kubernetescrd"` |  |
