@@ -1,6 +1,6 @@
 # keycloakx
 
-![Version: 7.2.0](https://img.shields.io/badge/Version-7.2.0-informational?style=flat-square) ![AppVersion: 26.5.6](https://img.shields.io/badge/AppVersion-26.5.6-informational?style=flat-square)
+![Version: 7.2.0](https://img.shields.io/badge/Version-7.2.0-informational?style=flat-square) ![AppVersion: 26.6.2](https://img.shields.io/badge/AppVersion-26.6.2-informational?style=flat-square)
 
 Keycloak.X - Open Source Identity and Access Management for Modern Applications and Services
 
