@@ -163,6 +163,7 @@ prometheusStack:
     sidecar:
       dashboards:
         enabled: true
+        label: grafana_alert
         folderAnnotation: k8s-sidecar-target-directory
         provider:
           foldersFromFilesStructure: true
