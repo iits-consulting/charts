@@ -62,16 +62,26 @@ auth:
     custom_filebeat:
       # if you provide an existing password, generatePasswords should be disabled
       existingPassword: ""
+      # -- Required, if common.externalSecret.enabled. Vault path for this user's password
+      # round-trip.
+      # path: "REPLACE_ME"
+      # -- field within the vault secret to read/write (default "password"). Override to pack
+      # several users into one vault secret distinguished by property.
+      # property: "filebeat_password"
       roles:
         - custom_filebeat
     custom_kibana_guest:
       # if you provide an existing password, generatePasswords should be disabled
       existingPassword: ""
+      # -- Required, if common.externalSecret.enabled.
+      # path: "REPLACE_ME"
       roles:
         - viewer
     custom_elastalert:
       # if you provide an existing password, generatePasswords should be disabled
       existingPassword: ""
+      # -- Required, if common.externalSecret.enabled.
+      # path: "REPLACE_ME"
       roles:
         - custom_elastalert
   roles:
@@ -434,7 +444,24 @@ ilm:
       deleteAfter: 14d
 
 generatePasswords:
+  # -- Generate user passwords. In non-ESO mode this toggles the bash generate-passwords job.
+  # In ESO mode (common.externalSecret.enabled) it toggles the Password generator + push: true
+  # generates and round-trips through vault; false is BYO (pull-only, passwords pre-seeded in vault).
   enabled: true
+  # -- Password generation policy. In ESO mode (common.externalSecret.enabled) this maps directly
+  # to the shared ExternalSecrets Password generator spec; length also feeds the bash job default.
+  spec:
+    length: 32
+    digits: 5
+    symbols: 0
+    noUpper: false
+    allowRepeat: true
+  # -- ESO mode only: how often the per-user push/pull secrets reconcile. Leave empty to use the
+  # common chart's per-resource defaults (push "1h", pull "1m").
+  refreshInterval: "1h"
+  # -- ESO mode only: defines if secrets pushed to the secretStore are deleted or kept in the provider
+  # after the ESO pushSecret is deleted.
+  deletionPolicy: "Delete"
   image:
     repository: docker.io/bitnamilegacy/kubectl
     tag: 1.32.4
@@ -464,6 +491,12 @@ backup:
   # -- for Azure blob storage use "azure"
   repoType: "s3"
 
+  # -- vault path for the secure settings, used only in ESO mode (common.externalSecret.enabled).
+  # The settings below are then pulled from this path instead of being inlined.
+  # path: "REPLACE_ME"
+
+  # In ESO mode (common.externalSecret.enabled) the value of each setting is the vault property to
+  # read (remoteKey), not the literal secret — leave empty to default the property to the setting name.
   secureSettings:
   # # S3 compatible / OTC
   # # -- Required
@@ -502,3 +535,15 @@ backup:
 
 policyException:
   enabled: true
+
+common:
+  externalSecret:
+    # -- Enable ESO mode. When true, the bash generate-passwords job and the static basic-auth
+    # Secrets are replaced by a single Password generator plus a per-user push/pull round-trip
+    # against the secretStore below. Per-user vault paths come from auth.users.<user>.path.
+    enabled: false
+
+    # -- Sets the Store for all externalSecret resources from common chart
+    secretStore:
+      kind: ClusterSecretStore
+      name: "vault"
