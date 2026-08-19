@@ -184,6 +184,27 @@ entries:
     version: 0.3.1-fix-probes
   argocd:
   - apiVersion: v2
+    appVersion: 3.5.1
+    created: "2026-08-19T10:38:07.686817365Z"
+    dependencies:
+    - name: argo-cd
+      repository: https://argoproj.github.io/argo-helm
+      version: 10.3.3
+    description: 'This chart is used to bootstrap a Kubernetes cluster with `argocd`.
+      You can use this chart to deploy `argocd` through tools like `terraform`. Note
+      that this is only deploying the core ArgoCD components. To deploy projects,
+      use the `argocd-apps` chart instead.  Usage example:  ```hcl resource "helm_release"
+      "argocd" {   name                  = "argocd"   repository            = "https://charts.iits.tech"   chart                 =
+      "argocd"   version               = "21.0.0"   namespace             = "argocd"   create_namespace      =
+      true   wait                  = true   atomic                = true   timeout               =
+      900 // 15 Minutes   render_subchart_notes = true   dependency_update     = true   wait_for_jobs         =
+      true } ``` '
+    digest: b28300704653d4339fa883548c7712b3bf986353c42f6b2405ed053af8dddbd2
+    name: argocd
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/argocd-21.0.0/argocd-21.0.0.tgz
+    version: 21.0.0
+  - apiVersion: v2
     appVersion: 3.2.12
     created: "2026-06-02T15:18:33.922771497Z"
     dependencies:
@@ -8221,4 +8242,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/waf-cert-uploader-0.1.1/waf-cert-uploader-0.1.1.tgz
     version: 0.1.1
-generated: "2026-08-11T11:34:30.052572192Z"
+generated: "2026-08-19T10:38:07.687634421Z"
