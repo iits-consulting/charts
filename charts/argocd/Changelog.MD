@@ -4,7 +4,12 @@
 
 ### 21.0.0
 - AppVersion upgrade to 3.5.1
-- **Breaking:** New selector was added on deployment argocd-redis-ha-haproxy which cannot be updated in place! Mitigation steps: 1. orphan delete the deployment BEFORE sync, 2. manually delete its replicaset directly on cluster
+- **Breaking:** New selector on deployment `argocd-redis-ha-haproxy` which cannot be updated in place. Upgrade steps deal with this: 
+  1. disable self-heal on ArgoCD
+  2. orphan delete the deployment `argocd-redis-ha-haproxy`,
+  3. sync the new version of ArgoCD (creates new `argocd-redis-ha-haproxy` deployment and pods for it)
+  4. manually delete the OLD replicaset directly on cluster
+  5. enable self-heal on ArgoCD```
 
 ### 20.1.1
 -  AppVersion upgrade to 3.2.12 to fix security issues
