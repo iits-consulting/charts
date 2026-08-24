@@ -133,7 +133,8 @@ prometheus-stack:
 | prometheusStack.alertmanager.config.route.routes[2].repeat_interval | string | `"24h"` |  |
 | prometheusStack.alertmanager.config.route.routes[3].receiver | string | `"slack"` |  |
 | prometheusStack.alertmanager.config.templates[0] | string | `"/etc/alertmanager/config/*.tmpl"` |  |
-| prometheusStack.crds.enabled | bool | `false` |  |
+| prometheusStack.crds.enabled | bool | `true` |  |
+| prometheusStack.crds.upgradeJob.enabled | bool | `true` |  |
 | prometheusStack.defaultRules.create | bool | `true` |  |
 | prometheusStack.defaultRules.disabled.InfoInhibitor | bool | `true` |  |
 | prometheusStack.defaultRules.disabled.KubeClientCertificateExpiration | bool | `true` |  |
