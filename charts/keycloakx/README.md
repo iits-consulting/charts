@@ -14,7 +14,7 @@ Keycloak.X - Open Source Identity and Access Management for Modern Applications 
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| dashboard.enabled | bool | `true` |  |
+| grafanaDashboard.enabled | bool | `false` |  |
 | keycloakx.command[0] | string | `"/opt/keycloak/bin/kc.sh"` |  |
 | keycloakx.command[1] | string | `"start"` |  |
 | keycloakx.command[2] | string | `"--http-port=8080"` |  |
