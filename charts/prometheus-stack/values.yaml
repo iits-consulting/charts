@@ -21,7 +21,9 @@ prometheusStack:
   nameOverride: prometheus-stack
 
   crds:
-    enabled: false
+    enabled: true
+    upgradeJob:
+      enabled: true
 
   kubeControllerManager:
     enabled: false
