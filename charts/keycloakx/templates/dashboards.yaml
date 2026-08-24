@@ -1,5 +1,5 @@
-{{- $files := .Files.Glob "dashboards/*.json" }}
-{{- if and $files .Values.dashboard.enabled }}
+{{- $files := .Files.Glob "dashboards/**.json" }}
+{{- if and $files .Values.grafanaDashboard.enabled }}
 {{- range $path, $fileContents := $files }}
 {{- $dashboardName := regexReplaceAll "(^.*/)(.*)\\.json$" $path "${2}" }}
 {{- $catalogName := regexReplaceAll "(^.*/)(.*)\\.json$" $path "${1}" }}
