@@ -169,7 +169,7 @@ prometheus-stack:
 | prometheusStack.grafana.serviceMonitor.path | string | `"/grafana/metrics"` |  |
 | prometheusStack.grafana.sidecar.dashboards.enabled | bool | `true` |  |
 | prometheusStack.grafana.sidecar.dashboards.folderAnnotation | string | `"k8s-sidecar-target-directory"` |  |
-| prometheusStack.grafana.sidecar.dashboards.label | string | `"grafana_alert"` |  |
+| prometheusStack.grafana.sidecar.dashboards.label | string | `"grafana_dasbhoard"` |  |
 | prometheusStack.grafana.sidecar.dashboards.provider.foldersFromFilesStructure | bool | `true` |  |
 | prometheusStack.kubeControllerManager.enabled | bool | `false` |  |
 | prometheusStack.kubeProxy.enabled | bool | `false` |  |
