@@ -4974,6 +4974,20 @@ entries:
     version: 1.0.0
   keycloakx:
   - apiVersion: v2
+    appVersion: 26.7.2
+    created: "2026-08-25T13:04:34.039697315Z"
+    dependencies:
+    - name: keycloakx
+      repository: https://codecentric.github.io/helm-charts
+      version: 7.3.0
+    description: Keycloak.X - Open Source Identity and Access Management for Modern
+      Applications and Services
+    digest: 7093dab400dcd0eb6d7a3af51bf2fe074717a27c1a908258e089ecadda90cb96
+    name: keycloakx
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/keycloakx-7.3.0/keycloakx-7.3.0.tgz
+    version: 7.3.0
+  - apiVersion: v2
     appVersion: 26.5.6
     created: "2026-06-12T11:18:52.235621054Z"
     dependencies:
@@ -8260,4 +8274,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/waf-cert-uploader-0.1.1/waf-cert-uploader-0.1.1.tgz
     version: 0.1.1
-generated: "2026-08-19T10:51:17.532466671Z"
+generated: "2026-08-25T13:04:34.040063808Z"
