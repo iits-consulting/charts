@@ -14,11 +14,12 @@
       {{- range $path, $fileContents := $files }}
       {{- $dashboardName := regexReplaceAll "(^.*/)(.*)\\.json$" $path "${2}" }}
       {{- $catalogName := regexReplaceAll "(^.*/)(.*)\\.json$" $path "${1}" }}
+      {{- $shortCatalogName := trimPrefix "dashboards/" $catalogName | trimSuffix "/" }}
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ printf "%s-%s" (include "monitor.fullname" $ | trunc 58) $dashboardName | trunc 63  | trimSuffix "-" | replace "_" "-" }}
+  name: {{ printf "%s-%s-%s" (include "monitor.fullname" $ | trunc 58) $shortCatalogName $dashboardName | trunc 63  | trimSuffix "-" | replace "_" "-" }}
   labels:
     {{ $.Values.prometheusStack.grafana.sidecar.dashboards.label }}: {{ $.Values.prometheusStack.grafana.sidecar.dashboards.labelValue | quote }}
   annotations:
