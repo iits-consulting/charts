@@ -1,6 +1,6 @@
 # keycloakx
 
-![Version: 7.1.11](https://img.shields.io/badge/Version-7.1.11-informational?style=flat-square) ![AppVersion: 26.5.6](https://img.shields.io/badge/AppVersion-26.5.6-informational?style=flat-square)
+![Version: 7.3.0](https://img.shields.io/badge/Version-7.3.0-informational?style=flat-square) ![AppVersion: 26.7.2](https://img.shields.io/badge/AppVersion-26.7.2-informational?style=flat-square)
 
 Keycloak.X - Open Source Identity and Access Management for Modern Applications and Services
 
@@ -8,7 +8,7 @@ Keycloak.X - Open Source Identity and Access Management for Modern Applications 
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://codecentric.github.io/helm-charts | keycloakx | 7.1.11 |
+| https://codecentric.github.io/helm-charts | keycloakx | 7.3.0 |
 
 ## Values
 
