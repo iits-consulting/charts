@@ -2,6 +2,12 @@
 
 ## Chart Versions
 
+### 88.3.0
+- Increase version of `kube-prometheus-stack` to 88.3.0
+- Increase version of `prometheus-blackbox-exporter` to 11.17.2
+- CRDs are now managed by this chart and kept in sync through the CRD upgrade job, no manual updates needed
+- Contains Grafana major update to 13.0.1
+
 ### 79.12.0
 - Increase version of `kube-prometheus-stack` to 79.12.0
 - Increase container restart report firing to >4
