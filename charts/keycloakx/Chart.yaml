@@ -4,6 +4,6 @@ description: Keycloak.X - Open Source Identity and Access Management for Modern 
 dependencies:
   - name: keycloakx
     repository: https://codecentric.github.io/helm-charts
-    version: 7.1.11
-version: 7.1.11
-appVersion: 26.5.6
+    version: 7.3.0
+version: 7.3.0
+appVersion: 26.7.2
