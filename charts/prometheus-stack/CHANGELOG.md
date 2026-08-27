@@ -5,8 +5,8 @@
 ### 88.3.0
 - Increase version of `kube-prometheus-stack` to 88.3.0
 - Increase version of `prometheus-blackbox-exporter` to 11.17.2
-- CRDs are now managed by this chart and kept in sync through the CRD upgrade job, no manual updates needed
-- Contains Grafana major update to 13.0.1
+- ⚠️ The prometheus-operator CRDs (`v0.86.2` → `v0.93.0`) must be applied manually **before** the chart is rolled out, see [UPGRADE.md](./UPGRADE.md)
+- Contains Grafana major update to 13.1.3
 
 ### 79.12.0
 - Increase version of `kube-prometheus-stack` to 79.12.0
