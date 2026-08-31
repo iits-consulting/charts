@@ -1,6 +1,6 @@
 # keycloakx
 
-![Version: 7.3.0](https://img.shields.io/badge/Version-7.3.0-informational?style=flat-square) ![AppVersion: 26.7.2](https://img.shields.io/badge/AppVersion-26.7.2-informational?style=flat-square)
+![Version: 7.3.0-add-dashboard](https://img.shields.io/badge/Version-7.3.0--add--dashboard-informational?style=flat-square) ![AppVersion: 26.7.2](https://img.shields.io/badge/AppVersion-26.7.2-informational?style=flat-square)
 
 Keycloak.X - Open Source Identity and Access Management for Modern Applications and Services
 
@@ -14,6 +14,7 @@ Keycloak.X - Open Source Identity and Access Management for Modern Applications 
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| grafanaDashboard.enabled | bool | `false` |  |
 | keycloakx.command[0] | string | `"/opt/keycloak/bin/kc.sh"` |  |
 | keycloakx.command[1] | string | `"start"` |  |
 | keycloakx.command[2] | string | `"--http-port=8080"` |  |

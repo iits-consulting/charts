@@ -98,3 +98,6 @@ postgresOperator:
         keycloak:
           privileges: OWNER       # OWNER | READ | WRITE
           secretName: keycloak    # operator writes Secret <secretName>-<role>
+
+grafanaDashboard:
+  enabled: false
