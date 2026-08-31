@@ -2,6 +2,11 @@
 
 ## Chart Versions
 
+### 3.4.0
+- update kyverno chart to 3.8.1
+- update policy reporter to 3.8.1
+- update common to 0.4.0
+
 ### 3.3.0
 - Added common chart lib as dependency chart
 
