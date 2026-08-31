@@ -1,0 +1,63 @@
+{{- with .Values.uptimeMonitor }}
+{{ $defaults := .defaults }}
+{{- if .enabled | toString | eq "true" }}
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ printf "uptime-admin-dashboard" | replace "_" "-" | trunc 63 | trimSuffix "-" }}
+spec:
+  endpoints:
+    - port: http
+      scheme: {{ $.Values.uptimeMonitor.scheme }}
+    {{- if $.Values.uptimeMonitor.bearerTokenFile }}
+      bearerTokenFile: {{ $.Values.uptimeMonitor.bearerTokenFile }}
+    {{- end }}
+    {{- if $.Values.uptimeMonitor.tlsConfig }}
+      tlsConfig: {{ toYaml $.Values.uptimeMonitor.tlsConfig | nindent 6 }}
+    {{- end }}
+      path: {{ $.Values.uptimeMonitor.path }}
+      interval: {{ .interval | default $defaults.interval }}
+      scrapeTimeout: {{ .scrapeTimeout | default $defaults.scrapeTimeout }}
+      honorTimestamps: {{ .honorTimestamps | default $defaults.honorTimestamps }}
+      params:
+        module:
+          - {{ .module | default $defaults.module }}
+        target:
+          - {{ $.Values.ingress.host }}
+      {{- if .hostname }}
+        hostname:
+          - {{ .hostname }}
+      {{- end }}
+      metricRelabelings:
+        - sourceLabels: [ instance ]
+          targetLabel: instance
+          replacement: admin-dashboard
+          action: replace
+        - sourceLabels: [ target ]
+          targetLabel: target
+          replacement: {{ $.Values.ingress.host }}
+          action: replace
+        - targetLabel: module
+          replacement: {{ .module | default $defaults.module }}
+          action: replace
+        {{- range $targetLabel, $replacement := .additionalMetricsRelabels | default $defaults.additionalMetricsRelabels }}
+        - targetLabel: {{ $targetLabel | quote }}
+          replacement: {{ $replacement | quote }}
+          action: replace
+        {{- end }}
+{{- if concat (.additionalRelabeling | default list) $defaults.additionalRelabeling }}
+      relabelings:
+{{ toYaml (concat (.additionalRelabeling | default list) $defaults.additionalRelabeling) | indent 6 }}
+{{- end }}
+  jobLabel: "{{ .jobName | default $defaults.jobName }}"
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: prometheus-stack
+      app.kubernetes.io/name: blackboxExporter
+  namespaceSelector:
+    matchNames:
+      - {{ $.Values.uptimeMonitor.blackboxNamespace | default "monitoring" }}
+{{- end }}
+{{- end }}
+

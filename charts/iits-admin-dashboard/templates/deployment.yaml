@@ -59,8 +59,8 @@ spec:
           securityContext:
             {{- toYaml .securityContext | nindent 12 }}
           {{- end }}
-          image: "lipanski/docker-static-website:{{ $.Chart.AppVersion }}"
-          imagePullPolicy: "IfNotPresent"
+          image: "{{ .image.registry }}/{{ .image.name }}:{{ .image.tag | default $.Chart.AppVersion }}"
+          imagePullPolicy: {{ .image.pullPolicy | default "IfNotPresent" }}
 
           ports:
             - name: "http"
