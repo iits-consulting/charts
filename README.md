@@ -1,6 +1,6 @@
-# IITS helm charts
+# iits-consulting helm charts
 
-This project contains several public charts as used by the folks at [IITS](https://iits-consulting.de/).
+This project contains several public charts as used by the folks at [iits-consulting](https://iits-consulting.de/).
 
 ## Requirements
 
