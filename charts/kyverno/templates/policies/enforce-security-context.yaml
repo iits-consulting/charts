@@ -33,43 +33,41 @@ spec:
            {{- end }}
       {{- end }}
       mutate:
-        foreach:
-          - list: "request.object.spec.containers[]"
-            patchStrategicMerge:
-              metadata:
-                annotations:
-                  +(clusterpolicies.kyverno.io/add-pod-security-context): Added securityContext to pod, container and initContainer
-              spec:
-                securityContext:
-                  +(runAsNonRoot): true
-                  +(runAsUser): 1001
-                  +(runAsGroup): 1001
-                  seccompProfile:
-                    +(type): RuntimeDefault
-                containers:
-                  - (name): '*'
-                    securityContext:
-                      +(allowPrivilegeEscalation): false
-                      +(capabilities):
-                        drop:
-                          - ALL
-                      +(privileged): false
-                initContainers:
-                  - (name): '*'
-                    securityContext:
-                      +(allowPrivilegeEscalation): false
-                      +(capabilities):
-                        drop:
-                          - ALL
-                      +(privileged): false
-                ephemeralContainers:
-                  - (name): '*'
-                    securityContext:
-                      +(allowPrivilegeEscalation): false
-                      +(capabilities):
-                        drop:
-                          - ALL
-                      +(privileged): false
+        patchStrategicMerge:
+          metadata:
+            annotations:
+              +(clusterpolicies.kyverno.io/add-pod-security-context): "Added securityContext to pod, container and initContainer"
+          spec:
+            securityContext:
+              +(runAsNonRoot): true
+              +(runAsUser): 1001
+              +(runAsGroup): 1001
+              seccompProfile:
+                +(type): RuntimeDefault
+            containers:
+            - (name): '*'
+              securityContext:
+                +(allowPrivilegeEscalation): false
+                +(capabilities):
+                  drop:
+                  - ALL
+                +(privileged): false
+            initContainers:
+            - (name): '*'
+              securityContext:
+                +(allowPrivilegeEscalation): false
+                +(capabilities):
+                  drop:
+                  - ALL
+                +(privileged): false
+            ephemeralContainers:
+            - (name): '*'
+              securityContext:
+                +(allowPrivilegeEscalation): false
+                +(capabilities):
+                  drop:
+                  - ALL
+                +(privileged): false
 ---
 {{- end }}
 {{- end }}
