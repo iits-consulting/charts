@@ -1,0 +1,65 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "kumoops-dashboard.fullname" . }}-test-values"
+  labels:
+    {{- include "kumoops-dashboard.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+spec:
+  containers:
+    - name: test
+      image: busybox:latest
+      command: ['sh', '-c']
+      args:
+        - |
+          echo "=== Validating Chart Values ==="
+
+          {{- if not .Values.defaultDashboard }}
+          echo "ERROR: defaultDashboard is required"
+          exit 1
+          {{- end }}
+
+          {{- if not .Values.defaultDashboard.title }}
+          echo "ERROR: defaultDashboard.title is required"
+          exit 1
+          {{- end }}
+
+          {{- if not .Values.defaultDashboard.logoSrc }}
+          echo "ERROR: defaultDashboard.logoSrc is required"
+          exit 1
+          {{- end }}
+
+          {{- if not .Values.defaultDashboard.tiles }}
+          echo "WARNING: No tiles configured"
+          {{- end }}
+
+          {{- $tileCount := 0 }}
+          {{- range $key, $tile := .Values.defaultDashboard.tiles }}
+          {{- if $tile.enabled }}
+          {{- $tileCount = add1 $tileCount }}
+          {{- if not $tile.href }}
+          echo "ERROR: Tile {{ $key }} missing required field: href"
+          exit 1
+          {{- end }}
+          {{- if not $tile.imgSrc }}
+          echo "ERROR: Tile {{ $key }} missing required field: imgSrc"
+          exit 1
+          {{- end }}
+          {{- if not $tile.imgAlt }}
+          echo "ERROR: Tile {{ $key }} missing required field: imgAlt"
+          exit 1
+          {{- end }}
+          {{- if not $tile.category }}
+          echo "ERROR: Tile {{ $key }} missing required field: category"
+          exit 1
+          {{- end }}
+          {{- end }}
+          {{- end }}
+
+          echo "✓ All validations passed"
+          echo "✓ Dashboard title: {{ include "kumoops-dashboard.getTitle" . }}"
+          echo "✓ Enabled tiles: {{ $tileCount }}"
+          exit 0
+  restartPolicy: Never

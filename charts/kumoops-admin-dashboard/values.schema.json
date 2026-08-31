@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["defaultDashboard"],
+  "properties": {
+    "defaultDashboard": {
+      "type": "object",
+      "required": ["title", "logoSrc"],
+      "properties": {
+        "logoSrc": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^https?://.*",
+          "description": "Logo image URL (must start with http:// or https://)"
+        },
+        "logoDarkSrc": {
+          "type": "string",
+          "pattern": "^https?://.*",
+          "description": "Logo image URL for dark mode (falls back to logoSrc if not set)"
+        },
+        "userinfoUrl": {
+          "type": "string",
+          "pattern": "^https?://.*",
+          "description": "Keycloak OIDC userinfo endpoint URL for displaying logged-in user"
+        },
+        "logoutUrl": {
+          "type": "string",
+          "pattern": "^https?://.*",
+          "description": "Keycloak OIDC logout URL"
+        },
+        "context": {
+          "type": "string",
+          "description": "Customer/deployment context name displayed in the user menu"
+        },
+        "logoAlt": {
+          "type": "string",
+          "default": "Logo"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100,
+          "description": "Dashboard title"
+        },
+        "subtitle": {
+          "type": "string",
+          "maxLength": 200,
+          "description": "Optional subtitle"
+        },
+        "tiles": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "required": ["enabled"],
+            "properties": {
+              "enabled": {
+                "type": "boolean",
+                "description": "Whether to display this tile"
+              },
+              "href": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Tile link URL (required if enabled=true)"
+              },
+              "imgSrc": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Tile image URL (required if enabled=true)"
+              },
+              "imgAlt": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100,
+                "description": "Tile image alt text / name (required if enabled=true)"
+              },
+              "category": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 50,
+                "description": "Category name (required if enabled=true)"
+              },
+              "description": {
+                "type": "string",
+                "maxLength": 150,
+                "description": "Optional tooltip description"
+              }
+            },
+            "if": {
+              "properties": { "enabled": { "const": true } }
+            },
+            "then": {
+              "required": ["href", "imgSrc", "imgAlt", "category"]
+            }
+          }
+        }
+      }
+    },
+    "ingress": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "host": {
+          "type": ["string", "null"],
+          "description": "Ingress hostname (optional)"
+        }
+      }
+    },
+    "deployment": {
+      "type": "object",
+      "properties": {
+        "replicaCount": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10,
+          "default": 1
+        },
+        "resources": {
+          "type": "object"
+        }
+      }
+    }
+  }
+}
