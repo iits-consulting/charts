@@ -2,14 +2,17 @@
 
 ## Chart Versions
 
-### 7.2.0
+### 7.3.0-add-dashboard
  - Add Grafana dashboard, enabled via `.Values.grafanaDashboard.enabled` (disabled by default)
  - Update used upstream chart to 7.2.0 (appVersion 26.6.2)
+
+### 7.3.0
+ - Update underlying chart to 7.3.0 (appVersion 26.7.2)
 
 ### 7.1.11
  - Add optional Postgres + PostgresUser CRs (`postgresOperator.databases`) for movetokube/postgres-operator integration.
  - Add `postgresOperator.annotations` (global) plus per-database and per-user `annotations` overrides on the Postgres / PostgresUser CRs. Enables pinning CRs to a specific operator instance via `postgres-operator/instance: <name>`.
- - Update underlying chart to 7.1.11 (appVersion 26.5.6) 
+ - Update underlying chart to 7.1.11 (appVersion 26.5.6)
 
 ### 7.1.8
  - Initial release

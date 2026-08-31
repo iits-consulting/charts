@@ -1,6 +1,6 @@
 # argocd
 
-![Version: 20.1.1](https://img.shields.io/badge/Version-20.1.1-informational?style=flat-square) ![AppVersion: 3.2.12](https://img.shields.io/badge/AppVersion-3.2.12-informational?style=flat-square)
+![Version: 21.0.0](https://img.shields.io/badge/Version-21.0.0-informational?style=flat-square) ![AppVersion: 3.5.1](https://img.shields.io/badge/AppVersion-3.5.1-informational?style=flat-square)
 
 This chart is used to bootstrap a Kubernetes cluster with `argocd`.
 You can use this chart to deploy `argocd` through tools like `terraform`.
@@ -14,7 +14,7 @@ resource "helm_release" "argocd" {
   name                  = "argocd"
   repository            = "https://charts.iits.tech"
   chart                 = "argocd"
-  version               = "20.0.0"
+  version               = "21.0.0"
   namespace             = "argocd"
   create_namespace      = true
   wait                  = true
@@ -30,7 +30,7 @@ resource "helm_release" "argocd" {
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://argoproj.github.io/argo-helm | argo-cd | 8.6.4 |
+| https://argoproj.github.io/argo-helm | argo-cd | 10.3.3 |
 
 ## Values
 
@@ -44,6 +44,7 @@ resource "helm_release" "argocd" {
 | argo-cd.configs.cm."resource.customizations.ignoreDifferences.apiextensions.k8s.io_CustomResourceDefinition" | string | `"jqPathExpressions:\n  - .spec.conversion.webhookClientConfig.caBundle\n"` |  |
 | argo-cd.configs.cm."resource.customizations.ignoreDifferences.argoproj.io_Application" | string | `"# Ignores .data changes of all secrets with a vaultInjectionChecksum annotation\njqPathExpressions:\n  - '. | select(.metadata.annotations.parametersChecksum) | .spec.source.helm'\n  - '. | select(.metadata.annotations.valueFileChecksum) | .spec.source.helm'\n"` |  |
 | argo-cd.configs.cm."resource.customizations.ignoreDifferences.cert-manager.io_Certificate" | string | `"jqPathExpressions:\n  - .spec.duration\n"` |  |
+| argo-cd.configs.params."applicationsetcontroller.policy" | string | `"sync"` |  |
 | argo-cd.configs.params."server.basehref" | string | `"/argocd"` |  |
 | argo-cd.configs.params."server.insecure" | bool | `true` |  |
 | argo-cd.configs.params."server.rootpath" | string | `"/argocd"` |  |
@@ -61,9 +62,9 @@ resource "helm_release" "argocd" {
 | argo-cd.dex.enabled | bool | `false` |  |
 | argo-cd.fullnameOverride | string | `"argocd"` |  |
 | argo-cd.global.domain | string | `"REPLACE_THIS/argocd"` |  |
-| argo-cd.global.image.tag | string | `"v3.2.12"` | Overrides the global Argo CD image tag whose default is the chart appVersion Note: Remove this when chart upgrade takes place in Epic OTC-278! See OTC-443 for more details, but it was used temporarily here as a quick remedy to address CVE-2026-42880 -> https://github.com/argoproj/argo-cd/security/advisories/GHSA-3v3m-wc6v-x4x3, and avoid a rather long chart upgrade path, which is to be tackled in the relevant Epic explicitly also related to other CVE's in https://iits.atlassian.net/browse/OTC-487 |
 | argo-cd.global.logging.format | string | `"json"` |  |
 | argo-cd.global.logging.level | string | `"warn"` |  |
+| argo-cd.global.networkPolicy.create | bool | `false` |  |
 | argo-cd.notifications.enabled | bool | `false` |  |
 | argo-cd.redis-ha.enabled | bool | `true` |  |
 | argo-cd.repoServer.env[0].name | string | `"TZ"` |  |
