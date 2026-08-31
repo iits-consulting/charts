@@ -36,6 +36,7 @@ projects: {}
 #       secretStoreName: ""        # Name of the secret store object created in K8s
 #       accessType: ""             # Options: https or ssh
 #       secretPath: ""             # Path to the secret in the targeted Hashicorp Vault
+#       rawDirectory: false        # Optional, defaults to false. Set to true for plain Kubernetes YAML sources (e.g. ApplicationSets) to opt out of Helm rendering.
 
 #     # helm registries credentials
 #     helmRegistries:
