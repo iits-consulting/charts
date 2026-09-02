@@ -183,7 +183,7 @@ the static diff/doc findings from §3-4.
 Always split into two artifacts, even for a small bump. Match the target repo's existing
 file names/format if it already has this convention; otherwise create both:
 
-**`CHANGELOG.md` (or equivalent) — facts only.**
+**`CHANGELOG.md` (or equivalent) — facts only, and only about this wrapper chart.**
 What changed, in this release, full stop. No instructions, no "you must", no links framed
 as required reading, no rationale for decisions. If a fact needs a "why", that's still a
 fact ("X was evaluated but not adopted because Y") — a directive to the reader ("you must
@@ -193,6 +193,14 @@ do Y before upgrading") is not. Bullet list, one line per fact:
 - Rebased `<vendored-template>` against upstream <version>; kept deviation: <what>
 - 📖 See <upgrade-guide-filename> for the upgrade procedure
 ```
+
+Scope each entry to something that actually changed in *this* chart: the dependency
+version itself, a `values.yaml` default/key this chart sets, a vendored template, the
+umbrella chart's own version/appVersion. An upstream change that was merely investigated
+and found to require no action here (§4's "Informational"/"None" findings) does not belong
+in the changelog — it goes in the upgrade guide's risk table (with its "no action needed"
+row) or nowhere at all. The changelog is a record of what this chart's consumers need to
+know changed for them; it is not a summary of the upstream diff.
 
 **Upgrade guide (`UPGRADE.md` or equivalent) — actions only.**
 What an operator must *do*. Never restate the "what changed and why" narrative that
@@ -252,6 +260,10 @@ commentary), not just in the one place it was pointed out.
   rebasing from that.
 - Putting "what changed" narrative in the upgrade guide, or "what to do" instructions in
   the changelog.
+- Recording an upstream chart change in the changelog when it caused no actual change in
+  this wrapper chart (no config touched, no default relevant, no behavior different for
+  its consumers) — that belongs, if anywhere, in the upgrade guide's risk table as a
+  "no action needed" row, not in the changelog.
 - Silently enabling a preview/experimental upstream feature as part of an unrelated
   version bump.
 - Leaving scratch downloads, extracted tarballs, or test binaries in the working repo.
