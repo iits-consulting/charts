@@ -5,7 +5,6 @@
 ### 1.21.1
 - Update dependency chart cert-manager to v1.21.1 (was v1.20.1)
 - Updated Chart & App Version to 1.21.1
-- `prometheus.servicemonitor.targetPort` and `prometheus.servicemonitor.path` were removed from the upstream chart; the ServiceMonitor now hardcodes `targetPort: http-metrics` / `path: /metrics`, matching this chart's metrics service — no override was set here, so no config change was needed
 - 📖 See UPGRADE.md for the upgrade procedure
 
 ### 1.20.1
