@@ -2,6 +2,12 @@
 
 ## Chart Versions
 
+### 1.21.1
+- Update dependency chart cert-manager to v1.21.1 (was v1.20.1)
+- Updated Chart & App Version to 1.21.1
+- `prometheus.servicemonitor.targetPort` and `prometheus.servicemonitor.path` were removed from the upstream chart; the ServiceMonitor now hardcodes `targetPort: http-metrics` / `path: /metrics`, matching this chart's metrics service — no override was set here, so no config change was needed
+- 📖 See UPGRADE.md for the upgrade procedure
+
 ### 1.20.1
 - Update dependency chart cert-manager-webhook-opentelekomcloud back to original repo 0.2.0
 - Update dependency chart cert-manager to 1.20.1

@@ -2,7 +2,7 @@ apiVersion: v2
 dependencies:
   - name: cert-manager
     repository: https://charts.jetstack.io
-    version: v1.20.1
+    version: v1.21.1
   - name: cert-manager-webhook-opentelekomcloud
     repository: https://akyriako.github.io/cert-manager-webhook-opentelekomcloud
     version: v0.2.0
@@ -12,5 +12,5 @@ dependencies:
     version: 0.0.1
 name: cert-manager
 description: Wrapper chart for cert-manager. Deploys a ClusterIssuer resource to bootstrap Let's encrypt cert generation
-appVersion: v1.20.1
-version: 1.20.1
+appVersion: v1.21.1
+version: 1.21.1

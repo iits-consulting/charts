@@ -1,6 +1,6 @@
 # cert-manager
 
-![Version: 1.20.1](https://img.shields.io/badge/Version-1.20.1-informational?style=flat-square) ![AppVersion: v1.20.1](https://img.shields.io/badge/AppVersion-v1.20.1-informational?style=flat-square)
+![Version: 1.21.1](https://img.shields.io/badge/Version-1.21.1-informational?style=flat-square) ![AppVersion: v1.21.1](https://img.shields.io/badge/AppVersion-v1.21.1-informational?style=flat-square)
 
 Wrapper chart for cert-manager. Deploys a ClusterIssuer resource to bootstrap Let's encrypt cert generation
 
@@ -10,7 +10,7 @@ Wrapper chart for cert-manager. Deploys a ClusterIssuer resource to bootstrap Le
 |------------|------|---------|
 | https://akyriako.github.io/cert-manager-webhook-opentelekomcloud | cert-manager-webhook-opentelekomcloud | v0.2.0 |
 | https://charts.iits.tech | common | 0.0.1 |
-| https://charts.jetstack.io | cert-manager | v1.20.1 |
+| https://charts.jetstack.io | cert-manager | v1.21.1 |
 
 ## Values
 

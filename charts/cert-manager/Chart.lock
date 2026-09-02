@@ -1,12 +1,12 @@
 dependencies:
 - name: cert-manager
   repository: https://charts.jetstack.io
-  version: v1.20.1
+  version: v1.21.1
 - name: cert-manager-webhook-opentelekomcloud
   repository: https://akyriako.github.io/cert-manager-webhook-opentelekomcloud
   version: 0.2.0
 - name: common
   repository: https://charts.iits.tech
   version: 0.0.1
-digest: sha256:9ca9500ac7722d9679a6ccc84979597c38170ebd2a7022e92e169505705ed8d1
-generated: "2026-04-14T17:43:18.687542+02:00"
+digest: sha256:d3de684eb68fc572b47295be26fb57237088c7593e1818e224e600ae0a8034ea
+generated: "2026-09-02T14:55:56.939491753Z"
