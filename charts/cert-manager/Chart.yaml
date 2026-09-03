@@ -13,4 +13,4 @@ dependencies:
 name: cert-manager
 description: Wrapper chart for cert-manager. Deploys a ClusterIssuer resource to bootstrap Let's encrypt cert generation
 appVersion: v1.20.1
-version: 1.20.1
+version: 1.20.2
