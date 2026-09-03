@@ -4,7 +4,7 @@ apiVersion: kyverno.io/v2
 kind: PolicyException
 metadata:
   name: cert-manager-webhook
-  {{- with .Values.clusterIssuers.policyException.annotations }}
+  {{- with .annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
