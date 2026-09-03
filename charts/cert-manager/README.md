@@ -1,6 +1,6 @@
 # cert-manager
 
-![Version: 1.20.1](https://img.shields.io/badge/Version-1.20.1-informational?style=flat-square) ![AppVersion: v1.20.1](https://img.shields.io/badge/AppVersion-v1.20.1-informational?style=flat-square)
+![Version: 1.20.2](https://img.shields.io/badge/Version-1.20.2-informational?style=flat-square) ![AppVersion: v1.20.1](https://img.shields.io/badge/AppVersion-v1.20.1-informational?style=flat-square)
 
 Wrapper chart for cert-manager. Deploys a ClusterIssuer resource to bootstrap Let's encrypt cert generation
 
@@ -24,12 +24,15 @@ Wrapper chart for cert-manager. Deploys a ClusterIssuer resource to bootstrap Le
 | cert-manager.startupapicheck.extraArgs[0] | string | `"--logging-format=json"` |  |
 | cert-manager.webhook.extraArgs[0] | string | `"--logging-format=json"` |  |
 | clusterIssuers.email | string | `nil` | Required, replace with the e-mails you want to receive the warnings You must replace this email address with your own. Let's Encrypt will use this to contact you about expiring certificates, and issues related to your account. |
+| clusterIssuers.http.annotations | object | `{}` |  |
 | clusterIssuers.http.enabled | bool | `true` |  |
 | clusterIssuers.http.ingressClass | string | `"traefik"` |  |
 | clusterIssuers.http.name | string | `"letsencrypt"` |  |
 | clusterIssuers.http.server | string | `"https://acme-v02.api.letsencrypt.org/directory"` |  |
-| clusterIssuers.otcDNS | object | `{"accessKey":"","enabled":true,"existingSecretRef":"","name":"letsencrypt-dns","region":"eu-de","secretKey":"","server":"https://acme-v02.api.letsencrypt.org/directory"}` | Only available for OTC |
+| clusterIssuers.otcDNS | object | `{"accessKey":"","annotations":{},"enabled":true,"existingSecretRef":"","name":"letsencrypt-dns","region":"eu-de","secretKey":"","server":"https://acme-v02.api.letsencrypt.org/directory"}` | Only available for OTC |
 | common.externalSecret.enabled | bool | `false` |  |
+| policyException.annotations."helm.sh/hook" | string | `"pre-install,pre-upgrade"` |  |
+| policyException.annotations."helm.sh/hook-weight" | string | `"-5"` |  |
 | policyException.enabled | string | `"{{ .Values.clusterIssuers.otcDNS.enabled }}"` |  |
 
 ----------------------------------------------
