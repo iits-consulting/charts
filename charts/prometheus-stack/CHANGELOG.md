@@ -2,6 +2,12 @@
 
 ## Chart Versions
 
+### 88.3.0
+- Increase version of `kube-prometheus-stack` to 88.3.0
+- Increase version of `prometheus-blackbox-exporter` to 11.17.2
+- ⚠️ The prometheus-operator CRDs (`v0.86.2` → `v0.93.0`) must be applied manually **before** the chart is rolled out, see [UPGRADE.md](./UPGRADE.md)
+- Contains Grafana major update to 13.1.3
+
 ### 79.12.0
 - Increase version of `kube-prometheus-stack` to 79.12.0
 - Increase container restart report firing to >4
