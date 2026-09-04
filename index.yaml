@@ -6925,6 +6925,37 @@ entries:
     version: 1.0.0
   prometheus-stack:
   - apiVersion: v2
+    appVersion: 3.13.2
+    created: "2026-09-04T09:06:05.368617542Z"
+    dependencies:
+    - alias: prometheusStack
+      name: kube-prometheus-stack
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 88.3.0
+    - alias: blackboxExporter
+      condition: blackboxExporter.enabled
+      name: prometheus-blackbox-exporter
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 11.17.2
+    - name: common
+      repository: https://charts.iits.tech
+      version: 0.3.1
+    description: 'A complete monitoring/alerting stack with Grafana, Prometheus, Alertmanager
+      & Blackbox exporter  ## Installing the Chart with iits ArgoCD :warning: Make
+      sure that the CRD versions of the chart matches the chart version before upgrading!  ```yaml
+      prometheus-stack:   namespace: monitoring   repoURL: "https://charts.iits.tech"   targetRevision:
+      "88.3.0"   syncOptions:     - ServerSideApply=true   ignoreDifferences:     -
+      kind: Secret       name: prometheus-stack-grafana       jsonPointers:       -
+      /data/admin-password     - kind: Deployment       name: prometheus-stack-grafana       jsonPointers:       -
+      /spec/template/metadata/annotations/checksum~1secret   parameters:     global.ingress.host:
+      "admin.{{ .Values.projectValues.rootDomain }}"     prometheusStack.grafana.adminPassword:
+      "REPLACE_ME" ``` '
+    digest: dcd49a24536b770b778364bf91de01d3e84827388ed0e6bf41111ddb3e410338
+    name: prometheus-stack
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/prometheus-stack-88.3.0/prometheus-stack-88.3.0.tgz
+    version: 88.3.0
+  - apiVersion: v2
     appVersion: 3.9.0
     created: "2026-07-03T09:54:56.741491417Z"
     dependencies:
@@ -7479,19 +7510,6 @@ entries:
     - https://github.com/iits-consulting/charts/releases/download/prometheus-stack-43.1.3/prometheus-stack-43.1.3.tgz
     version: 43.1.3
   - apiVersion: v2
-    created: "2023-06-05T16:33:21.100545313Z"
-    dependencies:
-    - alias: prometheusStack
-      name: kube-prometheus-stack
-      repository: https://prometheus-community.github.io/helm-charts
-      version: 43.1.3
-    description: A complete monitoring/alerting stack with Grafana Prometheus Alertmanager
-    digest: 6399807969bf6e14b7920dd8e4e4e1b6bf8ea197627ad9ceefc19ca27fe1ba43
-    name: prometheus-stack
-    urls:
-    - https://github.com/iits-consulting/charts/releases/download/prometheus-stack-43.1.3-storage-bugfix/prometheus-stack-43.1.3-storage-bugfix.tgz
-    version: 43.1.3-storage-bugfix
-  - apiVersion: v2
     created: "2023-06-05T15:45:42.916184484Z"
     dependencies:
     - alias: prometheusStack
@@ -7500,6 +7518,19 @@ entries:
       version: 43.1.3
     description: A complete monitoring/alerting stack with Grafana Prometheus Alertmanager
     digest: 1aeab4f72f043e0be8bc93a8bc6e75fa442200cf23382906a0bf915ee2627e54
+    name: prometheus-stack
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/prometheus-stack-43.1.3-storage-bugfix/prometheus-stack-43.1.3-storage-bugfix.tgz
+    version: 43.1.3-storage-bugfix
+  - apiVersion: v2
+    created: "2023-06-05T16:33:21.100545313Z"
+    dependencies:
+    - alias: prometheusStack
+      name: kube-prometheus-stack
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 43.1.3
+    description: A complete monitoring/alerting stack with Grafana Prometheus Alertmanager
+    digest: 6399807969bf6e14b7920dd8e4e4e1b6bf8ea197627ad9ceefc19ca27fe1ba43
     name: prometheus-stack
     urls:
     - https://github.com/iits-consulting/charts/releases/download/prometheus-stack-43.1.3-storage-bugfix/prometheus-stack-43.1.3-storage-bugfix.tgz
@@ -8309,4 +8340,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/waf-cert-uploader-0.1.1/waf-cert-uploader-0.1.1.tgz
     version: 0.1.1
-generated: "2026-09-03T16:19:05.836009583Z"
+generated: "2026-09-04T09:06:05.369368912Z"
