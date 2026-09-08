@@ -391,6 +391,7 @@ ingress:
       paths:
         - path: "/policies"
         - path: "/_nuxt"
+      # secretName: "kyverno-tls"
 
 
 # https://github.com/iits-consulting/charts/tree/main/charts/common
