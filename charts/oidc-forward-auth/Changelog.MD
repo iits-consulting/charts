@@ -2,6 +2,10 @@
 
 ## Changelog Versions
 
+### 1.9.0
+
+- Add optional TLS secret reference to the Ingress
+
 ### 1.8.0
 
 - Add optional ESO integration via common chart
