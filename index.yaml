@@ -2597,6 +2597,20 @@ entries:
   iits-admin-dashboard:
   - apiVersion: v2
     appVersion: 2.1.0
+    created: "2026-09-09T09:00:16.013971377Z"
+    description: 'This chart deploys a super simple webserver that provides a simple
+      website containing links to a set of dashboards that are usually deployed in
+      our infrastructure setup as well as some nifty external tools.  ## Installing
+      the Chart with iits ArgoCD  ```yaml iits-admin-dashboard:   namespace: admin   repoURL:
+      "https://charts.iits.tech"   targetRevision: "1.8.0"   parameters:     ingress.host:
+      "REPLACE_ME" ``` '
+    digest: 55c72da808f7e04d75b14c8bcd3b6373fe87a6e4724875940f5c8a5b42eb907a
+    name: iits-admin-dashboard
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/iits-admin-dashboard-1.8.0/iits-admin-dashboard-1.8.0.tgz
+    version: 1.8.0
+  - apiVersion: v2
+    appVersion: 2.1.0
     created: "2024-07-22T08:56:00.226380742Z"
     description: 'This chart deploys a super simple webserver that provides a simple
       website containing links to a set of dashboards that are usually deployed in
@@ -5052,6 +5066,34 @@ entries:
   kyverno:
   - apiVersion: v2
     appVersion: 1.15.3
+    created: "2026-09-09T09:00:16.252591395Z"
+    dependencies:
+    - name: kyverno
+      repository: https://kyverno.github.io/kyverno/
+      version: 3.5.3
+    - name: kyverno-policies
+      repository: https://kyverno.github.io/kyverno/
+      version: 3.5.3
+    - condition: policy-reporter.install
+      name: policy-reporter
+      repository: https://kyverno.github.io/policy-reporter
+      version: 3.7.2
+    - name: common
+      repository: https://charts.iits.tech
+      version: 0.3.1
+    description: 'This chart wraps the upstream `kyverno` and `kyverno-policies` chart
+      and adds a few useful policies:   - Verify all images are signed with cosign   -
+      Verify all images come from allowed image repositories   - Replace the complete
+      registry reference with a custom one   - Prepend the image reference with a
+      custom prefix, useful for e.g. pull-through caches '
+    digest: 886732deaf958395466ec70264f9f3991e1b1a8eb15ddb5a3bf507d2c8ae7f1a
+    name: kyverno
+    type: application
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/kyverno-3.4.0/kyverno-3.4.0.tgz
+    version: 3.4.0
+  - apiVersion: v2
+    appVersion: 1.15.3
     created: "2026-06-26T14:14:07.682020822Z"
     dependencies:
     - name: kyverno
@@ -5925,6 +5967,29 @@ entries:
     - https://github.com/iits-consulting/charts/releases/download/kyverno-1.0.0/kyverno-1.0.0.tgz
     version: 1.0.0
   oidc-forward-auth:
+  - apiVersion: v2
+    created: "2026-09-09T09:00:16.441155949Z"
+    dependencies:
+    - name: gatekeeper
+      repository: https://gogatekeeper.github.io/helm-gogatekeeper
+      version: 0.1.54
+    - name: common
+      repository: https://charts.iits.tech
+      version: 0.0.1
+    description: 'Traefik forward auth with gogatekeeper.  ## Installing the Chart
+      with iits ArgoCD  ```yaml charts:   oidc-forward-auth:     namespace: routing     targetRevision:
+      "1.7.2"     parameters:       gatekeeper.config.client-id: "${vault:whatever/data/keycloak/keycloak_proxy_admin#client_id}"       gatekeeper.config.client-secret:
+      "${vault:whatever/data/keycloak/keycloak_proxy_admin#client_secret}"       gatekeeper.config.encryption-key:
+      "${vault:whatever/data/keycloak/keycloak_proxy_admin#encryption-key}"       gatekeeper.config.discovery-url:
+      "https://{{.Values.projectValues.authDomain}}/realms/{{.Values.projectValues.context}}"       ingress.host:
+      "my.protected.domain" ```  ## Then use it like this   ```yaml ingress:     annotations:     #
+      Value Pattern: <namespace>-<name>@kubernetescrd     traefik.ingress.kubernetes.io/router.middlewares:
+      routing-oidc-forward-auth@kubernetescrd ``` '
+    digest: 21715967455ccf05d20fc22af384e711d259e0184943a2c0dc0883452e3f4daf
+    name: oidc-forward-auth
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/oidc-forward-auth-1.9.0/oidc-forward-auth-1.9.0.tgz
+    version: 1.9.0
   - apiVersion: v2
     created: "2026-04-22T09:56:03.881263651Z"
     dependencies:
@@ -8340,4 +8405,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/waf-cert-uploader-0.1.1/waf-cert-uploader-0.1.1.tgz
     version: 0.1.1
-generated: "2026-09-04T09:06:05.369368912Z"
+generated: "2026-09-09T09:00:16.442158684Z"
