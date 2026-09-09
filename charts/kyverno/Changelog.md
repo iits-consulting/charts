@@ -2,6 +2,10 @@
 
 ## Chart Versions
 
+### 3.4.0
+
+- Add optional TLS secret reference to the Ingress
+
 ### 3.3.0
 - Added common chart lib as dependency chart
 
