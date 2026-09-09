@@ -2,6 +2,12 @@
 
 ## Chart Versions
 
+### 1.21.0
+
+#### 💥 Breaking changes 💥
+
+- `.Values.clusterIssuers.http` converted into a map, allowing specifying multiple cluster issuers
+
 ### 1.20.1
 - Update dependency chart cert-manager-webhook-opentelekomcloud back to original repo 0.2.0
 - Update dependency chart cert-manager to 1.20.1
