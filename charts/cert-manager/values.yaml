@@ -30,11 +30,11 @@ clusterIssuers:
   # certificates, and issues related to your account.
   email:
   http:
-    enabled: true
-    annotations: {}
-    name: letsencrypt
-    ingressClass: traefik
-    server: https://acme-v02.api.letsencrypt.org/directory
+    letsencrypt:
+      enabled: true
+      annotations: {}
+      ingressClass: traefik
+      server: https://acme-v02.api.letsencrypt.org/directory
 
   # -- Only available for OTC
   otcDNS:

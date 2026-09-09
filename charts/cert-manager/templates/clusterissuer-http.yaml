@@ -1,19 +1,20 @@
-{{ if eq .Values.clusterIssuers.http.enabled true }}
+{{- range $issuerName, $issuer := .Values.clusterIssuers.http | default dict }}
+{{ if eq $issuer.enabled true }}
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
-  name: {{.Values.clusterIssuers.http.name}}
-  {{- with .Values.clusterIssuers.http.annotations }}
+  name: {{$issuerName}}
+  {{- with $issuer.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
   acme:
-    email: {{ .Values.clusterIssuers.email }}
-    server: {{ .Values.clusterIssuers.http.server }}
+    email: {{ $.Values.clusterIssuers.email }}
+    server: {{ $issuer.server }}
     privateKeySecretRef:
       # Secret resource that will be used to store the account's private key.
-      name: {{.Values.clusterIssuers.http.name}}
+      name: {{$issuerName}}
 
     solvers:
       # Add a single challenge solver, HTTP01 using an Ingress
@@ -22,5 +23,6 @@ spec:
             ingressTemplate:
               metadata:
                 annotations:
-                  "kubernetes.io/ingress.class": {{.Values.clusterIssuers.http.ingressClass}}
+                  "kubernetes.io/ingress.class": {{$issuer.ingressClass}}
 {{ end }}
+{{- end }}
