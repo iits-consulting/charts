@@ -1,5 +1,5 @@
 {{- range $issuerName, $issuer := .Values.clusterIssuers.http | default dict }}
-{{ if eq $issuer.enabled true }}
+{{- if eq $issuer.enabled true }}
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
@@ -24,5 +24,6 @@ spec:
               metadata:
                 annotations:
                   "kubernetes.io/ingress.class": {{$issuer.ingressClass}}
-{{ end }}
+---
+{{- end }}
 {{- end }}
