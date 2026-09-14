@@ -1,6 +1,6 @@
 # traefik
 
-![Version: 35.2.0](https://img.shields.io/badge/Version-35.2.0-informational?style=flat-square) ![AppVersion: v3.3.6](https://img.shields.io/badge/AppVersion-v3.3.6-informational?style=flat-square)
+![Version: 41.0.2](https://img.shields.io/badge/Version-41.0.2-informational?style=flat-square) ![AppVersion: v3.7.6](https://img.shields.io/badge/AppVersion-v3.7.6-informational?style=flat-square)
 
 The traefik ingress controller with some additional resources and sane default values for IITS projects.
 Always read the [Changelog](Changelog.md) for information about possible migrations.
@@ -9,7 +9,7 @@ Always read the [Changelog](Changelog.md) for information about possible migrati
 
 | Repository | Name | Version |
 |------------|------|---------|
-| oci://ghcr.io/traefik/helm | traefik | 35.2.0 |
+| oci://ghcr.io/traefik/helm | traefik | 41.0.2 |
 
 ## Values
 
@@ -18,12 +18,12 @@ Always read the [Changelog](Changelog.md) for information about possible migrati
 | defaultCert.dnsNames | array | `nil` | Required, set the domains you want to request, i.e.  dnsNames:  - "dev.example.com" # Required if you also want to serve on the "root" url  - "*.dev.example.com" # If you want wildcard certificates, you have to do an DNS01 Request for the certificate |
 | defaultCert.enabled | bool | `true` |  |
 | defaultCert.issuerName | string | `"letsencrypt-dns"` | Defaults are 'letsencrypt' for HTTP01 and 'letsencrypt-dns' for DNS01 For wildcard-certificates you need to use the DNS01 Challenge |
-| traefik.additionalArguments[0] | string | `"--ping"` |  |
+| traefik.accessLog.enabled | bool | `false` |  |
+| traefik.accessLog.format | string | `"json"` |  |
 | traefik.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[0].labelSelector.matchLabels."app.kubernetes.io/instance" | string | `"{{ .Release.Name }}-{{ include \"traefik.namespace\" . }}"` |  |
 | traefik.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[0].labelSelector.matchLabels."app.kubernetes.io/name" | string | `"{{ template \"traefik.name\" . }}"` |  |
 | traefik.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[0].topologyKey | string | `"kubernetes.io/hostname"` |  |
 | traefik.deployment.replicas | int | `2` |  |
-| traefik.globalArguments[0] | string | `"--global.checknewversion"` |  |
 | traefik.ingressClass.enabled | bool | `true` |  |
 | traefik.ingressClass.isDefaultClass | bool | `true` |  |
 | traefik.ingressRoute.dashboard.enabled | bool | `true` |  |
@@ -34,10 +34,8 @@ Always read the [Changelog](Changelog.md) for information about possible migrati
 | traefik.ingressRoute.healthcheck.enabled | bool | `false` |  |
 | traefik.ingressRoute.healthcheck.entryPoints[0] | string | `"traefik"` |  |
 | traefik.ingressRoute.healthcheck.entryPoints[1] | string | `"websecure"` |  |
-| traefik.logs.access.enabled | bool | `false` |  |
-| traefik.logs.access.format | string | `"json"` |  |
-| traefik.logs.general.format | string | `"json"` |  |
-| traefik.logs.general.level | string | `"INFO"` |  |
+| traefik.log.format | string | `"json"` |  |
+| traefik.log.level | string | `"INFO"` |  |
 | traefik.metrics.prometheus.service.enabled | bool | `true` |  |
 | traefik.metrics.prometheus.serviceMonitor.enabled | bool | `true` |  |
 | traefik.providers.kubernetesCRD.allowCrossNamespace | bool | `true` |  |

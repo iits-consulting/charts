@@ -145,6 +145,7 @@ ingress:
     - host: "{{ .Values.ingress.host }}"
       paths:
         - path: "/oauth"
+      # secretName: "oidc-forward-auth-tls"
         
 # https://github.com/iits-consulting/charts/tree/main/charts/common
 # Global functionality can be used from the common library chart, e.g. creating External Secrets

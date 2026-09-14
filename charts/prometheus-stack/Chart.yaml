@@ -3,15 +3,18 @@ dependencies:
   - alias: prometheusStack
     name: kube-prometheus-stack
     repository: https://prometheus-community.github.io/helm-charts
-    version: 79.8.2
+    version: 88.3.0
   - alias: blackboxExporter
     condition: blackboxExporter.enabled
     name: prometheus-blackbox-exporter
     repository: https://prometheus-community.github.io/helm-charts
-    version: 11.5.0
+    version: 11.17.2
+  - name: common
+    repository: https://charts.iits.tech
+    version: 0.3.1
 description: |
   A complete monitoring/alerting stack with Grafana, Prometheus, Alertmanager & Blackbox exporter
-  
+
   ## Installing the Chart with iits ArgoCD
   :warning: Make sure that the CRD versions of the chart matches the chart version before upgrading!
 
@@ -19,7 +22,7 @@ description: |
   prometheus-stack:
     namespace: monitoring
     repoURL: "https://charts.iits.tech"
-    targetRevision: "79.8.2"
+    targetRevision: "88.3.0"
     syncOptions:
       - ServerSideApply=true
     ignoreDifferences:
@@ -36,5 +39,5 @@ description: |
       prometheusStack.grafana.adminPassword: "REPLACE_ME"
   ```
 name: prometheus-stack
-version: 79.8.2
-appVersion: 3.7.3
+version: 88.3.0
+appVersion: 3.13.2

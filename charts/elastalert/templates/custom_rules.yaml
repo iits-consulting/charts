@@ -1,9 +1,19 @@
+{{- $esoSecrets := (((.Values.common).externalSecret).pull).secrets | default dict }}
+{{- $esoActive := and (((.Values.common).externalSecret).enabled) ((((.Values.common).externalSecret).pull).enabled) (index $esoSecrets "elastalert-slack-webhook") }}
+{{- if and $esoActive .Values.customRules.slack.webhookUrl }}
+{{- fail "Cannot set both ESO mode (common.externalSecret.enabled + pull.enabled + elastalert-slack-webhook) and customRules.slack.webhookUrl — use one webhook injection method." }}
+{{- end }}
 apiVersion: v1
 kind: Secret
 type: Opaque
 metadata:
   name: {{ .Release.Name }}-custom-rules
 stringData:
-  {{- range $key,$rule := .Values.customRules.alerting }}
-  {{ $key | indent 4 }}: |- {{ tpl (toYaml $rule) $ | toString | nindent 10}}
+  {{- $slackWebhookUrl := .Values.customRules.slack.webhookUrl | default "" }}
+  {{- if ((.Values.common).externalSecret).enabled }}
+  {{- $slackWebhookUrl = "${SLACK_WEBHOOK_URL}" }}
+  {{- end }}
+  {{- range $key, $rule := .Values.customRules.alerting }}
+  {{- $ruleWithWebhook := merge (deepCopy $rule) (dict "slack_webhook_url" $slackWebhookUrl) }}
+  {{ $key | indent 4 }}: |- {{ tpl (toYaml $ruleWithWebhook) $ | toString | nindent 10}}
   {{- end }}

@@ -30,14 +30,16 @@ clusterIssuers:
   # certificates, and issues related to your account.
   email:
   http:
-    enabled: true
-    name: letsencrypt
-    ingressClass: traefik
-    server: https://acme-v02.api.letsencrypt.org/directory
+    letsencrypt:
+      enabled: true
+      annotations: {}
+      ingressClass: traefik
+      server: https://acme-v02.api.letsencrypt.org/directory
 
   # -- Only available for OTC
   otcDNS:
     enabled: true
+    annotations: {}
     # Name of an existing secret to use, otherwise will create one with the content of "accessKey" and "secretKey"
     # Existing secret has to have the keys "accessKey" and "secretKey" specified with appropriate values
     existingSecretRef: ""
@@ -51,6 +53,9 @@ clusterIssuers:
 policyException:
   # Only enabled if clusterIssuers.otcDNS.enabled is also true
   enabled: "{{ .Values.clusterIssuers.otcDNS.enabled }}"
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-weight": "-5"
 
 # https://github.com/iits-consulting/charts/tree/main/charts/common
 # Global functionality can be used from the common library chart, e.g. creating External Secrets

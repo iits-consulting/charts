@@ -2,6 +2,28 @@
 
 ## Chart Versions
 
+### 88.3.0
+- Increase version of `kube-prometheus-stack` to 88.3.0
+- Increase version of `prometheus-blackbox-exporter` to 11.17.2
+- ⚠️ The prometheus-operator CRDs (`v0.86.2` → `v0.93.0`) must be applied manually **before** the chart is rolled out, see [UPGRADE.md](./UPGRADE.md)
+- Contains Grafana major update to 13.1.3
+
+### 79.12.0
+- Increase version of `kube-prometheus-stack` to 79.12.0
+- Increase container restart report firing to >4
+
+### 79.11.0
+
+- Add default alert rules for container exits
+- Update prometheus-stack dependency chart
+
+### 79.9.0
+
+- Make Prometheus pick also pick up `PrometheusRule` CRs outside of this deployment
+- Increase version of `kube-prometheus-stack` to 79.9.0
+- Added common chart lib as dependency chart
+- Adds custom configMap template for Blackbox Exporter config via External Secrets, when enabled
+
 ### 79.8.2
 - Updates kube-prometheus-stack to 79.8.2
 - Updates blackbox exporter to 11.5.0

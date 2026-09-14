@@ -1,0 +1,6 @@
+dependencies:
+- name: common
+  repository: https://charts.iits.tech
+  version: 0.3.1
+digest: sha256:76c8073f14c8e332639d4ffbe42f20fc0aaeaa7376e37e62226f239f1862dd1f
+generated: "2026-05-05T19:54:01.580037+02:00"

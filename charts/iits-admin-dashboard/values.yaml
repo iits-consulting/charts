@@ -131,6 +131,7 @@ ingress:
       paths:
         - path: "/"
           #pathType: "Prefix"
+      # secretName: "iits-admin-dashboard-tls"
 
 
 deployment:

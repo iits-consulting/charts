@@ -1,3 +1,4 @@
+{{- if not .Values.common.externalSecret.enabled }}
 {{- range $userName, $userDescription := .Values.auth.users }}
 apiVersion: v1
 kind: Secret
@@ -12,4 +13,5 @@ stringData:
   roles: {{ join "," $userDescription.roles }}
 
 ---
-{{ end }}
+{{- end }}
+{{- end }}

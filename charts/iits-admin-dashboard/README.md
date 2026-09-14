@@ -1,6 +1,6 @@
 # iits-admin-dashboard
 
-![Version: 1.7.1](https://img.shields.io/badge/Version-1.7.1-informational?style=flat-square) ![AppVersion: 2.1.0](https://img.shields.io/badge/AppVersion-2.1.0-informational?style=flat-square)
+![Version: 1.8.0](https://img.shields.io/badge/Version-1.8.0-informational?style=flat-square) ![AppVersion: 2.1.0](https://img.shields.io/badge/AppVersion-2.1.0-informational?style=flat-square)
 
 This chart deploys a super simple webserver that provides a simple website containing links to a set
 of dashboards that are usually deployed in our infrastructure setup as well as some nifty external
@@ -12,7 +12,7 @@ tools.
 iits-admin-dashboard:
   namespace: admin
   repoURL: "https://charts.iits.tech"
-  targetRevision: "1.7.1"
+  targetRevision: "1.8.0"
   parameters:
     ingress.host: "REPLACE_ME"
 ```

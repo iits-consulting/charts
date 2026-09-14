@@ -1,5 +1,5 @@
 {{- with .Values.generatePasswords }}
-{{- if .enabled }}
+{{- if and .enabled (not $.Values.common.externalSecret.enabled) }}
 apiVersion: batch/v1
 kind: Job
 metadata:

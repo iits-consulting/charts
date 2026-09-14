@@ -1,0 +1,53 @@
+suite: ESO ExternalSecret via common sub-chart
+templates:
+  - charts/common/templates/external-secret.yaml
+
+release:
+  name: elastalert
+
+tests:
+  - it: should not create ExternalSecret when ESO is disabled
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: should create ExternalSecret for slack webhook when ESO is enabled
+    values:
+      - eso_values.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: ExternalSecret
+      - equal:
+          path: metadata.name
+          value: elastalert-slack-webhook
+      - equal:
+          path: spec.secretStoreRef.kind
+          value: ClusterSecretStore
+      - equal:
+          path: spec.secretStoreRef.name
+          value: vault
+      - equal:
+          path: spec.target.name
+          value: elastalert-slack-webhook
+      - equal:
+          path: spec.data[0].secretKey
+          value: slack_webhook_url
+      - equal:
+          path: spec.data[0].remoteRef.key
+          value: "myProject/data/common/slack"
+      - equal:
+          path: spec.data[0].remoteRef.property
+          value: slack_webhook_url  # defaults to key name when remoteKey is not set
+
+  - it: should use custom remoteKey when vault key name differs from the K8s secret key
+    values:
+      - eso_custom_remotekey_values.yaml
+    asserts:
+      - equal:
+          path: spec.data[0].secretKey
+          value: slack_webhook_url
+      - equal:
+          path: spec.data[0].remoteRef.property
+          value: different_key_in_vault

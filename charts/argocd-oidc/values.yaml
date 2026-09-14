@@ -2,3 +2,30 @@
 oidcURL: ""
 clientID: ""
 clientSecret: ""
+
+# https://github.com/iits-consulting/charts/tree/main/charts/common
+# Global functionality can be used from the common library chart, e.g. creating External Secrets
+common:
+  externalSecret:
+    enabled: false
+    # -- example setup for pulling the oidc secrets from vault
+    # enabled: true
+    # secretStore:
+    #   kind: ClusterSecretStore
+    #   name: cluster-secret-store
+    # pull:
+    #   enabled: true
+    #   secrets:
+    #     argocd-oidc:
+    #       path: "" # path/to/secret
+    #       template:
+    #         metadata:
+    #           labels:
+    #             app.kubernetes.io/part-of: argocd
+    #         data:
+    #           oidcURL: "https://your.oidc.url/realms/realm"
+    #           clientID: "{{ `{{ .clientID }}` }}" 
+    #           clientSecret: "{{ `{{ .clientSecret }}` }}" 
+    #       keys:
+    #         - name: clientID
+    #         - name: clientSecret

@@ -1,0 +1,53 @@
+suite: elasticsearch-users
+templates:
+  - eks-stack/elasticsearch-users.yaml
+
+release:
+  name: elastic-operator
+
+tests:
+  - it: should render basic-auth user secrets when ESO disabled (3 default users)
+    set:
+      common.externalSecret.enabled: false
+    asserts:
+      - hasDocuments:
+          count: 3
+      - documentSelector:
+          path: metadata.name
+          value: elastic-operator-user-custom-filebeat
+        equal:
+          path: type
+          value: kubernetes.io/basic-auth
+      - documentSelector:
+          path: metadata.name
+          value: elastic-operator-user-custom-filebeat
+        equal:
+          path: stringData.username
+          value: custom_filebeat
+      - documentSelector:
+          path: metadata.name
+          value: elastic-operator-user-custom-kibana-guest
+        equal:
+          path: stringData.username
+          value: custom_kibana_guest
+
+  - it: should NOT render any user secrets when ESO is enabled
+    set:
+      common.externalSecret.enabled: true
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: should embed existingPassword when set and ESO disabled
+    set:
+      common.externalSecret.enabled: false
+      auth.users.custom_filebeat.existingPassword: "static-pw"
+      auth.users.custom_filebeat.roles:
+        - custom_filebeat
+    asserts:
+      - documentSelector:
+          path: metadata.name
+          value: elastic-operator-user-custom-filebeat
+        equal:
+          path: stringData.password
+          value: "static-pw"

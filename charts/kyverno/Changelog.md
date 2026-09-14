@@ -2,6 +2,24 @@
 
 ## Chart Versions
 
+### 3.4.0
+
+- Add optional TLS secret reference to the Ingress
+
+### 3.3.0
+- Added common chart lib as dependency chart
+
+## [3.2.2]
+### Fixed
+- template range loop for ClusterPolicy causing secrets to be cloned into all namespaces even when autoInjectDockerPullSecrets feature was explicitly disabled
+
+### Added
+- guard for secretRef[*].name beeing set, allowing empty .namespace to clone from secret in chart's namespace
+- yaml document end clause (---) to template
+
+### 3.2.1
+- Handle naming collisions in imagePullSecrets
+
 ### 3.2.0
 
 - Update Kyverno chart to 3.5.3

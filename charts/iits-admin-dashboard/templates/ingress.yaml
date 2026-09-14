@@ -21,6 +21,9 @@ spec:
     - hosts:
       {{- range .hosts }}
         - {{ tpl (toYaml .host) $ }}
+      {{- if .secretName }}
+      secretName: {{ .secretName }}
+      {{- end }}
       {{- end }}
 
   rules:

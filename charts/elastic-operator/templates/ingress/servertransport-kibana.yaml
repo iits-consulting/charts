@@ -6,7 +6,7 @@ metadata:
   name: {{ $.Release.Name }}-kibana
 spec:
   serverName: {{ $.Release.Name }}-kb-http
-  rootCAsSecrets:
-    - {{ $.Release.Name }}-kb-http-certs-public
+  rootCAs:
+    - secret: {{ $.Release.Name }}-kb-http-certs-public
 {{- end }}
 {{- end }}

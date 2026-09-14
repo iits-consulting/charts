@@ -1,6 +1,6 @@
 # argocd
 
-![Version: 20.0.0](https://img.shields.io/badge/Version-20.0.0-informational?style=flat-square) ![AppVersion: 3.1.8](https://img.shields.io/badge/AppVersion-3.1.8-informational?style=flat-square)
+![Version: 21.0.0](https://img.shields.io/badge/Version-21.0.0-informational?style=flat-square) ![AppVersion: 3.5.1](https://img.shields.io/badge/AppVersion-3.5.1-informational?style=flat-square)
 
 This chart is used to bootstrap a Kubernetes cluster with `argocd`.
 You can use this chart to deploy `argocd` through tools like `terraform`.
@@ -14,7 +14,7 @@ resource "helm_release" "argocd" {
   name                  = "argocd"
   repository            = "https://charts.iits.tech"
   chart                 = "argocd"
-  version               = "20.0.0"
+  version               = "21.0.0"
   namespace             = "argocd"
   create_namespace      = true
   wait                  = true
@@ -30,7 +30,7 @@ resource "helm_release" "argocd" {
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://argoproj.github.io/argo-helm | argo-cd | 8.6.4 |
+| https://argoproj.github.io/argo-helm | argo-cd | 10.3.3 |
 
 ## Values
 
@@ -44,6 +44,7 @@ resource "helm_release" "argocd" {
 | argo-cd.configs.cm."resource.customizations.ignoreDifferences.apiextensions.k8s.io_CustomResourceDefinition" | string | `"jqPathExpressions:\n  - .spec.conversion.webhookClientConfig.caBundle\n"` |  |
 | argo-cd.configs.cm."resource.customizations.ignoreDifferences.argoproj.io_Application" | string | `"# Ignores .data changes of all secrets with a vaultInjectionChecksum annotation\njqPathExpressions:\n  - '. | select(.metadata.annotations.parametersChecksum) | .spec.source.helm'\n  - '. | select(.metadata.annotations.valueFileChecksum) | .spec.source.helm'\n"` |  |
 | argo-cd.configs.cm."resource.customizations.ignoreDifferences.cert-manager.io_Certificate" | string | `"jqPathExpressions:\n  - .spec.duration\n"` |  |
+| argo-cd.configs.params."applicationsetcontroller.policy" | string | `"sync"` |  |
 | argo-cd.configs.params."server.basehref" | string | `"/argocd"` |  |
 | argo-cd.configs.params."server.insecure" | bool | `true` |  |
 | argo-cd.configs.params."server.rootpath" | string | `"/argocd"` |  |
@@ -63,6 +64,7 @@ resource "helm_release" "argocd" {
 | argo-cd.global.domain | string | `"REPLACE_THIS/argocd"` |  |
 | argo-cd.global.logging.format | string | `"json"` |  |
 | argo-cd.global.logging.level | string | `"warn"` |  |
+| argo-cd.global.networkPolicy.create | bool | `false` |  |
 | argo-cd.notifications.enabled | bool | `false` |  |
 | argo-cd.redis-ha.enabled | bool | `true` |  |
 | argo-cd.repoServer.env[0].name | string | `"TZ"` |  |

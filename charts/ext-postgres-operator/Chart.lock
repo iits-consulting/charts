@@ -1,0 +1,9 @@
+dependencies:
+- name: ext-postgres-operator
+  repository: https://movetokube.github.io/postgres-operator/
+  version: 3.0.0
+- name: common
+  repository: https://charts.iits.tech
+  version: 0.3.1
+digest: sha256:4670f851e121222e6cd819210289b027446f601da00e6e9050479a9c92b09e51
+generated: "2026-06-16T12:10:37.062981+02:00"

@@ -3,6 +3,10 @@ apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
   name: {{.Values.clusterIssuers.otcDNS.name}}
+  {{- with .Values.clusterIssuers.otcDNS.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
   acme:
     # You must replace this email address with your own.
