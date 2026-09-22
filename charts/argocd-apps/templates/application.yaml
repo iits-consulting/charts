@@ -22,7 +22,7 @@ spec:
   source:
     path: {{ $project.git.path | default $projectName }}
     repoURL: {{ $project.git.repoUrl }}
-    targetRevision: {{ $project.git.branch | default "main" }}
+    targetRevision: {{ $project.git.branch | default "refs/heads/main" }}
     helm:
       values: |
         {{- $project.tofuValues | toYaml | nindent 10}}

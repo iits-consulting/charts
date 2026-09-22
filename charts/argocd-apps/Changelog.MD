@@ -2,6 +2,9 @@
 
 ## Chart Versions
 
+### 2.0.4
+- default targetRevision to refs/heads/main in application.yaml
+
 ### 2.0.3
 - Fix missing template separator in repo-config-plain.yaml
 

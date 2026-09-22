@@ -23,7 +23,7 @@ projects: {}
 #       repoUrl: ""
 #       # Optional, defaults to project name
 #       path: ""
-#       # Optional, defaults to main
+#       # Optional, defaults to refs/heads/main
 #       branch: ""
 #       # Values used for secretType "plain"
 #       ## defaults to ARGOCD_GIT_ACCESS_TOKEN
