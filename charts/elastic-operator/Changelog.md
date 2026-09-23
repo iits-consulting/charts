@@ -2,6 +2,13 @@
 
 All notable changes to this chart will be documented in this file.
 
+## [9.4.1] - 2026-09-22
+
+### Added
+- `ilm.policies.default` catch-all ILM policy (`indexPatterns: ["*"]`, same retention as `medium`: 32d cold / 90d delete). Any index not matched by a more specific policy (`long`/`medium`/`short`) is now assigned this policy, both for new indices (via a lowest-priority index template) and for already-existing indices (applied before the specific policies so they still take precedence).
+
+> **Note:** Previously, indices that matched none of `long`/`medium`/`short` were left without any ILM policy and were never deleted. After this change such indices fall under `default` and will be deleted after 90 days. Review any index family that was intentionally left unmanaged (e.g. `elastalert*`) before upgrading.
+
 ## [9.4.0] - 2026-08-19
 
 ### Added

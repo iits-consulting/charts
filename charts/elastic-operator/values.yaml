@@ -429,6 +429,12 @@ ilm:
   tolerations: [ ]
   nodeSelector: { }
   policies:
+    default:
+      # catch-all for any index not matched by a more specific policy below;
+      # retention mirrors the "medium" policy
+      indexPatterns: [ "*" ]
+      coldAfter: 32d
+      deleteAfter: 90d
     long:
       #business apps and security relevant logs
       indexPatterns: [ "auth*", "vault*" ]

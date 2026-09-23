@@ -54,6 +54,7 @@ data:
 
         {
           "index_patterns" : {{$policyConfig.indexPatterns | toJson }},
+          "priority": {{ if eq $policyName "default" }}0{{ else }}100{{ end }},
           "template": {
             "settings" : {
                 "index.lifecycle.name": "{{$policyName}}",
@@ -65,7 +66,29 @@ data:
 
     echo -e "\nINFO: Create ilm index template for {{$policyName}} finished"
 
-    {{ range $indexPattern  := $policyConfig.indexPatterns }}
+    {{ end }}
+
+    {{/*
+      Apply policies to already-existing indices. "default" (index pattern "*") must run
+      first so that the more specific policies below can override it for the indices they
+      actually own; applying it last would clobber those indices back to "default".
+    */}}
+    {{ with index .Values.ilm.policies "default" }}
+    {{ range $indexPattern := .indexPatterns }}
+    echo -e "\nINFO: Start apply default to {{$indexPattern}}"
+    curl -u "$ELASTICSEARCH_USERNAME:$ELASTICSEARCH_PASSWORD" --cacert /es-cert/ca.crt -s -X PUT --header 'Content-Type: application/json' ${endpoint}/{{$indexPattern}}/_settings --data-binary @- << EOF
+    {
+      "index.lifecycle.name": "default"
+    }
+    EOF
+
+    echo -e "\nINFO: Apply default to {{$indexPattern}} finished"
+    {{ end }}
+    {{ end }}
+
+    {{ range $policyName, $policyConfig := .Values.ilm.policies }}
+    {{ if ne $policyName "default" }}
+    {{ range $indexPattern := $policyConfig.indexPatterns }}
     echo -e "\nINFO: Start apply {{$policyName}} to {{$indexPattern}}"
     curl -u "$ELASTICSEARCH_USERNAME:$ELASTICSEARCH_PASSWORD" --cacert /es-cert/ca.crt -s -X PUT --header 'Content-Type: application/json' ${endpoint}/{{$indexPattern}}/_settings --data-binary @- << EOF
     {
@@ -74,6 +97,7 @@ data:
     EOF
 
     echo -e "\nINFO: Apply {{$policyName}} to {{$indexPattern}} finished"
+    {{ end }}
     {{ end }}
     {{ end }}
 

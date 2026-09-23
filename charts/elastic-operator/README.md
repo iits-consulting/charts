@@ -171,6 +171,9 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | ilm.image.tag | string | `"8.13.0"` |  |
 | ilm.image.userId | int | `100` |  |
 | ilm.nodeSelector | object | `{}` |  |
+| ilm.policies.default.coldAfter | string | `"32d"` |  |
+| ilm.policies.default.deleteAfter | string | `"90d"` |  |
+| ilm.policies.default.indexPatterns[0] | string | `"*"` |  |
 | ilm.policies.long.coldAfter | string | `"32d"` |  |
 | ilm.policies.long.deleteAfter | string | `"365d"` |  |
 | ilm.policies.long.indexPatterns[0] | string | `"auth*"` |  |
