@@ -1380,6 +1380,27 @@ entries:
   cert-manager:
   - apiVersion: v2
     appVersion: v1.20.1
+    created: "2026-09-24T13:40:13.9115447Z"
+    dependencies:
+    - name: cert-manager
+      repository: https://charts.jetstack.io
+      version: v1.20.1
+    - condition: clusterIssuers.otcDNS.enabled
+      name: cert-manager-webhook-opentelekomcloud
+      repository: https://akyriako.github.io/cert-manager-webhook-opentelekomcloud
+      version: v0.2.0
+    - name: common
+      repository: https://charts.iits.tech
+      version: 0.0.1
+    description: Wrapper chart for cert-manager. Deploys a ClusterIssuer resource
+      to bootstrap Let's encrypt cert generation
+    digest: b5f2388a273380fb7f3be80f6ccda7e4d41018a787a8d90c9c1787a49175108e
+    name: cert-manager
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/cert-manager-1.22.0/cert-manager-1.22.0.tgz
+    version: 1.22.0
+  - apiVersion: v2
+    appVersion: v1.20.1
     created: "2026-09-11T13:54:48.936571022Z"
     dependencies:
     - name: cert-manager
@@ -8474,4 +8495,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/waf-cert-uploader-0.1.1/waf-cert-uploader-0.1.1.tgz
     version: 0.1.1
-generated: "2026-09-24T13:29:53.405644412Z"
+generated: "2026-09-24T13:40:13.912806673Z"
