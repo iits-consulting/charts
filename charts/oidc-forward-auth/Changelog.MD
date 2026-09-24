@@ -2,6 +2,11 @@
 
 ## Changelog Versions
 
+### 1.9.1
+
+- Update gogatekeeper helm chart version to 0.1.66
+- Updates gogatekeeper app version from 3.3 to 5.0, check [UPGRADE.md](./UPGRADE.md) for details
+
 ### 1.9.0
 
 - Add optional TLS secret reference to the Ingress
