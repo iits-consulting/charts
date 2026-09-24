@@ -25,7 +25,7 @@ description: |
   ```
 
 name: argocd
-version: 21.0.1
+version: 21.0.0
 appVersion: 3.5.1
 dependencies:
   - name: argo-cd
