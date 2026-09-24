@@ -33,8 +33,11 @@ clusterIssuers:
     letsencrypt:
       enabled: true
       annotations: {}
-      ingressClass: traefik
       server: https://acme-v02.api.letsencrypt.org/directory
+      ingressTemplate:
+        metadata:
+          annotations:
+            "kubernetes.io/ingress.class": traefik
 
   # -- Only available for OTC
   otcDNS:

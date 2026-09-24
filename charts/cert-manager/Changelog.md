@@ -2,6 +2,9 @@
 
 ## Chart Versions
 
+### 1.22.0
+- allow to modify the ACME Solver's Ingress template
+
 ### 1.21.0
 
 #### 💥 Breaking changes 💥

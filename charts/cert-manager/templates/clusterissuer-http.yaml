@@ -20,10 +20,10 @@ spec:
       # Add a single challenge solver, HTTP01 using an Ingress
       - http01:
           ingress:
+            {{- with $issuer.ingressTemplate }}
             ingressTemplate:
-              metadata:
-                annotations:
-                  "kubernetes.io/ingress.class": {{$issuer.ingressClass}}
+              {{- toYaml . | nindent 14 }}
+            {{- end }}
 ---
 {{- end }}
 {{- end }}
