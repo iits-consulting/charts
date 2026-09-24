@@ -1,6 +1,6 @@
 # oidc-forward-auth
 
-![Version: 1.9.0](https://img.shields.io/badge/Version-1.9.0-informational?style=flat-square)
+![Version: 1.9.1](https://img.shields.io/badge/Version-1.9.1-informational?style=flat-square)
 
 Traefik forward auth with gogatekeeper.
 
@@ -33,7 +33,7 @@ ingress:
 | Repository | Name | Version |
 |------------|------|---------|
 | https://charts.iits.tech | common | 0.0.1 |
-| https://gogatekeeper.github.io/helm-gogatekeeper | gatekeeper | 0.1.54 |
+| https://gogatekeeper.github.io/helm-gogatekeeper | gatekeeper | 0.1.66 |
 
 ## Values
 
