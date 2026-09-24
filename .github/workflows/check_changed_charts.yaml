@@ -52,6 +52,7 @@ jobs:
     needs: find-charts
     if: ${{ needs.find-charts.outputs.lock_charts != '[]' }}
     strategy:
+      fail-fast: false
       matrix:
         chart: ${{ fromJSON(needs.find-charts.outputs.lock_charts) }}
     runs-on: ubuntu-latest
@@ -79,6 +80,7 @@ jobs:
     needs: find-charts
     if: ${{ needs.find-charts.outputs.version_charts != '[]' }}
     strategy:
+      fail-fast: false
       matrix:
         chart: ${{ fromJSON(needs.find-charts.outputs.version_charts) }}
     runs-on: ubuntu-latest
