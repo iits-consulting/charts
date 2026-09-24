@@ -6,10 +6,9 @@ on:
       - "main"
     paths:
       - 'charts/**/Chart.yaml'
-      - 'charts/**/Chart.lock'
 
 env:
-  HELM_VERSION: v3.14.4
+  HELM_VERSION: v3.22.0
 
 jobs:
   find-charts:
@@ -26,7 +25,7 @@ jobs:
         id: get-changed-charts
         run: |
           git fetch origin main
-          changed_charts=$(git diff --name-only origin/main...HEAD -- 'charts/*/Chart.yaml' 'charts/*/Chart.lock' \
+          changed_charts=$(git diff --name-only origin/main...HEAD -- 'charts/*/Chart.yaml' \
             | awk -F/ '{print $2}' | sort -u)
 
           charts=$(for c in $changed_charts; do

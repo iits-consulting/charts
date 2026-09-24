@@ -10,7 +10,7 @@ on:
       - 'main'
 
 env:
-  HELM_VERSION: v3.14.4
+  HELM_VERSION: v3.22.0
 
 jobs:
   find-charts:
