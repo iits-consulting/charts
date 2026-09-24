@@ -1,6 +1,6 @@
 # Used to check only the changed charts
 # Included checks:
-# - Chart.lock updated, if needed
+# - Chart.lock updated
 # - Chart.yaml version increased
 
 name: Check changed charts
