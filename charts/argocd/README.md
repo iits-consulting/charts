@@ -30,7 +30,7 @@ resource "helm_release" "argocd" {
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://argoproj.github.io/argo-helm | argo-cd | 10.3.3 |
+| https://argoproj.github.io/argo-helm | argo-cd | 10.9.2 |
 
 ## Values
 
