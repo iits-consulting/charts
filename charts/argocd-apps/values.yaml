@@ -49,11 +49,12 @@ projects: {}
 #         username:
 
 #     # defaults to *
-#     # allowedUrls:
+#     allowedUrls:
+#       - source-repo-url
 
 #     # list of namespaces the project is allowed to deploy to, defaults to * (all namespaces)
-#     # allowedNamespaces:
-#     #   - my-namespace
+#     allowedNamespaces:
+#       - my-namespace
 
 #     syncWindow:
 #       - kind: deny
