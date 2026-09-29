@@ -2,7 +2,7 @@
 
 ## Chart Versions
 
-### 2.0.5
+### 2.1.0
 - Add possibility to limit a project to specific namespaces
 
 ### 2.0.4
