@@ -51,6 +51,10 @@ projects: {}
 #     # defaults to *
 #     # allowedUrls:
 
+#     # list of namespaces the project is allowed to deploy to, defaults to * (all namespaces)
+#     # allowedNamespaces:
+#     #   - my-namespace
+
 #     syncWindow:
 #       - kind: deny
 #         schedule: '0 0 * * *'
