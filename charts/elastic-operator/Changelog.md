@@ -2,6 +2,15 @@
 
 All notable changes to this chart will be documented in this file.
 
+## [9.4.7] - 2026-10-13
+
+### Added
+- Added a possibility to add a master-voting only node by enabling/disabling to the existing nodeSet. Disabled by default.
+- Updated to Elasticsearch version 9.4.7
+
+
+The default nodeSet and its `template.otcPVC`/`template.regularPVC` helpers are untouched; rendered output for existing installs is unchanged.
+
 ## [9.4.0] - 2026-08-19
 
 ### Added

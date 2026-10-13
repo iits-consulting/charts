@@ -70,6 +70,26 @@
         "volumeSize": { "type": "string" },
         "version": { "type": "string" },
         "nodeCount": { "type": "integer" },
+        "votingOnly": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Adds one dedicated voting-only master node (node.roles: [master, voting_only]) as a tiebreaker. With nodeCount: 2 this forms a valid HA cluster (three master-eligible nodes, two of which are not voting-only).",
+          "properties": {
+            "enabled": { "type": "boolean" },
+            "volumeSize": { "type": "string" },
+            "storageClassName": {
+              "type": "string",
+              "description": "Storage class for the dynamically provisioned volume of the voting-only node. Empty uses the cluster default storage class; cce/aks static provisioning does not apply to this node."
+            },
+            "javaOpts": { "type": "string" },
+            "resources": { "type": "object" },
+            "config": {
+              "type": "object",
+              "description": "Merged on top of elasticsearch.config for the voting-only nodeSet; carries the fixed node.roles [master, voting_only]."
+            },
+            "podTemplateSpec": { "type": "object" }
+          }
+        },
         "config": { "type": "object" },
         "extraSecureSettings": { "type": "array" },
         "javaOpts": { "type": "string" },

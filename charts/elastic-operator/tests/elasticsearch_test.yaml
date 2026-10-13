@@ -42,3 +42,75 @@ tests:
       - equal:
           path: spec.secureSettings[0].secretName
           value: my-extra
+
+  - it: renders only the default nodeSet when votingOnly is disabled
+    asserts:
+      - lengthEqual:
+          path: spec.nodeSets
+          count: 1
+      - equal:
+          path: spec.nodeSets[0].name
+          value: default
+      - equal:
+          path: spec.nodeSets[0].count
+          value: 2
+      - notExists:
+          path: spec.nodeSets[0].config.node.roles
+      - notExists:
+          path: spec.nodeSets[0].volumeClaimTemplates[0].spec.storageClassName
+
+  - it: adds a dedicated voting-only master nodeSet when enabled
+    set:
+      elasticsearch.votingOnly.enabled: true
+    asserts:
+      - lengthEqual:
+          path: spec.nodeSets
+          count: 2
+      - equal:
+          path: spec.nodeSets[1].name
+          value: voting-only
+      - equal:
+          path: spec.nodeSets[1].count
+          value: 1
+      - equal:
+          path: spec.nodeSets[1].config.node.roles
+          value: [ master, voting_only ]
+      # the base elasticsearch.config is inherited
+      - equal:
+          path: spec.nodeSets[1].config.node.store.allow_mmap
+          value: false
+      - equal:
+          path: spec.nodeSets[1].volumeClaimTemplates[0].spec.resources.requests.storage
+          value: 10G
+      # empty storageClassName means cluster default storage class
+      - notExists:
+          path: spec.nodeSets[1].volumeClaimTemplates[0].spec.storageClassName
+      - equal:
+          path: spec.nodeSets[1].podTemplate.spec.containers[0].resources.requests.cpu
+          value: 100m
+      - equal:
+          path: spec.nodeSets[1].podTemplate.spec.containers[0].resources.limits.memory
+          value: 2G
+      # the default nodeSet is unchanged
+      - equal:
+          path: spec.nodeSets[0].count
+          value: 2
+      - notExists:
+          path: spec.nodeSets[0].config.node.roles
+
+  - it: keeps the voting-only volume dynamically provisioned while cce uses static volumes
+    set:
+      elasticsearch.votingOnly.enabled: true
+      elasticsearch.votingOnly.storageClassName: csi-disk
+      cce.elasticsearch:
+        region: eu-de
+        storageClassName: ssd
+        volumeType: SSD
+    asserts:
+      # empty storageClassName so everest binds the statically provisioned PVs
+      - equal:
+          path: spec.nodeSets[0].volumeClaimTemplates[0].spec.storageClassName
+          value: ""
+      - equal:
+          path: spec.nodeSets[1].volumeClaimTemplates[0].spec.storageClassName
+          value: csi-disk

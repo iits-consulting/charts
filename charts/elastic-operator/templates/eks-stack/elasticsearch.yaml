@@ -62,6 +62,30 @@ spec:
       -
       {{- include "template.regularPVC" $ | nindent 8 }}
 {{- end }}
+{{- $baseConfig := .config }}
+{{- with .votingOnly }}
+{{- if .enabled }}
+  - name: voting-only
+    count: 1
+    config:
+      {{- mergeOverwrite (deepCopy ($baseConfig | default dict)) .config | toYaml | nindent 6 }}
+    podTemplate:
+      spec:
+        {{- tpl (.podTemplateSpec | toYaml) $ | nindent 8 }}
+    volumeClaimTemplates:
+      - metadata:
+          name: elasticsearch-data
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: {{ .volumeSize }}
+          {{- with .storageClassName }}
+          storageClassName: {{ . | quote }}
+          {{- end }}
+{{- end }}
+{{- end }}
 
 {{- end }}
 {{- end }}
