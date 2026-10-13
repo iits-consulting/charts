@@ -1,6 +1,6 @@
 # elastic-operator
 
-![Version: 9.4.1](https://img.shields.io/badge/Version-9.4.1-informational?style=flat-square) ![AppVersion: 9.4.0](https://img.shields.io/badge/AppVersion-9.4.0-informational?style=flat-square)
+![Version: 9.4.7](https://img.shields.io/badge/Version-9.4.7-informational?style=flat-square) ![AppVersion: 9.4.7](https://img.shields.io/badge/AppVersion-9.4.7-informational?style=flat-square)
 
 Elasticsearch + filebeat + kibana with default common used indexes and Index Lifecycle Management.
 It comes also with a backup functionality. This is the version using ECK-operator to deploy and monitor the stack.
@@ -78,7 +78,7 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | elasticsearch.version | string | `"{{ .Chart.AppVersion }}"` |  |
 | elasticsearch.volumeSize | string | `"200G"` |  |
 | elasticsearch.votingOnly.config | object | `{"node":{"roles":["master","voting_only"]}}` | Merged on top of elasticsearch.config for the voting-only nodeSet |
-| elasticsearch.votingOnly.enabled | bool | `false` |  |
+| elasticsearch.votingOnly.enabled | string | `"yes"` |  |
 | elasticsearch.votingOnly.javaOpts | string | `""` |  |
 | elasticsearch.votingOnly.podTemplateSpec.containers[0].env[0].name | string | `"ES_JAVA_OPTS"` |  |
 | elasticsearch.votingOnly.podTemplateSpec.containers[0].env[0].value | string | `"{{ .Values.elasticsearch.votingOnly.javaOpts }}"` |  |
