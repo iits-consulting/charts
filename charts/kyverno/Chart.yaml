@@ -15,7 +15,7 @@ dependencies:
     version: 3.9.1
   - name: "policy-reporter"
     repository: "https://kyverno.github.io/policy-reporter"
-    version: 3.10.0
+    version: 3.11.0
     condition: policy-reporter.install
   - name: common
     repository: "https://charts.iits.tech"
