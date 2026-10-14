@@ -6,7 +6,7 @@
 
 - Update Kyverno chart to 3.9.1
 - Update Kyverno-policies chart to 3.9.1
-- Update policy-reporter chart to 3.10.0
+- Update policy-reporter chart to 3.11.0
 
 ### 3.4.0
 
