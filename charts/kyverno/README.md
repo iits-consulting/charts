@@ -12,7 +12,7 @@ This chart wraps the upstream `kyverno` and `kyverno-policies` chart and adds a 
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://charts.iits.tech | common | 0.3.1 |
+| https://charts.iits.tech | common | 0.4.0 |
 | https://kyverno.github.io/kyverno/ | kyverno | 3.9.1 |
 | https://kyverno.github.io/kyverno/ | kyverno-policies | 3.9.1 |
 | https://kyverno.github.io/policy-reporter | policy-reporter | 3.10.0 |
