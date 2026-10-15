@@ -2,6 +2,16 @@
 
 All notable changes to this chart will be documented in this file.
 
+## [9.4.8] - 2026-10-15
+
+### Added
+- `elasticsearch.votingOnly` to add one dedicated voting-only master node as a tiebreaker, forming a valid HA cluster with the default `nodeCount` of 2. Disabled by default.
+
+### Changed
+- Updated the Elastic stack (`appVersion`) to `9.4.8`.
+
+> **Note:** for an upgrade guide, refer to [UPGRADE.md](UPGRADE.md)
+
 ## [9.4.0] - 2026-08-19
 
 ### Added
@@ -73,6 +83,7 @@ All notable changes to this chart will be documented in this file.
 - Updated the Elastic stack (`appVersion`) to `8.18.1`.
 - Updated the Elastic operator to `3.0.0` in preparation for the `appVersion` upgrade to `9.0.0`.
 
+[9.4.8]: https://github.com/iits-consulting/charts/compare/elastic-operator-9.4.0...elastic-operator-9.4.8
 [9.4.0]: https://github.com/iits-consulting/charts/compare/elastic-operator-9.3.7...elastic-operator-9.4.0
 [9.3.7]: https://github.com/iits-consulting/charts/compare/elastic-operator-9.3.5...elastic-operator-9.3.7
 [9.3.5]: https://github.com/iits-consulting/charts/compare/elastic-operator-9.3.3...elastic-operator-9.3.5

@@ -42,3 +42,42 @@ tests:
       - equal:
           path: spec.secureSettings[0].secretName
           value: my-extra
+
+  - it: renders only the default nodeSet when votingOnly is disabled
+    set:
+      elasticsearch.votingOnly.enabled: false
+    asserts:
+      - lengthEqual:
+          path: spec.nodeSets
+          count: 1
+
+  - it: adds a dedicated voting-only master nodeSet when enabled
+    set:
+      elasticsearch.votingOnly.enabled: true
+    asserts:
+      - lengthEqual:
+          path: spec.nodeSets
+          count: 2
+      - equal:
+          path: spec.nodeSets[1].name
+          value: voting-only
+      - equal:
+          path: spec.nodeSets[1].config.node.roles
+          value: [ master, voting_only, remote_cluster_client ]
+
+  - it: keeps the voting-only volume dynamically provisioned while cce uses static volumes
+    set:
+      elasticsearch.votingOnly.enabled: true
+      elasticsearch.votingOnly.storageClassName: csi-disk
+      cce.elasticsearch:
+        region: eu-de
+        storageClassName: ssd
+        volumeType: SSD
+    asserts:
+      # empty storageClassName so everest binds the statically provisioned PVs
+      - equal:
+          path: spec.nodeSets[0].volumeClaimTemplates[0].spec.storageClassName
+          value: ""
+      - equal:
+          path: spec.nodeSets[1].volumeClaimTemplates[0].spec.storageClassName
+          value: csi-disk
