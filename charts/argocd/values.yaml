@@ -154,3 +154,20 @@ argo-cd:
 policyException:
   enabled: true
 
+# PrometheusRule for alerting on ArgoCD applications.
+# Requires the prometheus-operator CRDs to be installed in the cluster.
+prometheusRule:
+  enabled: false
+  # Extra labels for the PrometheusRule so your Prometheus instance picks it up,
+  # e.g. release: kube-prometheus-stack
+  additionalLabels: {}
+  rules:
+    - alert: ApplicationDegraded
+      expr: argocd_app_info{project="infrastructure-charts", health_status=~"Degraded|Missing|Unknown"}
+      for: 30m
+      labels:
+        severity: critical
+      annotations:
+        summary: '{{ $labels.name }} is {{ $labels.health_status }}'
+        description: 'ArgoCD application {{ $labels.namespace }}/{{ $labels.name }} has health {{ $labels.health_status }}.'
+

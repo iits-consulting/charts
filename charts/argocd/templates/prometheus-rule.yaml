@@ -1,0 +1,17 @@
+{{ with .Values.prometheusRule }}
+{{ if .enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: argocd-applications
+  {{- with .additionalLabels }}
+  labels:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  groups:
+    - name: argocd-applications
+      rules:
+        {{- toYaml .rules | nindent 8 }}
+{{- end }}
+{{- end }}
