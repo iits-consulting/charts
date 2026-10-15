@@ -128,7 +128,7 @@ elasticsearch:
   # HA cluster: three master-eligible nodes, two of which are not voting-only.
   # See: https://www.elastic.co/docs/deploy-manage/distributed-architecture/clusters-nodes-shards/node-roles#voting-only-node
   votingOnly:
-    enabled: yes
+    enabled: false
     # -- The voting-only node only stores cluster metadata, so a small volume is sufficient
     volumeSize: 10G
     # -- Storage class for the dynamically provisioned volume of the voting-only node.
