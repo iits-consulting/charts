@@ -123,28 +123,20 @@ elasticsearch:
   volumeSize: 200G
   version: "{{ .Chart.AppVersion }}"
   nodeCount: 2
-  # Adds one dedicated voting-only master node (node.roles: [master, voting_only]) acting as a
-  # tiebreaker in master elections. Together with the default nodeCount of 2 this forms a valid
-  # HA cluster: three master-eligible nodes, two of which are not voting-only.
-  # See: https://www.elastic.co/docs/deploy-manage/distributed-architecture/clusters-nodes-shards/node-roles#voting-only-node
+  # Adds one dedicated voting-only master node
+  # Can be e.g. used as a tiebreaking in a 2 node setup
   votingOnly:
     enabled: false
-    # -- The voting-only node only stores cluster metadata, so a small volume is sufficient
     volumeSize: 10G
-    # -- Storage class for the dynamically provisioned volume of the voting-only node.
-    # Leave empty to use the cluster default storage class. The static volume provisioning of the
-    # data nodes (cce/aks) does not apply to the voting-only node.
     storageClassName: ""
     javaOpts: ""
-    # -- A voting-only node can never become the elected master and needs less CPU and memory
-    # than the data nodes
     resources:
       requests:
         cpu: "100m"
         memory: "2G"
       limits:
         memory: "2G"
-    # -- Merged on top of elasticsearch.config for the voting-only nodeSet
+    # Following config is merged on top of elasticsearch.config for the voting-only nodeSet
     config:
       node:
         roles: [ master, voting_only, remote_cluster_client ]

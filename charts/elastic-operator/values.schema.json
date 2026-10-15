@@ -73,7 +73,7 @@
         "votingOnly": {
           "type": "object",
           "additionalProperties": false,
-          "description": "Adds one dedicated voting-only master node (node.roles: [master, voting_only]) as a tiebreaker. With nodeCount: 2 this forms a valid HA cluster (three master-eligible nodes, two of which are not voting-only).",
+          "description": "Adds one dedicated voting-only master node as a tiebreaker. With nodeCount: 2 this forms a valid HA cluster (three master-eligible nodes, two of which are not voting-only).",
           "properties": {
             "enabled": { "type": "boolean" },
             "volumeSize": { "type": "string" },
@@ -85,7 +85,7 @@
             "resources": { "type": "object" },
             "config": {
               "type": "object",
-              "description": "Merged on top of elasticsearch.config for the voting-only nodeSet; carries the fixed node.roles [master, voting_only]."
+              "description": "Merged on top of elasticsearch.config for the voting-only nodeSet"
             },
             "podTemplateSpec": { "type": "object" }
           }
@@ -180,7 +180,7 @@
           "type": "string",
           "description": "ESO mode only: how often the per-user push/pull secrets reconcile. Leave empty to use the common chart's per-resource defaults."
         },
-        "deletionPolicy": { 
+        "deletionPolicy": {
           "type": "string",
           "pattern": "^(Delete|None)$",
           "description": "ESO mode only: defines if secrets pushed to the secretStore are deleted or kept in the provider after the ESO pushSecret is deleted."
