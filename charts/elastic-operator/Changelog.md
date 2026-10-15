@@ -6,8 +6,8 @@ All notable changes to this chart will be documented in this file.
 
 ### Added
 - Added a possibility to add a master-voting only node by enabling/disabling to the existing nodeSet. Disabled by default.
+- `NOTES.txt` warning when `elasticsearch.votingOnly.enabled` is used with a `nodeCount` of 1 — a voting-only node can never become master, so it adds no resilience to a single-node cluster.
 - Updated to Elasticsearch version 9.4.7
-
 
 The default nodeSet and its `template.otcPVC`/`template.regularPVC` helpers are untouched; rendered output for existing installs is unchanged.
 

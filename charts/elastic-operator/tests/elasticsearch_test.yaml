@@ -44,6 +44,8 @@ tests:
           value: my-extra
 
   - it: renders only the default nodeSet when votingOnly is disabled
+    set:
+      elasticsearch.votingOnly.enabled: false
     asserts:
       - lengthEqual:
           path: spec.nodeSets
