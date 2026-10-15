@@ -77,7 +77,7 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | elasticsearch.resources.requests.memory | string | `"8G"` |  |
 | elasticsearch.version | string | `"{{ .Chart.AppVersion }}"` |  |
 | elasticsearch.volumeSize | string | `"200G"` |  |
-| elasticsearch.votingOnly.config | object | `{"node":{"roles":["master","voting_only"]}}` | Merged on top of elasticsearch.config for the voting-only nodeSet |
+| elasticsearch.votingOnly.config | object | `{"node":{"roles":["master","voting_only","remote_cluster_client"]}}` | Merged on top of elasticsearch.config for the voting-only nodeSet |
 | elasticsearch.votingOnly.enabled | bool | `false` |  |
 | elasticsearch.votingOnly.javaOpts | string | `""` |  |
 | elasticsearch.votingOnly.podTemplateSpec.containers[0].env[0].name | string | `"ES_JAVA_OPTS"` |  |
