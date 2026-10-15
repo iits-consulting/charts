@@ -27,6 +27,10 @@ argo-cd:
         cpu: 750m
         memory: 1536Mi
         ephemeral-storage: 2Gi
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
 
   redis-ha:
     enabled: true
@@ -153,4 +157,62 @@ argo-cd:
 # Kyverno Policy Exception
 policyException:
   enabled: true
+
+# Deploy PrometheusRule's which can be picked up by prometheus alertmanager for alerting
+# Requires the prometheus-operator CRDs to be installed in the cluster!
+# Requires ArgoCD controller metrics to have an effect
+prometheusRule:
+  enabled: false
+  additionalLabels: {}
+  # Alerting rules keyed by alert name
+  # Single rules can be disabled via <AlertName>.enabled: false
+  rules:
+    ApplicationDegraded:
+      # enabled: false
+      expr: argocd_app_info{project="infrastructure-charts", health_status=~"Degraded|Missing|Unknown"}
+      for: 30m
+      labels:
+        severity: critical
+      annotations:
+        summary: '{{ $labels.name }} is {{ $labels.health_status }}'
+        description: 'ArgoCD application {{ $labels.namespace }}/{{ $labels.name }} has health {{ $labels.health_status }}.'
+    ApplicationProgressingTooLong:
+      # enabled: false
+      expr: argocd_app_info{project="infrastructure-charts", health_status="Progressing"}
+      for: 1h
+      labels:
+        severity: warning
+      annotations:
+        summary: '{{ $labels.name }} stuck in Progressing'
+        description: 'ArgoCD application {{ $labels.namespace }}/{{ $labels.name }} has been Progressing for over 1h.'
+    ApplicationSyncFailing:
+      # enabled: false
+      expr: >
+        increase(argocd_app_sync_total{project="infrastructure-charts", phase=~"Failed|Error"}[1h]) > 0
+        and on (namespace, name)
+        argocd_app_info{project="infrastructure-charts", sync_status!="Synced"}
+      for: 30m
+      labels:
+        severity: critical
+      annotations:
+        summary: '{{ $labels.name }} sync failing'
+        description: 'ArgoCD application {{ $labels.namespace }}/{{ $labels.name }} has recent failed syncs and is still not Synced.'
+    ApplicationOutOfSync:
+      # enabled: false
+      expr: argocd_app_info{project="infrastructure-charts", sync_status!="Synced", autosync_enabled="true"}
+      for: 2h
+      labels:
+        severity: warning
+      annotations:
+        summary: '{{ $labels.name }} not synced'
+        description: 'ArgoCD application {{ $labels.namespace }}/{{ $labels.name }} is {{ $labels.sync_status }} despite auto-sync.'
+    ApplicationSyncStuck:
+      # enabled: false
+      expr: argocd_app_info{project="infrastructure-charts", operation="sync"}
+      for: 30m
+      labels:
+        severity: critical
+      annotations:
+        summary: '{{ $labels.name }} sync operation stuck'
+        description: 'ArgoCD application {{ $labels.namespace }}/{{ $labels.name }} has had a sync operation running for over 30m.'
 

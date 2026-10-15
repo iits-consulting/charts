@@ -1,15 +1,15 @@
 dependencies:
 - name: kyverno
   repository: https://kyverno.github.io/kyverno/
-  version: 3.5.3
+  version: 3.9.1
 - name: kyverno-policies
   repository: https://kyverno.github.io/kyverno/
-  version: 3.5.3
+  version: 3.9.1
 - name: policy-reporter
   repository: https://kyverno.github.io/policy-reporter
-  version: 3.7.2
+  version: 3.11.0
 - name: common
   repository: https://charts.iits.tech
-  version: 0.3.1
-digest: sha256:a32f5b67381f4778e1a335fc6c6e927b46ea73f39145207d11d309c85751d0bb
-generated: "2026-05-05T14:55:31.398486+02:00"
+  version: 0.4.0
+digest: sha256:c26d6f3b0aa802ecbc618f9d452db4ddc62d4c0b616d4549aef78d819e43d471
+generated: "2026-10-14T12:42:03.059632+02:00"
