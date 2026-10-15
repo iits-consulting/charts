@@ -4,6 +4,7 @@
 
 ### 21.1.0
 - Added `PrometheusRule` template for alerting on ArgoCD applications (disabled by default), with a defaultSet of rules
+- Activated metric collection for ArgoCD controller
 
 ### 21.0.0
 - AppVersion upgrade to 3.5.1

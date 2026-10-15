@@ -27,6 +27,10 @@ argo-cd:
         cpu: 750m
         memory: 1536Mi
         ephemeral-storage: 2Gi
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
 
   redis-ha:
     enabled: true
@@ -154,19 +158,17 @@ argo-cd:
 policyException:
   enabled: true
 
-# PrometheusRule for alerting on ArgoCD applications.
-# Requires the prometheus-operator CRDs to be installed in the cluster.
+# Deploy PrometheusRule's which can be picked up by prometheus alertmanager for alerting
+# Requires the prometheus-operator CRDs to be installed in the cluster!
+# Requires ArgoCD controller metrics to have an effect
 prometheusRule:
-  enabled: false
-  # Extra labels for the PrometheusRule so your Prometheus instance picks it up,
-  # e.g. release: kube-prometheus-stack
+  enabled: true
   additionalLabels: {}
-  # Rules keyed by alert name. Defaults merge with your values, so you can add
-  # your own rules or disable a default one via <AlertName>.enabled: false
-  # without copying the whole set.
+  # Alerting rules keyed by alert name
+  # Single rules can be disabled via <AlertName>.disabled: true
   rules:
     ApplicationDegraded:
-      enabled: true
+      # disabled: true
       expr: argocd_app_info{project="infrastructure-charts", health_status=~"Degraded|Missing|Unknown"}
       for: 30m
       labels:
@@ -175,7 +177,7 @@ prometheusRule:
         summary: '{{ $labels.name }} is {{ $labels.health_status }}'
         description: 'ArgoCD application {{ $labels.namespace }}/{{ $labels.name }} has health {{ $labels.health_status }}.'
     ApplicationProgressingTooLong:
-      enabled: true
+      # disabled: true
       expr: argocd_app_info{project="infrastructure-charts", health_status="Progressing"}
       for: 1h
       labels:
@@ -184,7 +186,7 @@ prometheusRule:
         summary: '{{ $labels.name }} stuck in Progressing'
         description: 'ArgoCD application {{ $labels.namespace }}/{{ $labels.name }} has been Progressing for over 1h.'
     ApplicationSyncFailing:
-      enabled: true
+      # disabled: true
       expr: >
         increase(argocd_app_sync_total{project="infrastructure-charts", phase=~"Failed|Error"}[1h]) > 0
         and on (namespace, name)
@@ -196,7 +198,7 @@ prometheusRule:
         summary: '{{ $labels.name }} sync failing'
         description: 'ArgoCD application {{ $labels.namespace }}/{{ $labels.name }} has recent failed syncs and is still not Synced.'
     ApplicationOutOfSync:
-      enabled: true
+      # disabled: true
       expr: argocd_app_info{project="infrastructure-charts", sync_status!="Synced", autosync_enabled="true"}
       for: 2h
       labels:
@@ -205,7 +207,7 @@ prometheusRule:
         summary: '{{ $labels.name }} not synced'
         description: 'ArgoCD application {{ $labels.namespace }}/{{ $labels.name }} is {{ $labels.sync_status }} despite auto-sync.'
     ApplicationSyncStuck:
-      enabled: true
+      # disabled: true
       expr: argocd_app_info{project="infrastructure-charts", operation="sync"}
       for: 30m
       labels:
