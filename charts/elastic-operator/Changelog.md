@@ -5,10 +5,12 @@ All notable changes to this chart will be documented in this file.
 ## [9.4.8] - 2026-10-15
 
 ### Added
-- `elasticsearch.votingOnly.enabled` to add one dedicated voting-only master node as a tiebreaker, forming a valid HA cluster with the default `nodeCount` of 2. Disabled by default.
+- `elasticsearch.votingOnly` to add one dedicated voting-only master node as a tiebreaker, forming a valid HA cluster with the default `nodeCount` of 2. Disabled by default.
 
 ### Changed
 - Updated the Elastic stack (`appVersion`) to `9.4.8`.
+
+> **Note:** for an upgrade guide, refer to [UPGRADE.md](UPGRADE.md)
 
 ## [9.4.0] - 2026-08-19
 

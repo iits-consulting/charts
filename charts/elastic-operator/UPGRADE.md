@@ -1,3 +1,8 @@
+# Upgrade to Version 9.4.8
+
+- No changes required
+- Hint: On a two node setup there is now the possibility to introduce a voting only node to introduce rolling updates on elasticsearch
+
 # Upgrade to Version 9.4.0
 ## Migrating to ESO mode (chart `9.4.0+`)
 
