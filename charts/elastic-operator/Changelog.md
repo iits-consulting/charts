@@ -2,14 +2,13 @@
 
 All notable changes to this chart will be documented in this file.
 
-## [9.4.7] - 2026-10-13
+## [9.4.8] - 2026-10-15
 
 ### Added
-- Added a possibility to add a master-voting only node by enabling/disabling to the existing nodeSet. Disabled by default.
-- `NOTES.txt` warning when `elasticsearch.votingOnly.enabled` is used with a `nodeCount` of 1 — a voting-only node can never become master, so it adds no resilience to a single-node cluster.
-- Updated to Elasticsearch version 9.4.7
+- `elasticsearch.votingOnly.enabled` to add one dedicated voting-only master node as a tiebreaker, forming a valid HA cluster with the default `nodeCount` of 2. Disabled by default.
 
-The default nodeSet and its `template.otcPVC`/`template.regularPVC` helpers are untouched; rendered output for existing installs is unchanged.
+### Changed
+- Updated the Elastic stack (`appVersion`) to `9.4.8`.
 
 ## [9.4.0] - 2026-08-19
 
@@ -82,6 +81,7 @@ The default nodeSet and its `template.otcPVC`/`template.regularPVC` helpers are 
 - Updated the Elastic stack (`appVersion`) to `8.18.1`.
 - Updated the Elastic operator to `3.0.0` in preparation for the `appVersion` upgrade to `9.0.0`.
 
+[9.4.8]: https://github.com/iits-consulting/charts/compare/elastic-operator-9.4.0...elastic-operator-9.4.8
 [9.4.0]: https://github.com/iits-consulting/charts/compare/elastic-operator-9.3.7...elastic-operator-9.4.0
 [9.3.7]: https://github.com/iits-consulting/charts/compare/elastic-operator-9.3.5...elastic-operator-9.3.7
 [9.3.5]: https://github.com/iits-consulting/charts/compare/elastic-operator-9.3.3...elastic-operator-9.3.5
