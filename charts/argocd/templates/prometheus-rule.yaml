@@ -3,7 +3,7 @@
 {{/* Check that there is at least one active rule, otherwise there is a rendering issue */}}
 {{- $anyRuleEnabled := false }}
 {{- range .rules }}
-{{- if and . (not .disabled) }}{{- $anyRuleEnabled = true }}{{- end }}
+{{- if and . (ne .enabled false) }}{{- $anyRuleEnabled = true }}{{- end }}
 {{- end }}
 {{/* End of check */}}
 
@@ -21,9 +21,9 @@ spec:
     - name: argocd-applications
       rules:
         {{- range $alertName, $rule := .rules }}
-        {{- if and $rule (not $rule.disabled) }}
+        {{- if and $rule (ne $rule.enabled false) }}
         - alert: {{ $alertName }}
-          {{- omit $rule "disabled" | toYaml | nindent 10 }}
+          {{- omit $rule "enabled" | toYaml | nindent 10 }}
         {{- end }}
         {{- end }}
 {{- end }}
