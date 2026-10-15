@@ -1,5 +1,9 @@
 {{ with .Values.prometheusRule }}
-{{ if .enabled }}
+{{- $anyRuleEnabled := false }}
+{{- range .rules }}
+{{- if and . .enabled }}{{- $anyRuleEnabled = true }}{{- end }}
+{{- end }}
+{{ if and .enabled $anyRuleEnabled }}
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
@@ -12,6 +16,11 @@ spec:
   groups:
     - name: argocd-applications
       rules:
-        {{- toYaml .rules | nindent 8 }}
+        {{- range $alertName, $rule := .rules }}
+        {{- if and $rule $rule.enabled }}
+        - alert: {{ $alertName }}
+          {{- omit $rule "enabled" | toYaml | nindent 10 }}
+        {{- end }}
+        {{- end }}
 {{- end }}
 {{- end }}
