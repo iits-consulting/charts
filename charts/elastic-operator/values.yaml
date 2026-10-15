@@ -147,7 +147,7 @@ elasticsearch:
     # -- Merged on top of elasticsearch.config for the voting-only nodeSet
     config:
       node:
-        roles: [ master, voting_only ]
+        roles: [ master, voting_only, remote_cluster_client ]
     podTemplateSpec:
       containers:
         - name: elasticsearch
