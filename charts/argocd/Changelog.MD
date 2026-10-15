@@ -2,6 +2,10 @@
 
 ## Chart Versions
 
+### 21.1.0
+- Added optional `PrometheusRule` for alerting on ArgoCD applications (`prometheusRule.enabled`, disabled by default)
+- Default rules: ApplicationDegraded, ApplicationProgressingTooLong, ApplicationSyncFailing, ApplicationOutOfSync, ApplicationSyncStuck
+
 ### 21.0.0
 - AppVersion upgrade to 3.5.1
 - **Breaking:** New selector on deployment `argocd-redis-ha-haproxy` which cannot be updated in place. Upgrade steps to deal with this: 
