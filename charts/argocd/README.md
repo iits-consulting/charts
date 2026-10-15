@@ -92,7 +92,7 @@ resource "helm_release" "argocd" {
 | argo-cd.server.replicas | int | `2` |  |
 | policyException.enabled | bool | `true` |  |
 | prometheusRule.additionalLabels | object | `{}` |  |
-| prometheusRule.enabled | bool | `true` |  |
+| prometheusRule.enabled | bool | `false` |  |
 | prometheusRule.rules.ApplicationDegraded.annotations.description | string | `"ArgoCD application {{ $labels.namespace }}/{{ $labels.name }} has health {{ $labels.health_status }}."` |  |
 | prometheusRule.rules.ApplicationDegraded.annotations.summary | string | `"{{ $labels.name }} is {{ $labels.health_status }}"` |  |
 | prometheusRule.rules.ApplicationDegraded.expr | string | `"argocd_app_info{project=\"infrastructure-charts\", health_status=~\"Degraded|Missing|Unknown\"}"` |  |
