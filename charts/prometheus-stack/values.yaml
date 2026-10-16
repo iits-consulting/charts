@@ -32,6 +32,7 @@ prometheusStack:
       KubeClientCertificateExpiration: true
       NodeClockNotSynchronising: true #CCE does not give access to that
       InfoInhibitor: true #It is spamming
+      CPUThrottlingHigh: true # Replaced by a customized copy with a raised threshold; see kubernetes-resources.yaml
     rules:
       alertmanager: true
       etcd: true
@@ -46,7 +47,7 @@ prometheusStack:
       kubePrometheusNodeRecording: true
       kubernetesAbsent: true
       kubernetesApps: true
-      kubernetesResources: false #We need to customize the CPUThrottlingHigh Alert and increase the CPU to X; see also kubernetes-resources.yaml line 151
+      kubernetesResources: true # CPUThrottlingHigh is disabled above and replaced by a customized copy; see kubernetes-resources.yaml
       kubernetesStorage: true
       kubernetesSystem: true
       kubeStateMetrics: true
