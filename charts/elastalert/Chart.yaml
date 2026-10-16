@@ -15,7 +15,7 @@ description: |
   elastalert:
     namespace: monitoring
     repoURL: "https://charts.iits.tech"
-    targetRevision: "0.5.0"
+    targetRevision: "0.5.1"
     valueFile: "value-files/elastalert/values.yaml"
   ```
 
@@ -39,14 +39,14 @@ description: |
   elastalert:
     namespace: monitoring
     repoURL: "https://charts.iits.tech"
-    targetRevision: "0.5.0"
+    targetRevision: "0.5.1"
     valueFile: "value-files/elastalert/values.yaml"
     parameters:
       customRules.slack.webhookUrl: "${vault:mySecretPath/data/common/slack#webhookUrl}"
   ```
 
 name: elastalert
-version: 0.5.0
+version: 0.5.1
 dependencies:
   - name: elastalert2
     repository: https://jertel.github.io/elastalert2/
