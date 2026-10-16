@@ -123,6 +123,35 @@ elasticsearch:
   volumeSize: 200G
   version: "{{ .Chart.AppVersion }}"
   nodeCount: 2
+  # Adds one dedicated voting-only master node
+  # Can be e.g. used as a tiebreaking in a 2 node setup
+  votingOnly:
+    enabled: false
+    volumeSize: 10G
+    storageClassName: ""
+    javaOpts: ""
+    resources:
+      requests:
+        cpu: "100m"
+        memory: "2G"
+      limits:
+        memory: "2G"
+    # Following config is merged on top of elasticsearch.config for the voting-only nodeSet
+    config:
+      node:
+        roles: [ master, voting_only, remote_cluster_client ]
+    podTemplateSpec:
+      containers:
+        - name: elasticsearch
+          resources:
+            requests:
+              cpu: "{{ .Values.elasticsearch.votingOnly.resources.requests.cpu }}"
+              memory: "{{ .Values.elasticsearch.votingOnly.resources.requests.memory }}"
+            limits:
+              memory: "{{ .Values.elasticsearch.votingOnly.resources.limits.memory }}"
+          env:
+            - name: ES_JAVA_OPTS
+              value: "{{ .Values.elasticsearch.votingOnly.javaOpts }}"
   config:
     node:
       store:

@@ -2,9 +2,13 @@
 
 ## Chart Versions
 
+### 21.1.0
+- Added `PrometheusRule` template for alerting on ArgoCD applications (disabled by default), with a defaultSet of rules
+- Activated metric collection for ArgoCD controller
+
 ### 21.0.0
 - AppVersion upgrade to 3.5.1
-- **Breaking:** New selector on deployment `argocd-redis-ha-haproxy` which cannot be updated in place. Upgrade steps to deal with this: 
+- **Breaking:** New selector on deployment `argocd-redis-ha-haproxy` which cannot be updated in place. Upgrade steps to deal with this:
   1. disable self-heal on ArgoCD
   2. orphan delete the deployment `argocd-redis-ha-haproxy`,
   3. sync the new version of ArgoCD (creates new `argocd-redis-ha-haproxy` deployment and pods for it)

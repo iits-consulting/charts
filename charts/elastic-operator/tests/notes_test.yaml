@@ -1,0 +1,31 @@
+suite: notes
+templates:
+  - NOTES.txt
+
+release:
+  name: elastic-operator
+
+tests:
+  - it: warns when votingOnly is enabled on a single-node cluster
+    set:
+      elasticsearch.votingOnly.enabled: true
+      elasticsearch.nodeCount: 1
+    asserts:
+      - matchRegexRaw:
+          pattern: "WARNING: elasticsearch.votingOnly.enabled is true but elasticsearch.nodeCount is 1"
+
+  - it: stays silent with votingOnly on two or more nodes
+    set:
+      elasticsearch.votingOnly.enabled: true
+      elasticsearch.nodeCount: 2
+    asserts:
+      - notMatchRegexRaw:
+          pattern: "WARNING"
+
+  - it: stays silent on a single node when votingOnly is disabled
+    set:
+      elasticsearch.votingOnly.enabled: false
+      elasticsearch.nodeCount: 1
+    asserts:
+      - notMatchRegexRaw:
+          pattern: "WARNING"

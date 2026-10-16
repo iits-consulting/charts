@@ -1,6 +1,6 @@
 # elastic-operator
 
-![Version: 9.4.0](https://img.shields.io/badge/Version-9.4.0-informational?style=flat-square) ![AppVersion: 9.4.0](https://img.shields.io/badge/AppVersion-9.4.0-informational?style=flat-square)
+![Version: 9.4.8](https://img.shields.io/badge/Version-9.4.8-informational?style=flat-square) ![AppVersion: 9.4.8](https://img.shields.io/badge/AppVersion-9.4.8-informational?style=flat-square)
 
 Elasticsearch + filebeat + kibana with default common used indexes and Index Lifecycle Management.
 It comes also with a backup functionality. This is the version using ECK-operator to deploy and monitor the stack.
@@ -77,6 +77,22 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | elasticsearch.resources.requests.memory | string | `"8G"` |  |
 | elasticsearch.version | string | `"{{ .Chart.AppVersion }}"` |  |
 | elasticsearch.volumeSize | string | `"200G"` |  |
+| elasticsearch.votingOnly.config.node.roles[0] | string | `"master"` |  |
+| elasticsearch.votingOnly.config.node.roles[1] | string | `"voting_only"` |  |
+| elasticsearch.votingOnly.config.node.roles[2] | string | `"remote_cluster_client"` |  |
+| elasticsearch.votingOnly.enabled | bool | `false` |  |
+| elasticsearch.votingOnly.javaOpts | string | `""` |  |
+| elasticsearch.votingOnly.podTemplateSpec.containers[0].env[0].name | string | `"ES_JAVA_OPTS"` |  |
+| elasticsearch.votingOnly.podTemplateSpec.containers[0].env[0].value | string | `"{{ .Values.elasticsearch.votingOnly.javaOpts }}"` |  |
+| elasticsearch.votingOnly.podTemplateSpec.containers[0].name | string | `"elasticsearch"` |  |
+| elasticsearch.votingOnly.podTemplateSpec.containers[0].resources.limits.memory | string | `"{{ .Values.elasticsearch.votingOnly.resources.limits.memory }}"` |  |
+| elasticsearch.votingOnly.podTemplateSpec.containers[0].resources.requests.cpu | string | `"{{ .Values.elasticsearch.votingOnly.resources.requests.cpu }}"` |  |
+| elasticsearch.votingOnly.podTemplateSpec.containers[0].resources.requests.memory | string | `"{{ .Values.elasticsearch.votingOnly.resources.requests.memory }}"` |  |
+| elasticsearch.votingOnly.resources.limits.memory | string | `"2G"` |  |
+| elasticsearch.votingOnly.resources.requests.cpu | string | `"100m"` |  |
+| elasticsearch.votingOnly.resources.requests.memory | string | `"2G"` |  |
+| elasticsearch.votingOnly.storageClassName | string | `""` |  |
+| elasticsearch.votingOnly.volumeSize | string | `"10G"` |  |
 | filebeat.autodiscover.providers[0].hints.default_config.id | string | `"kubernetes-container-logs-${data.kubernetes.pod.name}-${data.kubernetes.container.id}"` |  |
 | filebeat.autodiscover.providers[0].hints.default_config.parsers[0].container | object | `{}` |  |
 | filebeat.autodiscover.providers[0].hints.default_config.paths[0] | string | `"/var/log/containers/*${data.kubernetes.container.id}.log"` |  |
