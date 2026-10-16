@@ -1,6 +1,6 @@
 # prometheus-stack
 
-![Version: 88.3.0](https://img.shields.io/badge/Version-88.3.0-informational?style=flat-square) ![AppVersion: 3.13.2](https://img.shields.io/badge/AppVersion-3.13.2-informational?style=flat-square)
+![Version: 92.9.0](https://img.shields.io/badge/Version-92.9.0-informational?style=flat-square) ![AppVersion: 3.15.0](https://img.shields.io/badge/AppVersion-3.15.0-informational?style=flat-square)
 
 A complete monitoring/alerting stack with Grafana, Prometheus, Alertmanager & Blackbox exporter
 
@@ -11,7 +11,7 @@ A complete monitoring/alerting stack with Grafana, Prometheus, Alertmanager & Bl
 prometheus-stack:
   namespace: monitoring
   repoURL: "https://charts.iits.tech"
-  targetRevision: "88.3.0"
+  targetRevision: "92.9.0"
   syncOptions:
     - ServerSideApply=true
   ignoreDifferences:
@@ -32,9 +32,9 @@ prometheus-stack:
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://charts.iits.tech | common | 0.3.1 |
-| https://prometheus-community.github.io/helm-charts | prometheusStack(kube-prometheus-stack) | 88.3.0 |
-| https://prometheus-community.github.io/helm-charts | blackboxExporter(prometheus-blackbox-exporter) | 11.17.2 |
+| https://charts.iits.tech | common | 0.4.0 |
+| https://prometheus-community.github.io/helm-charts | prometheusStack(kube-prometheus-stack) | 92.9.0 |
+| https://prometheus-community.github.io/helm-charts | blackboxExporter(prometheus-blackbox-exporter) | 11.20.0 |
 
 ## Values
 
@@ -135,6 +135,7 @@ prometheus-stack:
 | prometheusStack.alertmanager.config.templates[0] | string | `"/etc/alertmanager/config/*.tmpl"` |  |
 | prometheusStack.crds.enabled | bool | `false` |  |
 | prometheusStack.defaultRules.create | bool | `true` |  |
+| prometheusStack.defaultRules.disabled.CPUThrottlingHigh | bool | `true` |  |
 | prometheusStack.defaultRules.disabled.InfoInhibitor | bool | `true` |  |
 | prometheusStack.defaultRules.disabled.KubeClientCertificateExpiration | bool | `true` |  |
 | prometheusStack.defaultRules.disabled.NodeClockNotSynchronising | bool | `true` |  |
@@ -152,7 +153,7 @@ prometheus-stack:
 | prometheusStack.defaultRules.rules.kubeStateMetrics | bool | `true` |  |
 | prometheusStack.defaultRules.rules.kubernetesAbsent | bool | `true` |  |
 | prometheusStack.defaultRules.rules.kubernetesApps | bool | `true` |  |
-| prometheusStack.defaultRules.rules.kubernetesResources | bool | `false` |  |
+| prometheusStack.defaultRules.rules.kubernetesResources | bool | `true` |  |
 | prometheusStack.defaultRules.rules.kubernetesStorage | bool | `true` |  |
 | prometheusStack.defaultRules.rules.kubernetesSystem | bool | `true` |  |
 | prometheusStack.defaultRules.rules.network | bool | `true` |  |
