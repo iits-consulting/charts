@@ -13,7 +13,7 @@ The CRD upgrade job of `kube-prometheus-stack` should not be used for now, since
 | Area | Severity | Action |
 |---|---|---|
 | prometheus-operator CRDs `v0.93.0` → `v0.94.1` | high | Apply CRDs before syncing, see [step 1](#1-install-the-new-crds-of-the-kube-prometheus-stack) |
-| Revived `kubernetes-resources` alerts | medium | Expect new alerts to possibly fire, see [step 3](#3-things-to-check-before-you-sync) |
+| Revived `kubernetes-resources` alerts | medium | Expect new alerts to possibly fire, see [step 2](#2-things-to-check-before-you-sync) |
 | Grafana chart values schema validation (chart v14) | low | Type-check project-level Grafana overrides, see [step 3](#3-things-to-check-before-you-sync) |
 | New long-lived token Secret `<release>-prometheus-token` | low | None by default; review if token Secrets are restricted, see [step 3](#3-things-to-check-before-you-sync) |
 
@@ -48,7 +48,7 @@ that currently have objects, because the operator watches all of them.
 ## 3. Roll out the chart
 
 Apply the change in Helm and sync the ArgoCD application to `92.9.0`.
-No resources are removed in this version, so no prune is required.
+As some alert resources are removed in this version, prune is required.
 
 **Action:** sync.
 
