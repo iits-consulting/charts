@@ -6,7 +6,7 @@ This charts project is about wrapper charts being used. These are needed due to 
 - Helm
 
 ## Architecture notes
-- Every chart in the charts directory is independent of others
+- Every folder in the charts directory is an independent helm chart, unless otherwise stated in the dependencies of each chart
 - Charts can rely on other dependencies to form an umbrella chart (e.g. kyverno wraps kyverno and provides some common policies)
 
 ## Commands

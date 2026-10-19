@@ -30,8 +30,6 @@ that currently have objects, because the operator watches all of them.
 
 * **Distroless images.** Grafana now also defaults to a `-distroless` tag with
   `readOnlyRootFilesystem: true` (`prometheus` and `node-exporter` already did since 85.x).
-  If images are pulled through a mirrored/private registry, the new tags have to be
-  available there before the sync. `kubectl exec ... -- sh` does not work in those pods.
 * **Revived kubernetes-resources alerts.** The vendored copies of `KubeCPUOvercommit`,
   `KubeMemoryOvercommit` and the quota alerts shipped by earlier versions of this chart
   referenced metrics that no longer exist, so they could never fire. From this version they
