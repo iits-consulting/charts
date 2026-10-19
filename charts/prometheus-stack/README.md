@@ -84,16 +84,6 @@ prometheus-stack:
 | prometheusStack.additionalPrometheusRulesMap.oom-killed.groups[0].rules[0].expr | string | `"(\n  (\n    kube_pod_container_status_last_terminated_reason{reason=\"OOMKilled\"} == 1\n    and on(namespace, pod, container)\n    increase(kube_pod_container_status_restarts_total[15m]) > 0\n  )\n  or\n  (\n    kube_pod_container_status_last_terminated_exitcode == 137\n    and on(namespace, pod, container)\n    increase(kube_pod_container_status_restarts_total[15m]) > 0\n  )\n) > 0\n"` |  |
 | prometheusStack.additionalPrometheusRulesMap.oom-killed.groups[0].rules[0].for | string | `"1m"` |  |
 | prometheusStack.additionalPrometheusRulesMap.oom-killed.groups[0].rules[0].labels.severity | string | `"warning"` |  |
-| prometheusStack.additionalPrometheusRulesMap.restarts-daily.groups[0].interval | string | `"5m"` |  |
-| prometheusStack.additionalPrometheusRulesMap.restarts-daily.groups[0].name | string | `"container-restarts-daily"` |  |
-| prometheusStack.additionalPrometheusRulesMap.restarts-daily.groups[0].rules[0].expr | string | `"increase(kube_pod_container_status_restarts_total[24h])\n* on(namespace, pod) group_left()\nkube_pod_status_phase{phase=\"Running\"}\n> 0\n"` |  |
-| prometheusStack.additionalPrometheusRulesMap.restarts-daily.groups[0].rules[0].record | string | `"container:restarts_24h"` |  |
-| prometheusStack.additionalPrometheusRulesMap.restarts-daily.groups[0].rules[1].alert | string | `"ContainerRestartDetected"` |  |
-| prometheusStack.additionalPrometheusRulesMap.restarts-daily.groups[0].rules[1].annotations.description | string | `"The container **{{ $labels.container }}** (pod {{ $labels.namespace }}/{{ $labels.pod }}) has performed **{{ $value }}** restart(s) in the last 24 hours.\nOnly pods that are currently running are considered.\n"` |  |
-| prometheusStack.additionalPrometheusRulesMap.restarts-daily.groups[0].rules[1].annotations.summary | string | `"Pod {{ $labels.namespace }}/{{ $labels.pod }} has restarted in the last 24 h"` |  |
-| prometheusStack.additionalPrometheusRulesMap.restarts-daily.groups[0].rules[1].expr | string | `"container:restarts_24h > 4"` |  |
-| prometheusStack.additionalPrometheusRulesMap.restarts-daily.groups[0].rules[1].for | string | `"5m"` |  |
-| prometheusStack.additionalPrometheusRulesMap.restarts-daily.groups[0].rules[1].labels.severity | string | `"info"` |  |
 | prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].name | string | `"uptime-monitoring"` |  |
 | prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].rules[0].alert | string | `"ServiceIsDown"` |  |
 | prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].rules[0].annotations.description | string | `"Uptime of {{ $labels.instance }} is reporting down for 3 consecutive checks."` |  |
