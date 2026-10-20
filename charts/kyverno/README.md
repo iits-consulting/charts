@@ -1,6 +1,6 @@
 # kyverno
 
-![Version: 3.5.0](https://img.shields.io/badge/Version-3.5.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.19.1](https://img.shields.io/badge/AppVersion-1.19.1-informational?style=flat-square)
+![Version: 3.5.1](https://img.shields.io/badge/Version-3.5.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.19.1](https://img.shields.io/badge/AppVersion-1.19.1-informational?style=flat-square)
 
 This chart wraps the upstream `kyverno` and `kyverno-policies` chart and adds a few useful policies:
   - Verify all images are signed with cosign
@@ -93,6 +93,7 @@ This chart wraps the upstream `kyverno` and `kyverno-policies` chart and adds a 
 | kyverno-policies.policyExclude.restrict-volume-types.any[0].resources.kinds[1] | string | `"ReplicaSet"` |  |
 | kyverno-policies.policyExclude.restrict-volume-types.any[0].resources.kinds[2] | string | `"Pod"` |  |
 | kyverno-policies.policyExclude.restrict-volume-types.any[0].resources.namespaces[0] | string | `"kube-system"` |  |
+| kyverno-policies.policyType | string | `"ClusterPolicy"` | Upgrade to 3.9.1 included a change of the default to validatingpolicies |
 | kyverno.admissionController.rbac.clusterRole.extraResources[0].apiGroups[0] | string | `""` |  |
 | kyverno.admissionController.rbac.clusterRole.extraResources[0].resources[0] | string | `"secrets"` |  |
 | kyverno.admissionController.rbac.clusterRole.extraResources[0].verbs[0] | string | `"list"` |  |

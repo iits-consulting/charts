@@ -111,6 +111,9 @@ policy-reporter:
 
 kyverno-policies:
   autogenControllers: none
+  # -- Ensure backwards compatibility of the policies with existing policyExceptions.
+  # -- Upgrade to 3.9.1 included a change of the default to validatingpolicies
+  policyType: ClusterPolicy
   # -- Whether to install the default policies for kyverno
   install: true
   # -- The pod security standarcd as defined in https://kyverno.io/policies/pod-security.
@@ -396,9 +399,9 @@ ingress:
 
 # https://github.com/iits-consulting/charts/tree/main/charts/common
 # Global functionality can be used from the common library chart, e.g. creating External Secrets. Examples below to use
-# ExternalSecrets for openIDConnect config of kyverno components or dockerconfijson type of secrets. In case of `autoInjectDockerPullSecrets`, 
+# ExternalSecrets for openIDConnect config of kyverno components or dockerconfijson type of secrets. In case of `autoInjectDockerPullSecrets`,
 # please check relevant guidelines of `existingSecretRef` key above.
-# 
+#
 # Example: Reference the ESO-created secret (see below) so Kyverno clones it into every namespace:
 # autoInjectDockerPullSecrets:
 #   enabled: true
@@ -416,7 +419,7 @@ ingress:
 #       enabled: true
 #       secrets:
 #         kyverno-policy-reporter-ui-oidc:
-#           path: "path/to/your/secret"  
+#           path: "path/to/your/secret"
 #           keys:
 #             - name: clientId
 #               remoteKey: client_id
@@ -429,7 +432,7 @@ ingress:
 #             - name: password
 #           template:
 #             type: "kubernetes.io/dockerconfigjson"
-#             data:       
+#             data:
 #               .dockerconfigjson: >-
 #                 {
 #                   "auths": {
@@ -448,7 +451,7 @@ ingress:
 #               remoteKey: token
 #           template:
 #             type: "kubernetes.io/dockerconfigjson"
-#             data:       
+#             data:
 #               .dockerconfigjson: >-
 #                 {
 #                   "auths": {
