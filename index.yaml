@@ -5225,6 +5225,34 @@ entries:
   kyverno:
   - apiVersion: v2
     appVersion: 1.19.1
+    created: "2026-10-20T14:56:09.689035987Z"
+    dependencies:
+    - name: kyverno
+      repository: https://kyverno.github.io/kyverno/
+      version: 3.9.1
+    - name: kyverno-policies
+      repository: https://kyverno.github.io/kyverno/
+      version: 3.9.1
+    - condition: policy-reporter.install
+      name: policy-reporter
+      repository: https://kyverno.github.io/policy-reporter
+      version: 3.11.0
+    - name: common
+      repository: https://charts.iits.tech
+      version: 0.4.0
+    description: 'This chart wraps the upstream `kyverno` and `kyverno-policies` chart
+      and adds a few useful policies:   - Verify all images are signed with cosign   -
+      Verify all images come from allowed image repositories   - Replace the complete
+      registry reference with a custom one   - Prepend the image reference with a
+      custom prefix, useful for e.g. pull-through caches '
+    digest: 846b5b6630b020821f9944e4d6b86b1a09b344d627ef5a940b47afd7ca7c0ff1
+    name: kyverno
+    type: application
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/kyverno-3.5.1/kyverno-3.5.1.tgz
+    version: 3.5.1
+  - apiVersion: v2
+    appVersion: 1.19.1
     created: "2026-10-14T13:11:23.699952845Z"
     dependencies:
     - name: kyverno
@@ -8615,4 +8643,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/waf-cert-uploader-0.1.1/waf-cert-uploader-0.1.1.tgz
     version: 0.1.1
-generated: "2026-10-16T12:09:43.655424837Z"
+generated: "2026-10-20T14:56:09.689928602Z"
