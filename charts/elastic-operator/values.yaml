@@ -460,15 +460,29 @@ ilm:
   policies:
     long:
       #business apps and security relevant logs
-      indexPatterns: [ "auth*", "vault*" ]
+      indexPatterns:
+        - "auth*"
+        - "vault*"
       coldAfter: 32d
       deleteAfter: 365d
     medium:
-      indexPatterns: [ "cert-manager*", "routing*", "not-defined*" ]
+      indexPatterns:
+        - "cert-manager*"
+        - "external-secrets*"
+        - "otc-exporter*"
+        - "not-defined*"
+        - "postgres-init*"
+        - "routing*"
+        - "trivy*"
+        - "vulnerability-checks*"
       coldAfter: 32d
       deleteAfter: 90d
     short:
-      indexPatterns: [ "admin*", "argocd*", "kyverno*", "monitoring*" ]
+      indexPatterns:
+        - "admin*"
+        - "argocd*"
+        - "kyverno*"
+        - "monitoring*"
       coldAfter: 2d
       deleteAfter: 14d
 

@@ -1,6 +1,6 @@
 # elastic-operator
 
-![Version: 9.4.8](https://img.shields.io/badge/Version-9.4.8-informational?style=flat-square) ![AppVersion: 9.4.8](https://img.shields.io/badge/AppVersion-9.4.8-informational?style=flat-square)
+![Version: 9.4.8-ilm-policies](https://img.shields.io/badge/Version-9.4.8--ilm--policies-informational?style=flat-square) ![AppVersion: 9.4.8](https://img.shields.io/badge/AppVersion-9.4.8-informational?style=flat-square)
 
 Elasticsearch + filebeat + kibana with default common used indexes and Index Lifecycle Management.
 It comes also with a backup functionality. This is the version using ECK-operator to deploy and monitor the stack.
@@ -194,8 +194,13 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | ilm.policies.medium.coldAfter | string | `"32d"` |  |
 | ilm.policies.medium.deleteAfter | string | `"90d"` |  |
 | ilm.policies.medium.indexPatterns[0] | string | `"cert-manager*"` |  |
-| ilm.policies.medium.indexPatterns[1] | string | `"routing*"` |  |
-| ilm.policies.medium.indexPatterns[2] | string | `"not-defined*"` |  |
+| ilm.policies.medium.indexPatterns[1] | string | `"external-secrets*"` |  |
+| ilm.policies.medium.indexPatterns[2] | string | `"otc-exporter*"` |  |
+| ilm.policies.medium.indexPatterns[3] | string | `"not-defined*"` |  |
+| ilm.policies.medium.indexPatterns[4] | string | `"postgres-init*"` |  |
+| ilm.policies.medium.indexPatterns[5] | string | `"routing*"` |  |
+| ilm.policies.medium.indexPatterns[6] | string | `"trivy*"` |  |
+| ilm.policies.medium.indexPatterns[7] | string | `"vulnerability-checks*"` |  |
 | ilm.policies.short.coldAfter | string | `"2d"` |  |
 | ilm.policies.short.deleteAfter | string | `"14d"` |  |
 | ilm.policies.short.indexPatterns[0] | string | `"admin*"` |  |

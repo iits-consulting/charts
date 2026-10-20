@@ -2,6 +2,11 @@
 
 All notable changes to this chart will be documented in this file.
 
+## [9.4.8-ilm-policies] - 2026-10-20
+
+### Changed
+- Adjusted the default ilm policies to include more default applications
+
 ## [9.4.8] - 2026-10-15
 
 ### Added
