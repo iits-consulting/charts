@@ -1,6 +1,6 @@
 apiVersion: v2
 name: elastic-operator
-version: 9.4.8
+version: 9.4.8-ilm-policies
 appVersion: 9.4.8
 dependencies:
   - name: eck-operator
