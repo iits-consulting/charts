@@ -7228,6 +7228,37 @@ entries:
     version: 1.0.0
   prometheus-stack:
   - apiVersion: v2
+    appVersion: 3.15.0
+    created: "2026-10-21T11:45:50.987194195Z"
+    dependencies:
+    - alias: prometheusStack
+      name: kube-prometheus-stack
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 92.9.0
+    - alias: blackboxExporter
+      condition: blackboxExporter.enabled
+      name: prometheus-blackbox-exporter
+      repository: https://prometheus-community.github.io/helm-charts
+      version: 11.20.0
+    - name: common
+      repository: https://charts.iits.tech
+      version: 0.4.0
+    description: 'A complete monitoring/alerting stack with Grafana, Prometheus, Alertmanager
+      & Blackbox exporter  ## Installing the Chart with iits ArgoCD :warning: Make
+      sure that the CRD versions of the chart matches the chart version before upgrading!  ```yaml
+      prometheus-stack:   namespace: monitoring   repoURL: "https://charts.iits.tech"   targetRevision:
+      "92.9.0"   syncOptions:     - ServerSideApply=true   ignoreDifferences:     -
+      kind: Secret       name: prometheus-stack-grafana       jsonPointers:       -
+      /data/admin-password     - kind: Deployment       name: prometheus-stack-grafana       jsonPointers:       -
+      /spec/template/metadata/annotations/checksum~1secret   parameters:     global.ingress.host:
+      "admin.{{ .Values.projectValues.rootDomain }}"     prometheusStack.grafana.adminPassword:
+      "REPLACE_ME" ``` '
+    digest: cffe66e416a20c271e3538ffab0904416d8b6f7a95adc68cc4ad4f277d4bd6fa
+    name: prometheus-stack
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/prometheus-stack-92.9.0/prometheus-stack-92.9.0.tgz
+    version: 92.9.0
+  - apiVersion: v2
     appVersion: 3.13.2
     created: "2026-09-04T09:06:05.368617542Z"
     dependencies:
@@ -8643,4 +8674,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/waf-cert-uploader-0.1.1/waf-cert-uploader-0.1.1.tgz
     version: 0.1.1
-generated: "2026-10-20T14:56:09.689928602Z"
+generated: "2026-10-21T11:45:50.987928492Z"
