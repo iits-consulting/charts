@@ -1,6 +1,6 @@
 # prometheus-stack
 
-![Version: 88.3.0](https://img.shields.io/badge/Version-88.3.0-informational?style=flat-square) ![AppVersion: 3.13.2](https://img.shields.io/badge/AppVersion-3.13.2-informational?style=flat-square)
+![Version: 92.9.0](https://img.shields.io/badge/Version-92.9.0-informational?style=flat-square) ![AppVersion: 3.15.0](https://img.shields.io/badge/AppVersion-3.15.0-informational?style=flat-square)
 
 A complete monitoring/alerting stack with Grafana, Prometheus, Alertmanager & Blackbox exporter
 
@@ -11,7 +11,7 @@ A complete monitoring/alerting stack with Grafana, Prometheus, Alertmanager & Bl
 prometheus-stack:
   namespace: monitoring
   repoURL: "https://charts.iits.tech"
-  targetRevision: "88.3.0"
+  targetRevision: "92.9.0"
   syncOptions:
     - ServerSideApply=true
   ignoreDifferences:
@@ -32,9 +32,9 @@ prometheus-stack:
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://charts.iits.tech | common | 0.3.1 |
-| https://prometheus-community.github.io/helm-charts | prometheusStack(kube-prometheus-stack) | 88.3.0 |
-| https://prometheus-community.github.io/helm-charts | blackboxExporter(prometheus-blackbox-exporter) | 11.17.2 |
+| https://charts.iits.tech | common | 0.4.0 |
+| https://prometheus-community.github.io/helm-charts | prometheusStack(kube-prometheus-stack) | 92.9.0 |
+| https://prometheus-community.github.io/helm-charts | blackboxExporter(prometheus-blackbox-exporter) | 11.20.0 |
 
 ## Values
 
@@ -84,16 +84,6 @@ prometheus-stack:
 | prometheusStack.additionalPrometheusRulesMap.oom-killed.groups[0].rules[0].expr | string | `"(\n  (\n    kube_pod_container_status_last_terminated_reason{reason=\"OOMKilled\"} == 1\n    and on(namespace, pod, container)\n    increase(kube_pod_container_status_restarts_total[15m]) > 0\n  )\n  or\n  (\n    kube_pod_container_status_last_terminated_exitcode == 137\n    and on(namespace, pod, container)\n    increase(kube_pod_container_status_restarts_total[15m]) > 0\n  )\n) > 0\n"` |  |
 | prometheusStack.additionalPrometheusRulesMap.oom-killed.groups[0].rules[0].for | string | `"1m"` |  |
 | prometheusStack.additionalPrometheusRulesMap.oom-killed.groups[0].rules[0].labels.severity | string | `"warning"` |  |
-| prometheusStack.additionalPrometheusRulesMap.restarts-daily.groups[0].interval | string | `"5m"` |  |
-| prometheusStack.additionalPrometheusRulesMap.restarts-daily.groups[0].name | string | `"container-restarts-daily"` |  |
-| prometheusStack.additionalPrometheusRulesMap.restarts-daily.groups[0].rules[0].expr | string | `"increase(kube_pod_container_status_restarts_total[24h])\n* on(namespace, pod) group_left()\nkube_pod_status_phase{phase=\"Running\"}\n> 0\n"` |  |
-| prometheusStack.additionalPrometheusRulesMap.restarts-daily.groups[0].rules[0].record | string | `"container:restarts_24h"` |  |
-| prometheusStack.additionalPrometheusRulesMap.restarts-daily.groups[0].rules[1].alert | string | `"ContainerRestartDetected"` |  |
-| prometheusStack.additionalPrometheusRulesMap.restarts-daily.groups[0].rules[1].annotations.description | string | `"The container **{{ $labels.container }}** (pod {{ $labels.namespace }}/{{ $labels.pod }}) has performed **{{ $value }}** restart(s) in the last 24 hours.\nOnly pods that are currently running are considered.\n"` |  |
-| prometheusStack.additionalPrometheusRulesMap.restarts-daily.groups[0].rules[1].annotations.summary | string | `"Pod {{ $labels.namespace }}/{{ $labels.pod }} has restarted in the last 24 h"` |  |
-| prometheusStack.additionalPrometheusRulesMap.restarts-daily.groups[0].rules[1].expr | string | `"container:restarts_24h > 4"` |  |
-| prometheusStack.additionalPrometheusRulesMap.restarts-daily.groups[0].rules[1].for | string | `"5m"` |  |
-| prometheusStack.additionalPrometheusRulesMap.restarts-daily.groups[0].rules[1].labels.severity | string | `"info"` |  |
 | prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].name | string | `"uptime-monitoring"` |  |
 | prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].rules[0].alert | string | `"ServiceIsDown"` |  |
 | prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].rules[0].annotations.description | string | `"Uptime of {{ $labels.instance }} is reporting down for 3 consecutive checks."` |  |
@@ -135,6 +125,7 @@ prometheus-stack:
 | prometheusStack.alertmanager.config.templates[0] | string | `"/etc/alertmanager/config/*.tmpl"` |  |
 | prometheusStack.crds.enabled | bool | `false` |  |
 | prometheusStack.defaultRules.create | bool | `true` |  |
+| prometheusStack.defaultRules.disabled.CPUThrottlingHigh | bool | `true` |  |
 | prometheusStack.defaultRules.disabled.InfoInhibitor | bool | `true` |  |
 | prometheusStack.defaultRules.disabled.KubeClientCertificateExpiration | bool | `true` |  |
 | prometheusStack.defaultRules.disabled.NodeClockNotSynchronising | bool | `true` |  |
@@ -152,7 +143,7 @@ prometheus-stack:
 | prometheusStack.defaultRules.rules.kubeStateMetrics | bool | `true` |  |
 | prometheusStack.defaultRules.rules.kubernetesAbsent | bool | `true` |  |
 | prometheusStack.defaultRules.rules.kubernetesApps | bool | `true` |  |
-| prometheusStack.defaultRules.rules.kubernetesResources | bool | `false` |  |
+| prometheusStack.defaultRules.rules.kubernetesResources | bool | `true` |  |
 | prometheusStack.defaultRules.rules.kubernetesStorage | bool | `true` |  |
 | prometheusStack.defaultRules.rules.kubernetesSystem | bool | `true` |  |
 | prometheusStack.defaultRules.rules.network | bool | `true` |  |

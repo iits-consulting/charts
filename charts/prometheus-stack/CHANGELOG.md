@@ -2,6 +2,15 @@
 
 ## Chart Versions
 
+### 92.9.0
+- Remove default alertrule for container restarts
+- Increase version of `kube-prometheus-stack` to 92.9.0 (Prometheus v3.13.2 → v3.15.0, Alertmanager v0.33.1 → v0.34.1, prometheus-operator v0.93.0 → v0.94.1, Grafana 13.1.3 → 13.2.4)
+- Increase version of `prometheus-blackbox-exporter` to 11.20.0 (Blackbox Exporter v0.28.0 → v0.29.0)
+- Increase version of `common` to 0.4.0; the rendered ExternalSecret/PushSecret resources are unchanged for the pull-secret setup documented in this chart's values
+- ⚠️ The prometheus-operator CRDs (`v0.93.0` → `v0.94.1`) must be applied manually **before** the chart is rolled out, see [UPGRADE.md](./UPGRADE.md)
+- Rebased the vendored `kubernetes-resources` rules
+- 📖 See [UPGRADE.md](./UPGRADE.md) for the upgrade procedure
+
 ### 88.3.0
 - Increase version of `kube-prometheus-stack` to 88.3.0
 - Increase version of `prometheus-blackbox-exporter` to 11.17.2
