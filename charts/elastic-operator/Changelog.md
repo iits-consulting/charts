@@ -2,6 +2,11 @@
 
 All notable changes to this chart will be documented in this file.
 
+## [9.4.9] - 2026-10-28
+
+### Fixed
+- Filebeat `decode_json_fields` processors for `message` and `msg` now only run when the field starts with `{`, so plain-text log lines are no longer tagged with JSON decoding errors.
+
 ## [9.4.8] - 2026-10-15
 
 ### Added

@@ -206,14 +206,16 @@ filebeat:
     - add_kubernetes_metadata: { }
     - decode_json_fields:
         when:
-          has_fields: [ "message" ]
+          regexp:
+            message: '^\s*\{'
         fields: [ "message" ]
         target: ""
         overwrite_keys: true
         add_error_key: true
     - decode_json_fields:
         when:
-          has_fields: [ "msg" ]
+          regexp:
+            msg: '^\s*\{'
         fields: [ "msg" ]
         target: ""
         overwrite_keys: true
