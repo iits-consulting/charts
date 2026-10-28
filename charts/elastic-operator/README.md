@@ -1,6 +1,6 @@
 # elastic-operator
 
-![Version: 9.4.8](https://img.shields.io/badge/Version-9.4.8-informational?style=flat-square) ![AppVersion: 9.4.8](https://img.shields.io/badge/AppVersion-9.4.8-informational?style=flat-square)
+![Version: 9.4.9](https://img.shields.io/badge/Version-9.4.9-informational?style=flat-square) ![AppVersion: 9.4.8](https://img.shields.io/badge/AppVersion-9.4.8-informational?style=flat-square)
 
 Elasticsearch + filebeat + kibana with default common used indexes and Index Lifecycle Management.
 It comes also with a backup functionality. This is the version using ECK-operator to deploy and monitor the stack.
@@ -127,12 +127,12 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | filebeat.processors[1].decode_json_fields.fields[0] | string | `"message"` |  |
 | filebeat.processors[1].decode_json_fields.overwrite_keys | bool | `true` |  |
 | filebeat.processors[1].decode_json_fields.target | string | `""` |  |
-| filebeat.processors[1].decode_json_fields.when.has_fields[0] | string | `"message"` |  |
+| filebeat.processors[1].decode_json_fields.when.regexp.message | string | `"^\\s*\\{"` |  |
 | filebeat.processors[2].decode_json_fields.add_error_key | bool | `true` |  |
 | filebeat.processors[2].decode_json_fields.fields[0] | string | `"msg"` |  |
 | filebeat.processors[2].decode_json_fields.overwrite_keys | bool | `true` |  |
 | filebeat.processors[2].decode_json_fields.target | string | `""` |  |
-| filebeat.processors[2].decode_json_fields.when.has_fields[0] | string | `"msg"` |  |
+| filebeat.processors[2].decode_json_fields.when.regexp.msg | string | `"^\\s*\\{"` |  |
 | filebeat.processors[3].add_labels.labels.stage | string | `"${STAGE:dev}"` |  |
 | filebeat.processors[4].drop_event.when.or[0].equals."kubernetes.labels".common_k8s_elastic_co/type | string | `"elasticsearch"` |  |
 | filebeat.processors[4].drop_event.when.or[10].equals."kubernetes.labels".app_kubernetes_io/name | string | `"vault-secrets-webhook"` |  |
