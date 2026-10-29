@@ -52,3 +52,13 @@
     {{- end }}
   {{- end }}
 {{- end }}
+
+{{- $patternOwners := dict }}
+{{- range $policyName := keys .Values.ilm.policies | sortAlpha }}
+  {{- range $pattern := (index $.Values.ilm.policies $policyName).indexPatterns }}
+    {{- if hasKey $patternOwners $pattern }}
+      {{- fail (printf "ilm.policies: index pattern %q is listed in both policy %q and policy %q — an index can only follow one ILM policy, remove it from one of them" $pattern (get $patternOwners $pattern) $policyName) }}
+    {{- end }}
+    {{- $_ := set $patternOwners $pattern $policyName }}
+  {{- end }}
+{{- end }}
