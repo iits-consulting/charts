@@ -1,6 +1,6 @@
 # argocd
 
-![Version: 21.1.0](https://img.shields.io/badge/Version-21.1.0-informational?style=flat-square) ![AppVersion: 3.5.1](https://img.shields.io/badge/AppVersion-3.5.1-informational?style=flat-square)
+![Version: 21.2.0](https://img.shields.io/badge/Version-21.2.0-informational?style=flat-square) ![AppVersion: 3.5.1](https://img.shields.io/badge/AppVersion-3.5.1-informational?style=flat-square)
 
 This chart is used to bootstrap a Kubernetes cluster with `argocd`.
 You can use this chart to deploy `argocd` through tools like `terraform`.
@@ -14,7 +14,7 @@ resource "helm_release" "argocd" {
   name                  = "argocd"
   repository            = "https://charts.iits.tech"
   chart                 = "argocd"
-  version               = "21.1.0"
+  version               = "21.2.0"
   namespace             = "argocd"
   create_namespace      = true
   wait                  = true
@@ -55,7 +55,6 @@ resource "helm_release" "argocd" {
 | argo-cd.controller.metrics.enabled | bool | `true` |  |
 | argo-cd.controller.metrics.serviceMonitor.enabled | bool | `true` |  |
 | argo-cd.controller.replicas | int | `2` |  |
-| argo-cd.controller.resources.limits.cpu | string | `"750m"` |  |
 | argo-cd.controller.resources.limits.ephemeral-storage | string | `"2Gi"` |  |
 | argo-cd.controller.resources.limits.memory | string | `"1536Mi"` |  |
 | argo-cd.controller.resources.requests.cpu | string | `"500m"` |  |
@@ -74,7 +73,6 @@ resource "helm_release" "argocd" {
 | argo-cd.repoServer.metrics.enabled | bool | `true` |  |
 | argo-cd.repoServer.metrics.serviceMonitor.enabled | bool | `true` |  |
 | argo-cd.repoServer.replicas | int | `2` |  |
-| argo-cd.repoServer.resources.limits.cpu | string | `"750m"` |  |
 | argo-cd.repoServer.resources.limits.ephemeral-storage | string | `"2Gi"` |  |
 | argo-cd.repoServer.resources.limits.memory | string | `"768Mi"` |  |
 | argo-cd.repoServer.resources.requests.cpu | string | `"500m"` |  |
