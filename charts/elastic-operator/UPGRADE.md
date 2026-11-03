@@ -1,3 +1,8 @@
+# Upgrade to Version 9.4.8-fix-ilm
+
+- No changes required
+- Hint: changes to `ilm.policies` now take effect reliably on the next sync; the ilm-init job fails the ArgoCD sync on Elasticsearch errors instead of ignoring them
+
 # Upgrade to Version 9.4.8
 
 - No changes required
