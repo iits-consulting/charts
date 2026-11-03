@@ -15,6 +15,7 @@ data:
     {{ range $policyName, $policyConfig  := .Values.ilm.policies }}
     echo -e "\nINFO: Delete index template {{$policyName}} before recreation"
     status=$(curl -u "$ELASTICSEARCH_USERNAME:$ELASTICSEARCH_PASSWORD" --cacert /es-cert/ca.crt -s -o /dev/null -w '%{http_code}' -X DELETE ${endpoint}/_index_template/{{$policyName}})
+    # Excluding 404 below to prevent errors, when new policies are initially created
     if [ "$status" != "200" ] && [ "$status" != "404" ]; then
       echo "ERROR: Deleting index template {{$policyName}} failed with HTTP status $status"
       exit 1
@@ -42,7 +43,7 @@ data:
                 "actions": {
                   "set_priority": {
                     "priority": 0
-                  }                
+                  }
                 }
               },
               "delete": {
