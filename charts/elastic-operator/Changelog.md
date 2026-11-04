@@ -2,6 +2,20 @@
 
 All notable changes to this chart will be documented in this file.
 
+## [9.5.6] - 2026-11-03
+
+### Changed
+- Updated the Elastic stack (`appVersion`) to `9.5.6`.
+- Updated the ECK operator (`eck-operator`) to `3.5.0`.
+
+### Fixed
+- Changes to `ilm`, `indexPatternInit` or `backup` values now make the ArgoCD application OutOfSync and trigger auto-sync: their ConfigMaps are regular tracked resources instead of hooks (hooks are excluded from the ArgoCD diff)
+- The index-pattern-init and backup-init jobs no longer fail silently: their curl calls now fail on HTTP errors (`--fail-with-body`) and the index-pattern-init script aborts on the first error (`set -eu`), failing the ArgoCD sync — same hardening the ilm-init job received in `9.4.8-fix-ilm`
+
+> **Note:** for an upgrade guide, refer to [UPGRADE.md](UPGRADE.md)
+
+[9.5.6]: https://github.com/iits-consulting/charts/compare/elastic-operator-9.4.8-fix-ilm...elastic-operator-9.5.6
+
 ## [9.4.8-fix-ilm] - 2026-10-29
 
 ### Fixed

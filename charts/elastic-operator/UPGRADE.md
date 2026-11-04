@@ -1,3 +1,9 @@
+# Upgrade to Version 9.5.6
+
+- No changes required
+- Hint: the ilm, index-pattern-init and backup ConfigMaps are now regular tracked resources and stay in the cluster between syncs
+- Hint: the index-pattern-init and backup-init jobs now fail the ArgoCD sync on Elasticsearch/Kibana errors instead of ignoring them — a previously hidden misconfiguration may surface as a failed sync after this upgrade
+
 # Upgrade to Version 9.4.8-fix-ilm
 
 - No changes required
