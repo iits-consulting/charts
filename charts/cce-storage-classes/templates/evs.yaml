@@ -21,7 +21,7 @@ parameters:
   everest.io/passthrough: "true"
 provisioner: everest-csi-provisioner
 reclaimPolicy: {{ $retention }}
-volumeBindingMode: Immediate
+volumeBindingMode: {{ $.Values.volumeBindingMode }}
 ---
 {{- end }}
 {{- end }}

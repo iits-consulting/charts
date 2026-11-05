@@ -6,3 +6,6 @@ evsTypes:
 defaultClass:
   type: "SSD"
   retention: "Retain"
+# -- Set to "WaitForFirstConsumer" to defer EVS disk provisioning until a pod is scheduled, avoiding
+# zone mismatches between the PV and the scheduled pod. Defaults to "Immediate" for backward compatibility.
+volumeBindingMode: "Immediate"
