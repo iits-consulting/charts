@@ -23,10 +23,6 @@ argo-cd:
         cpu: 500m
         memory: 1024Mi
         ephemeral-storage: 50Mi
-      limits:
-        cpu: 750m
-        memory: 1536Mi
-        ephemeral-storage: 2Gi
     metrics:
       enabled: true
       serviceMonitor:
@@ -56,10 +52,6 @@ argo-cd:
         cpu: 500m
         memory: 512Mi
         ephemeral-storage: 50Mi
-      limits:
-        cpu: 750m
-        memory: 768Mi
-        ephemeral-storage: 2Gi
     metrics:
       enabled: true
       serviceMonitor:
