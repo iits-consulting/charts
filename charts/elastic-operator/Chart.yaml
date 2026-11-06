@@ -1,11 +1,11 @@
 apiVersion: v2
 name: elastic-operator
-version: 9.4.8-fix-ilm
-appVersion: 9.4.8
+version: 9.5.6
+appVersion: 9.5.6
 dependencies:
   - name: eck-operator
     repository: https://helm.elastic.co
-    version: 3.4.0
+    version: 3.5.0
   - name: common
     repository: "https://charts.iits.tech"
     version: 0.4.0
