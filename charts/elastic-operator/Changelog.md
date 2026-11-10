@@ -2,10 +2,16 @@
 
 All notable changes to this chart will be documented in this file.
 
-## [Unreleased]
+## [10.0.0] - 2026-11-10
+
+> Breaking change, requires the Kyverno chart 4.0.0 or newer (CEL policies). The chart version is bumped to a new major while `appVersion` stays `9.5.6`.
+
+### Added
+- `policyException.namespace`: namespace of the PolicyException, defaults to the release namespace. Kyverno must read exceptions from it (`kyverno.features.policyExceptions.namespace`)
+- `policyException.labels` and `policyException.annotations`: labels and annotations of the PolicyExceptions; annotations are merged with the defaults from `values.yaml`
 
 ### Changed
-- Breaking: the PolicyException is now a `policies.kyverno.io/v1` PolicyException (CEL), `kyverno.io/v2` exceptions do not apply to CEL policies. It is created in the release namespace unless `policyException.namespace` is set.
+- **Breaking:** the PolicyException is now a `policies.kyverno.io/v1` PolicyException (CEL). `kyverno.io/v2` exceptions do not apply to CEL policies. It is created in the release namespace unless `policyException.namespace` is set
 
 ## [9.5.6] - 2026-11-03
 
