@@ -1,6 +1,6 @@
 # argocd
 
-![Version: 21.1.0](https://img.shields.io/badge/Version-21.1.0-informational?style=flat-square) ![AppVersion: 3.5.1](https://img.shields.io/badge/AppVersion-3.5.1-informational?style=flat-square)
+![Version: 22.0.0](https://img.shields.io/badge/Version-22.0.0-informational?style=flat-square) ![AppVersion: 3.5.1](https://img.shields.io/badge/AppVersion-3.5.1-informational?style=flat-square)
 
 This chart is used to bootstrap a Kubernetes cluster with `argocd`.
 You can use this chart to deploy `argocd` through tools like `terraform`.
@@ -90,7 +90,11 @@ resource "helm_release" "argocd" {
 | argo-cd.server.metrics.enabled | bool | `true` |  |
 | argo-cd.server.metrics.serviceMonitor.enabled | bool | `true` |  |
 | argo-cd.server.replicas | int | `2` |  |
+| policyException.annotations."helm.sh/hook" | string | `"pre-install,pre-upgrade"` |  |
+| policyException.annotations."helm.sh/hook-weight" | string | `"-5"` |  |
 | policyException.enabled | bool | `true` |  |
+| policyException.labels | object | `{}` |  |
+| policyException.namespace | string | `""` |  |
 | prometheusRule.additionalLabels | object | `{}` |  |
 | prometheusRule.enabled | bool | `false` |  |
 | prometheusRule.rules.ApplicationDegraded.annotations.description | string | `"ArgoCD application {{ $labels.namespace }}/{{ $labels.name }} has health {{ $labels.health_status }}."` |  |
