@@ -1,27 +1,28 @@
 {{ with .Values.policyException }}
 {{ if .enabled }}
-apiVersion: kyverno.io/v2
+apiVersion: policies.kyverno.io/v1
 kind: PolicyException
 metadata:
   name: {{ $.Release.Namespace }}-{{$.Release.Name}}-es
+  namespace: {{ .namespace | default $.Release.Namespace }}
+  {{- with .labels }}
+  labels:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .annotations }}
   annotations:
-    argocd.argoproj.io/sync-wave: "-5"
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
-  exceptions:
-    - policyName: restrict-seccomp-strict
-      ruleNames:
-        - check-seccomp-strict
-  match:
-    any:
-      - resources:
-          kinds:
-            - Pod
-          names:
-            - {{ $.Release.Name }}-es-default-*
+  policyRefs:
+    - {name: restrict-seccomp-strict, kind: ValidatingPolicy}
+  matchConditions:
+    - name: elasticsearch-pods
+      expression: >-
+        object.metadata.namespace == '{{ $.Release.Namespace }}' &&
+        ((has(object.metadata.name) ? object.metadata.name : object.metadata.generateName).startsWith('{{ $.Release.Name }}-es-default-')
 {{- if $.Values.elasticsearch.votingOnly.enabled }}
-            - {{ $.Release.Name }}-es-voting-only-*
-{{- end }}
-          namespaces:
-            - {{ $.Release.Namespace }}
+        || (has(object.metadata.name) ? object.metadata.name : object.metadata.generateName).startsWith('{{ $.Release.Name }}-es-voting-only-')
+{{- end }})
 {{- end }}
 {{- end }}

@@ -2,6 +2,11 @@
 
 All notable changes to this chart will be documented in this file.
 
+## [Unreleased]
+
+### Changed
+- Breaking: the PolicyException is now a `policies.kyverno.io/v1` PolicyException (CEL), `kyverno.io/v2` exceptions do not apply to CEL policies. It is created in the release namespace unless `policyException.namespace` is set.
+
 ## [9.5.6] - 2026-11-03
 
 ### Changed

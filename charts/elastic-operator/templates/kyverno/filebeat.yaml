@@ -1,49 +1,33 @@
 {{ with .Values.policyException }}
 {{ if .enabled }}
-apiVersion: kyverno.io/v2
+apiVersion: policies.kyverno.io/v1
 kind: PolicyException
 metadata:
   name: {{ $.Release.Namespace }}-{{$.Release.Name}}-fb
+  namespace: {{ .namespace | default $.Release.Namespace }}
+  {{- with .labels }}
+  labels:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .annotations }}
   annotations:
-    argocd.argoproj.io/sync-wave: "-5"
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
-  exceptions:
-    - policyName: enforce-security-context
-      ruleNames:
-        - add-pod-security-context
-    - policyName: disallow-capabilities-strict
-      ruleNames:
-        - require-drop-all
-    - policyName: disallow-host-namespaces
-      ruleNames:
-        - host-namespaces
-    - policyName: disallow-host-path
-      ruleNames:
-        - host-path
-    - policyName: disallow-privilege-escalation
-      ruleNames:
-        - privilege-escalation
-    - policyName: require-run-as-non-root-user
-      ruleNames:
-        - run-as-non-root-user
-    - policyName: require-run-as-nonroot
-      ruleNames:
-        - run-as-non-root
-    - policyName: restrict-seccomp-strict
-      ruleNames:
-        - check-seccomp-strict
-    - policyName: restrict-volume-types
-      ruleNames:
-        - restricted-volumes
-  match:
-    any:
-      - resources:
-          kinds:
-            - Pod
-            - DaemonSet
-          names:
-            - {{ $.Release.Name }}-beat-filebeat-*
-          namespaces:
-            - {{ $.Release.Namespace }}
+  policyRefs:
+    - {name: enforce-security-context, kind: MutatingPolicy}
+    - {name: disallow-capabilities-strict, kind: ValidatingPolicy}
+    - {name: disallow-host-namespaces, kind: ValidatingPolicy}
+    - {name: disallow-host-path, kind: ValidatingPolicy}
+    - {name: disallow-privilege-escalation, kind: ValidatingPolicy}
+    - {name: require-run-as-non-root-user, kind: ValidatingPolicy}
+    - {name: require-run-as-nonroot, kind: ValidatingPolicy}
+    - {name: restrict-seccomp-strict, kind: ValidatingPolicy}
+    - {name: restrict-volume-types, kind: ValidatingPolicy}
+  matchConditions:
+    - name: filebeat-pods
+      expression: >-
+        object.metadata.namespace == '{{ $.Release.Namespace }}' &&
+        (has(object.metadata.name) ? object.metadata.name : object.metadata.generateName).startsWith('{{ $.Release.Name }}-beat-filebeat-')
 {{- end }}
 {{- end }}

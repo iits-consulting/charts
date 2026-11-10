@@ -564,6 +564,14 @@ backup:
 
 policyException:
   enabled: true
+  # Namespace of the PolicyException, defaults to the release namespace.
+  # Kyverno must read exceptions from it (kyverno.features.policyExceptions.namespace)
+  namespace: ""
+  # Labels added to the PolicyException
+  labels: {}
+  # Annotations added to the PolicyException, merged with these defaults
+  annotations:
+    argocd.argoproj.io/sync-wave: "-5"
 
 common:
   externalSecret:
