@@ -2,6 +2,9 @@
 
 ## Chart Versions
 
+### Unreleased
+- Breaking: the PolicyException is now a `policies.kyverno.io/v1` PolicyException (CEL), `kyverno.io/v2` exceptions do not apply to CEL policies. It is created in the release namespace unless `policyException.namespace` is set.
+
 ### 92.9.0
 - Remove default alertrule for container restarts
 - Increase version of `kube-prometheus-stack` to 92.9.0 (Prometheus v3.13.2 → v3.15.0, Alertmanager v0.33.1 → v0.34.1, prometheus-operator v0.93.0 → v0.94.1, Grafana 13.1.3 → 13.2.4)

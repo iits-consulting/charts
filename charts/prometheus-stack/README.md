@@ -1,6 +1,6 @@
 # prometheus-stack
 
-![Version: 92.9.0](https://img.shields.io/badge/Version-92.9.0-informational?style=flat-square) ![AppVersion: 3.15.0](https://img.shields.io/badge/AppVersion-3.15.0-informational?style=flat-square)
+![Version: 93.0.0](https://img.shields.io/badge/Version-93.0.0-informational?style=flat-square) ![AppVersion: 3.15.0](https://img.shields.io/badge/AppVersion-3.15.0-informational?style=flat-square)
 
 A complete monitoring/alerting stack with Grafana, Prometheus, Alertmanager & Blackbox exporter
 
@@ -76,7 +76,11 @@ prometheus-stack:
 | global.ingress.paths.alertmanager | string | `"/alertmanager"` |  |
 | global.ingress.paths.grafana | string | `"/grafana"` |  |
 | global.ingress.paths.prometheus | string | `"/prometheus"` |  |
+| policyException.annotations."helm.sh/hook" | string | `"pre-install,pre-upgrade"` |  |
+| policyException.annotations."helm.sh/hook-weight" | string | `"-5"` |  |
 | policyException.enabled | bool | `true` |  |
+| policyException.labels | object | `{}` |  |
+| policyException.namespace | string | `""` |  |
 | prometheusStack.additionalPrometheusRulesMap.oom-killed.groups[0].name | string | `"pod-oom-killed"` |  |
 | prometheusStack.additionalPrometheusRulesMap.oom-killed.groups[0].rules[0].alert | string | `"PodOOMKilled"` |  |
 | prometheusStack.additionalPrometheusRulesMap.oom-killed.groups[0].rules[0].annotations.description | string | `"Either the termination reason is reported as “OOMKilled” or the container\nexited with code 137 (SIGKILL). Investigate memory\nrequests/limits and node pressure.\n"` |  |
