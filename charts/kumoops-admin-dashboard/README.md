@@ -33,203 +33,55 @@ kumoops-admin-dashboard:
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| defaultDashboard.logoAlt | string | `"KumoOps Logo"` |  |
-| defaultDashboard.logoDarkSrc | string | `"https://brand-book.kumo-ops.com/assets/kumoops-logo-full-dark-800px.png"` |  |
-| defaultDashboard.logoSrc | string | `"https://brand-book.kumo-ops.com/assets/kumoops-logo-full-light-800px.png"` |  |
-| defaultDashboard.subtitle | string | `"CloudSecOps-as-a-Service"` |  |
-| defaultDashboard.tiles.akhq.category | string | `"Messaging"` |  |
-| defaultDashboard.tiles.akhq.description | string | `"Kafka cluster management UI"` |  |
-| defaultDashboard.tiles.akhq.enabled | bool | `true` |  |
-| defaultDashboard.tiles.akhq.href | string | `"akhq/ui/"` |  |
-| defaultDashboard.tiles.akhq.imgAlt | string | `"akhq (kafka headquarter)"` |  |
-| defaultDashboard.tiles.akhq.imgSrc | string | `"https://iits-consulting.de/wp-content/uploads/2026/01/kafka.svg"` |  |
-| defaultDashboard.tiles.alertManager.category | string | `"Observability"` |  |
-| defaultDashboard.tiles.alertManager.description | string | `"Alert handling and routing"` |  |
-| defaultDashboard.tiles.alertManager.enabled | bool | `true` |  |
-| defaultDashboard.tiles.alertManager.href | string | `"/alertmanager"` |  |
-| defaultDashboard.tiles.alertManager.imgAlt | string | `"Alertmanager"` |  |
-| defaultDashboard.tiles.alertManager.imgSrc | string | `"https://iits-consulting.de/wp-content/uploads/2026/01/definitly_not_alertmanager.svg"` |  |
-| defaultDashboard.tiles.argocd.category | string | `"DevOps"` |  |
-| defaultDashboard.tiles.argocd.description | string | `"GitOps continuous delivery for Kubernetes"` |  |
-| defaultDashboard.tiles.argocd.enabled | bool | `true` |  |
-| defaultDashboard.tiles.argocd.href | string | `"argocd/auth/login"` |  |
-| defaultDashboard.tiles.argocd.imgAlt | string | `"ArgoCD"` |  |
-| defaultDashboard.tiles.argocd.imgSrc | string | `"https://iits-consulting.de/wp-content/uploads/2026/01/argo.svg"` |  |
-| defaultDashboard.tiles.docs.category | string | `"KumoOps"` |  |
-| defaultDashboard.tiles.docs.description | string | `"Technical Documentation about KumoOps"` |  |
-| defaultDashboard.tiles.docs.enabled | bool | `false` |  |
-| defaultDashboard.tiles.docs.href | string | `"docs/"` |  |
-| defaultDashboard.tiles.docs.imgAlt | string | `"Docs"` |  |
-| defaultDashboard.tiles.docs.imgSrc | string | `"https://picsum.photos/id/24/200/200"` |  |
-| defaultDashboard.tiles.elasticsearch.category | string | `"Observability"` |  |
-| defaultDashboard.tiles.elasticsearch.description | string | `"Search and analytics engine"` |  |
-| defaultDashboard.tiles.elasticsearch.enabled | bool | `true` |  |
-| defaultDashboard.tiles.elasticsearch.href | string | `"elasticsearch"` |  |
-| defaultDashboard.tiles.elasticsearch.imgAlt | string | `"Elasticsearch"` |  |
-| defaultDashboard.tiles.elasticsearch.imgSrc | string | `"https://iits-consulting.de/wp-content/uploads/2026/01/elasticsearch.svg"` |  |
-| defaultDashboard.tiles.gitlab.category | string | `"DevOps"` |  |
-| defaultDashboard.tiles.gitlab.description | string | `"DevOps platform for Git repositories and CI/CD"` |  |
-| defaultDashboard.tiles.gitlab.enabled | bool | `false` |  |
-| defaultDashboard.tiles.gitlab.href | string | `"https://gitlab.kumo-ops.com"` |  |
-| defaultDashboard.tiles.gitlab.imgAlt | string | `"GitLab"` |  |
-| defaultDashboard.tiles.gitlab.imgSrc | string | `"https://iits-consulting.de/wp-content/uploads/2026/01/gitlab.svg"` |  |
-| defaultDashboard.tiles.grafana.category | string | `"Observability"` |  |
-| defaultDashboard.tiles.grafana.description | string | `"Metrics visualization and monitoring"` |  |
-| defaultDashboard.tiles.grafana.enabled | bool | `true` |  |
-| defaultDashboard.tiles.grafana.href | string | `"grafana/login/generic_oauth"` |  |
-| defaultDashboard.tiles.grafana.imgAlt | string | `"Grafana"` |  |
-| defaultDashboard.tiles.grafana.imgSrc | string | `"https://iits-consulting.de/wp-content/uploads/2026/01/definitly_not_grafana.svg"` |  |
-| defaultDashboard.tiles.harbor.category | string | `"DevOps"` |  |
-| defaultDashboard.tiles.harbor.description | string | `"Container registry with security scanning and signing"` |  |
-| defaultDashboard.tiles.harbor.enabled | bool | `false` |  |
-| defaultDashboard.tiles.harbor.href | string | `"harbor/"` |  |
-| defaultDashboard.tiles.harbor.imgAlt | string | `"Harbor"` |  |
-| defaultDashboard.tiles.harbor.imgSrc | string | `"https://iits-consulting.de/wp-content/uploads/2026/01/harbor-logo.png"` |  |
-| defaultDashboard.tiles.homeport.category | string | `"AI"` |  |
-| defaultDashboard.tiles.homeport.description | string | `"Homeport.ai provides you private genAI tools and services"` |  |
-| defaultDashboard.tiles.homeport.enabled | bool | `false` |  |
-| defaultDashboard.tiles.homeport.href | string | `"https://homeport.ai"` |  |
-| defaultDashboard.tiles.homeport.imgAlt | string | `"Homeport private GenAI Tool"` |  |
-| defaultDashboard.tiles.homeport.imgSrc | string | `"https://iits-consulting.de/wp-content/uploads/2026/01/homeport-1.png"` |  |
-| defaultDashboard.tiles.keycloak.category | string | `"Identity Management"` |  |
-| defaultDashboard.tiles.keycloak.description | string | `"Identity and access management"` |  |
-| defaultDashboard.tiles.keycloak.enabled | bool | `true` |  |
-| defaultDashboard.tiles.keycloak.href | string | `"keycloak/"` |  |
-| defaultDashboard.tiles.keycloak.imgAlt | string | `"Keycloak"` |  |
-| defaultDashboard.tiles.keycloak.imgSrc | string | `"https://iits-consulting.de/wp-content/uploads/2026/01/keycloak.svg"` |  |
-| defaultDashboard.tiles.kibana.category | string | `"Observability"` |  |
-| defaultDashboard.tiles.kibana.description | string | `"Log exploration and visualization"` |  |
-| defaultDashboard.tiles.kibana.enabled | bool | `true` |  |
-| defaultDashboard.tiles.kibana.href | string | `"kibana/app/discover"` |  |
-| defaultDashboard.tiles.kibana.imgAlt | string | `"Kibana"` |  |
-| defaultDashboard.tiles.kibana.imgSrc | string | `"https://iits-consulting.de/wp-content/uploads/2026/01/definitly_not_kibana.svg"` |  |
-| defaultDashboard.tiles.kyverno.category | string | `"Security"` |  |
-| defaultDashboard.tiles.kyverno.description | string | `"Kubernetes policy management"` |  |
-| defaultDashboard.tiles.kyverno.enabled | bool | `true` |  |
-| defaultDashboard.tiles.kyverno.href | string | `"policies"` |  |
-| defaultDashboard.tiles.kyverno.imgAlt | string | `"Kyverno"` |  |
-| defaultDashboard.tiles.kyverno.imgSrc | string | `"https://iits-consulting.de/wp-content/uploads/2026/01/kyverno.svg"` |  |
-| defaultDashboard.tiles.logout.category | string | `"Identity Management"` |  |
-| defaultDashboard.tiles.logout.description | string | `"Sign out from all services"` |  |
-| defaultDashboard.tiles.logout.enabled | bool | `true` |  |
-| defaultDashboard.tiles.logout.href | string | `"/logout"` |  |
-| defaultDashboard.tiles.logout.imgAlt | string | `"Logout"` |  |
-| defaultDashboard.tiles.logout.imgSrc | string | `"https://iits-consulting.de/wp-content/uploads/2026/01/logout.svg"` |  |
-| defaultDashboard.tiles.logs.category | string | `"Observability"` |  |
-| defaultDashboard.tiles.logs.description | string | `"Log exploration (Loki via Grafana Explore)"` |  |
-| defaultDashboard.tiles.logs.enabled | bool | `false` |  |
-| defaultDashboard.tiles.logs.href | string | `"grafana/explore"` |  |
-| defaultDashboard.tiles.logs.imgAlt | string | `"Logs"` |  |
-| defaultDashboard.tiles.logs.imgSrc | string | `"https://iits-consulting.de/wp-content/uploads/2026/01/definitly_not_grafana.svg"` |  |
-| defaultDashboard.tiles.n8n.category | string | `"AI"` |  |
-| defaultDashboard.tiles.n8n.description | string | `"Workflow automation platform"` |  |
-| defaultDashboard.tiles.n8n.enabled | bool | `false` |  |
-| defaultDashboard.tiles.n8n.href | string | `"n8n/"` |  |
-| defaultDashboard.tiles.n8n.imgAlt | string | `"n8n Automation"` |  |
-| defaultDashboard.tiles.n8n.imgSrc | string | `"https://iits-consulting.de/wp-content/uploads/2026/01/n8n-logo.webp"` |  |
-| defaultDashboard.tiles.otc.category | string | `"Cloud"` |  |
-| defaultDashboard.tiles.otc.description | string | `"T Cloud Public(TCP) console"` |  |
-| defaultDashboard.tiles.otc.enabled | bool | `true` |  |
-| defaultDashboard.tiles.otc.href | string | `"otcOIDC/"` |  |
-| defaultDashboard.tiles.otc.imgAlt | string | `"T Cloud Public(TCP)"` |  |
-| defaultDashboard.tiles.otc.imgSrc | string | `"https://iits-consulting.de/wp-content/uploads/2026/01/otc-logo.svg"` |  |
-| defaultDashboard.tiles.portal.category | string | `"KumoOps"` |  |
-| defaultDashboard.tiles.portal.description | string | `"Main KumoOps portal dashboard"` |  |
-| defaultDashboard.tiles.portal.enabled | bool | `true` |  |
-| defaultDashboard.tiles.portal.href | string | `"https://portal.kumo-ops.com/"` |  |
-| defaultDashboard.tiles.portal.imgAlt | string | `"KumoOps Portal"` |  |
-| defaultDashboard.tiles.portal.imgSrc | string | `"https://iits-consulting.de/wp-content/uploads/2026/01/kumoops-portal.png"` |  |
-| defaultDashboard.tiles.prometheus.category | string | `"Observability"` |  |
-| defaultDashboard.tiles.prometheus.description | string | `"Time-series database and monitoring"` |  |
-| defaultDashboard.tiles.prometheus.enabled | bool | `true` |  |
-| defaultDashboard.tiles.prometheus.href | string | `"prometheus"` |  |
-| defaultDashboard.tiles.prometheus.imgAlt | string | `"Prometheus"` |  |
-| defaultDashboard.tiles.prometheus.imgSrc | string | `"https://iits-consulting.de/wp-content/uploads/2026/01/definitly_not_prometheus.svg"` |  |
-| defaultDashboard.tiles.sonarqube.category | string | `"Security"` |  |
-| defaultDashboard.tiles.sonarqube.description | string | `"Code quality and security analysis platform"` |  |
-| defaultDashboard.tiles.sonarqube.enabled | bool | `false` |  |
-| defaultDashboard.tiles.sonarqube.href | string | `"sonarqube/"` |  |
-| defaultDashboard.tiles.sonarqube.imgAlt | string | `"SonarQube"` |  |
-| defaultDashboard.tiles.sonarqube.imgSrc | string | `"https://iits-consulting.de/wp-content/uploads/2026/01/sonarqube.webp"` |  |
-| defaultDashboard.tiles.support.category | string | `"KumoOps"` |  |
-| defaultDashboard.tiles.support.enabled | bool | `true` |  |
-| defaultDashboard.tiles.support.href | string | `"mailto:support@kumo-ops.com"` |  |
-| defaultDashboard.tiles.support.imgAlt | string | `"KumoOps Support"` |  |
-| defaultDashboard.tiles.support.imgSrc | string | `"https://iits-consulting.de/wp-content/uploads/2026/01/kumo-support.png"` |  |
-| defaultDashboard.tiles.traefikDashboard.category | string | `"DevOps"` |  |
-| defaultDashboard.tiles.traefikDashboard.description | string | `"Traefik proxy and routing dashboard"` |  |
-| defaultDashboard.tiles.traefikDashboard.enabled | bool | `true` |  |
-| defaultDashboard.tiles.traefikDashboard.href | string | `"dashboard/"` |  |
-| defaultDashboard.tiles.traefikDashboard.imgAlt | string | `"Traefik Dashboard"` |  |
-| defaultDashboard.tiles.traefikDashboard.imgSrc | string | `"https://iits-consulting.de/wp-content/uploads/2026/01/traefik.svg"` |  |
-| defaultDashboard.tiles.trivy.category | string | `"Security"` |  |
-| defaultDashboard.tiles.trivy.description | string | `"Comprehensive vulnerability scanner for containers"` |  |
-| defaultDashboard.tiles.trivy.enabled | bool | `false` |  |
-| defaultDashboard.tiles.trivy.href | string | `"trivy/"` |  |
-| defaultDashboard.tiles.trivy.imgAlt | string | `"Trivy"` |  |
-| defaultDashboard.tiles.trivy.imgSrc | string | `"https://iits-consulting.de/wp-content/uploads/2026/01/trivy_logo.png"` |  |
-| defaultDashboard.tiles.vault.category | string | `"Security"` |  |
-| defaultDashboard.tiles.vault.description | string | `"Secrets and encryption management"` |  |
-| defaultDashboard.tiles.vault.enabled | bool | `true` |  |
-| defaultDashboard.tiles.vault.href | string | `"vault/"` |  |
-| defaultDashboard.tiles.vault.imgAlt | string | `"Vault"` |  |
-| defaultDashboard.tiles.vault.imgSrc | string | `"https://iits-consulting.de/wp-content/uploads/2026/01/vault.svg"` |  |
-| defaultDashboard.title | string | `"KumoOps Admin"` |  |
-| deployment.annotations | string | `nil` |  |
-| deployment.containerPort | int | `3000` |  |
-| deployment.extraVolumeMounts | list | `[]` |  |
-| deployment.extraVolumes | list | `[]` |  |
-| deployment.health.liveness.failureThreshold | int | `3` |  |
-| deployment.health.liveness.initialDelaySeconds | int | `5` |  |
-| deployment.health.liveness.path | string | `"/"` |  |
-| deployment.health.liveness.periodSeconds | int | `20` |  |
-| deployment.health.readiness.failureThreshold | int | `3` |  |
-| deployment.health.readiness.initialDelaySeconds | int | `5` |  |
-| deployment.health.readiness.path | string | `"/"` |  |
-| deployment.health.readiness.periodSeconds | int | `20` |  |
-| deployment.health.startupProbe.failureThreshold | int | `3` |  |
-| deployment.health.startupProbe.initialDelaySeconds | int | `5` |  |
-| deployment.health.startupProbe.path | string | `"/"` |  |
-| deployment.health.startupProbe.periodSeconds | int | `5` |  |
-| deployment.imagePullSecrets | list | `[]` |  |
-| deployment.onePodForEachNode | bool | `false` |  |
-| deployment.podAnnotations | object | `{}` |  |
-| deployment.podSecurityContext.runAsNonRoot | bool | `true` |  |
-| deployment.podSecurityContext.runAsUser | int | `1001` |  |
-| deployment.podSecurityContext.seccompProfile.type | string | `"RuntimeDefault"` |  |
-| deployment.replicaCount | int | `1` |  |
-| deployment.resources.limits.cpu | string | `"10m"` |  |
-| deployment.resources.limits.memory | string | `"8Mi"` |  |
-| deployment.resources.requests.cpu | string | `"1m"` |  |
-| deployment.resources.requests.memory | string | `"4Mi"` |  |
-| deployment.securityContext.allowPrivilegeEscalation | bool | `false` |  |
-| deployment.securityContext.capabilities.drop[0] | string | `"ALL"` |  |
-| deployment.securityContext.readOnlyRootFilesystem | bool | `true` |  |
-| deployment.securityContext.runAsNonRoot | bool | `true` |  |
-| deployment.securityContext.runAsUser | int | `1001` |  |
-| fullnameOverride | string | `""` |  |
-| ingress.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
-| ingress.annotations."traefik.ingress.kubernetes.io/router.tls" | string | `"true"` |  |
-| ingress.enabled | bool | `true` |  |
+| autoscaling.enabled | bool | `false` | Create a HorizontalPodAutoscaler for the deployment. Needs the metrics server. |
+| autoscaling.maxReplicas | int | `3` | Upper bound of pods |
+| autoscaling.minReplicas | int | `1` | Lower bound of pods |
+| autoscaling.targetCPUUtilizationPercentage | int | `80` | Target average CPU utilization in percent of the request |
+| autoscaling.targetMemoryUtilizationPercentage | int | `nil` | Target average memory utilization in percent of the request, not used if empty |
+| defaultDashboard.context | string | `nil` | Name of the customer or stage, shown in the user menu |
+| defaultDashboard.logoAlt | string | `"KumoOps Logo"` | Alt text of the logo |
+| defaultDashboard.logoDarkSrc | string | `"https://brand-book.kumo-ops.com/assets/kumoops-logo-full-dark-800px.png"` | Logo URL for dark mode, falls back to logoSrc |
+| defaultDashboard.logoSrc | string | `"https://brand-book.kumo-ops.com/assets/kumoops-logo-full-light-800px.png"` | Logo URL for light mode |
+| defaultDashboard.logoutUrl | string | `nil` | OIDC logout URL, falls back to the href of the logout tile |
+| defaultDashboard.subtitle | string | `"CloudSecOps-as-a-Service"` | Subtitle below the title |
+| defaultDashboard.tiles | object | see values.yaml | Tiles of the dashboard, keyed by name. Each tile takes `enabled`, `href`, `imgSrc`, `imgAlt`, `category` and an optional `description`. `category` has to be one of KumoOps, Observability, Security, DevOps, Messaging, Cloud, AI, Identity Management, System. Switch a tile off with `defaultDashboard.tiles.<name>.enabled: false`, add your own under a new key. |
+| defaultDashboard.title | string | `"KumoOps Admin"` | Title of the page |
+| defaultDashboard.userinfoUrl | string | `nil` | OIDC userinfo endpoint, used to show the logged in user |
+| deployment.annotations | string | `nil` | Annotations of the deployment, rendered with tpl |
+| deployment.containerPort | int | `3000` | Port the webserver listens on |
+| deployment.extraVolumeMounts | list | `[]` | Extra volume mounts of the webserver container |
+| deployment.extraVolumes | list | `[]` | Extra volumes of the pod |
+| deployment.health | object | `{"liveness":{"failureThreshold":3,"initialDelaySeconds":5,"path":"/","periodSeconds":20},"readiness":{"failureThreshold":3,"initialDelaySeconds":5,"path":"/","periodSeconds":20},"startupProbe":{"failureThreshold":3,"initialDelaySeconds":5,"path":"/","periodSeconds":5}}` | Startup, liveness and readiness probe settings |
+| deployment.imagePullSecrets | list | `[]` | Pull secrets for the image |
+| deployment.onePodForEachNode | bool | `false` | Spread the pods so that no two run on the same node |
+| deployment.podAnnotations | object | `{}` | Annotations of the pods |
+| deployment.podSecurityContext | object | `{"runAsNonRoot":true,"runAsUser":1001,"seccompProfile":{"type":"RuntimeDefault"}}` | Security context of the pod. Pod level, so no container falls back to the default (root) context |
+| deployment.replicaCount | int | `1` | Number of pods, ignored when autoscaling is enabled |
+| deployment.resources | object | `{"limits":{"cpu":"10m","memory":"8Mi"},"requests":{"cpu":"1m","memory":"4Mi"}}` | Resources of the webserver. It serves static files, so the defaults are tiny |
+| deployment.securityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"readOnlyRootFilesystem":true,"runAsNonRoot":true,"runAsUser":1001}` | Security context of the webserver container |
+| fullnameOverride | string | `""` | Overrides the full name of all resources, defaults to the release name |
+| ingress.annotations | object | `{"traefik.ingress.kubernetes.io/router.entrypoints":"websecure","traefik.ingress.kubernetes.io/router.tls":"true"}` | Annotations of the ingress, rendered with tpl |
+| ingress.enabled | bool | `true` | Create the ingress |
 | ingress.host | string | `nil` | Required, replace it with your host address |
-| ingress.hosts[0].host | string | `"{{ .Values.ingress.host }}"` |  |
-| ingress.hosts[0].paths[0].path | string | `"/"` |  |
-| ingress.labels | string | `nil` |  |
-| nameOverride | string | `""` |  |
-| service.annotations | string | `nil` |  |
-| service.labels | string | `nil` |  |
-| service.port | int | `80` |  |
-| service.type | string | `"ClusterIP"` |  |
-| serviceAccount.annotations | object | `{}` |  |
-| serviceAccount.create | bool | `true` |  |
-| serviceAccount.name | string | `""` |  |
+| ingress.hosts | list | `[{"host":"{{ .Values.ingress.host }}","paths":[{"path":"/"}]}]` | Hosts and paths of the ingress. Set `secretName` on a host to use your own TLS secret |
+| ingress.labels | string | `nil` | Extra labels of the ingress |
+| nameOverride | string | `""` | Overrides the name used in the selector labels, defaults to the release name |
+| service.annotations | string | `nil` | Annotations of the service, rendered with tpl |
+| service.labels | string | `nil` | Extra labels of the service, rendered with tpl |
+| service.port | int | `80` | Port of the service |
+| service.type | string | `"ClusterIP"` | Type of the service |
+| serviceAccount.annotations | object | `{}` | Annotations of the service account |
+| serviceAccount.create | bool | `true` | Create a service account |
+| serviceAccount.name | string | `""` | Name of the service account. If empty and create is true, the full name is used |
+| serviceMonitor.annotations | object | `{}` | Annotations of the ServiceMonitor |
 | serviceMonitor.blackboxExporter.namespace | string | `"monitoring"` | Namespace of the blackbox exporter service |
 | serviceMonitor.blackboxExporter.selectorLabels | object | `{"app.kubernetes.io/instance":"prometheus-stack","app.kubernetes.io/name":"blackboxExporter"}` | Labels of the blackbox exporter service. Defaults match the iits prometheus-stack chart. |
 | serviceMonitor.enabled | bool | `false` | Create the ServiceMonitor. Needs the prometheus operator CRDs and a blackbox exporter. |
-| serviceMonitor.interval | string | `"30s"` |  |
+| serviceMonitor.interval | string | `"30s"` | How often the dashboard is probed |
 | serviceMonitor.labels | object | `{}` | Extra labels, e.g. to match the serviceMonitorSelector of your Prometheus |
 | serviceMonitor.module | string | `"http_2xx"` | Blackbox exporter module, has to accept plain http |
-| serviceMonitor.scrapeTimeout | string | `"30s"` |  |
+| serviceMonitor.scrapeTimeout | string | `"30s"` | Timeout of one probe |
+| website | string | built in dashboard | Custom HTML page that replaces the built in dashboard, rendered with tpl |
 
 ----------------------------------------------
 Autogenerated from chart metadata using [helm-docs v1.14.2](https://github.com/norwoodj/helm-docs/releases/v1.14.2)
