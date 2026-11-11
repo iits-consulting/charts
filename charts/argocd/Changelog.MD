@@ -2,6 +2,9 @@
 
 ## Chart Versions
 
+### 21.2.0
+- Removed default CPU limits from application-controller and repo-server to avoid CPU throttling; set `argo-cd.<component>.resources.limits.cpu` if a limit is wanted
+
 ### 21.1.0
 - Added `PrometheusRule` template for alerting on ArgoCD applications (disabled by default), with a defaultSet of rules
 - Activated metric collection for ArgoCD controller
