@@ -12,7 +12,7 @@ keycloakx:
   database:
     vendor: ""
     hostname: ""
-    port: ""
+    port: null
     database: ""
     username: ""
     password: ""
