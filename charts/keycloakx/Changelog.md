@@ -2,6 +2,9 @@
 
 ## Chart Versions
 
+### 7.4.0
+ - Update underlying chart to 7.4.0 (appVersion 26.8.2)
+
 ### 7.3.0-add-dashboard
  - Add Grafana dashboard, enabled via `.Values.grafanaDashboard.enabled` (disabled by default)
  - Update used upstream chart to 7.2.0 (appVersion 26.6.2)
