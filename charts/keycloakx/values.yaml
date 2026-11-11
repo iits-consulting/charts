@@ -62,6 +62,9 @@ keycloakx:
     seccompProfile:
       type: RuntimeDefault
 
+  securityContext:
+    allowPrivilegeEscalation: false
+
   serviceMonitor:
     enabled: true
 
