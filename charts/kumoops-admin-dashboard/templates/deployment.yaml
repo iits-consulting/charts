@@ -1,0 +1,120 @@
+{{ with .Values.deployment }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "kumoops-dashboard.fullname" $ }}
+  {{- with .annotations }}
+  annotations:
+    iits-consulting.chart-creator/version: 1.0.10
+    htmlChecksum: {{ include (print $.Template.BasePath "/configmap.yaml") $ | sha256sum | quote }}
+    {{- tpl (toYaml .) $ | nindent 4 }}
+  {{- end }}
+  labels:
+    {{- include "kumoops-dashboard.labels" $ | nindent 4 }}
+spec:
+  {{- if not $.Values.autoscaling.enabled }}
+  replicas: {{ .replicaCount }}
+  {{- end }}
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      {{- include "kumoops-dashboard.selectorLabels" $ | nindent 6 }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") $ | sha256sum }}
+      {{- with .podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "kumoops-dashboard.labels" $ | nindent 8 }}
+    spec:
+      {{- if eq .onePodForEachNode true }}
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchLabels:
+                  {{- include "kumoops-dashboard.selectorLabels" $ | nindent 18 }}
+              topologyKey: "kubernetes.io/hostname"
+      {{- else }}
+      {{- with .affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- end }}
+      {{- with .imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "kumoops-dashboard.serviceAccountName" $ }}
+      {{- if .podSecurityContext }}
+      securityContext:
+        {{- toYaml .podSecurityContext | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: "static-website"
+          {{- if .securityContext }}
+          securityContext:
+            {{- toYaml .securityContext | nindent 12 }}
+          {{- end }}
+          image: "lipanski/docker-static-website:{{ $.Chart.AppVersion }}"
+          imagePullPolicy: "IfNotPresent"
+
+          ports:
+            - name: "http"
+              protocol: "TCP"
+              containerPort: {{ .containerPort }}
+
+          livenessProbe:
+            httpGet:
+              path: {{ .health.liveness.path | quote }}
+              port: {{ .containerPort }}
+            initialDelaySeconds: {{ .health.liveness.initialDelaySeconds }}
+            periodSeconds: {{ .health.liveness.periodSeconds }}
+            failureThreshold: {{ .health.liveness.failureThreshold }}
+
+
+          readinessProbe:
+            httpGet:
+              path: {{ .health.readiness.path | quote }}
+              port: {{ .containerPort }}
+            initialDelaySeconds: {{ .health.readiness.initialDelaySeconds }}
+            periodSeconds: {{ .health.readiness.periodSeconds }}
+            failureThreshold: {{ .health.readiness.failureThreshold }}
+
+          startupProbe:
+            httpGet:
+              path: {{ .health.startupProbe.path | quote }}
+              port: {{ .containerPort }}
+            initialDelaySeconds: {{ .health.startupProbe.initialDelaySeconds }}
+            periodSeconds: {{ .health.startupProbe.periodSeconds }}
+            failureThreshold: {{ .health.startupProbe.failureThreshold }}
+
+          resources:
+            {{- toYaml .resources | nindent 12 }}
+
+          volumeMounts:
+            - name: {{ include "kumoops-dashboard.fullname" $ }}
+              mountPath: /home/static
+              readOnly: true
+          {{- with .extraVolumeMounts }}
+                {{- toYaml . | nindent 12 }}
+          {{- end }}
+
+      {{- with .nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      volumes:
+        - name: {{ include "kumoops-dashboard.fullname" $ }}
+          configMap:
+            name: {{ include "kumoops-dashboard.fullname" $ }}
+      {{- with .extraVolumes }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end }}

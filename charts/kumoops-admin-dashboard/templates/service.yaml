@@ -1,0 +1,26 @@
+{{ with .Values.service }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "kumoops-dashboard.fullname" $ }}
+  {{- with .annotations }}
+  annotations:
+    iits-consulting.chart-creator/version: 1.0.10
+    {{- tpl (toYaml .) $ | nindent 4 }}
+  {{- end }}
+  labels:
+    {{- include "kumoops-dashboard.labels" $ | nindent 4 }}
+    {{- with .labels }}
+    {{- tpl (toYaml .) $ | nindent 4 }}
+    {{- end }}
+spec:
+  type: {{ .type }}
+  ports:
+    - targetPort: "http"
+      name: "http"
+      protocol: "TCP"
+      port: {{ .port }}
+
+  selector:
+    {{- include "kumoops-dashboard.selectorLabels" $ | nindent 4 }}
+{{- end }}
