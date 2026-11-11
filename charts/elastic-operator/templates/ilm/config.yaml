@@ -2,9 +2,6 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{.Release.Name}}-ilm-config
-  annotations:
-    argocd.argoproj.io/hook: PostSync
-    argocd.argoproj.io/hook-delete-policy: HookSucceeded
 data:
   configure-ilm.sh: |
     #!/bin/sh
@@ -13,9 +10,19 @@ data:
     endpoint="https://{{ .Release.Name }}-es-http:9200"
 
     {{ range $policyName, $policyConfig  := .Values.ilm.policies }}
+    echo -e "\nINFO: Delete index template {{$policyName}} before recreation"
+    status=$(curl -u "$ELASTICSEARCH_USERNAME:$ELASTICSEARCH_PASSWORD" --cacert /es-cert/ca.crt -s -o /dev/null -w '%{http_code}' -X DELETE ${endpoint}/_index_template/{{$policyName}})
+    # Excluding 404 below to prevent errors, when new policies are initially created
+    if [ "$status" != "200" ] && [ "$status" != "404" ]; then
+      echo "ERROR: Deleting index template {{$policyName}} failed with HTTP status $status"
+      exit 1
+    fi
+    {{ end }}
+
+    {{ range $policyName, $policyConfig  := .Values.ilm.policies }}
 
     echo -e "\nINFO: Start create ilm policy for {{$policyName}}"
-    curl -u "$ELASTICSEARCH_USERNAME:$ELASTICSEARCH_PASSWORD" --cacert /es-cert/ca.crt -s -X PUT --header 'Content-Type: application/json' ${endpoint}/_ilm/policy/{{$policyName}} --data-binary @- << EOF
+    curl -u "$ELASTICSEARCH_USERNAME:$ELASTICSEARCH_PASSWORD" --cacert /es-cert/ca.crt -s --fail-with-body -X PUT --header 'Content-Type: application/json' ${endpoint}/_ilm/policy/{{$policyName}} --data-binary @- << EOF
 
         {
           "policy": {
@@ -33,8 +40,7 @@ data:
                 "actions": {
                   "set_priority": {
                     "priority": 0
-                  },
-                  "freeze": {}
+                  }
                 }
               },
               "delete": {
@@ -51,7 +57,7 @@ data:
     echo -e "\nINFO: Create ilm policy for {{$policyName}} finished"
 
     echo -e "\nINFO: Start create ilm index template for {{$policyName}}"
-    curl -u "$ELASTICSEARCH_USERNAME:$ELASTICSEARCH_PASSWORD" --cacert /es-cert/ca.crt -s -X PUT --header 'Content-Type: application/json' ${endpoint}/_index_template/{{$policyName}} --data-binary @- << EOF
+    curl -u "$ELASTICSEARCH_USERNAME:$ELASTICSEARCH_PASSWORD" --cacert /es-cert/ca.crt -s --fail-with-body -X PUT --header 'Content-Type: application/json' ${endpoint}/_index_template/{{$policyName}} --data-binary @- << EOF
 
         {
           "index_patterns" : {{$policyConfig.indexPatterns | toJson }},
@@ -68,7 +74,7 @@ data:
 
     {{ range $indexPattern  := $policyConfig.indexPatterns }}
     echo -e "\nINFO: Start apply {{$policyName}} to {{$indexPattern}}"
-    curl -u "$ELASTICSEARCH_USERNAME:$ELASTICSEARCH_PASSWORD" --cacert /es-cert/ca.crt -s -X PUT --header 'Content-Type: application/json' ${endpoint}/{{$indexPattern}}/_settings --data-binary @- << EOF
+    curl -u "$ELASTICSEARCH_USERNAME:$ELASTICSEARCH_PASSWORD" --cacert /es-cert/ca.crt -s --fail-with-body -X PUT --header 'Content-Type: application/json' ${endpoint}/{{$indexPattern}}/_settings?allow_no_indices=true --data-binary @- << EOF
     {
       "index.lifecycle.name": "{{$policyName}}"
     }

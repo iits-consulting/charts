@@ -1,0 +1,30 @@
+{{ with .Values.prometheusRule }}
+
+{{/* Check that there is at least one active rule, otherwise there is a rendering issue */}}
+{{- $anyRuleEnabled := false }}
+{{- range .rules }}
+{{- if and . (ne .enabled false) }}{{- $anyRuleEnabled = true }}{{- end }}
+{{- end }}
+{{/* End of check */}}
+
+{{ if and .enabled $anyRuleEnabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: argocd-applications
+  {{- with .additionalLabels }}
+  labels:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  groups:
+    - name: argocd-applications
+      rules:
+        {{- range $alertName, $rule := .rules }}
+        {{- if and $rule (ne $rule.enabled false) }}
+        - alert: {{ $alertName }}
+          {{- omit $rule "enabled" | toYaml | nindent 10 }}
+        {{- end }}
+        {{- end }}
+{{- end }}
+{{- end }}

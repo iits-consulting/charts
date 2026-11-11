@@ -185,7 +185,6 @@ customRules:
         filter:
         - query_string:
               query: "message: \"Creating topic\" AND \"with configuration\" AND \"and initial partition assignment\""
-        slack:
         slack_title: Kafka Topic Notification
         slack_alert_fields:
         - title: Stage

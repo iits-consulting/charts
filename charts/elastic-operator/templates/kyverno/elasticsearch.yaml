@@ -18,6 +18,9 @@ spec:
             - Pod
           names:
             - {{ $.Release.Name }}-es-default-*
+{{- if $.Values.elasticsearch.votingOnly.enabled }}
+            - {{ $.Release.Name }}-es-voting-only-*
+{{- end }}
           namespaces:
             - {{ $.Release.Namespace }}
 {{- end }}

@@ -2,6 +2,23 @@
 
 ## Chart Versions
 
+### 3.5.1
+- Set default policyType for the kyverno-policies to ensure backwards compatibility
+
+### 3.5.0
+
+> [!WARNING]
+> This release contains a change in the default type of the policies in the kyverno-policies
+> Skip this release and use 3.5.1 to keep the backwards compatibility
+
+- Update Kyverno chart to 3.9.1
+- Update Kyverno-policies chart to 3.9.1
+- Update policy-reporter chart to 3.11.0
+
+### 3.4.0
+
+- Add optional TLS secret reference to the Ingress
+
 ### 3.3.0
 - Added common chart lib as dependency chart
 

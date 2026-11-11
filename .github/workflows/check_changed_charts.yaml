@@ -1,0 +1,110 @@
+# Used to check only the changed charts
+# Included checks:
+# - Chart.lock updated
+# - Chart.yaml version increased
+
+name: Check changed charts
+
+on:
+  pull_request:
+    branches:
+      - '**'
+      - '*'
+  push:
+    branches-ignore:
+      - "main"
+    paths:
+      - 'charts/**'
+
+env:
+  HELM_VERSION: v3.22.0
+
+jobs:
+  find-charts:
+    name: Find Changed Charts
+    runs-on: ubuntu-latest
+    outputs:
+      lock_charts: "${{ steps.get-changed-charts.outputs.lock_charts }}"
+      version_charts: "${{ steps.get-changed-charts.outputs.version_charts }}"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Find changed charts
+        id: get-changed-charts
+        run: |
+          git fetch origin main
+
+          lock_charts=$(git diff --name-only origin/main...HEAD -- 'charts/*/Chart.yaml' \
+            | awk -F/ '{print $2}' | sort -u | while read -r c; do
+                [ -f "charts/$c/Chart.lock" ] && echo "$c"
+              done | jq -R . | jq -sc .)
+
+          version_charts=$(git diff --name-only origin/main...HEAD -- 'charts/*' \
+            | awk -F/ '{print $2}' | sort -u | jq -R . | jq -sc .)
+
+          echo "lock_charts=${lock_charts}" >> $GITHUB_OUTPUT
+          echo "version_charts=${version_charts}" >> $GITHUB_OUTPUT
+
+  check-chart-lock:
+    name: Check Chart.lock
+    needs: find-charts
+    if: ${{ needs.find-charts.outputs.lock_charts != '[]' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        chart: ${{ fromJSON(needs.find-charts.outputs.lock_charts) }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Helm
+        uses: azure/setup-helm@v4.2.0
+        with:
+          version: ${{ env.HELM_VERSION }}
+
+      - name: Refresh Chart.lock for ${{ matrix.chart }}
+        run: helm dependency update charts/${{ matrix.chart }}
+
+      - name: Verify Chart.lock is up to date for ${{ matrix.chart }}
+        run: |
+          if ! git diff --exit-code -- charts/${{ matrix.chart }}/Chart.lock; then
+            echo "::error::charts/${{ matrix.chart }}/Chart.lock is out of date. Run 'helm dependency update charts/${{ matrix.chart }}' and commit the result."
+            exit 1
+          fi
+
+  check-chart-version:
+    name: Check Chart Version Bump
+    needs: find-charts
+    if: ${{ needs.find-charts.outputs.version_charts != '[]' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        chart: ${{ fromJSON(needs.find-charts.outputs.version_charts) }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify version bump for ${{ matrix.chart }}
+        run: |
+          git fetch origin main
+
+          if ! git show origin/main:charts/${{ matrix.chart }}/Chart.yaml > /tmp/old-chart.yaml 2>/dev/null; then
+            echo "New chart, skipping version check."
+            exit 0
+          fi
+
+          old_version=$(grep -m1 '^version:' /tmp/old-chart.yaml | awk '{print $2}')
+          new_version=$(grep -m1 '^version:' charts/${{ matrix.chart }}/Chart.yaml | awk '{print $2}')
+
+          if [ "$old_version" = "$new_version" ]; then
+            echo "::error::charts/${{ matrix.chart }}/Chart.yaml was changed but its version (${new_version}) was not bumped."
+            exit 1
+          fi
+
+          echo "Version bumped: ${old_version} -> ${new_version}"

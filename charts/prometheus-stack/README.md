@@ -1,6 +1,6 @@
 # prometheus-stack
 
-![Version: 79.10.0](https://img.shields.io/badge/Version-79.10.0-informational?style=flat-square) ![AppVersion: 3.9.0](https://img.shields.io/badge/AppVersion-3.9.0-informational?style=flat-square)
+![Version: 92.9.0](https://img.shields.io/badge/Version-92.9.0-informational?style=flat-square) ![AppVersion: 3.15.0](https://img.shields.io/badge/AppVersion-3.15.0-informational?style=flat-square)
 
 A complete monitoring/alerting stack with Grafana, Prometheus, Alertmanager & Blackbox exporter
 
@@ -11,7 +11,7 @@ A complete monitoring/alerting stack with Grafana, Prometheus, Alertmanager & Bl
 prometheus-stack:
   namespace: monitoring
   repoURL: "https://charts.iits.tech"
-  targetRevision: "79.8.2"
+  targetRevision: "92.9.0"
   syncOptions:
     - ServerSideApply=true
   ignoreDifferences:
@@ -32,9 +32,9 @@ prometheus-stack:
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://charts.iits.tech | common | 0.3.1 |
-| https://prometheus-community.github.io/helm-charts | prometheusStack(kube-prometheus-stack) | 79.9.0 |
-| https://prometheus-community.github.io/helm-charts | blackboxExporter(prometheus-blackbox-exporter) | 11.5.0 |
+| https://charts.iits.tech | common | 0.4.0 |
+| https://prometheus-community.github.io/helm-charts | prometheusStack(kube-prometheus-stack) | 92.9.0 |
+| https://prometheus-community.github.io/helm-charts | blackboxExporter(prometheus-blackbox-exporter) | 11.20.0 |
 
 ## Values
 
@@ -77,6 +77,13 @@ prometheus-stack:
 | global.ingress.paths.grafana | string | `"/grafana"` |  |
 | global.ingress.paths.prometheus | string | `"/prometheus"` |  |
 | policyException.enabled | bool | `true` |  |
+| prometheusStack.additionalPrometheusRulesMap.oom-killed.groups[0].name | string | `"pod-oom-killed"` |  |
+| prometheusStack.additionalPrometheusRulesMap.oom-killed.groups[0].rules[0].alert | string | `"PodOOMKilled"` |  |
+| prometheusStack.additionalPrometheusRulesMap.oom-killed.groups[0].rules[0].annotations.description | string | `"Either the termination reason is reported as “OOMKilled” or the container\nexited with code 137 (SIGKILL). Investigate memory\nrequests/limits and node pressure.\n"` |  |
+| prometheusStack.additionalPrometheusRulesMap.oom-killed.groups[0].rules[0].annotations.summary | string | `"Pod {{ $labels.namespace }}/{{ $labels.pod }} experienced an OOM kill"` |  |
+| prometheusStack.additionalPrometheusRulesMap.oom-killed.groups[0].rules[0].expr | string | `"(\n  (\n    kube_pod_container_status_last_terminated_reason{reason=\"OOMKilled\"} == 1\n    and on(namespace, pod, container)\n    increase(kube_pod_container_status_restarts_total[15m]) > 0\n  )\n  or\n  (\n    kube_pod_container_status_last_terminated_exitcode == 137\n    and on(namespace, pod, container)\n    increase(kube_pod_container_status_restarts_total[15m]) > 0\n  )\n) > 0\n"` |  |
+| prometheusStack.additionalPrometheusRulesMap.oom-killed.groups[0].rules[0].for | string | `"1m"` |  |
+| prometheusStack.additionalPrometheusRulesMap.oom-killed.groups[0].rules[0].labels.severity | string | `"warning"` |  |
 | prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].name | string | `"uptime-monitoring"` |  |
 | prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].rules[0].alert | string | `"ServiceIsDown"` |  |
 | prometheusStack.additionalPrometheusRulesMap.uptime-monitoring.groups[0].rules[0].annotations.description | string | `"Uptime of {{ $labels.instance }} is reporting down for 3 consecutive checks."` |  |
@@ -109,10 +116,16 @@ prometheus-stack:
 | prometheusStack.alertmanager.config.route.routes[1].matchers[0] | string | `"severity=\"critical\""` |  |
 | prometheusStack.alertmanager.config.route.routes[1].receiver | string | `"slack"` |  |
 | prometheusStack.alertmanager.config.route.routes[1].repeat_interval | string | `"30m"` |  |
+| prometheusStack.alertmanager.config.route.routes[2].group_interval | string | `"24h"` |  |
+| prometheusStack.alertmanager.config.route.routes[2].group_wait | string | `"1s"` |  |
+| prometheusStack.alertmanager.config.route.routes[2].matchers[0] | string | `"alertname=\"ContainerRestartDetected\""` |  |
 | prometheusStack.alertmanager.config.route.routes[2].receiver | string | `"slack"` |  |
+| prometheusStack.alertmanager.config.route.routes[2].repeat_interval | string | `"24h"` |  |
+| prometheusStack.alertmanager.config.route.routes[3].receiver | string | `"slack"` |  |
 | prometheusStack.alertmanager.config.templates[0] | string | `"/etc/alertmanager/config/*.tmpl"` |  |
 | prometheusStack.crds.enabled | bool | `false` |  |
 | prometheusStack.defaultRules.create | bool | `true` |  |
+| prometheusStack.defaultRules.disabled.CPUThrottlingHigh | bool | `true` |  |
 | prometheusStack.defaultRules.disabled.InfoInhibitor | bool | `true` |  |
 | prometheusStack.defaultRules.disabled.KubeClientCertificateExpiration | bool | `true` |  |
 | prometheusStack.defaultRules.disabled.NodeClockNotSynchronising | bool | `true` |  |
@@ -130,7 +143,7 @@ prometheus-stack:
 | prometheusStack.defaultRules.rules.kubeStateMetrics | bool | `true` |  |
 | prometheusStack.defaultRules.rules.kubernetesAbsent | bool | `true` |  |
 | prometheusStack.defaultRules.rules.kubernetesApps | bool | `true` |  |
-| prometheusStack.defaultRules.rules.kubernetesResources | bool | `false` |  |
+| prometheusStack.defaultRules.rules.kubernetesResources | bool | `true` |  |
 | prometheusStack.defaultRules.rules.kubernetesStorage | bool | `true` |  |
 | prometheusStack.defaultRules.rules.kubernetesSystem | bool | `true` |  |
 | prometheusStack.defaultRules.rules.network | bool | `true` |  |

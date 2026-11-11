@@ -1,0 +1,32 @@
+{{- with .Values.postgresOperator }}
+{{- if .enabled }}
+{{- $globalAnnotations := .annotations }}
+{{- range $name, $db := .databases }}
+{{- $annotations := default $globalAnnotations $db.annotations }}
+---
+apiVersion: db.movetokube.com/v1alpha1
+kind: Postgres
+metadata:
+  name: {{ $name }}
+  namespace: {{ $.Release.Namespace }}
+  {{- with $annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  database: {{ $name }}
+  dropOnDelete: {{ default false $db.dropOnDelete }}
+  {{- with $db.schemas }}
+  schemas:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $db.extensions }}
+  extensions:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $db.masterRole }}
+  masterRole: {{ . | quote }}
+  {{- end }}
+{{- end }}
+{{- end }}
+{{- end }}

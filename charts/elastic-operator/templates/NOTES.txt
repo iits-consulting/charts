@@ -1,0 +1,6 @@
+{{- if and .Values.elasticsearch.enabled .Values.elasticsearch.votingOnly.enabled (eq (int .Values.elasticsearch.nodeCount) 1) }}
+WARNING: elasticsearch.votingOnly.enabled is true but elasticsearch.nodeCount is 1.
+A voting-only node can never become master, so it adds no resilience to a single-node
+cluster and is pretty useless there. Use a nodeCount of at least 2, so the voting-only
+node can act as the tiebreaker of a valid HA setup (three master-eligible nodes).
+{{- end }}

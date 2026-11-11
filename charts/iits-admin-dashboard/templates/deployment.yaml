@@ -1,0 +1,137 @@
+{{ with .Values.deployment }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "iits-admin-dashboard.fullname" $ }}
+  {{- with .annotations }}
+  annotations:
+    iits-consulting.chart-creator/version: 1.0.10
+    htmlChecksum: {{ include (print $.Template.BasePath "/configmap.yaml") $ | sha256sum | quote }}
+    {{- tpl (toYaml .) $ | nindent 4 }}
+  {{- end }}
+  labels:
+    {{- include "iits-admin-dashboard.labels" $ | nindent 4 }}
+spec:
+  replicas: {{ .replicaCount }}
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      {{- include "iits-admin-dashboard.selectorLabels" $ | nindent 6 }}
+  template:
+    metadata:
+      annotations:
+        {{- range $path, $_ :=  $.Files.Glob  "files/*" }}
+        checksum/{{ base $path }}: {{ $.Files.Get $path | sha256sum }}
+        {{- end }}
+        {{- range $path, $_ :=  $.Files.Glob  "images/*" }}
+        checksum/{{ base $path }}: {{ $.Files.Get $path | sha256sum }}
+        {{- end }}
+      {{- with .podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "iits-admin-dashboard.selectorLabels" $ | nindent 8 }}
+    spec:
+      {{- if eq .onePodForEachNode true }}
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: "app"
+                    operator: In
+                    values:
+                      - {{ include "iits-admin-dashboard.fullname" $ }}
+              topologyKey: "kubernetes.io/hostname"
+      {{- end}}
+      {{- with .imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "iits-admin-dashboard.serviceAccountName" $ }}
+      {{- if .podSecurityContext }}
+      securityContext:
+        {{- toYaml .podSecurityContext | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: "static-website"
+          {{- if .securityContext }}
+          securityContext:
+            {{- toYaml .securityContext | nindent 12 }}
+          {{- end }}
+          image: "lipanski/docker-static-website:{{ $.Chart.AppVersion }}"
+          imagePullPolicy: "IfNotPresent"
+
+          ports:
+            - name: "http"
+              protocol: "TCP"
+              containerPort: {{ .containerPort }}
+
+          livenessProbe:
+            httpGet:
+              path: "/"
+              port: {{ .containerPort }}
+            initialDelaySeconds: {{ .health.liveness.initialDelaySeconds }}
+            periodSeconds: {{ .health.liveness.periodSeconds }}
+            failureThreshold: {{ .health.liveness.failureThreshold }}
+
+
+          readinessProbe:
+            httpGet:
+              path: "/"
+              port: {{ .containerPort }}
+            initialDelaySeconds: {{ .health.readiness.initialDelaySeconds }}
+            periodSeconds: {{ .health.readiness.periodSeconds }}
+            failureThreshold: {{ .health.readiness.failureThreshold }}
+
+          startupProbe:
+            httpGet:
+              path: "/"
+              port: {{ .containerPort }}
+            initialDelaySeconds: {{ .health.startupProbe.initialDelaySeconds }}
+            periodSeconds: {{ .health.startupProbe.periodSeconds }}
+            failureThreshold: {{ .health.startupProbe.failureThreshold }}
+
+          resources:
+            {{- toYaml .resources | nindent 12 }}
+
+          volumeMounts:
+            - name: {{ include "iits-admin-dashboard.fullname" $ }}
+              mountPath: /home/static
+              readOnly: true
+          {{- with .extraVolumeMounts }}
+                {{- toYaml . | nindent 12 }}
+          {{- end }}
+
+      {{- with .nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      volumes:
+        - name: {{ include "iits-admin-dashboard.fullname" $ }}
+          projected:
+            sources:
+              - configMap:
+                  name: {{ include "iits-admin-dashboard.fullname" $ }}
+                            {{- $images := $.Files.Glob "images/*" }}
+      {{- range $path, $fileContents := $images }}
+        {{- $name := regexReplaceAll "(^.*/)(.*)$" $path "${2}" }}
+        {{- $name_clean := regexReplaceAll "(.*)\\.(png|svg)$" $name "${1}" | replace "_" "-" }}
+              - configMap:
+                  name: {{ printf "%s-%s" $.Release.Name $name_clean | trunc 63 | trimSuffix "-" }}
+                  items:
+                    - key: {{ $name }}
+                      path: {{ $name }}
+      {{- end }}
+      {{- with .extraVolumes }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end }}

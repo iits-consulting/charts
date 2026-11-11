@@ -1,0 +1,308 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "title": "common values",
+  "description": "Input contract for the externalSecret values. Validated by Helm against the consumer's `common` values section before rendering.",
+  "type": "object",
+  "properties": {
+    "externalSecret": {
+      "type": "object",
+      "description": "External Secrets Operator (ESO) resources rendered by the common chart: ExternalSecrets (pull), PushSecrets (push), and Password generators.",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Master toggle for the externalSecret feature. When false, no ESO resources are rendered."
+        },
+        "commonLabels": {
+          "type": "object",
+          "description": "Labels added to metadata.labels of every rendered resource. A resource's own labels win on conflict.",
+          "additionalProperties": { "type": "string" }
+        },
+        "commonAnnotations": {
+          "type": "object",
+          "description": "Annotations added to metadata.annotations of every rendered resource. A resource's own annotations win on conflict.",
+          "additionalProperties": { "type": "string" }
+        },
+        "secretStore": {
+          "description": "Chart-wide default SecretStore/ClusterSecretStore reference. Injected into every pull/push secret that does not override it with its own store reference.",
+          "$ref": "#/$defs/storeRef"
+        },
+        "generators": {
+          "type": "object",
+          "description": "ESO Password generator resources, referenced by pull/push secrets via generatorRef to inject generated passwords.",
+          "additionalProperties": false,
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "Toggle for rendering the Password generators in this block."
+            },
+            "passwords": {
+              "type": "object",
+              "description": "Map of Password generators keyed by resource name (the key becomes metadata.name).",
+              "additionalProperties": { "$ref": "#/$defs/generator" }
+            }
+          }
+        },
+        "push": {
+          "type": "object",
+          "description": "PushSecret resources that push data from a k8s Secret or generator into a SecretStore.",
+          "additionalProperties": false,
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "Toggle for rendering the PushSecrets in this block."
+            },
+            "spec": {
+              "description": "Shared defaults merged into every entry of `secrets` (per-secret values win). Not rendered on its own, define the actual PushSecrets under `secrets`.",
+              "$ref": "#/$defs/pushSecret"
+            },
+            "secrets": {
+              "type": "object",
+              "description": "Map of PushSecrets keyed by resource name (the key becomes metadata.name and the default sourceSecretName).",
+              "additionalProperties": { "$ref": "#/$defs/pushSecret" }
+            }
+          }
+        },
+        "pull": {
+          "type": "object",
+          "description": "ExternalSecret resources that pull data from a SecretStore into a k8s Secret.",
+          "additionalProperties": false,
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "Toggle for rendering the ExternalSecrets in this block."
+            },
+            "spec": {
+              "description": "Shared defaults merged into every entry of `secrets` (per-secret values win). Not rendered on its own, define the actual ExternalSecrets under `secrets`.",
+              "$ref": "#/$defs/pullSecret"
+            },
+            "secrets": {
+              "type": "object",
+              "description": "Map of ExternalSecrets keyed by resource name (the key becomes metadata.name and the default target.name).",
+              "additionalProperties": { "$ref": "#/$defs/pullSecret" }
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "storeRef": {
+      "type": "object",
+      "description": "Reference to an ESO SecretStore or ClusterSecretStore.",
+      "additionalProperties": false,
+      "required": ["kind", "name"],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "description": "Kind of store. ClusterSecretStore is cluster-scoped; SecretStore is namespaced.",
+          "enum": ["ClusterSecretStore", "SecretStore"]
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the SecretStore/ClusterSecretStore resource.",
+          "minLength": 1
+        }
+      }
+    },
+    "keys": {
+      "type": "array",
+      "description": "Key mappings between the resulting k8s Secret and the remote provider.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Key name in the k8s Secret (secretKey). Also the default remote property when remoteKey is unset.",
+            "minLength": 1
+          },
+          "remoteKey": {
+            "type": "string",
+            "description": "Property name in the remote provider to map to this key. Defaults to `name` when omitted."
+          }
+        }
+      }
+    },
+    "generator": {
+      "type": "object",
+      "description": "ESO Password generator (generators.external-secrets.io/v1alpha1 Password).",
+      "additionalProperties": false,
+      "properties": {
+        "spec": {
+          "type": "object",
+          "description": "Password generator spec rendered verbatim (e.g. length, digits, symbols, noUpper, allowRepeat)."
+        },
+        "annotations": {
+          "type": "object",
+          "description": "Annotations added to this generator's metadata.annotations."
+        },
+        "labels": {
+          "type": "object",
+          "description": "Labels added to this generator's metadata.labels."
+        },
+        "namespace": {
+          "type": "string",
+          "description": "Namespace for this generator. Defaults to the release namespace when omitted."
+        },
+        "finalizers": {
+          "type": "array",
+          "description": "Finalizers set on this generator's metadata.finalizers.",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "pullSecret": {
+      "type": "object",
+      "description": "ESO ExternalSecret (external-secrets.io/v1) that pulls remote data into a k8s Secret.",
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "type": "string",
+          "description": "Remote key/path in the provider to read from (remoteRef.key). Required unless a generatorRef is used."
+        },
+        "targetName": {
+          "type": "string",
+          "description": "Name of the resulting k8s Secret (spec.target.name). Defaults to the resource name."
+        },
+        "secretStoreRef": {
+          "description": "Store to pull from. Overrides the chart-wide default `externalSecret.secretStore`.",
+          "$ref": "#/$defs/storeRef"
+        },
+        "keys": {
+          "description": "Data mappings from remote properties into the k8s Secret. Ignored when generatorRef is set.",
+          "$ref": "#/$defs/keys"
+        },
+        "generatorRef": {
+          "type": "object",
+          "description": "Reference to a generator (dataFrom.sourceRef.generatorRef). When set, data is produced by the generator instead of from `keys`/`path`."
+        },
+        "template": {
+          "type": "object",
+          "description": "spec.target.template used to shape the resulting Secret (engineVersion, type, metadata, data, templateFrom)."
+        },
+        "refreshInterval": {
+          "type": "string",
+          "description": "How often to reconcile from the provider (e.g. \"1m\", \"2h30m\"). Defaults to \"1m\"."
+        },
+        "refreshPolicy": {
+          "type": "string",
+          "description": "When to refresh. Only rendered when explicitly set.",
+          "enum": ["CreatedOnce", "Periodic", "OnChange"]
+        },
+        "creationPolicy": {
+          "type": "string",
+          "description": "Whether/how ESO creates the target Secret (spec.target.creationPolicy). Defaults to \"Owner\".",
+          "enum": ["Owner", "Orphan", "Merge", "None"]
+        },
+        "deletionPolicy": {
+          "type": "string",
+          "description": "What happens to the target Secret when the source data disappears (spec.target.deletionPolicy). Defaults to \"Delete\".",
+          "enum": ["Delete", "Merge", "Retain"]
+        },
+        "conversionStrategy": {
+          "type": "string",
+          "description": "How remote keys are converted to valid Secret keys (remoteRef.conversionStrategy). Defaults to \"Default\".",
+          "enum": ["Default", "Unicode", "ReverseUnicode"]
+        },
+        "decodingStrategy": {
+          "type": "string",
+          "description": "How remote values are decoded (remoteRef.decodingStrategy). Defaults to \"None\".",
+          "enum": ["None", "Base64", "Base64URL", "Auto"]
+        },
+        "metadataPolicy": {
+          "type": "string",
+          "description": "Whether to fetch provider metadata (remoteRef.metadataPolicy). Defaults to \"None\".",
+          "enum": ["None", "Fetch"]
+        },
+        "nullBytePolicy": {
+          "type": "string",
+          "description": "How null bytes in remote values are handled (remoteRef.nullBytePolicy). Only rendered when explicitly set.",
+          "enum": ["Fail", "Ignore"]
+        },
+        "annotations": {
+          "type": "object",
+          "description": "Annotations added to this ExternalSecret's metadata.annotations (merged over commonAnnotations)."
+        },
+        "labels": {
+          "type": "object",
+          "description": "Labels added to this ExternalSecret's metadata.labels (merged over commonLabels)."
+        },
+        "namespace": {
+          "type": "string",
+          "description": "Namespace for this ExternalSecret. Defaults to the release namespace when omitted."
+        },
+        "finalizers": {
+          "type": "array",
+          "description": "Finalizers set on this ExternalSecret's metadata.finalizers.",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "pushSecret": {
+      "type": "object",
+      "description": "ESO PushSecret (external-secrets.io/v1alpha1) that pushes a k8s Secret or generator output into a SecretStore.",
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "type": "string",
+          "description": "Remote key/path in the provider to push to (remoteRef.remoteKey). Required."
+        },
+        "sourceSecretName": {
+          "type": "string",
+          "description": "Name of the existing k8s Secret to push (selector.secret.name). Defaults to the resource name. Ignored when generatorRef is set."
+        },
+        "secretStores": {
+          "type": "array",
+          "description": "Stores to push to (spec.secretStoreRefs). Overrides the chart-wide default `externalSecret.secretStore`.",
+          "items": { "$ref": "#/$defs/storeRef" }
+        },
+        "keys": {
+          "description": "Data mappings from the source Secret keys to remote properties.",
+          "$ref": "#/$defs/keys"
+        },
+        "generatorRef": {
+          "type": "object",
+          "description": "Reference to a generator (selector.generatorRef). When set, generator output is pushed instead of an existing Secret."
+        },
+        "refreshInterval": {
+          "type": "string",
+          "description": "How often to reconcile the push (e.g. \"1h\"). Defaults to \"1h\"."
+        },
+        "deletionPolicy": {
+          "type": "string",
+          "description": "What happens to the remote secret when the PushSecret is deleted (spec.deletionPolicy). Defaults to \"Delete\".",
+          "enum": ["Delete", "None"]
+        },
+        "updatePolicy": {
+          "type": "string",
+          "description": "Whether to overwrite existing remote secrets (spec.updatePolicy). Defaults to \"IfNotExists\".",
+          "enum": ["Replace", "IfNotExists"]
+        },
+        "conversionStrategy": {
+          "type": "string",
+          "description": "How source keys are converted before push (data.conversionStrategy). Defaults to \"None\".",
+          "enum": ["None", "ReverseUnicode"]
+        },
+        "annotations": {
+          "type": "object",
+          "description": "Annotations added to this PushSecret's metadata.annotations (merged over commonAnnotations)."
+        },
+        "labels": {
+          "type": "object",
+          "description": "Labels added to this PushSecret's metadata.labels (merged over commonLabels)."
+        },
+        "namespace": {
+          "type": "string",
+          "description": "Namespace for this PushSecret. Defaults to the release namespace when omitted."
+        },
+        "finalizers": {
+          "type": "array",
+          "description": "Finalizers set on this PushSecret's metadata.finalizers.",
+          "items": { "type": "string" }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{{- with .Values.postgresOperator }}
+{{- if .enabled }}
+{{- $globalAnnotations := .annotations }}
+{{- range $dbName, $db := .databases }}
+{{- range $role, $user := $db.users }}
+{{- $annotations := default $globalAnnotations $user.annotations }}
+---
+apiVersion: db.movetokube.com/v1alpha1
+kind: PostgresUser
+metadata:
+  name: {{ printf "%s-%s" $dbName $role }}
+  namespace: {{ $.Release.Namespace }}
+  {{- with $annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  role: {{ $role }}
+  database: {{ $dbName }}
+  secretName: {{ required (printf "secretName required for postgresOperator.databases.%s.users.%s" $dbName $role) $user.secretName }}
+  privileges: {{ $user.privileges | default "OWNER" }}
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}

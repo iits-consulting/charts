@@ -1,0 +1,19 @@
+{{- $files := .Files.Glob "dashboards/**.json" }}
+{{- if and $files .Values.grafanaDashboard.enabled }}
+{{- range $path, $fileContents := $files }}
+{{- $dashboardName := regexReplaceAll "(^.*/)(.*)\\.json$" $path "${2}" }}
+{{- $catalogName := regexReplaceAll "(^.*/)(.*)\\.json$" $path "${1}" }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ printf "%s-%s" ($.Release.Name | trunc 58) $dashboardName | trunc 63  | trimSuffix "-" | replace "_" "-" }}
+  labels:
+    grafana_dashboard: "1"
+  annotations:
+    k8s-sidecar-target-directory: {{ printf "/tmp/%s/%s" ($catalogName | trimSuffix "/") $.Release.Name }}
+data:
+  {{ $dashboardName }}.json: |-
+    {{- $.Files.Get $path | nindent 4 }}
+{{- end }}
+{{- end }}

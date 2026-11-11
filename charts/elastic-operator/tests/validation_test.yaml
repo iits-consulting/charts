@@ -1,0 +1,88 @@
+suite: validation
+templates:
+  - validation.yaml
+
+release:
+  name: elastic-operator
+
+set:
+  ingress.kibana.host: "kibana.example.com"
+  auth.users.custom_filebeat.path: "elastic-operator/filebeat-user"
+  auth.users.custom_kibana_guest.path: "elastic-operator/kibana-guest-user"
+  auth.users.custom_elastalert.path: "elastic-operator/elastalert-user"
+
+tests:
+  - it: renders nothing with ESO disabled (default)
+    set:
+      common.externalSecret.enabled: false
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: passes (renders nothing) with ESO enabled and valid user config
+    set:
+      common.externalSecret.enabled: true
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: fails when a user has existingPassword in ESO mode
+    set:
+      common.externalSecret.enabled: true
+      auth.users.custom_filebeat.existingPassword: "static"
+    asserts:
+      - failedTemplate:
+          errorMessage: "auth.users.custom_filebeat.existingPassword is set but common.externalSecret.enabled is true — existingPassword has no effect in ESO mode (vault is canonical); remove it or disable common.externalSecret"
+
+  - it: fails when a user has no vault path in ESO mode
+    set:
+      common.externalSecret.enabled: true
+      auth.users.custom_elastalert.path: ""
+    asserts:
+      - failedTemplate:
+          errorMessage: "auth.users.custom_elastalert.path is required when common.externalSecret.enabled is true — set the vault path for this user's password round-trip"
+
+  - it: passes with a valid backup ESO config
+    set:
+      common.externalSecret.enabled: true
+      backup.enabled: true
+      backup.path: "elastic-operator/elasticsearch_backup_bucket"
+      backup.secureSettings:
+        access_key: "bucket_access_key"
+        secret_key: "bucket_secret_key"
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: fails when backup pulls from vault but backup.path is unset in ESO mode
+    set:
+      common.externalSecret.enabled: true
+      backup.enabled: true
+      backup.path: ""
+      backup.secureSettings:
+        access_key: "bucket_access_key"
+    asserts:
+      - failedTemplate:
+          errorMessage: 'backup.path is required when common.externalSecret.enabled and backup.enabled are true — set the vault path the backup secret is pulled from (e.g. "elastic-operator/elasticsearch_backup_bucket")'
+
+  - it: fails on legacy ${vault:...} syntax in backup.secureSettings in ESO mode
+    set:
+      common.externalSecret.enabled: true
+      backup.enabled: true
+      backup.path: "elastic-operator/elasticsearch_backup_bucket"
+      backup.secureSettings:
+        access_key: "${vault:ctx/data/stage/elastic-operator/elasticsearch_backup_bucket#bucket_access_key}"
+    asserts:
+      - failedTemplate:
+          errorMessage: 'backup.secureSettings.access_key uses the legacy ${vault:...} webhook-injection syntax but common.externalSecret.enabled is true — in ESO mode the value must be the bare vault property name to read (e.g. "bucket_access_key"), or empty to default it to the setting name'
+
+  - it: fails on legacy ${vault:...} syntax in backup.repositorySettings in ESO mode
+    set:
+      common.externalSecret.enabled: true
+      backup.enabled: true
+      backup.path: "elastic-operator/elasticsearch_backup_bucket"
+      backup.repositorySettings:
+        bucket: "${vault:ctx/data/stage/elastic-operator/elasticsearch_backup_bucket#bucket_name}"
+    asserts:
+      - failedTemplate:
+          errorMessage: 'backup.repositorySettings.bucket uses the legacy ${vault:...} webhook-injection syntax but common.externalSecret.enabled is true — in ESO mode repository settings are not pulled from vault; replace it with the literal hardcoded value'

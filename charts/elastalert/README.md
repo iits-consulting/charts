@@ -1,6 +1,6 @@
 # elastalert
 
-![Version: 0.5.0](https://img.shields.io/badge/Version-0.5.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.5.1](https://img.shields.io/badge/Version-0.5.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 Wrapper chart for elastalert2 with custom rules to kickstart IITS projects
 
@@ -17,7 +17,7 @@ The pod reads it as `SLACK_WEBHOOK_URL` via an environment variable.
 elastalert:
   namespace: monitoring
   repoURL: "https://charts.iits.tech"
-  targetRevision: "0.5.0"
+  targetRevision: "0.5.1"
   valueFile: "value-files/elastalert/values.yaml"
 ```
 
@@ -41,7 +41,7 @@ common:
 elastalert:
   namespace: monitoring
   repoURL: "https://charts.iits.tech"
-  targetRevision: "0.5.0"
+  targetRevision: "0.5.1"
   valueFile: "value-files/elastalert/values.yaml"
   parameters:
     customRules.slack.webhookUrl: "${vault:mySecretPath/data/common/slack#webhookUrl}"
@@ -120,7 +120,6 @@ elastalert:
 | customRules.alerting.kafkaTopicCreatedNotification.name | string | `"Kafka Topic Notification"` |  |
 | customRules.alerting.kafkaTopicCreatedNotification.query_key | string | `"message"` |  |
 | customRules.alerting.kafkaTopicCreatedNotification.realert.minutes | int | `30` |  |
-| customRules.alerting.kafkaTopicCreatedNotification.slack | string | `nil` |  |
 | customRules.alerting.kafkaTopicCreatedNotification.slack_alert_fields[0].title | string | `"Stage"` |  |
 | customRules.alerting.kafkaTopicCreatedNotification.slack_alert_fields[0].value | string | `"labels.stage"` |  |
 | customRules.alerting.kafkaTopicCreatedNotification.slack_alert_fields[1].title | string | `"App"` |  |

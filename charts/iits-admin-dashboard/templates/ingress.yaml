@@ -1,0 +1,45 @@
+{{- with .Values.ingress }}
+{{- if eq .enabled  true}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "iits-admin-dashboard.fullname" $ }}
+  {{- with .labels }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .annotations }}
+  annotations:
+    iits-consulting.chart-creator/version: 1.4.0
+    {{- tpl (toYaml .) $ | nindent 4 }}
+  {{- end }}
+spec:
+  {{ if .className }}
+  ingressClassName: {{ .className }}
+  {{- end }}
+
+  tls:
+    - hosts:
+      {{- range .hosts }}
+        - {{ tpl (toYaml .host) $ }}
+      {{- if .secretName }}
+      secretName: {{ .secretName }}
+      {{- end }}
+      {{- end }}
+
+  rules:
+      {{- range .hosts }}
+    - host: {{ tpl (toYaml .host) $ }}
+      http:
+        paths:
+            {{- range .paths }}
+          - path: {{ .path | quote }}
+            pathType: {{ .pathType | default "Prefix"}}
+            backend:
+              service:
+                name: {{ include "iits-admin-dashboard.fullname" $ | quote }}
+                port:
+                  name: "http"
+            {{- end }}
+      {{- end }}
+  {{- end }}
+{{- end }}
