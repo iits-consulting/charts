@@ -22,7 +22,7 @@ description: |
   prometheus-stack:
     namespace: monitoring
     repoURL: "https://charts.iits.tech"
-    targetRevision: "92.9.0"
+    targetRevision: "92.9.1"
     syncOptions:
       - ServerSideApply=true
     ignoreDifferences:
@@ -39,5 +39,6 @@ description: |
       prometheusStack.grafana.adminPassword: "REPLACE_ME"
   ```
 name: prometheus-stack
-version: 92.9.0
+version: 92.9.1
+# Used prometheus version
 appVersion: 3.15.0
