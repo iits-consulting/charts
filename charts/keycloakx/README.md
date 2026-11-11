@@ -26,7 +26,7 @@ Keycloak.X - Open Source Identity and Access Management for Modern Applications 
 | keycloakx.database.database | string | `""` |  |
 | keycloakx.database.hostname | string | `""` |  |
 | keycloakx.database.password | string | `""` |  |
-| keycloakx.database.port | string | `""` |  |
+| keycloakx.database.port | string | `nil` |  |
 | keycloakx.database.username | string | `""` |  |
 | keycloakx.database.vendor | string | `""` |  |
 | keycloakx.extraEnvFrom | string | `"- secretRef:\n    name: {{ include \"keycloak.fullname\" $ }}-env\n- configMapRef:\n    name: {{ include \"keycloak.fullname\" $ }}-env\n"` |  |
