@@ -54,7 +54,11 @@ Tiles Configuration:
 Service:
   Name: {{ include "kumoops-dashboard.fullname" . }}
   Namespace: {{ .Release.Namespace }}
-  Replicas: {{ .Values.deployment.replicaCount | default 2 }}
+  {{- if .Values.autoscaling.enabled }}
+  Replicas: {{ .Values.autoscaling.minReplicas }} to {{ .Values.autoscaling.maxReplicas }} (autoscaled)
+  {{- else }}
+  Replicas: {{ .Values.deployment.replicaCount }}
+  {{- end }}
 
 To test the deployment:
   helm test {{ .Release.Name }}

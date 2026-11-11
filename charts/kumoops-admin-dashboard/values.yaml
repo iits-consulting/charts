@@ -237,7 +237,10 @@ ingress:
   # -- Required, replace it with your host address
   host:
 
-  # -- Extra labels of the ingress
+  # -- (string) Ingress class, the default class of the cluster is used if empty
+  className:
+
+  # -- (object) Extra labels of the ingress
   labels:
 
   # -- Annotations of the ingress, rendered with tpl
@@ -245,7 +248,7 @@ ingress:
     traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
     traefik.ingress.kubernetes.io/router.tls: "true"
 
-  # -- Hosts and paths of the ingress. Set `secretName` on a host to use your own TLS secret
+  # -- Hosts and paths of the ingress. Set `secretName` on a host to use your own TLS secret, `pathType` on a path defaults to Prefix
   hosts:
     - host: "{{ .Values.ingress.host }}"
       paths:
@@ -257,13 +260,13 @@ ingress:
 deployment:
   # -- Number of pods, ignored when autoscaling is enabled
   replicaCount: 1
-  # -- Spread the pods so that no two run on the same node
+  # -- Spread the pods so that no two run on the same node, replaces deployment.affinity
   onePodForEachNode: false
 
   # -- Pull secrets for the image
   imagePullSecrets: [ ]
 
-  # -- Annotations of the deployment, rendered with tpl
+  # -- (object) Annotations of the deployment, rendered with tpl
   annotations:
 
   # -- Resources of the webserver. It serves static files, so the defaults are tiny
@@ -295,17 +298,20 @@ deployment:
     readOnlyRootFilesystem: true
     runAsUser: 1001
 
-  #nodeSelector:
-  #tolerations:
+  # -- Node selector of the pods
+  nodeSelector: { }
+  # -- Tolerations of the pods
+  tolerations: [ ]
 
   # -- Extra volumes of the pod
   extraVolumes: [ ]
   # -- Extra volume mounts of the webserver container
   extraVolumeMounts: [ ]
 
-  #affinity:
+  # -- Affinity of the pods, ignored when onePodForEachNode is true
+  affinity: { }
 
-  # -- Port the webserver listens on
+  # -- Port of the container. Has to match the port the image listens on, which is 3000
   containerPort: 3000
 
   # -- Startup, liveness and readiness probe settings
@@ -329,9 +335,9 @@ deployment:
       failureThreshold: 3
 
 service:
-  # -- Annotations of the service, rendered with tpl
+  # -- (object) Annotations of the service, rendered with tpl
   annotations:
-  # -- Extra labels of the service, rendered with tpl
+  # -- (object) Extra labels of the service, rendered with tpl
   labels:
   # -- Type of the service
   type: "ClusterIP"

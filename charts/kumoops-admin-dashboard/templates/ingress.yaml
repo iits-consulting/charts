@@ -20,13 +20,13 @@ spec:
   {{- end }}
 
   tls:
+    {{- range .hosts }}
     - hosts:
-      {{- range .hosts }}
         - {{ tpl (toYaml .host) $ }}
-      {{- if .secretName }}
-      secretName: {{ .secretName }}
+      {{- with .secretName }}
+      secretName: {{ . }}
       {{- end }}
-      {{- end }}
+    {{- end }}
 
   rules:
       {{- range .hosts }}

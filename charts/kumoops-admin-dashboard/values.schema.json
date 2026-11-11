@@ -75,7 +75,8 @@
               },
               "category": {
                 "type": "string",
-                "enum": ["KumoOps", "Observability", "Security", "DevOps", "Messaging", "Cloud", "AI", "Identity Management", "System"],
+                "minLength": 1,
+                "maxLength": 50,
                 "description": "Category name (required if enabled=true)"
               },
               "description": {
@@ -88,7 +89,12 @@
               "properties": { "enabled": { "const": true } }
             },
             "then": {
-              "required": ["href", "imgSrc", "imgAlt", "category"]
+              "required": ["href", "imgSrc", "imgAlt", "category"],
+              "properties": {
+                "category": {
+                  "enum": ["KumoOps", "Observability", "Security", "DevOps", "Messaging", "Cloud", "AI", "Identity Management", "System"]
+                }
+              }
             }
           }
         }

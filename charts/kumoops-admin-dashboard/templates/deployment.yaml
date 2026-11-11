@@ -27,20 +27,22 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "kumoops-dashboard.selectorLabels" $ | nindent 8 }}
+        {{- include "kumoops-dashboard.labels" $ | nindent 8 }}
     spec:
       {{- if eq .onePodForEachNode true }}
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             - labelSelector:
-                matchExpressions:
-                  - key: "app"
-                    operator: In
-                    values:
-                      - {{ include "kumoops-dashboard.fullname" $ }}
+                matchLabels:
+                  {{- include "kumoops-dashboard.selectorLabels" $ | nindent 18 }}
               topologyKey: "kubernetes.io/hostname"
-      {{- end}}
+      {{- else }}
+      {{- with .affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- end }}
       {{- with .imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
@@ -102,10 +104,6 @@ spec:
 
       {{- with .nodeSelector }}
       nodeSelector:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .affinity }}
-      affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- with .tolerations }}

@@ -20,7 +20,3 @@
 .idea/
 *.tmproj
 .vscode/
-
-# Chart-local: dev/validation artifacts not meant for the published package
-VALIDATION.md
-test-invalid-values.yaml

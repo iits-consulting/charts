@@ -47,27 +47,31 @@ kumoops-admin-dashboard:
 | defaultDashboard.tiles | object | see values.yaml | Tiles of the dashboard, keyed by name. Each tile takes `enabled`, `href`, `imgSrc`, `imgAlt`, `category` and an optional `description`. `category` has to be one of KumoOps, Observability, Security, DevOps, Messaging, Cloud, AI, Identity Management, System. Switch a tile off with `defaultDashboard.tiles.<name>.enabled: false`, add your own under a new key. |
 | defaultDashboard.title | string | `"KumoOps Admin"` | Title of the page |
 | defaultDashboard.userinfoUrl | string | `nil` | OIDC userinfo endpoint, used to show the logged in user |
-| deployment.annotations | string | `nil` | Annotations of the deployment, rendered with tpl |
-| deployment.containerPort | int | `3000` | Port the webserver listens on |
+| deployment.affinity | object | `{}` | Affinity of the pods, ignored when onePodForEachNode is true |
+| deployment.annotations | object | `nil` | Annotations of the deployment, rendered with tpl |
+| deployment.containerPort | int | `3000` | Port of the container. Has to match the port the image listens on, which is 3000 |
 | deployment.extraVolumeMounts | list | `[]` | Extra volume mounts of the webserver container |
 | deployment.extraVolumes | list | `[]` | Extra volumes of the pod |
 | deployment.health | object | `{"liveness":{"failureThreshold":3,"initialDelaySeconds":5,"path":"/","periodSeconds":20},"readiness":{"failureThreshold":3,"initialDelaySeconds":5,"path":"/","periodSeconds":20},"startupProbe":{"failureThreshold":3,"initialDelaySeconds":5,"path":"/","periodSeconds":5}}` | Startup, liveness and readiness probe settings |
 | deployment.imagePullSecrets | list | `[]` | Pull secrets for the image |
-| deployment.onePodForEachNode | bool | `false` | Spread the pods so that no two run on the same node |
+| deployment.nodeSelector | object | `{}` | Node selector of the pods |
+| deployment.onePodForEachNode | bool | `false` | Spread the pods so that no two run on the same node, replaces deployment.affinity |
 | deployment.podAnnotations | object | `{}` | Annotations of the pods |
 | deployment.podSecurityContext | object | `{"runAsNonRoot":true,"runAsUser":1001,"seccompProfile":{"type":"RuntimeDefault"}}` | Security context of the pod. Pod level, so no container falls back to the default (root) context |
 | deployment.replicaCount | int | `1` | Number of pods, ignored when autoscaling is enabled |
 | deployment.resources | object | `{"limits":{"cpu":"10m","memory":"8Mi"},"requests":{"cpu":"1m","memory":"4Mi"}}` | Resources of the webserver. It serves static files, so the defaults are tiny |
 | deployment.securityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"readOnlyRootFilesystem":true,"runAsNonRoot":true,"runAsUser":1001}` | Security context of the webserver container |
+| deployment.tolerations | list | `[]` | Tolerations of the pods |
 | fullnameOverride | string | `""` | Overrides the full name of all resources, defaults to the release name |
 | ingress.annotations | object | `{"traefik.ingress.kubernetes.io/router.entrypoints":"websecure","traefik.ingress.kubernetes.io/router.tls":"true"}` | Annotations of the ingress, rendered with tpl |
+| ingress.className | string | `nil` | Ingress class, the default class of the cluster is used if empty |
 | ingress.enabled | bool | `true` | Create the ingress |
 | ingress.host | string | `nil` | Required, replace it with your host address |
-| ingress.hosts | list | `[{"host":"{{ .Values.ingress.host }}","paths":[{"path":"/"}]}]` | Hosts and paths of the ingress. Set `secretName` on a host to use your own TLS secret |
-| ingress.labels | string | `nil` | Extra labels of the ingress |
+| ingress.hosts | list | `[{"host":"{{ .Values.ingress.host }}","paths":[{"path":"/"}]}]` | Hosts and paths of the ingress. Set `secretName` on a host to use your own TLS secret, `pathType` on a path defaults to Prefix |
+| ingress.labels | object | `nil` | Extra labels of the ingress |
 | nameOverride | string | `""` | Overrides the name used in the selector labels, defaults to the release name |
-| service.annotations | string | `nil` | Annotations of the service, rendered with tpl |
-| service.labels | string | `nil` | Extra labels of the service, rendered with tpl |
+| service.annotations | object | `nil` | Annotations of the service, rendered with tpl |
+| service.labels | object | `nil` | Extra labels of the service, rendered with tpl |
 | service.port | int | `80` | Port of the service |
 | service.type | string | `"ClusterIP"` | Type of the service |
 | serviceAccount.annotations | object | `{}` | Annotations of the service account |
