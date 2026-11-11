@@ -37,7 +37,6 @@ Keycloak.X - Open Source Identity and Access Management for Modern Applications 
 | keycloakx.ingress.rules[0].host | string | `"REPLACE_ME"` |  |
 | keycloakx.ingress.rules[0].paths[0].path | string | `"/"` |  |
 | keycloakx.ingress.rules[0].paths[0].pathType | string | `"Prefix"` |  |
-| keycloakx.podSecurityContext.allowPrivilegeEscalation | bool | `false` |  |
 | keycloakx.podSecurityContext.seccompProfile.type | string | `"RuntimeDefault"` |  |
 | keycloakx.proxy.mode | string | `"xforwarded"` |  |
 | keycloakx.replicas | int | `2` |  |
