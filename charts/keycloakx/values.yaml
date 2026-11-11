@@ -59,7 +59,6 @@ keycloakx:
       whenUnsatisfiable: "DoNotSchedule"
 
   podSecurityContext:
-    allowPrivilegeEscalation: false
     seccompProfile:
       type: RuntimeDefault
 
