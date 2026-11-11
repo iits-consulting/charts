@@ -58,6 +58,11 @@ keycloakx:
       topologyKey: topology.kubernetes.io/zone
       whenUnsatisfiable: "DoNotSchedule"
 
+  podSecurityContext:
+    allowPrivilegeEscalation: false
+    seccompProfile:
+      type: RuntimeDefault
+
   serviceMonitor:
     enabled: true
 
