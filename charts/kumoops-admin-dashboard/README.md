@@ -127,7 +127,7 @@ kumoops-admin-dashboard:
 | defaultDashboard.tiles.n8n.href | string | `"n8n/"` |  |
 | defaultDashboard.tiles.n8n.imgAlt | string | `"n8n Automation"` |  |
 | defaultDashboard.tiles.n8n.imgSrc | string | `"https://iits-consulting.de/wp-content/uploads/2026/01/n8n-logo.webp"` |  |
-| defaultDashboard.tiles.otc.category | string | `"Cloud Provider"` |  |
+| defaultDashboard.tiles.otc.category | string | `"Cloud"` |  |
 | defaultDashboard.tiles.otc.description | string | `"T Cloud Public(TCP) console"` |  |
 | defaultDashboard.tiles.otc.enabled | bool | `true` |  |
 | defaultDashboard.tiles.otc.href | string | `"otcOIDC/"` |  |
@@ -135,8 +135,8 @@ kumoops-admin-dashboard:
 | defaultDashboard.tiles.otc.imgSrc | string | `"https://iits-consulting.de/wp-content/uploads/2026/01/otc-logo.svg"` |  |
 | defaultDashboard.tiles.portal.category | string | `"KumoOps"` |  |
 | defaultDashboard.tiles.portal.description | string | `"Main KumoOps portal dashboard"` |  |
-| defaultDashboard.tiles.portal.enabled | bool | `false` |  |
-| defaultDashboard.tiles.portal.href | string | `"https://my-portal.kumo-ops.com/"` |  |
+| defaultDashboard.tiles.portal.enabled | bool | `true` |  |
+| defaultDashboard.tiles.portal.href | string | `"https://portal.kumo-ops.com/"` |  |
 | defaultDashboard.tiles.portal.imgAlt | string | `"KumoOps Portal"` |  |
 | defaultDashboard.tiles.portal.imgSrc | string | `"https://iits-consulting.de/wp-content/uploads/2026/01/kumoops-portal.png"` |  |
 | defaultDashboard.tiles.prometheus.category | string | `"Observability"` |  |
@@ -145,12 +145,6 @@ kumoops-admin-dashboard:
 | defaultDashboard.tiles.prometheus.href | string | `"prometheus"` |  |
 | defaultDashboard.tiles.prometheus.imgAlt | string | `"Prometheus"` |  |
 | defaultDashboard.tiles.prometheus.imgSrc | string | `"https://iits-consulting.de/wp-content/uploads/2026/01/definitly_not_prometheus.svg"` |  |
-| defaultDashboard.tiles.shop.category | string | `"KumoOps Portal"` |  |
-| defaultDashboard.tiles.shop.description | string | `"KumoOps Shop to add or change your add-ons"` |  |
-| defaultDashboard.tiles.shop.enabled | bool | `false` |  |
-| defaultDashboard.tiles.shop.href | string | `"https://start.kumo-ops.com"` |  |
-| defaultDashboard.tiles.shop.imgAlt | string | `"KumoOps Shop"` |  |
-| defaultDashboard.tiles.shop.imgSrc | string | `"https://iits-consulting.de/wp-content/uploads/2026/01/shop-scaled.png"` |  |
 | defaultDashboard.tiles.sonarqube.category | string | `"Security"` |  |
 | defaultDashboard.tiles.sonarqube.description | string | `"Code quality and security analysis platform"` |  |
 | defaultDashboard.tiles.sonarqube.enabled | bool | `false` |  |
@@ -158,8 +152,8 @@ kumoops-admin-dashboard:
 | defaultDashboard.tiles.sonarqube.imgAlt | string | `"SonarQube"` |  |
 | defaultDashboard.tiles.sonarqube.imgSrc | string | `"https://iits-consulting.de/wp-content/uploads/2026/01/sonarqube.webp"` |  |
 | defaultDashboard.tiles.support.category | string | `"KumoOps"` |  |
-| defaultDashboard.tiles.support.enabled | bool | `false` |  |
-| defaultDashboard.tiles.support.href | string | `"support@kumo-ops.com"` |  |
+| defaultDashboard.tiles.support.enabled | bool | `true` |  |
+| defaultDashboard.tiles.support.href | string | `"mailto:support@kumo-ops.com"` |  |
 | defaultDashboard.tiles.support.imgAlt | string | `"KumoOps Support"` |  |
 | defaultDashboard.tiles.support.imgSrc | string | `"https://iits-consulting.de/wp-content/uploads/2026/01/kumo-support.png"` |  |
 | defaultDashboard.tiles.traefikDashboard.category | string | `"DevOps"` |  |
