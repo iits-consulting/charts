@@ -4,6 +4,8 @@
 
 ### 7.4.0
  - Update underlying chart to 7.4.0 (appVersion 26.8.2)
+ - Explicitly set `allowPrivilegeEscalation` to `false` in `securityContext`
+ - Explicitly set `seccompProfile` to `RuntimeDefault`
 
 ### 7.3.0-add-dashboard
  - Add Grafana dashboard, enabled via `.Values.grafanaDashboard.enabled` (disabled by default)

@@ -5,6 +5,7 @@ Descriptions on actions needed, when upgrading within our chart defaults to the 
 ## 7.4.0
 
 - `allowAdminRoleMapping` on IdP must be explicitly set to `true` so that their mappers can still assign groups that grant administrative roles
+- Keycloak TF provider above vXXXXX must be used to still access realm-management client
 
 ## 7.3.0-add-dashboard
 
