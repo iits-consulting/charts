@@ -1,6 +1,6 @@
 # keycloakx
 
-![Version: 7.3.0-add-dashboard](https://img.shields.io/badge/Version-7.3.0--add--dashboard-informational?style=flat-square) ![AppVersion: 26.7.2](https://img.shields.io/badge/AppVersion-26.7.2-informational?style=flat-square)
+![Version: 7.4.0](https://img.shields.io/badge/Version-7.4.0-informational?style=flat-square) ![AppVersion: 26.8.2](https://img.shields.io/badge/AppVersion-26.8.2-informational?style=flat-square)
 
 Keycloak.X - Open Source Identity and Access Management for Modern Applications and Services
 
@@ -8,7 +8,7 @@ Keycloak.X - Open Source Identity and Access Management for Modern Applications 
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://codecentric.github.io/helm-charts | keycloakx | 7.3.0 |
+| https://codecentric.github.io/helm-charts | keycloakx | 7.4.0 |
 
 ## Values
 
@@ -26,7 +26,7 @@ Keycloak.X - Open Source Identity and Access Management for Modern Applications 
 | keycloakx.database.database | string | `""` |  |
 | keycloakx.database.hostname | string | `""` |  |
 | keycloakx.database.password | string | `""` |  |
-| keycloakx.database.port | string | `""` |  |
+| keycloakx.database.port | string | `nil` |  |
 | keycloakx.database.username | string | `""` |  |
 | keycloakx.database.vendor | string | `""` |  |
 | keycloakx.extraEnvFrom | string | `"- secretRef:\n    name: {{ include \"keycloak.fullname\" $ }}-env\n- configMapRef:\n    name: {{ include \"keycloak.fullname\" $ }}-env\n"` |  |
@@ -37,6 +37,7 @@ Keycloak.X - Open Source Identity and Access Management for Modern Applications 
 | keycloakx.ingress.rules[0].host | string | `"REPLACE_ME"` |  |
 | keycloakx.ingress.rules[0].paths[0].path | string | `"/"` |  |
 | keycloakx.ingress.rules[0].paths[0].pathType | string | `"Prefix"` |  |
+| keycloakx.podSecurityContext.seccompProfile.type | string | `"RuntimeDefault"` |  |
 | keycloakx.proxy.mode | string | `"xforwarded"` |  |
 | keycloakx.replicas | int | `2` |  |
 | keycloakx.resources.limits.memory | string | `"718Mi"` |  |
@@ -44,6 +45,7 @@ Keycloak.X - Open Source Identity and Access Management for Modern Applications 
 | keycloakx.resources.requests.memory | string | `"718Mi"` |  |
 | keycloakx.secretEnv.KC_BOOTSTRAP_ADMIN_PASSWORD | string | `"REPLACE_ME"` |  |
 | keycloakx.secretEnv.KC_BOOTSTRAP_ADMIN_USERNAME | string | `"keycloakAdmin"` |  |
+| keycloakx.securityContext.allowPrivilegeEscalation | bool | `false` |  |
 | keycloakx.serviceMonitor.enabled | bool | `true` |  |
 | keycloakx.topologySpreadConstraints | string | `"- maxSkew: 1\n  topologyKey: topology.kubernetes.io/zone\n  whenUnsatisfiable: \"DoNotSchedule\"\n"` |  |
 | postgresOperator.annotations | object | `{}` |  |
