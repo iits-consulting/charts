@@ -9,25 +9,18 @@ defaultDashboard:
   subtitle: "CloudSecOps-as-a-Service"
   tiles:
     portal:
-      enabled: false
-      href: "https://my-portal.kumo-ops.com/"
+      enabled: true
+      href: "https://portal.kumo-ops.com/"
       imgSrc: "https://iits-consulting.de/wp-content/uploads/2026/01/kumoops-portal.png"
       imgAlt: "KumoOps Portal"
       category: "KumoOps"
       description: "Main KumoOps portal dashboard"
     support:
-      enabled: false
-      href: "support@kumo-ops.com"
+      enabled: true
+      href: "mailto:support@kumo-ops.com"
       imgSrc: "https://iits-consulting.de/wp-content/uploads/2026/01/kumo-support.png"
       imgAlt: "KumoOps Support"
       category: "KumoOps"
-    shop:
-      enabled: false
-      href: "https://start.kumo-ops.com"
-      imgSrc: "https://iits-consulting.de/wp-content/uploads/2026/01/shop-scaled.png"
-      imgAlt: "KumoOps Shop"
-      category: "KumoOps Portal"
-      description: "KumoOps Shop to add or change your add-ons"
     logs:
       enabled: false
       href: "grafana/explore"
@@ -131,7 +124,7 @@ defaultDashboard:
       href: "otcOIDC/"
       imgSrc: "https://iits-consulting.de/wp-content/uploads/2026/01/otc-logo.svg"
       imgAlt: "T Cloud Public(TCP)"
-      category: "Cloud Provider"
+      category: "Cloud"
       description: "T Cloud Public(TCP) console"
     akhq:
       enabled: true
