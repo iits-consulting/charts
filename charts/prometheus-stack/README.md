@@ -1,6 +1,6 @@
 # prometheus-stack
 
-![Version: 92.9.0](https://img.shields.io/badge/Version-92.9.0-informational?style=flat-square) ![AppVersion: 3.15.0](https://img.shields.io/badge/AppVersion-3.15.0-informational?style=flat-square)
+![Version: 92.9.1](https://img.shields.io/badge/Version-92.9.1-informational?style=flat-square) ![AppVersion: 3.15.0](https://img.shields.io/badge/AppVersion-3.15.0-informational?style=flat-square)
 
 A complete monitoring/alerting stack with Grafana, Prometheus, Alertmanager & Blackbox exporter
 
@@ -11,7 +11,7 @@ A complete monitoring/alerting stack with Grafana, Prometheus, Alertmanager & Bl
 prometheus-stack:
   namespace: monitoring
   repoURL: "https://charts.iits.tech"
-  targetRevision: "92.9.0"
+  targetRevision: "92.9.1"
   syncOptions:
     - ServerSideApply=true
   ignoreDifferences:
@@ -173,6 +173,7 @@ prometheus-stack:
 | prometheusStack.prometheus.prometheusSpec.retention | string | `"1y"` |  |
 | prometheusStack.prometheus.prometheusSpec.routePrefix | string | `"/prometheus"` |  |
 | prometheusStack.prometheus.prometheusSpec.ruleSelectorNilUsesHelmValues | bool | `false` |  |
+| prometheusStack.prometheus.prometheusSpec.serviceDiscoveryRole | string | `"EndpointSlice"` |  |
 | prometheusStack.prometheus.prometheusSpec.serviceMonitorSelectorNilUsesHelmValues | bool | `false` |  |
 | prometheusStack.prometheus.prometheusSpec.storageSpec.volumeClaimTemplate.spec.accessModes[0] | string | `"ReadWriteOnce"` |  |
 | prometheusStack.prometheus.prometheusSpec.storageSpec.volumeClaimTemplate.spec.resources.requests.storage | string | `"250G"` |  |
