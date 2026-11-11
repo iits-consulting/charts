@@ -1,0 +1,38 @@
+{{- with .Values.serviceMonitor }}
+{{- if .enabled }}
+{{- $target := printf "http://%s.%s.svc:%v/" (include "kumoops-dashboard.fullname" $) $.Release.Namespace $.Values.service.port }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "kumoops-dashboard.fullname" $ }}
+  labels:
+    {{- include "kumoops-dashboard.labels" $ | nindent 4 }}
+    {{- with .labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  endpoints:
+    - port: http
+      path: /probe
+      interval: {{ .interval }}
+      scrapeTimeout: {{ .scrapeTimeout }}
+      params:
+        module:
+          - {{ .module }}
+        target:
+          - {{ $target }}
+      metricRelabelings:
+        - targetLabel: instance
+          replacement: {{ include "kumoops-dashboard.fullname" $ }}
+        - targetLabel: target
+          replacement: {{ $target }}
+        - targetLabel: module
+          replacement: {{ .module }}
+  selector:
+    matchLabels:
+      {{- toYaml .blackboxExporter.selectorLabels | nindent 6 }}
+  namespaceSelector:
+    matchNames:
+      - {{ .blackboxExporter.namespace }}
+{{- end }}
+{{- end }}

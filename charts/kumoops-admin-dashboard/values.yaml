@@ -21,6 +21,20 @@ defaultDashboard:
       imgSrc: "https://iits-consulting.de/wp-content/uploads/2026/01/kumo-support.png"
       imgAlt: "KumoOps Support"
       category: "KumoOps"
+    shop:
+      enabled: false
+      href: "https://start.kumo-ops.com"
+      imgSrc: "https://iits-consulting.de/wp-content/uploads/2026/01/shop-scaled.png"
+      imgAlt: "KumoOps Shop"
+      category: "KumoOps Portal"
+      description: "KumoOps Shop to add or change your add-ons"
+    logs:
+      enabled: false
+      href: "grafana/explore"
+      imgSrc: "https://iits-consulting.de/wp-content/uploads/2026/01/definitly_not_grafana.svg"
+      imgAlt: "Logs"
+      category: "Observability"
+      description: "Log exploration (Loki via Grafana Explore)"
     kibana:
       enabled: true
       href: "kibana/app/discover"
@@ -221,6 +235,7 @@ ingress:
       paths:
         - path: "/"
           #pathType: "Prefix"
+      # secretName: "kumoops-admin-dashboard-tls"
 
 
 deployment:
@@ -241,8 +256,13 @@ deployment:
 
   podAnnotations: { }
 
+  # Pod level, so no container of the pod falls back to the default (root)
+  # context. Matches the container's runAsUser below.
   podSecurityContext:
-  # fsGroup: 2000
+    runAsNonRoot: true
+    runAsUser: 1001
+    seccompProfile:
+      type: RuntimeDefault
 
   securityContext:
     allowPrivilegeEscalation: false
@@ -287,3 +307,24 @@ service:
   labels:
   type: "ClusterIP"
   port: 80
+
+# The webserver has no metrics endpoint, so this is an uptime probe: the
+# ServiceMonitor scrapes the blackbox exporter, which requests the dashboard
+# service inside the cluster (not the ingress, a forward auth redirect would
+# report "up" while the dashboard is down).
+serviceMonitor:
+  # -- Create the ServiceMonitor. Needs the prometheus operator CRDs and a blackbox exporter.
+  enabled: false
+  # -- Extra labels, e.g. to match the serviceMonitorSelector of your Prometheus
+  labels: { }
+  interval: 30s
+  scrapeTimeout: 30s
+  # -- Blackbox exporter module, has to accept plain http
+  module: http_2xx
+  blackboxExporter:
+    # -- Namespace of the blackbox exporter service
+    namespace: monitoring
+    # -- Labels of the blackbox exporter service. Defaults match the iits prometheus-stack chart.
+    selectorLabels:
+      app.kubernetes.io/instance: prometheus-stack
+      app.kubernetes.io/name: blackboxExporter
