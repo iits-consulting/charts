@@ -11,7 +11,7 @@ A complete monitoring/alerting stack with Grafana, Prometheus, Alertmanager & Bl
 prometheus-stack:
   namespace: monitoring
   repoURL: "https://charts.iits.tech"
-  targetRevision: "92.9.0"
+  targetRevision: "92.9.1"
   syncOptions:
     - ServerSideApply=true
   ignoreDifferences:
