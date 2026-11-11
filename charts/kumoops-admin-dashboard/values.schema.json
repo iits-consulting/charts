@@ -19,17 +19,17 @@
           "description": "Logo image URL for dark mode (falls back to logoSrc if not set)"
         },
         "userinfoUrl": {
-          "type": "string",
+          "type": ["string", "null"],
           "pattern": "^https?://.*",
           "description": "Keycloak OIDC userinfo endpoint URL for displaying logged-in user"
         },
         "logoutUrl": {
-          "type": "string",
+          "type": ["string", "null"],
           "pattern": "^https?://.*",
           "description": "Keycloak OIDC logout URL"
         },
         "context": {
-          "type": "string",
+          "type": ["string", "null"],
           "description": "Customer/deployment context name displayed in the user menu"
         },
         "logoAlt": {
@@ -75,8 +75,7 @@
               },
               "category": {
                 "type": "string",
-                "minLength": 1,
-                "maxLength": 50,
+                "enum": ["KumoOps", "Observability", "Security", "DevOps", "Messaging", "Cloud", "AI", "Identity Management", "System"],
                 "description": "Category name (required if enabled=true)"
               },
               "description": {

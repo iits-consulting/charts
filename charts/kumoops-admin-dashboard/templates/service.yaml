@@ -8,11 +8,11 @@ metadata:
     iits-consulting.chart-creator/version: 1.0.10
     {{- tpl (toYaml .) $ | nindent 4 }}
   {{- end }}
-  {{- with .labels }}
   labels:
     {{- include "kumoops-dashboard.labels" $ | nindent 4 }}
+    {{- with .labels }}
     {{- tpl (toYaml .) $ | nindent 4 }}
-  {{- end }}
+    {{- end }}
 spec:
   type: {{ .type }}
   ports:

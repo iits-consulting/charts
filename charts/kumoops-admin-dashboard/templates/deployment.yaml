@@ -12,7 +12,9 @@ metadata:
   labels:
     {{- include "kumoops-dashboard.labels" $ | nindent 4 }}
 spec:
+  {{- if not $.Values.autoscaling.enabled }}
   replicas: {{ .replicaCount }}
+  {{- end }}
   revisionHistoryLimit: 3
   selector:
     matchLabels:
@@ -20,9 +22,7 @@ spec:
   template:
     metadata:
       annotations:
-        {{- range $path, $_ :=  $.Files.Glob  "files/*" }}
-        checksum/{{ base $path }}: {{ $.Files.Get $path | sha256sum }}
-        {{- end }}
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") $ | sha256sum }}
       {{- with .podAnnotations }}
         {{- toYaml . | nindent 8 }}
       {{- end }}
@@ -66,7 +66,7 @@ spec:
 
           livenessProbe:
             httpGet:
-              path: "/"
+              path: {{ .health.liveness.path | quote }}
               port: {{ .containerPort }}
             initialDelaySeconds: {{ .health.liveness.initialDelaySeconds }}
             periodSeconds: {{ .health.liveness.periodSeconds }}
@@ -75,7 +75,7 @@ spec:
 
           readinessProbe:
             httpGet:
-              path: "/"
+              path: {{ .health.readiness.path | quote }}
               port: {{ .containerPort }}
             initialDelaySeconds: {{ .health.readiness.initialDelaySeconds }}
             periodSeconds: {{ .health.readiness.periodSeconds }}
@@ -83,7 +83,7 @@ spec:
 
           startupProbe:
             httpGet:
-              path: "/"
+              path: {{ .health.startupProbe.path | quote }}
               port: {{ .containerPort }}
             initialDelaySeconds: {{ .health.startupProbe.initialDelaySeconds }}
             periodSeconds: {{ .health.startupProbe.periodSeconds }}

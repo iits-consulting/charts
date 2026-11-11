@@ -1,12 +1,29 @@
+# -- Overrides the name used in the selector labels, defaults to the release name
 nameOverride: ""
+# -- Overrides the full name of all resources, defaults to the release name
 fullnameOverride: ""
 
 defaultDashboard:
+  # -- Logo URL for light mode
   logoSrc: "https://brand-book.kumo-ops.com/assets/kumoops-logo-full-light-800px.png"
+  # -- Logo URL for dark mode, falls back to logoSrc
   logoDarkSrc: "https://brand-book.kumo-ops.com/assets/kumoops-logo-full-dark-800px.png"
+  # -- Alt text of the logo
   logoAlt: "KumoOps Logo"
+  # -- Title of the page
   title: "KumoOps Admin"
+  # -- Subtitle below the title
   subtitle: "CloudSecOps-as-a-Service"
+  # -- (string) OIDC userinfo endpoint, used to show the logged in user
+  userinfoUrl:
+  # -- (string) OIDC logout URL, falls back to the href of the logout tile
+  logoutUrl:
+  # -- (string) Name of the customer or stage, shown in the user menu
+  context:
+  # -- Tiles of the dashboard, keyed by name. Each tile takes `enabled`, `href`, `imgSrc`, `imgAlt`, `category` and an optional `description`.
+  # `category` has to be one of KumoOps, Observability, Security, DevOps, Messaging, Cloud, AI, Identity Management, System.
+  # Switch a tile off with `defaultDashboard.tiles.<name>.enabled: false`, add your own under a new key.
+  # @default -- see values.yaml
   tiles:
     portal:
       enabled: true
@@ -170,7 +187,10 @@ defaultDashboard:
       category: "KumoOps"
     # Add other tiles here...
 
-# You can add here a custom HTML website
+# -- (string) Custom HTML page that replaces the built in dashboard, rendered with tpl
+# @default -- built in dashboard
+website:
+# Example:
 #website: |
 #  <!DOCTYPE html>
 #  <html lang="en">
@@ -203,26 +223,29 @@ defaultDashboard:
 
 
 serviceAccount:
-  # Specifies whether a service account should be created
+  # -- Create a service account
   create: true
-  # Annotations to add to the service account
+  # -- Annotations of the service account
   annotations: { }
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
+  # -- Name of the service account. If empty and create is true, the full name is used
   name: ""
 
 ingress:
+  # -- Create the ingress
   enabled: true
 
   # -- Required, replace it with your host address
   host:
 
+  # -- Extra labels of the ingress
   labels:
 
+  # -- Annotations of the ingress, rendered with tpl
   annotations:
     traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
     traefik.ingress.kubernetes.io/router.tls: "true"
 
+  # -- Hosts and paths of the ingress. Set `secretName` on a host to use your own TLS secret
   hosts:
     - host: "{{ .Values.ingress.host }}"
       paths:
@@ -232,13 +255,18 @@ ingress:
 
 
 deployment:
+  # -- Number of pods, ignored when autoscaling is enabled
   replicaCount: 1
+  # -- Spread the pods so that no two run on the same node
   onePodForEachNode: false
 
+  # -- Pull secrets for the image
   imagePullSecrets: [ ]
 
+  # -- Annotations of the deployment, rendered with tpl
   annotations:
 
+  # -- Resources of the webserver. It serves static files, so the defaults are tiny
   resources:
     requests:
       memory: "4Mi"
@@ -247,16 +275,17 @@ deployment:
       memory: "8Mi"
       cpu: "10m"
 
+  # -- Annotations of the pods
   podAnnotations: { }
 
-  # Pod level, so no container of the pod falls back to the default (root)
-  # context. Matches the container's runAsUser below.
+  # -- Security context of the pod. Pod level, so no container falls back to the default (root) context
   podSecurityContext:
     runAsNonRoot: true
     runAsUser: 1001
     seccompProfile:
       type: RuntimeDefault
 
+  # -- Security context of the webserver container
   securityContext:
     allowPrivilegeEscalation: false
     runAsNonRoot: true
@@ -269,13 +298,17 @@ deployment:
   #nodeSelector:
   #tolerations:
 
+  # -- Extra volumes of the pod
   extraVolumes: [ ]
+  # -- Extra volume mounts of the webserver container
   extraVolumeMounts: [ ]
 
   #affinity:
 
+  # -- Port the webserver listens on
   containerPort: 3000
 
+  # -- Startup, liveness and readiness probe settings
   health:
     startupProbe:
       path: "/"
@@ -296,10 +329,26 @@ deployment:
       failureThreshold: 3
 
 service:
+  # -- Annotations of the service, rendered with tpl
   annotations:
+  # -- Extra labels of the service, rendered with tpl
   labels:
+  # -- Type of the service
   type: "ClusterIP"
+  # -- Port of the service
   port: 80
+
+autoscaling:
+  # -- Create a HorizontalPodAutoscaler for the deployment. Needs the metrics server.
+  enabled: false
+  # -- Lower bound of pods
+  minReplicas: 1
+  # -- Upper bound of pods
+  maxReplicas: 3
+  # -- (int) Target average CPU utilization in percent of the request
+  targetCPUUtilizationPercentage: 80
+  # -- (int) Target average memory utilization in percent of the request, not used if empty
+  targetMemoryUtilizationPercentage:
 
 # The webserver has no metrics endpoint, so this is an uptime probe: the
 # ServiceMonitor scrapes the blackbox exporter, which requests the dashboard
@@ -310,7 +359,11 @@ serviceMonitor:
   enabled: false
   # -- Extra labels, e.g. to match the serviceMonitorSelector of your Prometheus
   labels: { }
+  # -- Annotations of the ServiceMonitor
+  annotations: { }
+  # -- How often the dashboard is probed
   interval: 30s
+  # -- Timeout of one probe
   scrapeTimeout: 30s
   # -- Blackbox exporter module, has to accept plain http
   module: http_2xx
