@@ -45,6 +45,7 @@ Keycloak.X - Open Source Identity and Access Management for Modern Applications 
 | keycloakx.resources.requests.memory | string | `"718Mi"` |  |
 | keycloakx.secretEnv.KC_BOOTSTRAP_ADMIN_PASSWORD | string | `"REPLACE_ME"` |  |
 | keycloakx.secretEnv.KC_BOOTSTRAP_ADMIN_USERNAME | string | `"keycloakAdmin"` |  |
+| keycloakx.securityContext.allowPrivilegeEscalation | bool | `false` |  |
 | keycloakx.serviceMonitor.enabled | bool | `true` |  |
 | keycloakx.topologySpreadConstraints | string | `"- maxSkew: 1\n  topologyKey: topology.kubernetes.io/zone\n  whenUnsatisfiable: \"DoNotSchedule\"\n"` |  |
 | postgresOperator.annotations | object | `{}` |  |
