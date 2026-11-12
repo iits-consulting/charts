@@ -1,0 +1,23 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: pullsecret-namespaces.add-image-pull-secret
+policies:
+  - ../../.rendered/pullsecret-namespaces/add-image-pull-secret.yaml
+resources:
+  - ../../resources/pods-pullsecret-namespaces.yaml
+results:
+  - policy: add-image-pull-secret
+    isMutatingPolicy: true
+    kind: Pod
+    resources:
+      - ps-team-a
+      - ps-team-c
+    result: pass
+    patchedResources: patched.yaml
+  - policy: add-image-pull-secret
+    isMutatingPolicy: true
+    kind: Pod
+    resources:
+      - ps-default
+    result: skip

@@ -1,0 +1,181 @@
+# Pods with one container each, varying only the image reference.
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: img-plain
+  namespace: default
+spec:
+  containers:
+    - name: app
+      image: nginx
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: img-tag
+  namespace: default
+spec:
+  containers:
+    - name: app
+      image: nginx:1.25
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: img-port-registry
+  namespace: default
+spec:
+  containers:
+    - name: app
+      image: localhost:5000/x:1
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: img-docker-library
+  namespace: default
+spec:
+  containers:
+    - name: app
+      image: docker.io/library/nginx:1.25
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: img-docker-org
+  namespace: default
+spec:
+  containers:
+    - name: app
+      image: docker.io/bitnami/redis:7
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: img-org-no-registry
+  namespace: default
+spec:
+  containers:
+    - name: app
+      image: bitnami/redis:7
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: img-ghcr-org
+  namespace: default
+spec:
+  containers:
+    - name: app
+      image: ghcr.io/org/app:v1
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: img-ghcr-other
+  namespace: default
+spec:
+  containers:
+    - name: app
+      image: ghcr.io/other/app:v1
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: img-ghcr-deep
+  namespace: default
+spec:
+  containers:
+    - name: app
+      image: ghcr.io/org/team/app:v1
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: img-mirror
+  namespace: default
+spec:
+  containers:
+    - name: app
+      image: mirror.example.com/proxy/app:v1
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: img-default-allowed
+  namespace: default
+spec:
+  containers:
+    - name: app
+      image: mysecure-registry/common-signed-docker-images/app:1
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: img-busybox-excluded
+  namespace: default
+spec:
+  containers:
+    - name: app
+      image: docker.io/library/busybox:1.36
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: img-localhost-allowed
+  namespace: default
+spec:
+  containers:
+    - name: app
+      image: localhost:5000/app:2
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: img-kube-system
+  namespace: kube-system
+spec:
+  containers:
+    - name: app
+      image: registry.k8s.io/pause:3.9
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: img-kube-system-ghcr
+  namespace: kube-system
+spec:
+  containers:
+    - name: app
+      image: ghcr.io/other/app:v1
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hub-index
+  namespace: default
+spec:
+  containers:
+    - name: app
+      image: index.docker.io/library/nginx:1.25
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hub-library
+  namespace: default
+spec:
+  containers:
+    - name: app
+      image: library/nginx:1.25
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hub-untagged-full
+  namespace: default
+spec:
+  containers:
+    - name: app
+      image: docker.io/library/nginx

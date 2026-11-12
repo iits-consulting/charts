@@ -1,0 +1,245 @@
+apiVersion: v1
+kind: Pod
+metadata:
+    name: sc-caps-add-only
+    namespace: default
+spec:
+    containers:
+        - image: nginx:1.25
+          name: app
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+                add:
+                    - NET_ADMIN
+                drop:
+                    - ALL
+            privileged: false
+    securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+            type: RuntimeDefault
+---
+apiVersion: v1
+kind: Pod
+metadata:
+    name: sc-container-partial
+    namespace: default
+spec:
+    containers:
+        - image: nginx:1.25
+          name: app
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+                drop:
+                    - ALL
+            privileged: false
+            readOnlyRootFilesystem: true
+        - image: nginx:1.25
+          name: sidecar
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+                drop:
+                    - ALL
+            privileged: true
+    securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+            type: RuntimeDefault
+---
+apiVersion: v1
+kind: Pod
+metadata:
+    name: sc-empty-ctx
+    namespace: default
+spec:
+    containers:
+        - image: nginx:1.25
+          name: app
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+                drop:
+                    - ALL
+            privileged: false
+    securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+            type: RuntimeDefault
+---
+apiVersion: v1
+kind: Pod
+metadata:
+    name: sc-init-partial
+    namespace: default
+spec:
+    containers:
+        - image: nginx:1.25
+          name: app
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+                drop:
+                    - ALL
+            privileged: false
+    initContainers:
+        - image: busybox:1.36
+          name: init
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+                drop:
+                    - ALL
+            privileged: false
+            runAsUser: 0
+    securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+            type: RuntimeDefault
+---
+apiVersion: v1
+kind: Pod
+metadata:
+    name: sc-kube-system
+    namespace: kube-system
+spec:
+    containers:
+        - image: nginx:1.25
+          name: app
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+                drop:
+                    - ALL
+            privileged: false
+    securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+            type: RuntimeDefault
+---
+apiVersion: v1
+kind: Pod
+metadata:
+    name: sc-none
+    namespace: default
+spec:
+    containers:
+        - image: nginx:1.25
+          name: app
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+                drop:
+                    - ALL
+            privileged: false
+        - image: nginx:1.25
+          name: sidecar
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+                drop:
+                    - ALL
+            privileged: false
+    ephemeralContainers:
+        - image: busybox:1.36
+          name: debug
+    initContainers:
+        - image: busybox:1.36
+          name: init
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+                drop:
+                    - ALL
+            privileged: false
+    securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+            type: RuntimeDefault
+---
+apiVersion: v1
+kind: Pod
+metadata:
+    name: sc-pod-full
+    namespace: default
+spec:
+    containers:
+        - image: nginx:1.25
+          name: app
+          securityContext:
+            allowPrivilegeEscalation: true
+            capabilities:
+                drop:
+                    - NET_RAW
+            privileged: true
+    securityContext:
+        runAsGroup: 0
+        runAsNonRoot: false
+        runAsUser: 0
+        seccompProfile:
+            type: Unconfined
+---
+apiVersion: v1
+kind: Pod
+metadata:
+    name: sc-pod-partial
+    namespace: default
+spec:
+    containers:
+        - image: nginx:1.25
+          name: app
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+                drop:
+                    - ALL
+            privileged: false
+    securityContext:
+        fsGroup: 2000
+        runAsNonRoot: true
+        seccompProfile:
+            type: RuntimeDefault
+---
+apiVersion: v1
+kind: Pod
+metadata:
+    name: sc-runasuser
+    namespace: default
+spec:
+    containers:
+        - image: nginx:1.25
+          name: app
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+                drop:
+                    - ALL
+            privileged: false
+    securityContext:
+        runAsNonRoot: true
+        runAsUser: 5000
+        seccompProfile:
+            type: RuntimeDefault
+---
+apiVersion: v1
+kind: Pod
+metadata:
+    name: sc-seccomp-localhost
+    namespace: default
+spec:
+    containers:
+        - image: nginx:1.25
+          name: app
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+                drop:
+                    - ALL
+            privileged: false
+    securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+            localhostProfile: profiles/a.json
+            type: Localhost

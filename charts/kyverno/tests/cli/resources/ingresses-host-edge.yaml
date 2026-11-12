@@ -1,0 +1,32 @@
+# Rules are judged one by one: a host without http is fine, a host-less rule next to a host rule is not
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: host-without-http
+  namespace: default
+spec:
+  rules:
+    - host: a.example.com
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hostless-second-rule
+  namespace: default
+spec:
+  rules:
+    - host: a.example.com
+    - http:
+        paths:
+          - {path: /, pathType: Prefix, backend: {service: {name: s, port: {number: 80}}}}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: legacy-ing
+  namespace: default
+spec:
+  rules:
+    - http:
+        paths:
+          - {path: /, pathType: Prefix, backend: {service: {name: s, port: {number: 80}}}}

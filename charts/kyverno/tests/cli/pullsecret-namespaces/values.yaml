@@ -1,0 +1,14 @@
+# Pull secrets limited to namespaces, injectOnly next to a cloned existingSecretRef
+ingress:
+  host: kyverno.example.com
+autoInjectDockerPullSecrets:
+  enabled: true
+  injectOnly:
+    - name: ps-x
+      namespaces: [team-a, team-b]
+    - name: ps-y
+      namespaces: [team-a, team-c]
+  existingSecretRef:
+    - name: existing-regcred
+      namespace: kyverno
+      namespaces: ["team-*"]

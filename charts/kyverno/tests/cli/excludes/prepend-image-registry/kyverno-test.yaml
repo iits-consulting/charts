@@ -1,0 +1,29 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: excludes.prepend-image-registry
+policies:
+  - ../../.rendered/excludes/prepend-image-registry.yaml
+resources:
+  - ../../resources/pods-images.yaml
+  - ../../resources/pods-init.yaml
+results:
+  - policy: prepend-image-registry
+    isMutatingPolicy: true
+    kind: Pod
+    resources:
+      - img-plain
+      - img-ghcr-other
+      - img-ghcr-org
+      - img-busybox-excluded
+      - img-mirror
+      - struct-init-ghcr
+    result: pass
+    patchedResources: patched.yaml
+  - policy: prepend-image-registry
+    isMutatingPolicy: true
+    kind: Pod
+    resources:
+      - img-kube-system
+      - img-kube-system-ghcr
+    result: skip

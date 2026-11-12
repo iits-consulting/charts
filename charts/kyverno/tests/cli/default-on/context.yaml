@@ -1,0 +1,24 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Context
+metadata:
+  name: context
+spec:
+  resources:
+    - # Source: kyverno/templates/policies/pull-secret-secrets.cel.yaml
+      apiVersion: v1
+      kind: Secret
+      type: kubernetes.io/dockerconfigjson
+      metadata:
+        name: pull-secret-gitlab
+        namespace: kyverno
+      data:
+        .dockerconfigjson: eyJhdXRocyI6IHsicmVnaXN0cnkuZ2l0bGFiLmNvbSI6IHsiYXV0aCI6ICJkRzlyWlc0NmN6TmpjbVYwIn19fQ==
+    - # Source for the existingSecretRef clone rule (namespace kyverno)
+      apiVersion: v1
+      kind: Secret
+      metadata:
+        name: existing-regcred
+        namespace: kyverno
+      type: kubernetes.io/dockerconfigjson
+      data:
+        .dockerconfigjson: eyJhdXRocyI6IHsiZXhhbXBsZS5jb20iOiB7ImF1dGgiOiAiZFhObGNqcHdZWE56In19fQ==

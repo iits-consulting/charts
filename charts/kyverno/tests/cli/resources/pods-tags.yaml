@@ -1,0 +1,74 @@
+# Pods for disallow-latest-tag
+apiVersion: v1
+kind: Pod
+metadata: {name: tag-pinned, namespace: default}
+spec:
+  containers:
+    - {name: app, image: "ghcr.io/org/app:v1.2.3"}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: tag-latest, namespace: default}
+spec:
+  containers:
+    - {name: app, image: "nginx:latest"}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: tag-missing, namespace: default}
+spec:
+  containers:
+    - {name: app, image: "nginx"}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: tag-missing-port-registry, namespace: default}
+spec:
+  containers:
+    - {name: app, image: "localhost:5000/app"}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: tag-port-registry-pinned, namespace: default}
+spec:
+  containers:
+    - {name: app, image: "localhost:5000/app:2"}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: tag-digest-only, namespace: default}
+spec:
+  containers:
+    - {name: app, image: "nginx@sha256:0000000000000000000000000000000000000000000000000000000000000001"}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: tag-latest-with-digest, namespace: default}
+spec:
+  containers:
+    - {name: app, image: "nginx:latest@sha256:0000000000000000000000000000000000000000000000000000000000000001"}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: tag-init-latest, namespace: default}
+spec:
+  initContainers:
+    - {name: init, image: "busybox:latest"}
+  containers:
+    - {name: app, image: "nginx:1.25"}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: tag-ephemeral-missing, namespace: default}
+spec:
+  containers:
+    - {name: app, image: "nginx:1.25"}
+  ephemeralContainers:
+    - {name: debug, image: "busybox"}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: tag-kube-system-latest, namespace: kube-system}
+spec:
+  containers:
+    - {name: app, image: "nginx:latest"}

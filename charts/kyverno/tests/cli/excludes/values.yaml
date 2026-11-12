@@ -1,0 +1,49 @@
+# Every custom policy enabled with exclusions and non-default knobs
+ingress:
+  host: kyverno.example.com
+prependCustomImageRegistry:
+  enabled: true
+  registry: "mirror.example.com/"
+  excludeRegistries:
+    - "ghcr.io/org/*"
+    - "docker.io/library/busybox:1.36"
+  excludeNamespaces:
+    - kube-system
+disallowUnspecifiedDockerRegistries:
+  enabled: true
+  validationAction: Audit
+  allowedRegistries:
+    - "mirror.example.com/*"
+    - "ghcr.io/org/*"
+    - "localhost:5000/*"
+  excludeNamespaces:
+    - kube-system
+enforceSecurityContext:
+  enabled: true
+  excludeNamespaces:
+    - kube-system
+  runAsUser: 1001
+  runAsGroup: 2002
+  readOnlyRootFilesystem: true
+disallowEmptyIngressHost:
+  enabled: true
+  validationAction: audit
+  excludeNamespaces:
+    - "oth*"
+  excludeIngresses:
+    - name: "legacy-*"
+      namespace: "?egacy"
+disallowLatestTag:
+  enabled: true
+  validationAction: Enforce
+  excludeNamespaces:
+    - kube-system
+restrictIngressWildcard:
+  enabled: true
+  excludeIngresses:
+    - name: wild-excluded
+      namespace: "team-*"
+requireIngressHttps:
+  enabled: true
+  excludeNamespaces:
+    - kube-system

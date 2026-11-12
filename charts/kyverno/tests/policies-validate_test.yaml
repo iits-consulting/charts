@@ -1,0 +1,62 @@
+suite: validating policies
+templates:
+  - policies/disallow-empty-ingress-host.yaml
+  - policies/disallow-unspecified-docker-registries.yaml
+  - policies/disallow-latest-tag.yaml
+  - policies/restrict-ingress-wildcard.yaml
+  - policies/require-ingress-https.yaml
+set:
+  ingress.host: test.example.com
+
+tests:
+  - it: enforces the ingress host and registry policies by default, audits the opt-in ones
+    set:
+      disallowUnspecifiedDockerRegistries.enabled: true
+      disallowLatestTag.enabled: true
+      restrictIngressWildcard.enabled: true
+      requireIngressHttps.enabled: true
+    asserts:
+      - equal: {path: spec.validationActions, value: [Deny]}
+        template: policies/disallow-empty-ingress-host.yaml
+      - equal: {path: spec.validationActions, value: [Deny]}
+        template: policies/disallow-unspecified-docker-registries.yaml
+      - equal: {path: spec.validationActions, value: [Audit]}
+        template: policies/disallow-latest-tag.yaml
+      - equal: {path: spec.validationActions, value: [Audit]}
+        template: policies/restrict-ingress-wildcard.yaml
+      - equal: {path: spec.validationActions, value: [Audit]}
+        template: policies/require-ingress-https.yaml
+
+  - it: takes the name from the values
+    template: policies/disallow-empty-ingress-host.yaml
+    set:
+      disallowEmptyIngressHost.name: my-ingress
+    asserts:
+      - equal: {path: metadata.name, value: my-ingress}
+
+  - it: renders templates in the ingress exclusions
+    template: policies/disallow-empty-ingress-host.yaml
+    set:
+      disallowEmptyIngressHost:
+        excludeIngresses:
+          - name: "{{ .Release.Name }}-ing"
+            namespace: "{{ .Release.Namespace }}"
+    release:
+      name: rel
+      namespace: ns
+    asserts:
+      - equal: {path: "spec.matchConditions[0].name", value: exclude-ingresses}
+      - matchRegex:
+          path: spec.matchConditions[0].expression
+          pattern: "name\\.matches\\(r'\\^\\(\\?:rel-ing\\)\\$'\\)"
+      - matchRegex:
+          path: spec.matchConditions[0].expression
+          pattern: "namespace\\.orValue\\(\"\"\\)\\.matches\\(r'\\^\\(\\?:ns\\)\\$'\\)"
+
+  - it: the registry allow list must not be empty
+    template: policies/disallow-unspecified-docker-registries.yaml
+    set:
+      disallowUnspecifiedDockerRegistries: {enabled: true, allowedRegistries: []}
+    asserts:
+      - failedTemplate:
+          errorPattern: allowedRegistries must not be empty

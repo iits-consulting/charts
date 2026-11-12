@@ -1,0 +1,25 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: default-on.enforce-security-context
+policies:
+  - ../../.rendered/default-on/enforce-security-context.yaml
+resources:
+  - ../../resources/pods-securitycontext.yaml
+results:
+  - policy: enforce-security-context
+    isMutatingPolicy: true
+    kind: Pod
+    resources:
+      - sc-caps-add-only
+      - sc-container-partial
+      - sc-empty-ctx
+      - sc-init-partial
+      - sc-kube-system
+      - sc-none
+      - sc-pod-full
+      - sc-pod-partial
+      - sc-runasuser
+      - sc-seccomp-localhost
+    result: pass
+    patchedResources: patched.yaml
