@@ -1,3 +1,49 @@
-{{ if .Values.disallowUnspecifiedDockerRegistries.registryUrls }}
-    {{ fail "disallowUnspecifiedDockerRegistries: registryUrls was renamed to allowedRegistries" }}
-{{ end }}
+{{- with .Values -}}
+  {{- if .disallowUnspecifiedDockerRegistries.registryUrls -}}
+    {{- fail "disallowUnspecifiedDockerRegistries: registryUrls was renamed to allowedRegistries" -}}
+  {{- end -}}
+  {{- range .disallowEmptyIngressHost.excludeNamespaces -}}
+    {{- if kindIs "map" . -}}
+      {{- fail "disallowEmptyIngressHost: excludeNamespaces now takes namespace wildcards, move the {name, namespace} entries to excludeIngresses" -}}
+    {{- end -}}
+  {{- end -}}
+  {{- range .ingress.rules -}}
+    {{- if .secretName -}}
+      {{- fail "ingress: rules[].secretName was removed, set it in ingress.tls[].secretName" -}}
+    {{- end -}}
+  {{- end -}}
+  {{- if .replaceImageRegistry.sourceRegex -}}
+    {{- fail "replaceImageRegistry: sourceRegex was removed, set keepRepositoryPath (false keeps only the image name, true keeps the repository path)" -}}
+  {{- end -}}
+  {{- if hasKey .autoInjectDockerPullSecrets "autogenControllers" -}}
+    {{- fail "autoInjectDockerPullSecrets: autogenControllers was removed, the policies only match Pods" -}}
+  {{- end -}}
+  {{- if (index . "kyverno-policies").policyExclude -}}
+    {{- fail "kyverno-policies: policyExclude has no effect on ValidatingPolicies, use vpolExclude or vpolExcludeByPolicy (excludeNamespaces) instead" -}}
+  {{- end -}}
+  {{- if and .prependCustomImageRegistry.enabled .replaceImageRegistry.enabled -}}
+    {{- fail "prependCustomImageRegistry and replaceImageRegistry must not both be enabled, the order of the two MutatingPolicies is not guaranteed" -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* Pull secret names must be unique and must not collide with a secret created through common.externalSecret */ -}}
+{{- with .Values.autoInjectDockerPullSecrets -}}
+  {{- if .enabled -}}
+    {{- $names := include "kyverno.pullSecretNames" $ | fromJsonArray -}}
+    {{- if ne (len $names) (len (uniq $names)) -}}
+      {{- fail "autoInjectDockerPullSecrets: a pull secret name is used twice, names in existingSecretRef, injectOnly and pull-secret-<key> of secrets must be unique" -}}
+    {{- end -}}
+    {{- /* synchronize deletes every clone with its source, an owning ExternalSecret takes the source with it */ -}}
+    {{- range .existingSecretRef | default list -}}
+      {{- $es := index ((((($.Values.common).externalSecret).pull).secrets) | default dict) .name | default dict -}}
+      {{- if and $es (not $.Values.autoInjectDockerPullSecrets.allowOwnedExternalSecret) (eq (.namespace | default $.Release.Namespace) $.Release.Namespace) (or (not $es.creationPolicy) (eq $es.creationPolicy "Owner")) -}}
+        {{- fail (printf "autoInjectDockerPullSecrets: existingSecretRef %s is created by an ExternalSecret, set creationPolicy: Orphan on it (deleting or replacing the ExternalSecret would delete every clone), or create it per namespace with a ClusterExternalSecret and list it under injectOnly. To accept this, set allowOwnedExternalSecret: true" .name) -}}
+      {{- end -}}
+    {{- end -}}
+    {{- range $key, $_ := .secrets | default dict -}}
+      {{- if hasKey ((((($.Values.common).externalSecret).pull).secrets) | default dict) (printf "pull-secret-%s" $key) -}}
+        {{- fail (printf "autoInjectDockerPullSecrets: pull-secret-%s collides with the externalSecret of the same name" $key) -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}

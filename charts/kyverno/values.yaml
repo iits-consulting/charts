@@ -3,6 +3,8 @@ kyverno:
   features:
     policyExceptions:
       enabled: true
+      # -- Only PolicyExceptions of this namespace are honored. `*` honors every namespace, so anyone who can
+      # create a PolicyException can bypass the policies.
       namespace: "*"
     logging:
       format: json
@@ -14,6 +16,7 @@ kyverno:
     rbac:
       clusterRole:
         extraResources:
+          # ImageValidatingPolicy credentials (`imagesAndPublicKeyPairs[].pullSecret`)
           - apiGroups:
               - ''
             resources:
@@ -21,10 +24,7 @@ kyverno:
             verbs:
               - list
               - get
-              - create
-              - update
-              - delete
-              - patch
+              - watch
 
   backgroundController:
     serviceMonitor:
@@ -38,15 +38,7 @@ kyverno:
     rbac:
       clusterRole:
         extraResources:
-          - apiGroups:
-              - ''
-            resources:
-              - pods
-            verbs:
-              - create
-              - update
-              - delete
-              - patch
+          # The GeneratingPolicies clone pull secrets into namespaces, `watch` keeps the copies in sync
           - apiGroups:
               - ''
             resources:
@@ -54,11 +46,11 @@ kyverno:
             verbs:
               - list
               - get
+              - watch
               - create
               - update
               - delete
               - patch
-
 
   cleanupController:
     serviceMonitor:
@@ -67,6 +59,18 @@ kyverno:
   reportsController:
     serviceMonitor:
       enabled: true
+    rbac:
+      clusterRole:
+        extraResources:
+          # Needed by disallow-unspecified-docker-registries and disallow-latest-tag, which also match pods/ephemeralcontainers
+          - apiGroups:
+              - ''
+            resources:
+              - pods/ephemeralcontainers
+            verbs:
+              - get
+              - list
+              - watch
 
   grafana:
     enabled: true
@@ -110,113 +114,14 @@ policy-reporter:
 
 
 kyverno-policies:
-  autogenControllers: none
-  # -- Ensure backwards compatibility of the policies with existing policyExceptions.
-  # -- Upgrade to 3.9.1 included a change of the default to validatingpolicies
-  policyType: ClusterPolicy
   # -- Whether to install the default policies for kyverno
   install: true
-  # -- The pod security standarcd as defined in https://kyverno.io/policies/pod-security.
+  # -- The pod security standard as defined in https://kyverno.io/policies/pod-security.
   podSecurityStandard: "restricted"
-  policyExclude:
-    # Exclude kube-system deployments/replicasets since we can not change them
-    disallow-host-path:
-      any:
-        - resources:
-            kinds:
-              - Deployment
-              - ReplicaSet
-              - Pod
-            namespaces:
-              - kube-system
-    disallow-capabilities:
-      any:
-        - resources:
-            kinds:
-              - Deployment
-              - ReplicaSet
-              - Pod
-            namespaces:
-              - kube-system
-    disallow-host-namespaces:
-      any:
-        - resources:
-            kinds:
-              - DaemonSet
-              - Pod
-            namespaces:
-              - kube-system
-    disallow-privileged-containers:
-      any:
-        - resources:
-            kinds:
-              - DaemonSet
-              - Pod
-            namespaces:
-              - kube-system
-    disallow-host-ports:
-      any:
-        - resources:
-            kinds:
-              - DaemonSet
-              - Pod
-            namespaces:
-              - kube-system
-
-    disallow-capabilities-strict:
-      any:
-        - resources:
-            kinds:
-              - Deployment
-              - ReplicaSet
-              - Pod
-            namespaces:
-              - kube-system
-    disallow-privilege-escalation:
-      any:
-        - resources:
-            kinds:
-              - Deployment
-              - ReplicaSet
-              - Pod
-            namespaces:
-              - kube-system
-    require-run-as-non-root-user:
-      any:
-        - resources:
-            kinds:
-              - Deployment
-              - ReplicaSet
-              - Pod
-            namespaces:
-              - kube-system
-    require-run-as-nonroot:
-      any:
-        - resources:
-            kinds:
-              - Deployment
-              - ReplicaSet
-              - Pod
-            namespaces:
-              - kube-system
-    restrict-seccomp-strict:
-      any:
-        - resources:
-            kinds:
-              - Deployment
-              - ReplicaSet
-              - Pod
-            namespaces:
-              - kube-system
-    restrict-volume-types:
-      any:
-        - resources:
-            kinds:
-              - Deployment
-              - ReplicaSet
-              - Pod
-            namespaces:
-              - kube-system
+  # -- Exclude kube-system Pods since we can not change them. Applies to every policy that has no vpolExcludeByPolicy entry.
+  vpolExclude:
+    excludeNamespaces:
+      - kube-system
 
 
 prependCustomImageRegistry:
@@ -226,19 +131,21 @@ prependCustomImageRegistry:
   # -- The name of the policy
   name: prepend-image-registry
 
-  # -- the target image repository that should be prepended
+  # -- `Fail` rejects the request when Kyverno is unavailable or the webhook times out, `Ignore` admits it
+  failurePolicy: Fail
+
+  # -- The registry prepended to every image. Must not be enabled together with `replaceImageRegistry`.
   registry: "mysecure-registry.example.com"
 
-  # -- a list of registries that should be skipped when mangling the image reference
+  # -- Images that are left alone. Wildcards (`*` any characters including `/`, `?` one character) are matched against
+  # the image reference as written in the Pod.
   excludeRegistries: [ ]
 
-  # -- Exclude the policy on the given list of namespaces
-  # Wildcards are supported.
-  # For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards
+  # -- Exclude the policy on the given list of namespaces. Wildcards are supported (`*`, `?`).
   excludeNamespaces: [ ]
 
 
-# Replace all registries and force to go through a specific one. Often functions as a pull through cache proxy
+# Replace the registry of all images with a specific one, usually a pull through cache
 replaceImageRegistry:
   # -- Enable or disable the policy globally
   enabled: false
@@ -246,17 +153,26 @@ replaceImageRegistry:
   # -- The name of the policy
   name: replace-image-registry
 
-  # -- source regex for matching it. Needs to be golang compatible
-  sourceRegex: "'^(.*/)?(.*:?.*)$'"
+  # -- `Fail` rejects the request when Kyverno is unavailable or the webhook times out, `Ignore` admits it
+  failurePolicy: Fail
 
-  # -- the target image repository
+  # -- The registry (and path) every image is pulled from instead
   target: "mysecure-registry/common-signed-docker-images"
 
-  # -- Excludes images from the replacement. Wildcard * is supported
-  excludeRegistries:
+  # -- `true` keeps the repository path (`ghcr.io/org/app:v1` becomes `<target>/org/app:v1`), `false` only the image
+  # name (`<target>/app:v1`), where `org1/app` and `org2/app` collide. Must not be enabled together with `prependCustomImageRegistry`.
+  keepRepositoryPath: true
+
+  # -- Images that are left alone. Wildcards (`*` any characters including `/`, `?` one character) are matched against
+  # the image reference as written in the Pod.
+  excludeRegistries: [ ]
   #  - "docker.io/something/*"
 
-# Settings for the policy which verifies if images from specific sources are signed.
+  # -- Exclude the policy on the given list of namespaces. Wildcards are supported (`*`, `?`).
+  excludeNamespaces: [ ]
+  # - my-namespace
+
+# Verifies that images are signed with cosign
 disallowUnsignedImages:
   # -- Enable or disable the policy globally
   enabled: false
@@ -264,30 +180,19 @@ disallowUnsignedImages:
   # -- The name of the policy
   name: disallow-unsigned-images
 
-  # kyverno - webhookConfiguration.timeoutSeconds
-  timeoutSeconds: "30"
+  # -- Webhook timeout in seconds (max 30)
+  timeoutSeconds: 30
 
-  # FailurePolicy defines how unexpected policy errors and webhook response timeout errors are handled.
-  # Possible values:
-  # "Ignore" - will allow failing calls to image registries to be ignored.
-  # "Fail" - will fail the call to the api-server.
-  failurePolicy: "Ignore"
+  # -- `Ignore` admits Pods when the webhook fails or times out (for example an unreachable registry), so a slow
+  # registry or Kyverno skips the check. Kept as in 3.5.1, set `Fail` for fail-closed verification.
+  failurePolicy: Ignore
 
-  # A list of images and public key pairs.
-  #
-  # The image has to be a fully qualified path to the image(s).
-  # You need to prepend always the registry.
-  #
-  # GOOD: This will work docker.io/iits/*
-  # BAD: This will not work iits/*
-  #
-  # The same needs to be done for a gitlab registry, for the GitHub container registry etc.
-  #
-  # The image(s) will be verified with the given public key.
-  #
-  # Wildcards are supported.
-  # For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards
-  # -- List of image definitions and the associated public key used for signing.
+  # -- Images and the public key they are verified with. `image` is a wildcard (`*`, `?`) that must start with the
+  # registry (`docker.io/iits/*` works, `iits/*` does not). Pairs are ANDed: an image matching two pairs needs both
+  # signatures, so keep the patterns disjoint. `pullSecret` names a Secret of the Kyverno namespace for private
+  # registries. `ignoreTransparencyLog` defaults to true (no Rekor entry, as with `cosign sign --key --tlog-upload=false`),
+  # set it to false for signatures uploaded to a transparency log. The policy is always enforced (no Audit mode) and
+  # writes no PolicyReport results.
   imagesAndPublicKeyPairs:
     - image: "*"
       #pullSecret:
@@ -298,11 +203,9 @@ disallowUnsignedImages:
         g2b7+PuoKjfaYVw3HTAE2Z4ak5ZNNq5HF8G1cRt3P713MyuIXiNKP6v2Nw==
         -----END PUBLIC KEY-----
 
-  # -- Exclude the policy on the given list of namespaces
-  # Wildcards are supported.
-  # For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards
-  excludeNamespaces:
-  #- namespace
+  # -- Exclude the policy on the given list of namespaces. Wildcards are supported (`*`, `?`).
+  excludeNamespaces: [ ]
+  #  - my-namespace
 
 # Only allow images coming from a specific list of registries
 disallowUnspecifiedDockerRegistries:
@@ -312,71 +215,187 @@ disallowUnspecifiedDockerRegistries:
   # -- The name of the policy
   name: disallow-unspecified-docker-registries
 
-  # -- List of allowed registries. Wildcards are supported.
-  # For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards
+  # -- `Fail` rejects the request when Kyverno is unavailable or the webhook times out, `Ignore` admits it
+  failurePolicy: Fail
+
+  # -- List of allowed registries. Wildcards are supported: `*` matches any characters (including `/`), `?` one character.
+  # An image is allowed if its reference as written or its normalized form (`nginx` is
+  # `docker.io/library/nginx:latest`) matches. There are no image exceptions: widen the list, exclude the namespace
+  # or use a PolicyException.
   allowedRegistries:
     - "mysecure-registry/common-signed-docker-images/*"
 
-  # -- How policy violation should be handled. Use either `enforce` or `audit`. See https://kyverno.io/docs/writing-policies/validate/ for details
-  # If a policy is violated and the action is "enforce", then the ressource will not be allowed
-  # to be created. On the other the `audit` action allows the ressource but reports this incident.
+  # -- `Enforce` rejects violating resources, `Audit` admits them and reports the violation (case insensitive).
   validationAction: "Enforce"
 
-  # -- Exclude the policy on the given list of namespaces
-  # Wildcards are supported.
-  # For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards
-  excludeNamespaces:
+  # -- Exclude the policy on the given list of namespaces. Wildcards are supported (`*`, `?`).
+  excludeNamespaces: [ ]
   # - my-namespace
 
+# Fills the securityContext of Pods with the Pod Security Standards restricted settings. The fixed settings
+# (runAsNonRoot, RuntimeDefault seccomp, no privilege escalation, drop ALL) have no knobs by design.
 enforceSecurityContext:
-
   # -- Enable or disable the policy globally
   enabled: false
 
   # -- The name of the policy
   name: enforce-security-context
 
-  # -- Exclude the policy on the given list of namespaces
-  # Wildcards are supported.
-  # For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards
-  excludeNamespaces:
+  # -- `Fail` rejects the request when Kyverno is unavailable or the webhook times out, `Ignore` admits it
+  failurePolicy: Fail
+
+  # -- Default `runAsUser` of Pods that set none. Unset by default: a fixed UID breaks images that need their own
+  # UID, images that run as root then fail to start because `runAsNonRoot` is true.
+  runAsUser:
+
+  # -- Default `runAsGroup` of Pods that set none. Unset by default.
+  runAsGroup:
+
+  # -- Default `readOnlyRootFilesystem: true` for containers that set none. Opt-in, many images write to their root
+  # filesystem.
+  readOnlyRootFilesystem: false
+
+  # -- Exclude the policy on the given list of namespaces. Wildcards are supported (`*`, `?`).
+  excludeNamespaces: [ ]
   # - my-namespace
 
+# Adds pull secrets to the imagePullSecrets of Pods and, for `secrets` and `existingSecretRef`, clones them into the
+# namespaces first. Every entry takes an optional `namespaces` list (wildcards `*`, `?`, default all namespaces) and an
+# optional `namespaceSelector` (`matchLabels`, `matchExpressions` on the namespace labels). Both limit the clone and
+# the injection, a namespace must match both. See "Image pull secrets" in the README. The policy names
+# (`add-image-pull-secret`, `auto-create-docker-*`) are fixed.
 autoInjectDockerPullSecrets:
+  # -- Enable or disable the policies globally. The credentials of `secrets` are only stored in the Secret
+  # `pull-secret-<key>` of the release namespace, not in a policy.
   enabled: false
 
-  # -- Auto gen rules for pod controllers. See https://kyverno.io/docs/writing-policies/autogen/
-  autogenControllers: none
+  # -- Namespaces (wildcards `*`, `?`) that receive no Secret clone and whose Pods get no imagePullSecrets, wins over
+  # `namespaces` and `namespaceSelector` of an entry. The namespace of a cloned Secret is never a target. Helm replaces lists, repeat the
+  # defaults when you add entries.
+  excludeNamespaces:
+    - kube-system
+    - kube-public
+    - kube-node-lease
 
-  # You can specify existing secrets of type "kubernetes.io/dockerconfigjson" under "existingSecretRef" to
-  # clone and use instead of letting Kyverno create these secrets from the chart values. Note that the
-  # secrets to copy must contain valid ".dockerconfigjson" data. Additionally, the existing secrets to
-  # be used must be specified under "existingImagePullSecrets" in the values.yaml.
-  # It is possible to use both existing secrets and have Kyverno create new secrets from the chart at the
-  # same time. For this, specify existing secrets under "existingSecretRef" and the ones to create under
-  # "secrets" as displayed in the examples.
+  # -- `failurePolicy` of the Pod mutation
+  failurePolicy: Fail
+
+  # -- Secrets that already exist in their target namespaces, for example created per namespace by an External Secrets
+  # `ClusterExternalSecret`. Only added to the imagePullSecrets of Pods, never cloned. Keep `namespaces` in line with
+  # the namespaces the secret exists in (`namespaceSelector` can mirror the `namespaceSelectors` of a
+  # `ClusterExternalSecret`). Recommended for External Secrets.
+  injectOnly: []
+  # - name: ps-x
+  #   namespaces: [team-a, team-b]
+  # - name: ps-y
+  #   namespaceSelector:
+  #     matchLabels:
+  #       pull-secret/ps-y: "true"
+
+  # -- Existing Secrets of type `kubernetes.io/dockerconfigjson` that Kyverno clones from `namespace` (default the
+  # release namespace) into the target namespaces. Changes of the source reach the clones, deleting it deletes them.
   existingSecretRef: []
   # - name: pull-secret-dockerhub
   #   namespace: kyverno
   # - name: pull-secret-mycustomregistry
   #   namespace: mycustomnamespace
+  #   namespaces: [team-*]
 
+  # -- Allow cloning a `common.externalSecret.pull.secrets` entry through `existingSecretRef` without
+  # `creationPolicy: Orphan`. Deleting or replacing that ExternalSecret then deletes every clone, and Kyverno does not
+  # recreate them in existing namespaces when the source returns.
+  allowOwnedExternalSecret: false
+
+  # -- Pull secrets to create from the chart values, by key. The chart creates `pull-secret-<key>` in the release
+  # namespace and Kyverno clones it into the target namespaces.
   secrets: {}
   #  gitlab:
   #    username: "access_token"
   #    password: "token or password"
   #    registryUrl: "registry.gitlab.com"
-  #  github:
-  #    username: "token_name"
-  #    password: "token or password"
-  #    registryUrl: "myregistry"
+  #    namespaces: [team-a]
 
+# Every rule of an Ingress must define a host. Ingresses without rules are not affected. Blocks Ingress changes
+# cluster wide while Kyverno is down (`failurePolicy: Fail`), set `Ignore` if that is not acceptable.
 disallowEmptyIngressHost:
+  # -- Enable or disable the policy globally
   enabled: true
 
-  excludeNamespaces:
-  #- name: ingressname
-  #  namespace: namespace
+  # -- The name of the policy
+  name: disallow-empty-ingress-host
+
+  # -- `Fail` rejects the request when Kyverno is unavailable or the webhook times out, `Ignore` admits it
+  failurePolicy: Fail
+
+  # -- How policy violation should be handled. Use either `Enforce` or `Audit` (case insensitive).
+  validationAction: "Enforce"
+
+  # -- Exclude the policy on the given list of namespaces. Wildcards are supported (`*`, `?`).
+  excludeNamespaces: [ ]
+  # - my-namespace
+
+  # -- Exclude single Ingresses, a list of `{name, namespace}`. Both fields support wildcards (`*`, `?`) and templates
+  # (for example `{{ .Release.Namespace }}`).
+  excludeIngresses: [ ]
+  # - name: ingressname
+  #   namespace: namespace
+
+
+# Opt-in policies adapted from https://github.com/kyverno/policies. They default to Audit and only
+# report violations until validationAction is set to Enforce.
+disallowLatestTag:
+  # -- Enable or disable the policy globally
+  enabled: false
+
+  # -- The name of the policy
+  name: disallow-latest-tag
+
+  # -- `Fail` rejects the request when Kyverno is unavailable or the webhook times out, `Ignore` admits it
+  failurePolicy: Fail
+
+  # -- How policy violation should be handled. Use either `Enforce` or `Audit` (case insensitive).
+  validationAction: "Audit"
+
+  # -- Exclude the policy on the given list of namespaces. Wildcards are supported (`*`, `?`).
+  excludeNamespaces: [ ]
+
+restrictIngressWildcard:
+  # -- Enable or disable the policy globally
+  enabled: false
+
+  # -- The name of the policy
+  name: restrict-ingress-wildcard
+
+  # -- `Fail` rejects the request when Kyverno is unavailable or the webhook times out, `Ignore` admits it
+  failurePolicy: Fail
+
+  # -- How policy violation should be handled. Use either `Enforce` or `Audit` (case insensitive).
+  validationAction: "Audit"
+
+  # -- Exclude the policy on the given list of namespaces. Wildcards are supported (`*`, `?`).
+  excludeNamespaces: [ ]
+
+  # -- Exclude single Ingresses, a list of `{name, namespace}`. Both fields support wildcards (`*`, `?`) and templates.
+  excludeIngresses: [ ]
+
+requireIngressHttps:
+  # -- Enable or disable the policy globally
+  enabled: false
+
+  # -- The name of the policy
+  name: require-ingress-https
+
+  # -- `Fail` rejects the request when Kyverno is unavailable or the webhook times out, `Ignore` admits it
+  failurePolicy: Fail
+
+  # -- How policy violation should be handled. Use either `Enforce` or `Audit` (case insensitive).
+  validationAction: "Audit"
+
+  # -- Exclude the policy on the given list of namespaces. Wildcards are supported (`*`, `?`).
+  excludeNamespaces: [ ]
+
+  # -- Exclude single Ingresses, a list of `{name, namespace}`. Both fields support wildcards (`*`, `?`) and templates.
+  excludeIngresses: [ ]
 
 
 ingress:
@@ -389,20 +408,28 @@ ingress:
   # --(String) Required, set the domain you want to serve the UI from
   host:
 
+  # -- Hosts and paths served by the UI. `host` supports templates
   rules:
     - host: "{{ .Values.ingress.host }}"
       paths:
         - path: "/policies"
         - path: "/_nuxt"
+
+  # -- TLS entries, each with a list of `hosts` (templates allowed) and an optional `secretName`. `[]` renders no `tls` block
+  tls:
+    - hosts:
+        - "{{ .Values.ingress.host }}"
       # secretName: "kyverno-tls"
 
 
 # https://github.com/iits-consulting/charts/tree/main/charts/common
 # Global functionality can be used from the common library chart, e.g. creating External Secrets. Examples below to use
-# ExternalSecrets for openIDConnect config of kyverno components or dockerconfijson type of secrets. In case of `autoInjectDockerPullSecrets`,
-# please check relevant guidelines of `existingSecretRef` key above.
+# ExternalSecrets for openIDConnect config of kyverno components or dockerconfigjson type of secrets.
 #
-# Example: Reference the ESO-created secret (see below) so Kyverno clones it into every namespace:
+# Pull secrets from External Secrets: prefer a ClusterExternalSecret managed outside this chart plus
+# `autoInjectDockerPullSecrets.injectOnly` (see README). The ExternalSecret below in the release namespace cloned through
+# `existingSecretRef` also works, with two caveats: namespaces that exist before ESO created the Secret get no clone
+# until they are updated, and deleting the ExternalSecret deletes every clone unless `creationPolicy: Orphan` is set.
 # autoInjectDockerPullSecrets:
 #   enabled: true
 #   existingSecretRef:
@@ -426,6 +453,8 @@ ingress:
 #             - name: clientSecret
 #               remoteKey: client_secret
 #         kyverno-pull-secret-dockerhub:
+#           # Required when cloned through existingSecretRef, otherwise deleting the ExternalSecret deletes every clone
+#           creationPolicy: Orphan
 #           path: "path/to/your/secret"
 #           keys:
 #             - name: username
