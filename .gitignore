@@ -22,6 +22,7 @@
 ### Helm ###
 **/requirements.lock
 **/*.tgz
+charts/*/charts/
 
 ### MacOS ###
 .DS_Store
