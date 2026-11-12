@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: struct-multi-bad-last
+  namespace: default
+spec:
+  containers:
+    - image: mirror.example.com/proxy/app:v1
+      name: app
+    - image: ghcr.io/other/app:v1
+      name: sidecar
+  imagePullSecrets:
+    - name: existing-regcred
+    - name: pull-secret-gitlab
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: struct-pullsecrets
+  namespace: default
+spec:
+  containers:
+    - image: nginx:1.25
+      name: app
+  imagePullSecrets:
+    - name: user-secret
+    - name: existing-regcred
+    - name: pull-secret-gitlab
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: struct-pullsecrets-dup
+  namespace: default
+spec:
+  containers:
+    - image: nginx:1.25
+      name: app
+  imagePullSecrets:
+    - name: pull-secret-gitlab
+    - name: user-secret
+    - name: existing-regcred

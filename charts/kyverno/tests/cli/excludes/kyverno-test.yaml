@@ -1,0 +1,95 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: excludes
+policies:
+  - ../.rendered/excludes/disallow-empty-ingress-host.yaml
+  - ../.rendered/excludes/disallow-latest-tag.yaml
+  - ../.rendered/excludes/disallow-unspecified-docker-registries.yaml
+  - ../.rendered/excludes/require-ingress-https.yaml
+  - ../.rendered/excludes/restrict-ingress-wildcard.yaml
+resources:
+  - ../resources/ingresses.yaml
+  - ../resources/ingresses-host-edge.yaml
+  - ../resources/pods-tags.yaml
+  - ../resources/pods-images.yaml
+  - ../resources/pods-structure.yaml
+  - ../resources/pods-init.yaml
+  - ../resources/pods-digest.yaml
+  - ../resources/ingresses-new-policies.yaml
+results:
+  - policy: disallow-empty-ingress-host
+    isValidatingPolicy: true
+    kind: Ingress
+    resources:
+      - legacy/other-ing
+      - default/legacy-ing
+    result: fail
+  - policy: disallow-empty-ingress-host
+    isValidatingPolicy: true
+    kind: Ingress
+    resources:
+      - legacy/legacy-ing
+      - other/legacy-ing
+    result: skip
+  - policy: disallow-latest-tag
+    isValidatingPolicy: true
+    kind: Pod
+    resources:
+      - tag-latest
+    result: fail
+  - policy: disallow-latest-tag
+    isValidatingPolicy: true
+    kind: Pod
+    resources:
+      - tag-kube-system-latest
+    result: skip
+  - policy: disallow-unspecified-docker-registries
+    isValidatingPolicy: true
+    kind: Pod
+    resources:
+      - img-digest-ghcr-org
+      - img-ghcr-deep
+      - img-ghcr-org
+      - img-localhost-allowed
+      - img-mirror
+      - img-port-registry
+      - struct-allowed-all
+    result: pass
+  - policy: disallow-unspecified-docker-registries
+    isValidatingPolicy: true
+    kind: Pod
+    resources:
+      - img-default-allowed
+    result: fail
+  - policy: disallow-unspecified-docker-registries
+    isValidatingPolicy: true
+    kind: Pod
+    resources:
+      - img-kube-system
+      - img-kube-system-ghcr
+    result: skip
+  - policy: require-ingress-https
+    isValidatingPolicy: true
+    kind: Ingress
+    resources:
+      - ing-no-tls
+    result: fail
+  - policy: require-ingress-https
+    isValidatingPolicy: true
+    kind: Ingress
+    resources:
+      - ing-kube-system-no-tls
+    result: skip
+  - policy: restrict-ingress-wildcard
+    isValidatingPolicy: true
+    kind: Ingress
+    resources:
+      - ing-wildcard-tls
+    result: fail
+  - policy: restrict-ingress-wildcard
+    isValidatingPolicy: true
+    kind: Ingress
+    resources:
+      - wild-excluded
+    result: skip

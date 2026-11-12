@@ -1,0 +1,40 @@
+{{- /* Adapted from kyverno/policies other-vpol/restrict-ingress-wildcard (Apache-2.0) */ -}}
+{{- with .Values.restrictIngressWildcard -}}
+  {{- if .enabled -}}
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: {{ .name }}
+  labels:
+    {{- include "kyverno.policyLabels" $ | nindent 4 }}
+  annotations:
+    policies.kyverno.io/title: Restrict Ingress host with wildcards
+    policies.kyverno.io/category: Best Practices
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Ingress
+    policies.kyverno.io/description: >-
+      Ingress hosts optionally accept a wildcard as an alternative to precise matching, which may direct unintended
+      traffic to the Ingress. No host of an Ingress may contain a wildcard character.
+spec:
+  validationActions:
+    {{- include "kyverno.validationActions" .validationAction | nindent 4 }}
+  failurePolicy: {{ include "kyverno.failurePolicy" . }}
+  evaluation:
+    background:
+      enabled: false
+  matchConstraints:
+    resourceRules:
+      - apiGroups: ["networking.k8s.io"]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["ingresses"]
+  {{- if or .excludeNamespaces .excludeIngresses }}
+  matchConditions:
+    {{- include "kyverno.ingressMatchConditions" (dict "root" $ "values" .) | nindent 4 }}
+  {{- end }}
+  validations:
+    - expression: >-
+        !object.spec.?rules.orValue([]).exists(rule, rule.?host.orValue("").contains("*"))
+      message: "Wildcards are not permitted as Ingress hosts."
+  {{- end -}}
+{{- end }}

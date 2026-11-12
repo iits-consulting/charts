@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ps-team-a
+  namespace: team-a
+spec:
+  containers:
+    - name: app
+      image: nginx:1.25
+  imagePullSecrets:
+    - name: existing-regcred
+    - name: ps-x
+    - name: ps-y
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ps-team-c
+  namespace: team-c
+spec:
+  containers:
+    - name: app
+      image: nginx:1.25
+  imagePullSecrets:
+    - name: ps-y
+    - name: existing-regcred

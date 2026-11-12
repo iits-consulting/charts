@@ -1,0 +1,101 @@
+apiVersion: v1
+kind: Pod
+metadata:
+    name: sc-none
+    namespace: default
+spec:
+    containers:
+        - image: nginx:1.25
+          name: app
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+                drop:
+                    - ALL
+            privileged: false
+            readOnlyRootFilesystem: true
+        - image: nginx:1.25
+          name: sidecar
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+                drop:
+                    - ALL
+            privileged: false
+            readOnlyRootFilesystem: true
+    ephemeralContainers:
+        - image: busybox:1.36
+          name: debug
+    initContainers:
+        - image: busybox:1.36
+          name: init
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+                drop:
+                    - ALL
+            privileged: false
+            readOnlyRootFilesystem: true
+    securityContext:
+        runAsGroup: 2002
+        runAsNonRoot: true
+        runAsUser: 1001
+        seccompProfile:
+            type: RuntimeDefault
+---
+apiVersion: v1
+kind: Pod
+metadata:
+    name: sc-runasuser
+    namespace: default
+spec:
+    containers:
+        - image: nginx:1.25
+          name: app
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+                drop:
+                    - ALL
+            privileged: false
+            readOnlyRootFilesystem: true
+    securityContext:
+        runAsGroup: 2002
+        runAsNonRoot: true
+        runAsUser: 5000
+        seccompProfile:
+            type: RuntimeDefault
+---
+apiVersion: v1
+kind: Pod
+metadata:
+    name: sc-init-partial
+    namespace: default
+spec:
+    containers:
+        - image: nginx:1.25
+          name: app
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+                drop:
+                    - ALL
+            privileged: false
+            readOnlyRootFilesystem: true
+    initContainers:
+        - image: busybox:1.36
+          name: init
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+                drop:
+                    - ALL
+            privileged: false
+            readOnlyRootFilesystem: true
+            runAsUser: 0
+    securityContext:
+        runAsGroup: 2002
+        runAsNonRoot: true
+        runAsUser: 1001
+        seccompProfile:
+            type: RuntimeDefault

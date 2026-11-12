@@ -1,75 +1,63 @@
-{{- with .Values.enforceSecurityContext }}
-{{- if .enabled }}
-apiVersion: kyverno.io/v1
-kind: ClusterPolicy
+{{- with .Values.enforceSecurityContext -}}
+  {{- if .enabled -}}
+apiVersion: policies.kyverno.io/v1
+kind: MutatingPolicy
 metadata:
-  name: {{.name}}
+  name: {{ .name }}
+  labels:
+    {{- include "kyverno.policyLabels" $ | nindent 4 }}
   annotations:
     policies.kyverno.io/title: Enforce security settings for pods
     policies.kyverno.io/category: Pod Security
     policies.kyverno.io/subject: Pod
-    policies.kyverno.io/minversion: 1.9.0
-    pod-policies.kyverno.io/autogen-controllers: none
     policies.kyverno.io/description: >-
-      Enforce security settings for pods
+      Fills the gaps of the securityContext of Pods with the Pod Security Standards restricted settings, values already
+      set are never changed: runAsNonRoot true and the RuntimeDefault seccomp profile on the Pod,
+      allowPrivilegeEscalation false, privileged false and capabilities drop ALL (also when the container only
+      sets `add`) on containers and initContainers.
+      {{- if not (kindIs "invalid" .runAsUser) }} runAsUser defaults to {{ .runAsUser }}.{{ end }}
+      {{- if not (kindIs "invalid" .runAsGroup) }} runAsGroup defaults to {{ .runAsGroup }}.{{ end }}
+      {{- if .readOnlyRootFilesystem }} readOnlyRootFilesystem defaults to true.{{ end }}
+      Images that run as root fail to start unless they set a numeric non-root USER or runAsUser is configured.
 spec:
-  background: false #Cannot mutate already existing pods
-  useServerSideApply: true
-  rules:
-    - name: add-pod-security-context
-      match:
-        resources:
-          operations:
-            - CREATE
-            - UPDATE
-          kinds:
-            - Pod
-      {{- if .excludeNamespaces}}
-      exclude:
-        resources:
-          namespaces:
-           {{- range .excludeNamespaces }}
-            - {{ . }}
-           {{- end }}
-      {{- end }}
-      mutate:
-        foreach:
-          - list: "request.object.spec.containers[]"
-            patchStrategicMerge:
-              metadata:
-                annotations:
-                  +(clusterpolicies.kyverno.io/add-pod-security-context): Added securityContext to pod, container and initContainer
-              spec:
-                securityContext:
-                  +(runAsNonRoot): true
-                  +(runAsUser): 1001
-                  +(runAsGroup): 1001
-                  seccompProfile:
-                    +(type): RuntimeDefault
-                containers:
-                  - (name): '*'
-                    securityContext:
-                      +(allowPrivilegeEscalation): false
-                      +(capabilities):
-                        drop:
-                          - ALL
-                      +(privileged): false
-                initContainers:
-                  - (name): '*'
-                    securityContext:
-                      +(allowPrivilegeEscalation): false
-                      +(capabilities):
-                        drop:
-                          - ALL
-                      +(privileged): false
-                ephemeralContainers:
-                  - (name): '*'
-                    securityContext:
-                      +(allowPrivilegeEscalation): false
-                      +(capabilities):
-                        drop:
-                          - ALL
-                      +(privileged): false
----
-{{- end }}
+  failurePolicy: {{ include "kyverno.failurePolicy" . }}
+  autogen:
+    podControllers:
+      controllers: []
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE"]
+        resources: ["pods"]
+  {{- with .excludeNamespaces }}
+  matchConditions:
+    {{- include "kyverno.excludeNamespacesCondition" . | nindent 4 }}
+  {{- end }}
+  variables:
+    - name: initContainers
+      expression: object.spec.?initContainers.orValue([])
+    - name: containers
+      expression: >-
+        object.spec.containers.map(c, Object.spec.containers{
+        name: c.name,
+        securityContext: {{ include "kyverno.containerSecurityContext" (dict "field" "containers" "readOnlyRootFilesystem" .readOnlyRootFilesystem) | nindent 8 }}})
+    - name: initContainerPatches
+      expression: >-
+        variables.initContainers.map(c, Object.spec.initContainers{
+        name: c.name,
+        securityContext: {{ include "kyverno.containerSecurityContext" (dict "field" "initContainers" "readOnlyRootFilesystem" .readOnlyRootFilesystem) | nindent 8 }}})
+  mutations:
+    # Existing values are written back unchanged, so the apply only fills gaps.
+    - patchType: ApplyConfiguration
+      applyConfiguration:
+        expression: >-
+          {{- include "kyverno.applyContainers" (dict "pod" (include "kyverno.podSecurityContext" .) "init" "initContainerPatches") | nindent 10 }}
+    # capabilities.drop is an atomic list and cannot be set through ApplyConfiguration
+    - patchType: JSONPatch
+      jsonPatch:
+        expression: >-
+          {{- include "kyverno.dropAllPatches" (dict "field" "containers" "list" "object.spec.containers") | nindent 10 }}
+          + {{- include "kyverno.dropAllPatches" (dict "field" "initContainers" "list" "variables.initContainers") | nindent 10 }}
+  {{- end -}}
 {{- end }}

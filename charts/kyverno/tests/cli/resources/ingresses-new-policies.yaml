@@ -1,0 +1,62 @@
+# Ingresses for restrict-ingress-wildcard and require-ingress-https
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata: {name: ing-tls-good, namespace: default}
+spec:
+  tls:
+    - {hosts: [a.example.com], secretName: tls-a}
+  rules:
+    - host: a.example.com
+      http: {paths: [{path: /, pathType: Prefix, backend: {service: {name: s, port: {number: 80}}}}]}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata: {name: ing-wildcard-tls, namespace: default}
+spec:
+  tls:
+    - {hosts: ["*.example.com"], secretName: tls-w}
+  rules:
+    - host: "*.example.com"
+      http: {paths: [{path: /, pathType: Prefix, backend: {service: {name: s, port: {number: 80}}}}]}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata: {name: ing-no-tls, namespace: default}
+spec:
+  rules:
+    - host: a.example.com
+      http: {paths: [{path: /, pathType: Prefix, backend: {service: {name: s, port: {number: 80}}}}]}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata: {name: ing-default-backend-only, namespace: default}
+spec:
+  defaultBackend: {service: {name: s, port: {number: 80}}}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata: {name: ing-wildcard-second-rule, namespace: default}
+spec:
+  tls:
+    - {hosts: [a.example.com], secretName: tls-a}
+  rules:
+    - host: a.example.com
+      http: {paths: [{path: /, pathType: Prefix, backend: {service: {name: s, port: {number: 80}}}}]}
+    - host: "*.example.org"
+      http: {paths: [{path: /, pathType: Prefix, backend: {service: {name: s, port: {number: 80}}}}]}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata: {name: wild-excluded, namespace: team-a}
+spec:
+  rules:
+    - host: "*.example.com"
+      http: {paths: [{path: /, pathType: Prefix, backend: {service: {name: s, port: {number: 80}}}}]}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata: {name: ing-kube-system-no-tls, namespace: kube-system}
+spec:
+  rules:
+    - host: a.example.com
+      http: {paths: [{path: /, pathType: Prefix, backend: {service: {name: s, port: {number: 80}}}}]}

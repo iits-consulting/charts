@@ -1,0 +1,30 @@
+# Digest pinned images.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: img-digest
+  namespace: default
+spec:
+  containers:
+    - name: app
+      image: nginx@sha256:0000000000000000000000000000000000000000000000000000000000000001
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: img-tag-digest
+  namespace: default
+spec:
+  containers:
+    - name: app
+      image: nginx:1.25@sha256:0000000000000000000000000000000000000000000000000000000000000001
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: img-digest-ghcr-org
+  namespace: default
+spec:
+  containers:
+    - name: app
+      image: ghcr.io/org/app@sha256:0000000000000000000000000000000000000000000000000000000000000001

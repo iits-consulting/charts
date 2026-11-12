@@ -1,0 +1,46 @@
+{{- /* Adapted from kyverno/policies best-practices-vpol/disallow-latest-tag (Apache-2.0) */ -}}
+{{- with .Values.disallowLatestTag -}}
+  {{- if .enabled -}}
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: {{ .name }}
+  labels:
+    {{- include "kyverno.policyLabels" $ | nindent 4 }}
+  annotations:
+    policies.kyverno.io/title: Disallow latest tag
+    policies.kyverno.io/category: Best Practices
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/description: >-
+      The `latest` tag is mutable and can lead to unexpected errors if the image changes. Every image of a Pod
+      (containers, initContainers, ephemeralContainers) must specify a tag other than `latest` or a digest.
+spec:
+  validationActions:
+    {{- include "kyverno.validationActions" .validationAction | nindent 4 }}
+  failurePolicy: {{ include "kyverno.failurePolicy" . }}
+  autogen:
+    podControllers:
+      controllers: []
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["pods", "pods/ephemeralcontainers"]
+  {{- with .excludeNamespaces }}
+  matchConditions:
+    {{- include "kyverno.excludeNamespacesCondition" . | nindent 4 }}
+  {{- end }}
+  variables:
+    {{- include "kyverno.imagesVariable" . | nindent 4 }}
+    - name: violations
+      expression: >-
+        variables.images.filter(i, !i.contains('@') &&
+        (!i.substring(i.lastIndexOf('/') + 1).contains(':') || i.endsWith(':latest')))
+  validations:
+    - expression: size(variables.violations) == 0
+      messageExpression: >-
+        "Images must specify a tag other than latest or a digest. Found: " + variables.violations.join(", ")
+  {{- end -}}
+{{- end }}

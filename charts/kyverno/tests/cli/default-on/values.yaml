@@ -1,0 +1,31 @@
+# Every custom policy enabled with chart defaults for everything else
+ingress:
+  host: kyverno.example.com
+prependCustomImageRegistry:
+  enabled: true
+replaceImageRegistry:
+  enabled: false
+disallowUnsignedImages:
+  enabled: true
+disallowUnspecifiedDockerRegistries:
+  enabled: true
+enforceSecurityContext:
+  enabled: true
+disallowEmptyIngressHost:
+  enabled: true
+autoInjectDockerPullSecrets:
+  enabled: true
+  existingSecretRef:
+    - name: existing-regcred
+      namespace: kyverno
+  secrets:
+    gitlab:
+      username: token
+      password: s3cret
+      registryUrl: registry.gitlab.com
+disallowLatestTag:
+  enabled: true
+restrictIngressWildcard:
+  enabled: true
+requireIngressHttps:
+  enabled: true
