@@ -6,6 +6,11 @@ evsTypes:
 defaultClass:
   type: "SSD"
   retention: "Retain"
-# -- Set to "WaitForFirstConsumer" to defer EVS disk provisioning until a pod is scheduled, avoiding
-# zone mismatches between the PV and the scheduled pod. Defaults to "Immediate" for backward compatibility.
-volumeBindingMode: "Immediate"
+evs:
+  # -- volumeBindingMode of all `csi-disk-*` classes. Set to "WaitForFirstConsumer" to defer EVS disk
+  # provisioning until a pod is scheduled, avoiding zone mismatches between the PV and the scheduled pod.
+  volumeBindingMode: "Immediate"
+sfsturbo:
+  # -- volumeBindingMode of all `csi-sfsturbo-*` classes. Set to "WaitForFirstConsumer" to defer SFS Turbo
+  # provisioning until a pod using the PVC is scheduled.
+  volumeBindingMode: "Immediate"

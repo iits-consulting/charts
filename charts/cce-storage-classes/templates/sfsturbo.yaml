@@ -20,6 +20,6 @@ parameters:
   {{- end }}
 provisioner: everest-csi-provisioner
 reclaimPolicy: {{ $retention }}
-volumeBindingMode: Immediate
+volumeBindingMode: {{ $.Values.sfsturbo.volumeBindingMode }}
 ---
 {{- end }}
