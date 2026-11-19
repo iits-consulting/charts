@@ -150,8 +150,9 @@ elasticsearch:
             limits:
               memory: "{{ .Values.elasticsearch.votingOnly.resources.limits.memory }}"
           env:
+            # -XX:-UseBASE64Intrinsics mitigates CVE-2026-114938 (Java4Shell); temporary change until CVE is fixed in the image
             - name: ES_JAVA_OPTS
-              value: "{{ .Values.elasticsearch.votingOnly.javaOpts }}"
+              value: "-XX:-UseBASE64Intrinsics {{ .Values.elasticsearch.votingOnly.javaOpts }}"
   config:
     node:
       store:
@@ -178,8 +179,9 @@ elasticsearch:
           limits:
             memory: "{{ .Values.elasticsearch.resources.limits.memory }}"
         env:
+          # -XX:-UseBASE64Intrinsics mitigates CVE-2026-114938 (Java4Shell); temporary change until CVE is fixed in the image
           - name: ES_JAVA_OPTS
-            value: "{{ .Values.elasticsearch.javaOpts }}"
+            value: "-XX:-UseBASE64Intrinsics {{ .Values.elasticsearch.javaOpts }}"
 
 filebeat:
   enabled: true
