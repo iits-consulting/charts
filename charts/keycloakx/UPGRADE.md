@@ -6,6 +6,12 @@ Descriptions on actions needed, when upgrading within our chart defaults to the 
 
 - `allowAdminRoleMapping` on IdP must be explicitly set to `true` so that their mappers can still assign groups that grant administrative roles
 
+## 7.3.1
+
+ - Restart the Keycloak pods after `helm upgrade` (`kubectl rollout restart statefulset/<name>`). The flag is set via the `-env` ConfigMap, which does not trigger a restart on its own.
+ - If you override `keycloakx.configMapEnv.JAVA_OPTS_APPEND`, add `-XX:-UseBASE64Intrinsics` to your own value. Your override replaces the chart default.
+ - Verify per pod: `kubectl exec <pod> -- sh -c "tr '\0' ' ' < /proc/1/cmdline" | grep -o -- '-XX:-UseBASE64Intrinsics'`
+
 ## 7.3.0-add-dashboard
 
 - No changes needed

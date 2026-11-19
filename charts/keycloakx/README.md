@@ -19,7 +19,7 @@ Keycloak.X - Open Source Identity and Access Management for Modern Applications 
 | keycloakx.command[1] | string | `"start"` |  |
 | keycloakx.command[2] | string | `"--http-port=8080"` |  |
 | keycloakx.command[3] | string | `"--hostname-strict=false"` |  |
-| keycloakx.configMapEnv.JAVA_OPTS_APPEND | string | `"-Djgroups.dns.query=keycloakx-headless"` |  |
+| keycloakx.configMapEnv.JAVA_OPTS_APPEND | string | `"-Djgroups.dns.query=keycloakx-headless -XX:-UseBASE64Intrinsics"` |  |
 | keycloakx.configMapEnv.KC_LOG_CONSOLE_LEVEL | string | `"trace"` |  |
 | keycloakx.configMapEnv.KC_LOG_CONSOLE_OUTPUT | string | `"json"` |  |
 | keycloakx.configMapEnv.KC_LOG_LEVEL_ORG_KEYCLOAK_EVENTS | string | `"trace"` |  |

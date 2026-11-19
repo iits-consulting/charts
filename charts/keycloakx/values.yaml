@@ -4,7 +4,8 @@ keycloakx:
     KC_BOOTSTRAP_ADMIN_PASSWORD: "REPLACE_ME"
 
   configMapEnv:
-    JAVA_OPTS_APPEND: "-Djgroups.dns.query=keycloakx-headless"
+    # -XX:-UseBASE64Intrinsics mitigates CVE-2026-114938 (Java4Shell); temporary change until CVE is fixed in the image
+    JAVA_OPTS_APPEND: "-Djgroups.dns.query=keycloakx-headless -XX:-UseBASE64Intrinsics"
     KC_LOG_LEVEL_ORG_KEYCLOAK_EVENTS: "trace"
     KC_LOG_CONSOLE_LEVEL: "trace"
     KC_LOG_CONSOLE_OUTPUT: "json"
