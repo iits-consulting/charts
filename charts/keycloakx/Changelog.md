@@ -2,6 +2,9 @@
 
 ## Chart Versions
 
+### 7.3.1
+ - Mitigate CVE-2026-114938 (Java4Shell) by adding `-XX:-UseBASE64Intrinsics` to the default `keycloakx.configMapEnv.JAVA_OPTS_APPEND` (no Keycloak or upstream chart update)
+
 ### 7.3.0-add-dashboard
  - Add Grafana dashboard, enabled via `.Values.grafanaDashboard.enabled` (disabled by default)
  - Update used upstream chart to 7.2.0 (appVersion 26.6.2)
