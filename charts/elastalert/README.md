@@ -1,6 +1,6 @@
 # elastalert
 
-![Version: 0.5.1](https://img.shields.io/badge/Version-0.5.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.6.0](https://img.shields.io/badge/Version-0.6.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 Wrapper chart for elastalert2 with custom rules to kickstart IITS projects
 
@@ -17,7 +17,7 @@ The pod reads it as `SLACK_WEBHOOK_URL` via an environment variable.
 elastalert:
   namespace: monitoring
   repoURL: "https://charts.iits.tech"
-  targetRevision: "0.5.1"
+  targetRevision: "0.6.0"
   valueFile: "value-files/elastalert/values.yaml"
 ```
 
@@ -41,7 +41,7 @@ common:
 elastalert:
   namespace: monitoring
   repoURL: "https://charts.iits.tech"
-  targetRevision: "0.5.1"
+  targetRevision: "0.6.0"
   valueFile: "value-files/elastalert/values.yaml"
   parameters:
     customRules.slack.webhookUrl: "${vault:mySecretPath/data/common/slack#webhookUrl}"
@@ -51,8 +51,8 @@ elastalert:
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://charts.iits.tech | common | 0.3.1 |
-| https://jertel.github.io/elastalert2/ | elastalert2 | 2.24.0 |
+| https://charts.iits.tech | common | 0.4.0 |
+| https://jertel.github.io/elastalert2/ | elastalert2 | 2.32.0 |
 
 ## Values
 
