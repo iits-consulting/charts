@@ -226,6 +226,15 @@ prometheusStack:
 # Kyverno Policy Exception
 policyException:
   enabled: true
+  # Namespace of the PolicyException, defaults to the release namespace.
+  # Kyverno must read exceptions from it (kyverno.features.policyExceptions.namespace)
+  namespace: ""
+  # Labels added to the PolicyException
+  labels: {}
+  # Annotations added to the PolicyException, merged with these defaults
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-weight": "-5"
 
 blackboxExporter:
   enabled: true # Chart dependency condition

@@ -39,5 +39,5 @@ description: |
       prometheusStack.grafana.adminPassword: "REPLACE_ME"
   ```
 name: prometheus-stack
-version: 92.9.0
+version: 93.0.0
 appVersion: 3.15.0
