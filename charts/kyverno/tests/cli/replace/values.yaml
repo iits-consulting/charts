@@ -1,0 +1,10 @@
+# replaceImageRegistry with the default target and exclusions (not combinable with prependCustomImageRegistry)
+ingress:
+  host: kyverno.example.com
+replaceImageRegistry:
+  enabled: true
+  excludeRegistries:
+    - "ghcr.io/org/*"
+    - "mirror.example.com/*"
+  excludeNamespaces:
+    - kube-system

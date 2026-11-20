@@ -1,0 +1,23 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: pullsecret-namespaces
+context: ../default-on/context.yaml
+policies:
+  - ../.rendered/pullsecret-namespaces/auto-create-docker-existing-regcred.yaml
+resources:
+  - ../resources/namespaces-teams.yaml
+results:
+  - policy: auto-create-docker-existing-regcred
+    isGeneratingPolicy: true
+    kind: Namespace
+    resources:
+      - team-a
+    result: pass
+    generatedResource: generated-team-a.yaml
+  - policy: auto-create-docker-existing-regcred
+    isGeneratingPolicy: true
+    kind: Namespace
+    resources:
+      - other
+    result: skip

@@ -1,0 +1,84 @@
+suite: policy-reporter route
+templates:
+  - templates/route/ingress.yaml
+  - templates/route/middleware-stripprefix.yaml
+  - templates/validation.yaml
+set:
+  ingress.host: test.example.com
+
+tests:
+  - it: renders default tls without secretName
+    template: templates/route/ingress.yaml
+    asserts:
+      - equal:
+          path: spec.tls
+          value:
+            - hosts: [test.example.com]
+      - notExists:
+          path: spec.ingressClassName
+      - notExists:
+          path: metadata.labels
+  - it: renders several tls entries with several hosts and templates
+    template: templates/route/ingress.yaml
+    release:
+      name: rel
+    set:
+      ingress.rules:
+        - host: a.example.com
+          paths:
+            - path: /policies
+        - host: "{{ .Release.Name }}.example.com"
+          paths:
+            - path: /policies
+      ingress.tls:
+        - hosts: [a.example.com, "{{ .Release.Name }}.example.com"]
+          secretName: "{{ .Release.Name }}-tls"
+        - hosts: [c.example.com]
+    asserts:
+      - equal:
+          path: spec.tls
+          value:
+            - hosts: [a.example.com, rel.example.com]
+              secretName: rel-tls
+            - hosts: [c.example.com]
+      - equal:
+          path: spec.rules[1].host
+          value: rel.example.com
+  - it: renders no tls block when tls is empty
+    template: templates/route/ingress.yaml
+    set:
+      ingress.tls: []
+    asserts:
+      - notExists:
+          path: spec.tls
+  - it: renders labels and className when set
+    template: templates/route/ingress.yaml
+    set:
+      ingress.className: traefik
+      ingress.labels:
+        a: b
+    asserts:
+      - equal:
+          path: metadata.labels.a
+          value: b
+      - equal:
+          path: spec.ingressClassName
+          value: traefik
+  - it: fails without ingress.host
+    template: templates/route/ingress.yaml
+    set:
+      ingress.host: null
+    asserts:
+      - failedTemplate:
+          errorMessage: "ingress.host is required when ingress.enabled is true"
+  - it: renders the Middleware with the Ingress
+    template: templates/route/middleware-stripprefix.yaml
+    asserts:
+      - isKind:
+          of: Middleware
+  - it: renders nothing when the UI is disabled
+    set:
+      policy-reporter.ui.enabled: false
+    asserts:
+      - hasDocuments:
+          count: 0

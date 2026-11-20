@@ -1,0 +1,25 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: default-on.add-image-pull-secret
+policies:
+  - ../../.rendered/default-on/add-image-pull-secret.yaml
+resources:
+  - ../../resources/pods-structure.yaml
+  - ../../resources/pods-images.yaml
+results:
+  - policy: add-image-pull-secret
+    isMutatingPolicy: true
+    kind: Pod
+    resources:
+      - struct-multi-bad-last
+      - struct-pullsecrets
+      - struct-pullsecrets-dup
+    result: pass
+    patchedResources: patched.yaml
+  - policy: add-image-pull-secret
+    isMutatingPolicy: true
+    kind: Pod
+    resources:
+      - img-kube-system
+    result: skip

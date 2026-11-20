@@ -12,3 +12,6 @@ traefik:
   metrics:
     prometheus:
       disableAPICheck: true
+
+ingress:
+  host: "foo.bar.org"

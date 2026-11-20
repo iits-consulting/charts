@@ -1,0 +1,145 @@
+# Pods with pre-set securityContext variants for enforce-security-context.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sc-none
+  namespace: default
+spec:
+  initContainers:
+    - name: init
+      image: busybox:1.36
+  containers:
+    - name: app
+      image: nginx:1.25
+    - name: sidecar
+      image: nginx:1.25
+  ephemeralContainers:
+    - name: debug
+      image: busybox:1.36
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sc-empty-ctx
+  namespace: default
+spec:
+  securityContext: {}
+  containers:
+    - name: app
+      image: nginx:1.25
+      securityContext: {}
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sc-pod-partial
+  namespace: default
+spec:
+  securityContext:
+    fsGroup: 2000
+  containers:
+    - name: app
+      image: nginx:1.25
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sc-pod-full
+  namespace: default
+spec:
+  securityContext:
+    runAsNonRoot: false
+    runAsUser: 0
+    runAsGroup: 0
+    seccompProfile:
+      type: Unconfined
+  containers:
+    - name: app
+      image: nginx:1.25
+      securityContext:
+        allowPrivilegeEscalation: true
+        privileged: true
+        capabilities:
+          drop:
+            - NET_RAW
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sc-caps-add-only
+  namespace: default
+spec:
+  containers:
+    - name: app
+      image: nginx:1.25
+      securityContext:
+        capabilities:
+          add:
+            - NET_ADMIN
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sc-runasuser
+  namespace: default
+spec:
+  securityContext:
+    runAsUser: 5000
+  containers:
+    - name: app
+      image: nginx:1.25
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sc-seccomp-localhost
+  namespace: default
+spec:
+  securityContext:
+    seccompProfile:
+      type: Localhost
+      localhostProfile: profiles/a.json
+  containers:
+    - name: app
+      image: nginx:1.25
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sc-container-partial
+  namespace: default
+spec:
+  containers:
+    - name: app
+      image: nginx:1.25
+      securityContext:
+        readOnlyRootFilesystem: true
+    - name: sidecar
+      image: nginx:1.25
+      securityContext:
+        privileged: true
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sc-init-partial
+  namespace: default
+spec:
+  initContainers:
+    - name: init
+      image: busybox:1.36
+      securityContext:
+        runAsUser: 0
+  containers:
+    - name: app
+      image: nginx:1.25
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sc-kube-system
+  namespace: kube-system
+spec:
+  containers:
+    - name: app
+      image: nginx:1.25

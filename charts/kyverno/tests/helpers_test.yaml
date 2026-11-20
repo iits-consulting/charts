@@ -1,0 +1,87 @@
+suite: shared helpers
+templates:
+  - policies/disallow-latest-tag.yaml
+  - policies/restrict-ingress-wildcard.yaml
+  - policies/require-ingress-https.yaml
+  - policies/disallow-unsigned-images.yaml
+  - policies/disallow-unspecified-docker-registries.yaml
+  - policies/enforce-security-context.yaml
+  - policies/prepend-image-registry.yaml
+  - policies/replace-image-registry.yaml
+  - policies/pull-secret-secrets.yaml
+  - policies/pull-secret-mutate.yaml
+  - policies/pull-secret-generate.yaml
+set:
+  ingress.host: test.example.com
+
+tests:
+  - it: renders no opt-in policy by default
+    asserts:
+      - hasDocuments: {count: 0}
+
+  - it: turns namespace wildcards into one anchored regex
+    template: policies/disallow-latest-tag.yaml
+    set:
+      disallowLatestTag: {enabled: true, excludeNamespaces: ["kube-*", "ns-?", "a.b"]}
+    asserts:
+      - equal:
+          path: spec.matchConditions
+          value:
+            - name: exclude-namespaces
+              expression: '!object.metadata.?namespace.orValue("").matches(r''^(?:kube-.*|ns-.|a\.b)$'')'
+
+  - it: renders no matchConditions without excludeNamespaces
+    template: policies/disallow-latest-tag.yaml
+    set:
+      disallowLatestTag.enabled: true
+    asserts:
+      - notExists: {path: spec.matchConditions}
+
+  - it: rejects wildcards with quotes
+    template: policies/disallow-latest-tag.yaml
+    set:
+      disallowLatestTag: {enabled: true, excludeNamespaces: ["a'b"]}
+    asserts:
+      - failedTemplate:
+          errorPattern: must not contain quotes
+
+  - it: maps validationAction case insensitively, Deny is accepted for Enforce
+    set:
+      disallowLatestTag: {enabled: true, validationAction: audit}
+      restrictIngressWildcard: {enabled: true, validationAction: AUDIT}
+      requireIngressHttps: {enabled: true, validationAction: enforce}
+      disallowUnspecifiedDockerRegistries: {enabled: true, validationAction: deny}
+    asserts:
+      - equal: {path: spec.validationActions, value: [Audit]}
+        template: policies/disallow-latest-tag.yaml
+      - equal: {path: spec.validationActions, value: [Audit]}
+        template: policies/restrict-ingress-wildcard.yaml
+      - equal: {path: spec.validationActions, value: [Deny]}
+        template: policies/require-ingress-https.yaml
+      - equal: {path: spec.validationActions, value: [Deny]}
+        template: policies/disallow-unspecified-docker-registries.yaml
+
+  - it: defaults an unset validationAction to Enforce
+    template: policies/disallow-latest-tag.yaml
+    set:
+      disallowLatestTag: {enabled: true, validationAction: null}
+    asserts:
+      - equal: {path: spec.validationActions, value: [Deny]}
+
+  - it: fails on an unknown validationAction
+    template: policies/disallow-latest-tag.yaml
+    set:
+      disallowLatestTag: {enabled: true, validationAction: Warn}
+    asserts:
+      - failedTemplate:
+          errorPattern: validationAction
+
+  - it: takes failurePolicy from the values, Fail if unset
+    set:
+      disallowLatestTag: {enabled: true, failurePolicy: Ignore}
+      requireIngressHttps: {enabled: true, failurePolicy: null}
+    asserts:
+      - equal: {path: spec.failurePolicy, value: Ignore}
+        template: policies/disallow-latest-tag.yaml
+      - equal: {path: spec.failurePolicy, value: Fail}
+        template: policies/require-ingress-https.yaml

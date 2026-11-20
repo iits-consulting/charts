@@ -1,0 +1,47 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: replace.replace-image-registry
+policies:
+  - ../../.rendered/replace/replace-image-registry.yaml
+resources:
+  - ../../resources/pods-images.yaml
+  - ../../resources/pods-init.yaml
+  - ../../resources/pods-digest.yaml
+  - ../../resources/pods-structure.yaml
+results:
+  - policy: replace-image-registry
+    isMutatingPolicy: true
+    kind: Pod
+    resources:
+      - img-plain
+      - img-tag
+      - img-port-registry
+      - img-docker-library
+      - img-docker-org
+      - img-org-no-registry
+      - img-ghcr-org
+      - img-ghcr-other
+      - img-ghcr-deep
+      - img-mirror
+      - img-default-allowed
+      - img-busybox-excluded
+      - img-localhost-allowed
+      - struct-init
+      - struct-init-ghcr
+      - struct-multi
+      - struct-allowed-all
+      - img-digest
+      - img-tag-digest
+      - img-digest-ghcr-org
+      - struct-ephemeral
+      - struct-multi-bad-last
+    result: pass
+    patchedResources: patched.yaml
+  - policy: replace-image-registry
+    isMutatingPolicy: true
+    kind: Pod
+    resources:
+      - img-kube-system
+      - img-kube-system-ghcr
+    result: skip

@@ -1,150 +1,50 @@
-{{- with .Values.prependCustomImageRegistry }}
-{{- if .enabled }}
-apiVersion: kyverno.io/v1
-kind: ClusterPolicy
+{{- with .Values.prependCustomImageRegistry -}}
+  {{- if .enabled -}}
+    {{- $registry := .registry | trimSuffix "/" -}}
+apiVersion: policies.kyverno.io/v1
+kind: MutatingPolicy
 metadata:
-  name: {{.name}}
+  name: {{ .name }}
+  labels:
+    {{- include "kyverno.policyLabels" $ | nindent 4 }}
   annotations:
     policies.kyverno.io/title: Prepend custom image registry
-    pod-policies.kyverno.io/autogen-controllers: none
     policies.kyverno.io/category: DockerImage
     policies.kyverno.io/severity: high
     policies.kyverno.io/subject: Pod
-    policies.kyverno.io/minversion: 1.6.0
     policies.kyverno.io/description: >-
-      We prepend every image reference with `{{.registry}}`.
-      If the image does not exist there it can not be deployed.
-
-      Since we have also business apps you can also exclude registries from the replacement.
-
-      The pulls are directed to a approved registry. In some cases, those registries may function as
-      pull-through proxies and can fetch the image if not cached.
-      This policy mutates all images either in the form 'image:tag' or
-      'registry.corp.com/image:tag' to be `{{ .registry | trimSuffix "/" }}/image:tag` or `{{ .registry | trimSuffix "/" }}/registry.corp.com/image:tag`.
-      Note that this mutates Pods directly and not their controllers. It can be changed if desired but
-      if so may need to not match on Pods.
+      Every image reference of containers and initContainers is prefixed with `{{ $registry }}`:
+      `nginx:1` becomes `{{ $registry }}/docker.io/library/nginx:1` and `registry.corp.com/image:tag`
+      becomes `{{ $registry }}/registry.corp.com/image:tag`.
+      Images without a registry (first path segment without `.` or `:`) are Docker Hub images and get `docker.io/library/` when
+      they have no path. Images that already start with `{{ $registry }}/` or match `excludeRegistries` are left alone.
 spec:
-  background: false
-  rules:
-    - name: prepend-registry-containers
-      match:
-        any:
-          - resources:
-              operations:
-                - CREATE # spec.containers cannot be modified on UPDATE
-              kinds:
-                - Pod
-      {{- if .excludeNamespaces }}
-      exclude:
-        resources:
-          namespaces:
-          {{- range .excludeNamespaces }}
-            - {{ . }}
-          {{- end }}
-      {{- end }}
-      mutate:
-        foreach:
-          - list: "request.object.spec.containers"
-            patchStrategicMerge:
-              metadata:
-                annotations:
-                  +(clusterpolicies.kyverno.io/prepend-registry-containers): "Prepended the containers image with {{ .registry }}"
-              spec:
-                containers:
-                  - name: "{{ `{{ element.name }}` }}"
-                    image: "{{ .registry | trimSuffix "/" }}/{{ `{{ images.containers.\"{{element.name}}\".registry}}/{{ images.containers.\"{{element.name}}\".path}}:{{images.containers.\"{{element.name}}\".tag}}`}}"
-            {{- if .excludeRegistries}}
-            preconditions:
-              all:
-              {{- range $excludeRegistry := .excludeRegistries}}
-                - key: "{{`{{element.image}}`}}"
-                  operator: NotEquals
-                  value: "{{$excludeRegistry}}"
-              {{- end }}
-            {{- end }}
-    - name: prepend-registry-initcontainers
-      match:
-        any:
-          - resources:
-              operations:
-                - CREATE # spec.initContainers cannot be modified on UPDATE
-              kinds:
-                - Pod
-      {{- if .excludeNamespaces }}
-      exclude:
-        resources:
-          namespaces:
-          {{- range .excludeNamespaces }}
-            - {{ . }}
-          {{- end }}
-      {{- end }}
-      preconditions:
-        all:
-          - key: "{{ `{{ request.object.spec.initContainers[] || `}}`[]`{{` | length(@) }} `}}"
-            operator: GreaterThanOrEquals
-            value: 1
-      mutate:
-        foreach:
-          - list: "request.object.spec.initContainers"
-            patchStrategicMerge:
-              metadata:
-                annotations:
-                  +(clusterpolicies.kyverno.io/prepend-registry-initContainers): "Prepended the initContainers image with {{ .registry }}"
-              spec:
-                initContainers:
-                  - name: "{{ `{{ element.name }}` }}"
-                    image: "{{ .registry | trimSuffix "/" }}/{{ `{{ images.initContainers.\"{{element.name}}\".registry}}/{{ images.initContainers.\"{{element.name}}\".path}}:{{images.initContainers.\"{{element.name}}\".tag}}`}}"
-            {{- if .excludeRegistries}}
-            preconditions:
-              all:
-              {{- range $excludeRegistry := .excludeRegistries}}
-                - key: "{{`{{element.image}}`}}"
-                  operator: NotEquals
-                  value: "{{$excludeRegistry}}"
-              {{- end }}
-            {{- end }}
-    - name: prepend-registry-ephemeralContainers
-      match:
-        any:
-          - resources:
-              operations:
-                - UPDATE #ephemeralContainers cannot be specified on CREATE
-              kinds:
-                - Pod
-      {{- if .excludeNamespaces }}
-      exclude:
-        resources:
-          namespaces:
-          {{- range .excludeNamespaces }}
-            - {{ . }}
-          {{- end }}
-      {{- end }}
-      preconditions:
-        all:
-          - key: "{{ `{{ request.object.spec.ephemeralContainers[] || `}}`[]`{{` | length(@) }} `}}"
-            operator: GreaterThanOrEquals
-            value: 1
-      mutate:
-        foreach:
-          - list: "request.object.spec.ephemeralContainers"
-            patchStrategicMerge:
-              metadata:
-                annotations:
-                  +(clusterpolicies.kyverno.io/prepend-registry-ephemeralContainers): "Prepended the ephemeralContainers image with {{ .registry }}"
-              spec:
-                ephemeralContainers:
-                  - name: "{{ `{{ element.name }}` }}"
-                    image: "{{ .registry | trimSuffix "/" }}/{{ `{{ images.ephemeralContainers.\"{{element.name}}\".registry}}/{{ images.ephemeralContainers.\"{{element.name}}\".path}}:{{images.ephemeralContainers.\"{{element.name}}\".tag}}`}}"
-            {{- if .excludeRegistries}}
-            preconditions:
-              all:
-              {{- range $excludeRegistry := .excludeRegistries}}
-                - key: "{{ `{{element.image}}` }}"
-                  operator: NotEquals
-                  value: "{{ $excludeRegistry }}"
-              {{- end }}
-            {{- end }}
----
+  failurePolicy: {{ include "kyverno.failurePolicy" . }}
+  autogen:
+    podControllers:
+      controllers: []
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE"]
+        resources: ["pods"]
+  {{- with .excludeNamespaces }}
+  matchConditions:
+    {{- include "kyverno.excludeNamespacesCondition" . | nindent 4 }}
+  {{- end }}
+  variables:
+    - name: registry
+      expression: {{ $registry | toJson | squote }}
+    {{- if .excludeRegistries }}
+    - name: excluded
+      expression: r'{{ include "kyverno.globToRegex" .excludeRegistries }}'
+    {{- end }}
+    {{- include "kyverno.imageVariables" (dict "image" (include "kyverno.prependImage" (dict "excluded" .excludeRegistries) | nindent 4)) | nindent 4 }}
+  mutations:
+    - patchType: ApplyConfiguration
+      applyConfiguration:
+        expression: >-
+          {{- include "kyverno.applyContainers" (dict "pod" "" "init" "initContainers") | nindent 10 }}
+  {{- end -}}
 {{- end }}
-{{- end }}
-

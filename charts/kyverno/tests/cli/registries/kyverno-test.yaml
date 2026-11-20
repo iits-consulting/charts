@@ -1,0 +1,49 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: registries
+policies:
+  - ../.rendered/registries/disallow-unspecified-docker-registries.yaml
+resources:
+  - ../resources/pods-images.yaml
+  - ../resources/pods-structure.yaml
+  - ../resources/pods-init.yaml
+  - ../resources/pods-digest.yaml
+results:
+  - policy: disallow-unspecified-docker-registries
+    isValidatingPolicy: true
+    kind: Pod
+    resources:
+      - hub-index
+      - hub-library
+      - hub-untagged-full
+      - img-busybox-excluded
+      - img-default-allowed
+      - img-digest
+      - img-docker-library
+      - img-docker-org
+      - img-ghcr-org
+      - img-mirror
+      - img-org-no-registry
+      - img-plain
+      - img-tag
+      - img-tag-digest
+      - struct-ephemeral
+      - struct-init
+    result: pass
+  - policy: disallow-unspecified-docker-registries
+    isValidatingPolicy: true
+    kind: Pod
+    resources:
+      - img-ghcr-deep
+      - img-ghcr-other
+      - img-port-registry
+      - struct-multi-bad-last
+    result: fail
+  - policy: disallow-unspecified-docker-registries
+    isValidatingPolicy: true
+    kind: Pod
+    resources:
+      - img-kube-system
+      - img-kube-system-ghcr
+    result: skip

@@ -1,0 +1,557 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "definitions": {
+    "nameList": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "string"
+      }
+    },
+    "targetNamespaces": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "description": "Namespace wildcards the pull secret targets, all namespaces if unset"
+    },
+    "action": {
+      "enum": [
+        "Enforce",
+        "Audit",
+        "Deny",
+        "enforce",
+        "audit",
+        "deny",
+        "ENFORCE",
+        "AUDIT",
+        "DENY"
+      ],
+      "description": "Enforce or Audit (case insensitive, Deny is accepted for Enforce)"
+    },
+    "ingressExclude": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "namespace"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "namespace": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "failurePolicy": {
+      "enum": [
+        "Fail",
+        "Ignore"
+      ],
+      "description": "Fail rejects the request when the webhook errors or times out, Ignore admits it"
+    },
+    "labelSelector": {
+      "type": "object",
+      "description": "Kubernetes label selector on the namespace labels, ANDed with namespaces",
+      "properties": {
+        "matchLabels": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "matchExpressions": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "object",
+            "required": [
+              "key",
+              "operator"
+            ],
+            "properties": {
+              "key": {
+                "type": "string",
+                "minLength": 1
+              },
+              "operator": {
+                "enum": [
+                  "In",
+                  "NotIn",
+                  "Exists",
+                  "DoesNotExist"
+                ]
+              },
+              "values": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "additionalProperties": false,
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "operator": {
+                      "enum": [
+                        "In",
+                        "NotIn"
+                      ]
+                    }
+                  }
+                },
+                "then": {
+                  "required": [
+                    "values"
+                  ],
+                  "properties": {
+                    "values": {
+                      "type": "array",
+                      "minItems": 1
+                    }
+                  }
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "operator": {
+                      "enum": [
+                        "Exists",
+                        "DoesNotExist"
+                      ]
+                    }
+                  }
+                },
+                "then": {
+                  "properties": {
+                    "values": {
+                      "type": [
+                        "array",
+                        "null"
+                      ],
+                      "maxItems": 0
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "properties": {
+    "prependCustomImageRegistry": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "registry": {
+          "type": "string",
+          "minLength": 1
+        },
+        "excludeRegistries": {
+          "$ref": "#/definitions/nameList"
+        },
+        "excludeNamespaces": {
+          "$ref": "#/definitions/nameList"
+        },
+        "failurePolicy": {
+          "$ref": "#/definitions/failurePolicy"
+        }
+      },
+      "additionalProperties": false
+    },
+    "replaceImageRegistry": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "target": {
+          "type": "string",
+          "minLength": 1
+        },
+        "keepRepositoryPath": {
+          "type": "boolean"
+        },
+        "excludeRegistries": {
+          "$ref": "#/definitions/nameList"
+        },
+        "excludeNamespaces": {
+          "$ref": "#/definitions/nameList"
+        },
+        "failurePolicy": {
+          "$ref": "#/definitions/failurePolicy"
+        },
+        "sourceRegex": {
+          "description": "Removed, rejected by templates/validation.yaml with the replacement"
+        }
+      },
+      "additionalProperties": false
+    },
+    "enforceSecurityContext": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "runAsUser": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "runAsGroup": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "readOnlyRootFilesystem": {
+          "type": "boolean"
+        },
+        "excludeNamespaces": {
+          "$ref": "#/definitions/nameList"
+        },
+        "failurePolicy": {
+          "$ref": "#/definitions/failurePolicy"
+        }
+      },
+      "additionalProperties": false
+    },
+    "disallowUnsignedImages": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "timeoutSeconds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 30
+        },
+        "failurePolicy": {
+          "$ref": "#/definitions/failurePolicy"
+        },
+        "excludeNamespaces": {
+          "$ref": "#/definitions/nameList"
+        },
+        "imagesAndPublicKeyPairs": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "object",
+            "required": [
+              "image",
+              "key"
+            ],
+            "properties": {
+              "image": {
+                "type": "string",
+                "minLength": 1
+              },
+              "key": {
+                "type": "string",
+                "minLength": 1
+              },
+              "pullSecret": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "ignoreTransparencyLog": {
+                "type": [
+                  "boolean",
+                  "null"
+                ]
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "disallowUnspecifiedDockerRegistries": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "validationAction": {
+          "$ref": "#/definitions/action"
+        },
+        "allowedRegistries": {
+          "$ref": "#/definitions/nameList"
+        },
+        "excludeNamespaces": {
+          "$ref": "#/definitions/nameList"
+        },
+        "failurePolicy": {
+          "$ref": "#/definitions/failurePolicy"
+        },
+        "registryUrls": {
+          "description": "Removed, rejected by templates/validation.yaml with the replacement"
+        }
+      },
+      "additionalProperties": false
+    },
+    "disallowEmptyIngressHost": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "validationAction": {
+          "$ref": "#/definitions/action"
+        },
+        "excludeNamespaces": {
+          "type": [
+            "array",
+            "null"
+          ]
+        },
+        "excludeIngresses": {
+          "$ref": "#/definitions/ingressExclude"
+        },
+        "failurePolicy": {
+          "$ref": "#/definitions/failurePolicy"
+        }
+      },
+      "additionalProperties": false
+    },
+    "disallowLatestTag": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "validationAction": {
+          "$ref": "#/definitions/action"
+        },
+        "excludeNamespaces": {
+          "$ref": "#/definitions/nameList"
+        },
+        "failurePolicy": {
+          "$ref": "#/definitions/failurePolicy"
+        }
+      },
+      "additionalProperties": false
+    },
+    "restrictIngressWildcard": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "validationAction": {
+          "$ref": "#/definitions/action"
+        },
+        "excludeNamespaces": {
+          "$ref": "#/definitions/nameList"
+        },
+        "excludeIngresses": {
+          "$ref": "#/definitions/ingressExclude"
+        },
+        "failurePolicy": {
+          "$ref": "#/definitions/failurePolicy"
+        }
+      },
+      "additionalProperties": false
+    },
+    "requireIngressHttps": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "validationAction": {
+          "$ref": "#/definitions/action"
+        },
+        "excludeNamespaces": {
+          "$ref": "#/definitions/nameList"
+        },
+        "excludeIngresses": {
+          "$ref": "#/definitions/ingressExclude"
+        },
+        "failurePolicy": {
+          "$ref": "#/definitions/failurePolicy"
+        }
+      },
+      "additionalProperties": false
+    },
+    "autoInjectDockerPullSecrets": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "allowOwnedExternalSecret": {
+          "type": "boolean"
+        },
+        "excludeNamespaces": {
+          "$ref": "#/definitions/nameList"
+        },
+        "existingSecretRef": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "namespace": {
+                "type": "string"
+              },
+              "namespaces": {
+                "$ref": "#/definitions/targetNamespaces"
+              },
+              "namespaceSelector": {
+                "$ref": "#/definitions/labelSelector"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "injectOnly": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "namespaces": {
+                "$ref": "#/definitions/targetNamespaces"
+              },
+              "namespaceSelector": {
+                "$ref": "#/definitions/labelSelector"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "secrets": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": {
+            "type": "object",
+            "required": [
+              "username",
+              "password",
+              "registryUrl"
+            ],
+            "properties": {
+              "username": {
+                "type": "string"
+              },
+              "password": {
+                "type": "string"
+              },
+              "registryUrl": {
+                "type": "string"
+              },
+              "namespaces": {
+                "$ref": "#/definitions/targetNamespaces"
+              },
+              "namespaceSelector": {
+                "$ref": "#/definitions/labelSelector"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "failurePolicy": {
+          "$ref": "#/definitions/failurePolicy"
+        },
+        "autogenControllers": {
+          "description": "Removed, rejected by templates/validation.yaml with the replacement"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

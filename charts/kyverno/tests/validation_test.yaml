@@ -1,0 +1,140 @@
+suite: value validation
+templates:
+  - validation.yaml
+set:
+  ingress.host: test.example.com
+
+tests:
+  - it: accepts namespace wildcards in the ingress excludeNamespaces
+    set:
+      disallowEmptyIngressHost.excludeNamespaces: ["kube-*"]
+    asserts:
+      - notFailedTemplate: {}
+
+  - it: fails when both registry mutations are enabled
+    set:
+      prependCustomImageRegistry: {enabled: true, registry: a.example.com}
+      replaceImageRegistry: {enabled: true, target: b.example.com}
+    asserts:
+      - failedTemplate:
+          errorPattern: must not both be enabled
+
+  - it: schema rejects an unknown key of a policy block
+    set:
+      disallowLatestTag.excludeNamespace: [a]
+    asserts:
+      - failedTemplate:
+          errorPattern: excludeNamespace
+
+  - it: schema rejects runAsUser 0
+    set:
+      enforceSecurityContext.runAsUser: 0
+    asserts:
+      - failedTemplate:
+          errorPattern: runAsUser
+
+  - it: schema rejects In without values
+    set:
+      autoInjectDockerPullSecrets.injectOnly:
+        - name: ps-x
+          namespaceSelector:
+            matchExpressions:
+              - {key: tier, operator: In}
+    asserts:
+      - failedTemplate:
+          errorPattern: values
+
+  - it: schema rejects values on Exists and unknown operators
+    set:
+      autoInjectDockerPullSecrets.injectOnly:
+        - name: ps-x
+          namespaceSelector:
+            matchExpressions:
+              - {key: tier, operator: Exists, values: [a]}
+              - {key: tier, operator: Equals, values: [a]}
+    asserts:
+      - failedTemplate:
+          errorPattern: operator
+
+  # An empty list would silently mean all namespaces
+  - it: schema rejects an empty namespaces list
+    set:
+      autoInjectDockerPullSecrets.injectOnly:
+        - {name: ps-x, namespaces: []}
+    asserts:
+      - failedTemplate:
+          errorPattern: namespaces
+
+  - it: fails when two existingSecretRef entries share a name
+    set:
+      autoInjectDockerPullSecrets.enabled: true
+      autoInjectDockerPullSecrets.existingSecretRef:
+        - name: same
+        - name: same
+    asserts:
+      - failedTemplate:
+          errorPattern: a pull secret name is used twice
+
+  - it: fails when an injectOnly name is also cloned
+    set:
+      autoInjectDockerPullSecrets.enabled: true
+      autoInjectDockerPullSecrets.existingSecretRef:
+        - name: same
+      autoInjectDockerPullSecrets.injectOnly:
+        - name: same
+    asserts:
+      - failedTemplate:
+          errorPattern: a pull secret name is used twice
+
+  - it: fails when an ESO secret name collides with a chart-created secret name
+    set:
+      autoInjectDockerPullSecrets.enabled: true
+      autoInjectDockerPullSecrets.secrets:
+        dockerhub: {username: user, password: pass, registryUrl: docker.io}
+      common.externalSecret.pull.secrets:
+        pull-secret-dockerhub: {path: some/path}
+    asserts:
+      - failedTemplate:
+          errorMessage: "autoInjectDockerPullSecrets: pull-secret-dockerhub collides with the externalSecret of the same name"
+
+  - it: accepts an orphaned ESO secret as existingSecretRef next to unique names
+    set:
+      autoInjectDockerPullSecrets.enabled: true
+      autoInjectDockerPullSecrets.existingSecretRef:
+        - name: kyverno-pull-secret-dockerhub
+          namespace: kyverno
+      autoInjectDockerPullSecrets.secrets:
+        gitlab: {username: user, password: pass, registryUrl: registry.gitlab.com}
+      common.externalSecret.pull.secrets:
+        kyverno-pull-secret-dockerhub: {path: some/path, creationPolicy: Orphan}
+        my-eso-secret: {path: some/path}
+    asserts:
+      - notFailedTemplate: {}
+
+  - it: fails when an existingSecretRef ESO secret is owned by its ExternalSecret
+    release:
+      namespace: kyverno
+    set:
+      autoInjectDockerPullSecrets.enabled: true
+      autoInjectDockerPullSecrets.existingSecretRef:
+        - name: kyverno-pull-secret-dockerhub
+          namespace: kyverno
+      common.externalSecret.pull.secrets:
+        kyverno-pull-secret-dockerhub: {path: some/path}
+    asserts:
+      - failedTemplate:
+          errorPattern: "set creationPolicy: Orphan on it \\(deleting or replacing the ExternalSecret would delete every clone\\)"
+
+  - it: accepts an owned existingSecretRef ESO secret with allowOwnedExternalSecret
+    release:
+      namespace: kyverno
+    set:
+      autoInjectDockerPullSecrets.enabled: true
+      autoInjectDockerPullSecrets.allowOwnedExternalSecret: true
+      autoInjectDockerPullSecrets.existingSecretRef:
+        - name: kyverno-pull-secret-dockerhub
+          namespace: kyverno
+      common.externalSecret.pull.secrets:
+        kyverno-pull-secret-dockerhub: {path: some/path}
+    asserts:
+      - notFailedTemplate: {}

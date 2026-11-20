@@ -1,120 +1,62 @@
-{{- with .Values.replaceImageRegistry }}
-{{- if .enabled }}
-apiVersion: kyverno.io/v1
-kind: ClusterPolicy
+{{- with .Values.replaceImageRegistry -}}
+  {{- if .enabled -}}
+    {{- $target := .target | trimSuffix "/" -}}
+    {{- /* the target ends up in a regex replacement string, where a backslash is an escape */ -}}
+    {{- if contains "\\" $target -}}
+      {{- fail "replaceImageRegistry.target must not contain backslashes" -}}
+    {{- end -}}
+    {{- /* RE2 keeping everything after the last `/`, or everything after the registry (first segment with `.` or `:`) */ -}}
+    {{- $pattern := ternary "^(?:[^/]*[.:][^/]*/|localhost/)?(.*)$" "^(?:.*/)?([^/]*)$" .keepRepositoryPath -}}
+apiVersion: policies.kyverno.io/v1
+kind: MutatingPolicy
 metadata:
-  name: {{.name}}
+  name: {{ .name }}
+  labels:
+    {{- include "kyverno.policyLabels" $ | nindent 4 }}
   annotations:
     policies.kyverno.io/title: Replace Image Registry
     policies.kyverno.io/category: DockerImage
+    policies.kyverno.io/severity: high
     policies.kyverno.io/subject: Pod
-    policies.kyverno.io/minversion: 1.6.0
-    pod-policies.kyverno.io/autogen-controllers: none
     policies.kyverno.io/description: >-
-      We rewrite every third party docker registry to `{{.target}}`.
-      If the image does not exist there it can not be deployed.
-
-      Since we have also business apps you can also exclude registries from the replacement.
-
-      The pulls are directed to a approved registry. In some cases, those registries may function as
-      pull-through proxies and can fetch the image if not cached.
-      This policy mutates all images either in the form 'image:tag' or
-      'registry.corp.com/image:tag' to be `{{ .target | trimSuffix "/" }}/image:tag`.
-      Note that this mutates Pods directly and not their controllers. It can be changed if desired but
-      if so may need to not match on Pods.
+      Every third party image registry of containers and initContainers is rewritten to `{{ $target }}`:
+      {{ if .keepRepositoryPath -}}
+      `registry.corp.com/org/image:tag` becomes `{{ $target }}/org/image:tag`.
+      {{- else -}}
+      `registry.corp.com/org/image:tag` becomes `{{ $target }}/image:tag`.
+      {{- end }}
+      A registry is a first path segment with `.` or `:` (or `localhost`), Docker Hub images are not normalized: `nginx` becomes
+      `{{ $target }}/nginx`. Images that already start with `{{ $target }}/` or match `excludeRegistries` are left alone. Images that
+      do not exist in the target registry can not be deployed.
 spec:
-  background: false
-  useServerSideApply: true
-  rules:
-    - name: {{ .name }}-containers
-      match:
-        any:
-          - resources:
-              operations:
-                - CREATE # spec.containers cannot be modified on UPDATE
-              kinds:
-                - Pod
-      mutate:
-        foreach:
-          - list: "request.object.spec.containers"
-            preconditions:
-              all:
-                {{- range $excludeRegistry := .excludeRegistries}}
-                - key: "{{`{{element.image}}`}}"
-                  operator: NotEquals
-                  value: "{{ $excludeRegistry }}"
-                {{- end }}
-            patchStrategicMerge:
-              metadata:
-                annotations:
-                  +(clusterpolicies.kyverno.io/{{ .name }}): "Replaced the containers image registry with {{ .target }}"
-              spec:
-                containers:
-                  - name: "{{`{{ element.name }}`}}"
-                    image: "{{ `{{ regex_replace_all(` }} {{ .sourceRegex }} {{ `, '{{ element.image }}', '` }}{{ .target | trimSuffix "/" }}{{ `/$2' )}}` }}"
-    - name: {{ .name }}-initContainers
-      match:
-        any:
-          - resources:
-              operations:
-                - CREATE # spec.initContainers cannot be modified on UPDATE
-              kinds:
-                - Pod
-      preconditions:
-        all:
-          - key: "{{`{{ request.object.spec.initContainers[] || `}}`[]`{{` | length(@) }}`}}"
-            operator: GreaterThanOrEquals
-            value: 1
-      mutate:
-        foreach:
-          - list: "request.object.spec.initContainers"
-            preconditions:
-              all:
-                {{- range $excludeRegistry := .excludeRegistries}}
-                - key: "{{`{{element.image}}`}}"
-                  operator: NotEquals
-                  value: "{{ $excludeRegistry }}"
-                {{- end }}
-            patchStrategicMerge:
-              metadata:
-                annotations:
-                  +(clusterpolicies.kyverno.io/{{ .name }}-initContainers): "Replaced the initContainers image registry with {{ .target }}"
-              spec:
-                initContainers:
-                  - name: "{{`{{ element.name }}`}}"
-                    image: "{{ `{{ regex_replace_all(` }} {{ .sourceRegex }} {{ `, '{{ element.image }}', '` }}{{ .target | trimSuffix "/" }}{{ `/$2' )}}` }}"
-    - name: {{ .name }}-ephemeralContainers
-      match:
-        any:
-          - resources:
-              operations:
-                - UPDATE #ephemeralContainers cannot be specified on CREATE
-              kinds:
-                - Pod
-      preconditions:
-        all:
-          - key: "{{`{{ request.object.spec.ephemeralContainers[] || `}}`[]`{{` | length(@) }}`}}"
-            operator: GreaterThanOrEquals
-            value: 1
-      mutate:
-        foreach:
-          - list: "request.object.spec.ephemeralContainers"
-            preconditions:
-              all:
-                {{- range $excludeRegistry := .excludeRegistries}}
-                - key: "{{`{{element.image}}`}}"
-                  operator: NotEquals
-                  value: "{{$excludeRegistry}}"
-                {{- end }}
-            patchStrategicMerge:
-              metadata:
-                annotations:
-                  +(clusterpolicies.kyverno.io/{{ .name }}-ephemeralContainers): "Replaced the ephemeralContainers image registry with {{ .target }}"
-              spec:
-                ephemeralContainers:
-                  - name: "{{`{{ element.name }}`}}"
-                    image: "{{ `{{ regex_replace_all(` }} {{ .sourceRegex }} {{ `, '{{ element.image }}', '` }}{{ .target | trimSuffix "/" }}{{ `/$2' )}}` }}"
-
----
-{{- end }}
+  failurePolicy: {{ include "kyverno.failurePolicy" . }}
+  autogen:
+    podControllers:
+      controllers: []
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE"]
+        resources: ["pods"]
+  {{- with .excludeNamespaces }}
+  matchConditions:
+    {{- include "kyverno.excludeNamespacesCondition" . | nindent 4 }}
+  {{- end }}
+  variables:
+    - name: target
+      expression: {{ $target | toJson | squote }}
+    - name: pattern
+      expression: r'{{ $pattern }}'
+    {{- if .excludeRegistries }}
+    - name: excluded
+      expression: r'{{ include "kyverno.globToRegex" .excludeRegistries }}'
+    {{- end }}
+    {{- include "kyverno.imageVariables" (dict "image" (include "kyverno.replaceImage" (dict "excluded" .excludeRegistries) | nindent 4)) | nindent 4 }}
+  mutations:
+    - patchType: ApplyConfiguration
+      applyConfiguration:
+        expression: >-
+          {{- include "kyverno.applyContainers" (dict "pod" "" "init" "initContainers") | nindent 10 }}
+  {{- end -}}
 {{- end }}

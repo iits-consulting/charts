@@ -1,0 +1,70 @@
+suite: image verification policy
+templates:
+  - policies/disallow-unsigned-images.yaml
+set:
+  ingress.host: test.example.com
+  disallowUnsignedImages.enabled: true
+
+tests:
+  - it: renders an ImageValidatingPolicy for every image with the default key
+    asserts:
+      - containsDocument: {kind: ImageValidatingPolicy, apiVersion: policies.kyverno.io/v1, name: disallow-unsigned-images}
+      - equal: {path: spec.matchImageReferences, value: [{glob: "*"}]}
+      - isNull: {path: spec.credentials}
+
+  - it: takes failurePolicy and timeoutSeconds from the values
+    set:
+      disallowUnsignedImages: {failurePolicy: Fail, timeoutSeconds: 12}
+    asserts:
+      - equal: {path: spec.failurePolicy, value: Fail}
+      - equal: {path: spec.webhookConfiguration.timeoutSeconds, value: 12}
+
+  - it: ignores the transparency log by default and honors ignoreTransparencyLog false
+    set:
+      disallowUnsignedImages.imagesAndPublicKeyPairs:
+        - {image: "a.io/*", key: "KEY-A"}
+        - {image: "b.io/*", key: "KEY-B", ignoreTransparencyLog: false}
+        - {image: "c.io/*", key: "KEY-C", ignoreTransparencyLog: true}
+    asserts:
+      - equal: {path: "spec.attestors[0].cosign.ctlog.insecureIgnoreTlog", value: true}
+      - equal: {path: "spec.attestors[1].cosign.ctlog.insecureIgnoreTlog", value: false}
+      - equal: {path: "spec.attestors[2].cosign.ctlog.insecureIgnoreTlog", value: true}
+
+  - it: renders one attestor and one validation per image and key pair
+    set:
+      disallowUnsignedImages.imagesAndPublicKeyPairs:
+        - {image: "a.io/*", key: "KEY-A"}
+        - {image: "b.io/team?/*", key: "KEY-B"}
+    asserts:
+      - equal:
+          path: spec.matchImageReferences
+          value: [{glob: "a.io/*"}, {glob: "b.io/team?/*"}]
+      - equal: {path: "spec.attestors[0].name", value: key0}
+      - equal: {path: "spec.attestors[0].cosign.key.data", value: KEY-A}
+      - equal: {path: "spec.attestors[1].name", value: key1}
+      - equal: {path: "spec.attestors[1].cosign.key.data", value: KEY-B}
+      - lengthEqual: {path: spec.validations, count: 2}
+      - matchRegex:
+          path: "spec.validations[1].expression"
+          pattern: "image\\.matches\\(r'\\^\\(\\?:b\\\\\\.io/team\\./\\.\\*\\)\\$'\\)"
+      - matchRegex:
+          path: "spec.validations[1].expression"
+          pattern: 'verifyImageSignatures\(image, \[attestors\.key1\]\) > 0'
+
+  - it: lists each pull secret once as credentials
+    set:
+      disallowUnsignedImages.imagesAndPublicKeyPairs:
+        - {image: "a.io/*", key: "KEY-A", pullSecret: pull-secret-gitlab}
+        - {image: "b.io/*", key: "KEY-B", pullSecret: pull-secret-gitlab}
+        - {image: "c.io/*", key: "KEY-C", pullSecret: pull-secret-other}
+    asserts:
+      - equal:
+          path: spec.credentials.secrets
+          value: [pull-secret-gitlab, pull-secret-other]
+
+  - it: fails without image and key pairs
+    set:
+      disallowUnsignedImages.imagesAndPublicKeyPairs: null
+    asserts:
+      - failedTemplate:
+          errorPattern: imagesAndPublicKeyPairs must not be empty

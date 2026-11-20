@@ -1,0 +1,13 @@
+# Allow list variants: the docker.io wildcard (short names and docker.io spellings), `?` and `*` in the middle of an
+# entry, namespace wildcard, validationAction in lower case
+ingress:
+  host: kyverno.example.com
+disallowUnspecifiedDockerRegistries:
+  enabled: true
+  validationAction: audit
+  allowedRegistries:
+    - "docker.io/*"
+    - "ghcr.io/org/app:v?"
+    - "mirror.*/proxy/*"
+  excludeNamespaces:
+    - "kube-*"

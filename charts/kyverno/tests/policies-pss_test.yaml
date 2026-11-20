@@ -1,0 +1,14 @@
+suite: upstream kyverno-policies as CEL
+templates:
+  - charts/kyverno-policies/templates/baseline/disallow-host-path.cel.yaml
+set:
+  ingress.host: test.example.com
+
+tests:
+  - it: renders a ValidatingPolicy with the global kube-system exclusion
+    asserts:
+      - isKind:
+          of: ValidatingPolicy
+      - equal:
+          path: spec.matchConditions[0].expression
+          value: "!(request.namespace in ['kube-system'])"

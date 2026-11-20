@@ -1,0 +1,267 @@
+apiVersion: v1
+kind: Pod
+metadata:
+    name: img-plain
+    namespace: default
+spec:
+    containers:
+        - image: mysecure-registry.example.com/docker.io/library/nginx
+          name: app
+---
+apiVersion: v1
+kind: Pod
+metadata:
+    name: img-tag
+    namespace: default
+spec:
+    containers:
+        - image: mysecure-registry.example.com/docker.io/library/nginx:1.25
+          name: app
+---
+apiVersion: v1
+kind: Pod
+metadata:
+    name: img-port-registry
+    namespace: default
+spec:
+    containers:
+        - image: mysecure-registry.example.com/localhost:5000/x:1
+          name: app
+---
+apiVersion: v1
+kind: Pod
+metadata:
+    name: img-docker-library
+    namespace: default
+spec:
+    containers:
+        - image: mysecure-registry.example.com/docker.io/library/nginx:1.25
+          name: app
+---
+apiVersion: v1
+kind: Pod
+metadata:
+    name: img-docker-org
+    namespace: default
+spec:
+    containers:
+        - image: mysecure-registry.example.com/docker.io/bitnami/redis:7
+          name: app
+---
+apiVersion: v1
+kind: Pod
+metadata:
+    name: img-org-no-registry
+    namespace: default
+spec:
+    containers:
+        - image: mysecure-registry.example.com/docker.io/bitnami/redis:7
+          name: app
+---
+apiVersion: v1
+kind: Pod
+metadata:
+    name: img-ghcr-org
+    namespace: default
+spec:
+    containers:
+        - image: mysecure-registry.example.com/ghcr.io/org/app:v1
+          name: app
+---
+apiVersion: v1
+kind: Pod
+metadata:
+    name: img-ghcr-other
+    namespace: default
+spec:
+    containers:
+        - image: mysecure-registry.example.com/ghcr.io/other/app:v1
+          name: app
+---
+apiVersion: v1
+kind: Pod
+metadata:
+    name: img-ghcr-deep
+    namespace: default
+spec:
+    containers:
+        - image: mysecure-registry.example.com/ghcr.io/org/team/app:v1
+          name: app
+---
+apiVersion: v1
+kind: Pod
+metadata:
+    name: img-mirror
+    namespace: default
+spec:
+    containers:
+        - image: mysecure-registry.example.com/mirror.example.com/proxy/app:v1
+          name: app
+---
+apiVersion: v1
+kind: Pod
+metadata:
+    name: img-default-allowed
+    namespace: default
+spec:
+    containers:
+        - image: mysecure-registry.example.com/docker.io/mysecure-registry/common-signed-docker-images/app:1
+          name: app
+---
+apiVersion: v1
+kind: Pod
+metadata:
+    name: img-busybox-excluded
+    namespace: default
+spec:
+    containers:
+        - image: mysecure-registry.example.com/docker.io/library/busybox:1.36
+          name: app
+---
+apiVersion: v1
+kind: Pod
+metadata:
+    name: img-localhost-allowed
+    namespace: default
+spec:
+    containers:
+        - image: mysecure-registry.example.com/localhost:5000/app:2
+          name: app
+---
+apiVersion: v1
+kind: Pod
+metadata:
+    name: img-kube-system
+    namespace: kube-system
+spec:
+    containers:
+        - image: mysecure-registry.example.com/registry.k8s.io/pause:3.9
+          name: app
+---
+apiVersion: v1
+kind: Pod
+metadata:
+    name: img-kube-system-ghcr
+    namespace: kube-system
+spec:
+    containers:
+        - image: mysecure-registry.example.com/ghcr.io/other/app:v1
+          name: app
+---
+apiVersion: v1
+kind: Pod
+metadata:
+    name: struct-init
+    namespace: default
+spec:
+    containers:
+        - image: mysecure-registry.example.com/docker.io/library/nginx:1.25
+          name: app
+    initContainers:
+        - image: mysecure-registry.example.com/docker.io/library/busybox:1.36
+          name: init
+---
+apiVersion: v1
+kind: Pod
+metadata:
+    name: struct-init-ghcr
+    namespace: default
+spec:
+    containers:
+        - image: mysecure-registry.example.com/ghcr.io/org/app:v1
+          name: app
+    initContainers:
+        - image: mysecure-registry.example.com/ghcr.io/org/app:v1
+          name: init
+        - image: mysecure-registry.example.com/ghcr.io/other/tool:2
+          name: init2
+---
+apiVersion: v1
+kind: Pod
+metadata:
+    name: struct-multi
+    namespace: default
+spec:
+    containers:
+        - image: mysecure-registry.example.com/ghcr.io/org/app:v1
+          name: app
+        - image: mysecure-registry.example.com/docker.io/library/envoy:1.30
+          name: sidecar
+        - image: mysecure-registry.example.com/ghcr.io/other/app:v1
+          name: other
+    initContainers:
+        - image: mysecure-registry.example.com/docker.io/library/busybox:1.36
+          name: init
+---
+apiVersion: v1
+kind: Pod
+metadata:
+    name: struct-allowed-all
+    namespace: default
+spec:
+    containers:
+        - image: mysecure-registry.example.com/ghcr.io/org/app:v1
+          name: app
+        - image: mysecure-registry.example.com/mirror.example.com/proxy/side:2
+          name: sidecar
+    ephemeralContainers:
+        - image: localhost:5000/debug:1
+          name: debug
+    initContainers:
+        - image: mysecure-registry.example.com/ghcr.io/org/init:1
+          name: init
+---
+apiVersion: v1
+kind: Pod
+metadata:
+    name: img-digest
+    namespace: default
+spec:
+    containers:
+        - image: mysecure-registry.example.com/docker.io/library/nginx@sha256:0000000000000000000000000000000000000000000000000000000000000001
+          name: app
+---
+apiVersion: v1
+kind: Pod
+metadata:
+    name: img-tag-digest
+    namespace: default
+spec:
+    containers:
+        - image: mysecure-registry.example.com/docker.io/library/nginx:1.25@sha256:0000000000000000000000000000000000000000000000000000000000000001
+          name: app
+---
+apiVersion: v1
+kind: Pod
+metadata:
+    name: img-digest-ghcr-org
+    namespace: default
+spec:
+    containers:
+        - image: mysecure-registry.example.com/ghcr.io/org/app@sha256:0000000000000000000000000000000000000000000000000000000000000001
+          name: app
+---
+apiVersion: v1
+kind: Pod
+metadata:
+    name: struct-ephemeral
+    namespace: default
+spec:
+    containers:
+        - image: mysecure-registry.example.com/docker.io/library/nginx:1.25
+          name: app
+    ephemeralContainers:
+        - image: busybox:1.36
+          name: debug
+---
+apiVersion: v1
+kind: Pod
+metadata:
+    name: struct-multi-bad-last
+    namespace: default
+spec:
+    containers:
+        - image: mysecure-registry.example.com/mirror.example.com/proxy/app:v1
+          name: app
+        - image: mysecure-registry.example.com/ghcr.io/other/app:v1
+          name: sidecar

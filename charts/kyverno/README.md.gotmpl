@@ -1,0 +1,120 @@
+{{ template "chart.header" . }}
+{{ template "chart.deprecationWarning" . }}
+
+{{ template "chart.badgesSection" . }}
+
+{{ template "chart.description" . }}
+
+{{ template "chart.homepageLine" . }}
+
+{{ template "chart.maintainersSection" . }}
+
+{{ template "chart.sourcesSection" . }}
+
+{{ template "chart.requirementsSection" . }}
+
+## Image pull secrets
+
+`autoInjectDockerPullSecrets` has two jobs, each handled by its own policy:
+
+- **Inject** (`add-image-pull-secret`, MutatingPolicy): adds secret names to `spec.imagePullSecrets` of new Pods. Names already on the Pod are kept. A Pod only references a Secret by name, so the Secret must exist in the Pod's namespace.
+- **Clone** (`auto-create-docker-<name>`, one GeneratingPolicy per secret): copies a source Secret into the target namespaces, including namespaces created later. Changes to the source reach the clones, and a deleted clone is recreated. Deleting the source deletes every clone.
+
+Each entry chooses whether Kyverno clones it:
+
+| Value | Who puts the Secret into the target namespaces | Clone | Inject |
+|---|---|---|---|
+| `secrets.<key>` | The chart creates `pull-secret-<key>` in the release namespace, Kyverno clones it | yes | yes |
+| `existingSecretRef[]` | You create it once in `namespace` (default: release namespace), Kyverno clones it | yes | yes |
+| `injectOnly[]` | You, in every target namespace, e.g. with an External Secrets `ClusterExternalSecret` | no | yes |
+
+### Per-namespace targeting
+
+Every entry takes an optional `namespaces` list of wildcards (`*`, `?`). If it is not set, the entry targets all namespaces. The list limits both the clone and the injection:
+
+```yaml
+autoInjectDockerPullSecrets:
+  enabled: true
+  injectOnly:
+    - name: ps-x
+      namespaces: [team-a, team-b]
+    - name: ps-y
+      namespaces: [team-a, team-c, team-d]
+```
+
+Pods in `team-a` get `ps-x` and `ps-y`, Pods in `team-c` get `ps-y`, and Pods in other namespaces are left alone.
+
+Every entry also takes an optional `namespaceSelector` (`matchLabels`, `matchExpressions` with `In`, `NotIn`, `Exists`, `DoesNotExist`) on the namespace labels:
+
+```yaml
+autoInjectDockerPullSecrets:
+  enabled: true
+  injectOnly:
+    - name: ps-z
+      namespaces: ["team-*"]
+      namespaceSelector:
+        matchLabels:
+          pull-secret/ps-z: "true"
+```
+
+A namespace is a target if it matches `namespaces` (all if unset) and `namespaceSelector` (all if unset), and not `excludeNamespaces` (default: `kube-system`, `kube-public`, `kube-node-lease`). Label changes take effect without a values change: adding a matching label creates the clone, removing it deletes the clone, and new Pods follow the current labels. Kyverno never clones a Secret into its own source namespace.
+
+### External Secrets (recommended: `injectOnly`)
+
+Let External Secrets create the pull secret in every target namespace with a `ClusterExternalSecret`, and let Kyverno only inject it. This chart does not create the `ClusterSecretStore` or the `ClusterExternalSecret`. Manage them with your External Secrets setup.
+
+```yaml
+apiVersion: external-secrets.io/v1
+kind: ClusterExternalSecret
+metadata:
+  name: ps-x
+spec:
+  externalSecretName: ps-x
+  namespaces: [team-a, team-b]    # or namespaceSelectors, must match injectOnly[].namespaces or namespaceSelector
+  externalSecretSpec:
+    secretStoreRef:
+      kind: ClusterSecretStore
+      name: <your-store>
+    target:
+      name: ps-x
+      template:
+        type: kubernetes.io/dockerconfigjson
+        data:
+          .dockerconfigjson: '{"auths":{"registry.example.com":{"auth":"{{ `{{ printf "%s:%s" .username .password | b64enc }}` }}"}}}'
+    data:
+      - secretKey: username
+        remoteRef: {key: path/to/secret, property: username}
+      - secretKey: password
+        remoteRef: {key: path/to/secret, property: password}
+```
+
+Keep both namespace lists in sync. `ClusterExternalSecret.spec.namespaces` takes exact names, `injectOnly[].namespaces` takes wildcards. If a namespace is in the Kyverno list but has no Secret, the Pod is still created, the kubelet logs a warning and image pulls that need the credentials fail.
+
+Mapping of the `ClusterExternalSecret` to the entry:
+
+| `ClusterExternalSecret` | `injectOnly[]` entry |
+|---|---|
+| `namespaces: [a, b]` | `namespaces: [a, b]` |
+| `namespaceSelectors` on any label | the same selector as `namespaceSelector`. Several `namespaceSelectors` are ORed, one `namespaceSelector` is not: use one entry per selector |
+| `namespaceSelectors` with `kubernetes.io/metadata.name` `NotIn` | no `namespaces`, the list in `autoInjectDockerPullSecrets.excludeNamespaces` |
+
+Cloning an ExternalSecret target through `existingSecretRef` also works, but it is not recommended:
+
+- Namespaces that exist before External Secrets creates the source get no clone. Kyverno does not retry once the source appears. This happens when the ExternalSecret is in the same release. Create the source first (e.g. an Argo CD sync wave plus a health check), or trigger the namespaces again with `kubectl annotate ns --all kyverno-resync=$(date +%s) --overwrite`.
+- Deleting or replacing the ExternalSecret deletes the source and every clone in the cluster, unless the ExternalSecret has `creationPolicy: Orphan`. For a `common.externalSecret.pull.secrets` entry cloned through `existingSecretRef` in the release namespace, the chart fails to render without `Orphan`. Opt out with `autoInjectDockerPullSecrets.allowOwnedExternalSecret: true`.
+- The clones carry the ExternalSecret's metadata (`reconcile.external-secrets.io/*`), without effect.
+
+Cost of `injectOnly`: External Secrets syncs one ExternalSecret per namespace against the backend instead of one in total.
+
+### Removing a pull secret
+
+Deleting a clone by hand does not work, Kyverno recreates it. Change the values instead:
+
+- **From some namespaces**: remove them from the entry's `namespaces`, add them to `excludeNamespaces` or remove the label its `namespaceSelector` matches. Kyverno deletes the clones there. For `injectOnly`, also remove them from the `ClusterExternalSecret`.
+- **`secrets.<key>`**: remove the key. The chart deletes the source and Kyverno deletes every clone.
+- **`existingSecretRef[]`**: delete the source Secret first (for an ExternalSecret with `creationPolicy: Orphan`, delete the ExternalSecret and then the Secret). Kyverno deletes every clone. Then remove the entry. If you remove the entry first, the clones stay: `kubectl delete secret -A -l generate.kyverno.io/policy-name=auto-create-docker-<name>`.
+- **`injectOnly[]`**: delete the `ClusterExternalSecret` (with `creationPolicy: Orphan`, also the Secrets), then remove the entry.
+
+{{ template "chart.valuesSection" . }}
+
+{{ template "helm-docs.versionFooter" . }}

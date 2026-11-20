@@ -1,0 +1,5 @@
+# Release namespace of the fixtures, the source of the cloned pull secrets (never a clone target)
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: kyverno

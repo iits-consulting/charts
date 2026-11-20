@@ -1,53 +1,55 @@
-{{ with .Values.disallowUnspecifiedDockerRegistries }}
-{{ if .enabled }}
-
-apiVersion: kyverno.io/v1
-kind: ClusterPolicy
+{{- with .Values.disallowUnspecifiedDockerRegistries -}}
+  {{- if .enabled -}}
+    {{- if not .allowedRegistries -}}
+      {{- fail "disallowUnspecifiedDockerRegistries: allowedRegistries must not be empty, the policy would deny every image" -}}
+    {{- end -}}
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
 metadata:
   name: {{ .name }}
+  labels:
+    {{- include "kyverno.policyLabels" $ | nindent 4 }}
   annotations:
     policies.kyverno.io/severity: high
     policies.kyverno.io/subject: Pod
     policies.kyverno.io/category: DockerImage
     policies.kyverno.io/title: Disallow unspecified Docker Registries
-    pod-policies.kyverno.io/autogen-controllers: none
     policies.kyverno.io/description: >-
-      Docker Images are only allowed from specific Registries
+      Images must match `allowedRegistries`, as written or in their normalized form (`nginx` is `docker.io/library/nginx:latest`).
 spec:
-  rules:
-    - name: "{{ .name }}-rule"
-      match:
-        any:
-          - resources:
-              operations:
-                - CREATE
-                - UPDATE
-              kinds:
-                - Pod
-      validate:
-        failureAction: {{ .validationAction }}
-        message: >-
-          Unknown image registries. Expected images to match: {{ join " | " .allowedRegistries | quote}}.
-          Found:
-            ephemeralContainers={{`{{ request.object.spec.ephemeralContainers[*].image }}`}},
-            initContainers={{`{{ request.object.spec.initContainers[*].image }}`}},
-            containers={{`{{ request.object.spec.containers[*].image }}`}}
-        pattern:
-          spec:
-            =(ephemeralContainers):
-              - image: {{ join " | " .allowedRegistries | quote}}
-            =(initContainers):
-              - image: {{ join " | " .allowedRegistries | quote}}
-            containers:
-              - image: {{ join " | " .allowedRegistries | quote}}
-      {{- if .excludeNamespaces }}
-      exclude:
-        any:
-          - resources:
-              namespaces:
-              {{- range .excludeNamespaces }}
-                - {{ . }}
-              {{- end }}
-      {{- end }}
-{{ end }}
-{{ end }}
+  validationActions:
+    {{- include "kyverno.validationActions" .validationAction | nindent 4 }}
+  failurePolicy: {{ include "kyverno.failurePolicy" . }}
+  autogen:
+    podControllers:
+      controllers: []
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["pods", "pods/ephemeralcontainers"]
+  {{- with .excludeNamespaces }}
+  matchConditions:
+    {{- include "kyverno.excludeNamespacesCondition" . | nindent 4 }}
+  {{- end }}
+  variables:
+    - name: allowed
+      expression: >-
+        r'{{ include "kyverno.globToRegex" .allowedRegistries }}'
+    {{- include "kyverno.imagesVariable" . | nindent 4 }}
+    - name: violations
+      expression: >-
+        variables.images.filter(i, !(i.matches(variables.allowed) ||
+        (isImage(i) && (
+        (image(i).registry() == "index.docker.io" ? "docker.io" : image(i).registry()) + "/" + image(i).repository() +
+        (image(i).tag() != "" ? ":" + image(i).tag() : "") +
+        (image(i).containsDigest() ? "@" + image(i).digest() : "")
+        ).matches(variables.allowed))))
+  validations:
+    - expression: size(variables.violations) == 0
+      messageExpression: >-
+        "Unknown image registries. Expected images to match: " + {{ join " | " .allowedRegistries | toJson }} +
+        ". Found: " + variables.violations.join(", ")
+  {{- end -}}
+{{- end }}

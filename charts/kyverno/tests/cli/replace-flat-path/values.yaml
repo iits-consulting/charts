@@ -1,0 +1,11 @@
+# replaceImageRegistry with keepRepositoryPath false (flat layout)
+ingress:
+  host: kyverno.example.com
+replaceImageRegistry:
+  enabled: true
+  target: "mirror.example.com/proxy/"
+  keepRepositoryPath: false
+  excludeRegistries:
+    - "docker.io/library/busybox:1.36"
+  excludeNamespaces:
+    - kube-*

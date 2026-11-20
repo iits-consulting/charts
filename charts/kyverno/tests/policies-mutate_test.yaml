@@ -1,0 +1,38 @@
+suite: CEL mutate policies
+templates:
+  - policies/enforce-security-context.yaml
+  - policies/prepend-image-registry.yaml
+  - policies/replace-image-registry.yaml
+set:
+  ingress.host: test.example.com
+
+tests:
+  - it: takes name and failurePolicy from the values
+    set:
+      prependCustomImageRegistry: {enabled: true, name: my-prepend, failurePolicy: Ignore}
+      enforceSecurityContext: {enabled: true, name: my-sc, failurePolicy: Ignore}
+    asserts:
+      - equal: {path: metadata.name, value: my-prepend}
+        template: policies/prepend-image-registry.yaml
+      - equal: {path: spec.failurePolicy, value: Ignore}
+        template: policies/prepend-image-registry.yaml
+      - equal: {path: metadata.name, value: my-sc}
+        template: policies/enforce-security-context.yaml
+      - equal: {path: spec.failurePolicy, value: Ignore}
+        template: policies/enforce-security-context.yaml
+
+  - it: replace takes name and failurePolicy from the values
+    template: policies/replace-image-registry.yaml
+    set:
+      replaceImageRegistry: {enabled: true, name: my-replace, failurePolicy: Ignore}
+    asserts:
+      - equal: {path: metadata.name, value: my-replace}
+      - equal: {path: spec.failurePolicy, value: Ignore}
+
+  - it: replace fails on a target with a backslash
+    template: policies/replace-image-registry.yaml
+    set:
+      replaceImageRegistry: {enabled: true, target: 'a\1'}
+    asserts:
+      - failedTemplate:
+          errorMessage: replaceImageRegistry.target must not contain backslashes

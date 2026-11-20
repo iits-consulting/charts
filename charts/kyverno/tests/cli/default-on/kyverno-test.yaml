@@ -1,0 +1,150 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: default-on
+context: context.yaml
+policies:
+  - ../.rendered/default-on/auto-create-docker-existing-regcred.yaml
+  - ../.rendered/default-on/auto-create-docker-pull-secret-gitlab.yaml
+  - ../.rendered/default-on/disallow-empty-ingress-host.yaml
+  - ../.rendered/default-on/disallow-latest-tag.yaml
+  - ../.rendered/default-on/disallow-unspecified-docker-registries.yaml
+  - ../.rendered/default-on/require-ingress-https.yaml
+  - ../.rendered/default-on/restrict-ingress-wildcard.yaml
+resources:
+  - ../resources/namespaces.yaml
+  - ../resources/namespace-kyverno.yaml
+  - ../resources/ingresses.yaml
+  - ../resources/ingresses-host-edge.yaml
+  - ../resources/pods-tags.yaml
+  - ../resources/pods-images.yaml
+  - ../resources/pods-structure.yaml
+  - ../resources/pods-init.yaml
+  - ../resources/pods-digest.yaml
+  - ../resources/ingresses-new-policies.yaml
+results:
+  - policy: auto-create-docker-existing-regcred
+    isGeneratingPolicy: true
+    kind: Namespace
+    resources:
+      - ns-new
+    result: pass
+    generatedResource: generated-ns-new-existing-regcred.yaml
+  - policy: auto-create-docker-existing-regcred
+    isGeneratingPolicy: true
+    kind: Namespace
+    resources:
+      - kube-system
+      - kube-public
+      - kube-node-lease
+      - kyverno
+    result: skip
+  - policy: auto-create-docker-pull-secret-gitlab
+    isGeneratingPolicy: true
+    kind: Namespace
+    resources:
+      - ns-new
+    result: pass
+    generatedResource: generated-ns-new-pull-secret-gitlab.yaml
+  - policy: auto-create-docker-pull-secret-gitlab
+    isGeneratingPolicy: true
+    kind: Namespace
+    resources:
+      - kube-system
+      - kube-public
+      - kube-node-lease
+      - kyverno
+    result: skip
+  - policy: disallow-empty-ingress-host
+    isValidatingPolicy: true
+    kind: Ingress
+    resources:
+      - ing-good
+      - ing-good-multi
+      - ing-no-rules
+      - ing-tls-only
+      - host-without-http
+    result: pass
+  - policy: disallow-empty-ingress-host
+    isValidatingPolicy: true
+    kind: Ingress
+    resources:
+      - ing-mixed
+      - ing-no-host
+      - legacy/legacy-ing
+      - other-ing
+      - other/legacy-ing
+      - hostless-second-rule
+      - default/legacy-ing
+    result: fail
+  - policy: disallow-latest-tag
+    isValidatingPolicy: true
+    kind: Pod
+    resources:
+      - tag-pinned
+      - tag-port-registry-pinned
+      - tag-digest-only
+      - tag-latest-with-digest
+    result: pass
+  - policy: disallow-latest-tag
+    isValidatingPolicy: true
+    kind: Pod
+    resources:
+      - tag-latest
+      - tag-missing
+      - tag-missing-port-registry
+      - tag-init-latest
+      - tag-ephemeral-missing
+      - tag-kube-system-latest
+    result: fail
+  - policy: disallow-unspecified-docker-registries
+    isValidatingPolicy: true
+    kind: Pod
+    resources:
+      - img-default-allowed
+    result: pass
+  - policy: disallow-unspecified-docker-registries
+    isValidatingPolicy: true
+    kind: Pod
+    resources:
+      - img-plain
+      - img-ghcr-org
+      - img-kube-system
+      - struct-init
+      - struct-ephemeral
+      - struct-multi-bad-last
+    result: fail
+  - policy: require-ingress-https
+    isValidatingPolicy: true
+    kind: Ingress
+    resources:
+      - ing-tls-good
+      - ing-wildcard-tls
+      - ing-wildcard-second-rule
+    result: pass
+  - policy: require-ingress-https
+    isValidatingPolicy: true
+    kind: Ingress
+    resources:
+      - ing-no-tls
+      - ing-default-backend-only
+      - wild-excluded
+      - ing-kube-system-no-tls
+    result: fail
+  - policy: restrict-ingress-wildcard
+    isValidatingPolicy: true
+    kind: Ingress
+    resources:
+      - ing-tls-good
+      - ing-no-tls
+      - ing-default-backend-only
+      - ing-kube-system-no-tls
+    result: pass
+  - policy: restrict-ingress-wildcard
+    isValidatingPolicy: true
+    kind: Ingress
+    resources:
+      - ing-wildcard-tls
+      - ing-wildcard-second-rule
+      - wild-excluded
+    result: fail

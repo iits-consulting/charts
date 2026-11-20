@@ -1,62 +1,82 @@
-{{ with .Values.disallowUnsignedImages }}
-{{ if .enabled }}
-apiVersion: kyverno.io/v1
-kind: ClusterPolicy
+{{- with .Values.disallowUnsignedImages -}}
+  {{- if .enabled -}}
+    {{- $pairs := .imagesAndPublicKeyPairs | default list -}}
+    {{- if not $pairs -}}
+      {{- fail "disallowUnsignedImages: imagesAndPublicKeyPairs must not be empty" -}}
+    {{- end -}}
+    {{- $secrets := list -}}
+    {{- $images := list -}}
+    {{- range $pairs -}}
+      {{- $images = append $images .image -}}
+      {{- if .pullSecret -}}{{- $secrets = append $secrets .pullSecret -}}{{- end -}}
+    {{- end -}}
+apiVersion: policies.kyverno.io/v1
+kind: ImageValidatingPolicy
 metadata:
   name: {{ .name }}
+  labels:
+    {{- include "kyverno.policyLabels" $ | nindent 4 }}
   annotations:
     policies.kyverno.io/severity: high
     policies.kyverno.io/subject: Pod
     policies.kyverno.io/category: DockerImage
     policies.kyverno.io/title: Disallow Unsigned Images
-    pod-policies.kyverno.io/autogen-controllers: none
     policies.kyverno.io/description: >-
-      Images needs to be signed with a specific private cosign key
+      Images matching `imagesAndPublicKeyPairs` must be signed with the configured cosign key.
 spec:
+  validationActions:
+    - Deny
+  failurePolicy: {{ include "kyverno.failurePolicy" . }}
   webhookConfiguration:
-    failurePolicy: {{ .failurePolicy }}
     timeoutSeconds: {{ .timeoutSeconds }}
-  useServerSideApply: true
-  validationFailureAction: Enforce
-  rules:
-    - name: "{{ .name }}-rule"
-      match:
-        any:
-          - resources:
-              operations:
-                - CREATE
-                - UPDATE
-              kinds:
-                - Pod
-    {{- with .excludeNamespaces}}
-      exclude:
-        any:
-          - resources:
-              namespaces:
-            {{- range . }}
-                - {{ . }}
-            {{- end }}
-      {{- end }}
-      verifyImages:
-    {{- range .imagesAndPublicKeyPairs }}
-        - type: Cosign
-          imageReferences:
-            - {{ .image | quote}}
-        {{- if .pullSecret }}
-          imageRegistryCredentials:
-            secrets:
-              - {{ .pullSecret }}
-        {{- end }}
-          required: true
-          mutateDigest: true
-          verifyDigest: true
-          attestors:
-            - entries:
-                - keys:
-                    publicKeys: |-
-{{ .key | indent 24 }}
-                    rekor:
-                      ignoreTlog: {{ .ignoreTransparencyLog | default true }}
+  evaluation:
+    background:
+      enabled: false
+  autogen:
+    podControllers:
+      controllers: []
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["pods"]
+  {{- with .excludeNamespaces }}
+  matchConditions:
+    {{- include "kyverno.excludeNamespacesCondition" . | nindent 4 }}
+  {{- end }}
+  matchImageReferences:
+    {{- range $images | uniq }}
+    - glob: {{ . | quote }}
     {{- end }}
-{{ end }}
-{{ end }}
+  {{- if $secrets }}
+  credentials:
+    secrets:
+      {{- range $secrets | uniq }}
+      - {{ . | quote }}
+      {{- end }}
+  {{- end }}
+  validationConfigurations:
+    required: true
+    mutateDigest: true
+    verifyDigest: true
+  attestors:
+    {{- range $i, $pair := $pairs }}
+    - name: key{{ $i }}
+      cosign:
+        key:
+          data: |-
+            {{- $pair.key | nindent 12 }}
+        ctlog:
+          insecureIgnoreTlog: {{ ne (toString $pair.ignoreTransparencyLog) "false" }}
+    {{- end }}
+  validations:
+    {{- range $i, $pair := $pairs }}
+    - expression: >-
+        (images.containers + images.initContainers + images.ephemeralContainers)
+        .filter(image, image.matches(r'{{ include "kyverno.globToRegex" (list $pair.image) }}'))
+        .all(image, verifyImageSignatures(image, [attestors.key{{ $i }}]) > 0)
+      message: {{ printf "Images matching %s must be signed with the configured cosign key" $pair.image | quote }}
+    {{- end }}
+  {{- end -}}
+{{- end }}

@@ -1,45 +1,49 @@
+{{- $reporter := index .Values "policy-reporter" }}
 {{- with .Values.ingress }}
-{{- if .enabled }}
+{{- if and .enabled $reporter.install $reporter.ui.enabled }}
+{{- $_ := required "ingress.host is required when ingress.enabled is true" .host }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ include "kyverno.fullname" $ }}
   {{- with .labels }}
+  labels:
     {{- toYaml . | nindent 4 }}
   {{- end }}
   {{- with .annotations }}
   annotations:
-    iits-consulting.chart-creator/version: 1.4.0
     {{- tpl (toYaml .) $ | nindent 4 }}
   {{- end }}
 spec:
-  {{ if .className }}
-  ingressClassName: {{ .className }}
-    {{- end }}
-
+  {{- with .className }}
+  ingressClassName: {{ . }}
+  {{- end }}
+  {{- with .tls }}
   tls:
+    {{- range . }}
     - hosts:
-      {{- range .rules }}
-        - {{ tpl (toYaml .host) $ }}
-      {{- if .secretName }}
-      secretName: {{ .secretName }}
+        {{- range .hosts }}
+        - {{ tpl . $ | quote }}
+        {{- end }}
+      {{- with .secretName }}
+      secretName: {{ tpl . $ | quote }}
       {{- end }}
-      {{- end }}
-
+    {{- end }}
+  {{- end }}
   rules:
-        {{- range .rules }}
-    - host: {{ tpl (toYaml .host) $ }}
+    {{- range .rules }}
+    - host: {{ tpl .host $ | quote }}
       http:
         paths:
-              {{- range .paths }}
+          {{- range .paths }}
           - path: {{ .path | quote }}
-            pathType: {{ .pathType | default "Prefix"}}
+            pathType: {{ .pathType | default "Prefix" }}
             backend:
               service:
-                name: "policy-reporter-ui"
+                name: policy-reporter-ui
                 port:
-                  name: "http"
-              {{- end }}
-        {{- end }}
+                  name: http
+          {{- end }}
     {{- end }}
+{{- end }}
 {{- end }}
