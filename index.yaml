@@ -1999,6 +1999,24 @@ entries:
   elastic-operator:
   - apiVersion: v2
     appVersion: 9.5.6
+    created: "2026-11-20T08:23:58.326951834Z"
+    dependencies:
+    - name: eck-operator
+      repository: https://helm.elastic.co
+      version: 3.5.0
+    - name: common
+      repository: https://charts.iits.tech
+      version: 0.4.0
+    description: 'Elasticsearch + filebeat + kibana with default common used indexes
+      and Index Lifecycle Management. It comes also with a backup functionality. This
+      is the version using ECK-operator to deploy and monitor the stack. '
+    digest: 3338cc516581af98cebad4e4d2d043a900f1aa573b65508ee5fcad72a8bf553b
+    name: elastic-operator
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/elastic-operator-9.5.7/elastic-operator-9.5.7.tgz
+    version: 9.5.7
+  - apiVersion: v2
+    appVersion: 9.5.6
     created: "2026-11-06T14:35:14.530918391Z"
     dependencies:
     - name: eck-operator
@@ -2176,21 +2194,6 @@ entries:
     version: 8.18.1
   - apiVersion: v2
     appVersion: 8.18.1
-    created: "2025-05-12T13:17:37.798819395Z"
-    dependencies:
-    - name: eck-operator
-      repository: https://helm.elastic.co
-      version: 3.0.0
-    description: 'Elasticsearch + filebeat + kibana with default common used indexes
-      and Index Lifecycle Management. It comes also with a backup functionality. This
-      is the version using ECK-operator to deploy and monitor the stack. '
-    digest: 78617bcc3928fa64fcc6cf0761c8c48ecdaefcb3cc20088c161accaa41a6e753
-    name: elastic-operator
-    urls:
-    - https://github.com/iits-consulting/charts/releases/download/elastic-operator-8.18.1-fb-tolerations/elastic-operator-8.18.1-fb-tolerations.tgz
-    version: 8.18.1-fb-tolerations
-  - apiVersion: v2
-    appVersion: 8.18.1
     created: "2025-05-14T13:10:33.584035647Z"
     dependencies:
     - name: eck-operator
@@ -2215,6 +2218,21 @@ entries:
       and Index Lifecycle Management. It comes also with a backup functionality. This
       is the version using ECK-operator to deploy and monitor the stack. '
     digest: c75aecf31a5b666721fc5d70e203cd2ae2ec90ee07c92dad84a5c9799546ab70
+    name: elastic-operator
+    urls:
+    - https://github.com/iits-consulting/charts/releases/download/elastic-operator-8.18.1-fb-tolerations/elastic-operator-8.18.1-fb-tolerations.tgz
+    version: 8.18.1-fb-tolerations
+  - apiVersion: v2
+    appVersion: 8.18.1
+    created: "2025-05-12T13:17:37.798819395Z"
+    dependencies:
+    - name: eck-operator
+      repository: https://helm.elastic.co
+      version: 3.0.0
+    description: 'Elasticsearch + filebeat + kibana with default common used indexes
+      and Index Lifecycle Management. It comes also with a backup functionality. This
+      is the version using ECK-operator to deploy and monitor the stack. '
+    digest: 78617bcc3928fa64fcc6cf0761c8c48ecdaefcb3cc20088c161accaa41a6e753
     name: elastic-operator
     urls:
     - https://github.com/iits-consulting/charts/releases/download/elastic-operator-8.18.1-fb-tolerations/elastic-operator-8.18.1-fb-tolerations.tgz
@@ -8745,4 +8763,4 @@ entries:
     urls:
     - https://github.com/iits-consulting/charts/releases/download/waf-cert-uploader-0.1.1/waf-cert-uploader-0.1.1.tgz
     version: 0.1.1
-generated: "2026-11-19T10:50:23.358425298Z"
+generated: "2026-11-20T08:23:58.327666602Z"
