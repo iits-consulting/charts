@@ -68,7 +68,7 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | elasticsearch.javaOpts | string | `""` |  |
 | elasticsearch.nodeCount | int | `2` |  |
 | elasticsearch.podTemplateSpec.containers[0].env[0].name | string | `"ES_JAVA_OPTS"` |  |
-| elasticsearch.podTemplateSpec.containers[0].env[0].value | string | `"-XX:-UseBASE64Intrinsics{{ with include \"elasticOperator.elasticSearch.s3ChecksumJavaOpts\" . }} {{ . }}{{ end }} {{ .Values.elasticsearch.javaOpts }}"` |  |
+| elasticsearch.podTemplateSpec.containers[0].env[0].value | string | `"-XX:-UseBASE64Intrinsics {{ with include \"elasticOperator.elasticSearch.s3ChecksumJavaOpts\" . }}{{ . }}{{ end }} {{ .Values.elasticsearch.javaOpts }}"` |  |
 | elasticsearch.podTemplateSpec.containers[0].name | string | `"elasticsearch"` |  |
 | elasticsearch.podTemplateSpec.containers[0].resources.limits.memory | string | `"{{ .Values.elasticsearch.resources.limits.memory }}"` |  |
 | elasticsearch.podTemplateSpec.containers[0].resources.requests.cpu | string | `"{{ .Values.elasticsearch.resources.requests.cpu }}"` |  |
