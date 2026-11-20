@@ -2,6 +2,10 @@
 
 Descriptions on actions needed, when upgrading within our chart defaults to the mentioned verions
 
+## 7.4.0
+
+- `allowAdminRoleMapping` on IdP must be explicitly set to `true` so that their mappers can still assign groups that grant administrative roles
+
 ## 7.3.1
 
  - Restart the Keycloak pods after `helm upgrade` (`kubectl rollout restart statefulset/<name>`). The flag is set via the `-env` ConfigMap, which does not trigger a restart on its own.
@@ -14,4 +18,4 @@ Descriptions on actions needed, when upgrading within our chart defaults to the 
 
 ## to 7.3.0
 
- - Deprecation warnings about `WebAuthn policy option 'requireResidentKey'` and `identity-brokering-api:v1, twitter-broker:v1` (coming from 7.1.8, can be ignored in our standard setups)
+- Deprecation warnings about `WebAuthn policy option 'requireResidentKey'` and `identity-brokering-api:v1, twitter-broker:v1` (coming from 7.1.8, can be ignored in our standard setups)

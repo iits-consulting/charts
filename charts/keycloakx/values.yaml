@@ -13,7 +13,7 @@ keycloakx:
   database:
     vendor: ""
     hostname: ""
-    port: ""
+    port: null
     database: ""
     username: ""
     password: ""
@@ -58,6 +58,13 @@ keycloakx:
     - maxSkew: 1
       topologyKey: topology.kubernetes.io/zone
       whenUnsatisfiable: "DoNotSchedule"
+
+  podSecurityContext:
+    seccompProfile:
+      type: RuntimeDefault
+
+  securityContext:
+    allowPrivilegeEscalation: false
 
   serviceMonitor:
     enabled: true
