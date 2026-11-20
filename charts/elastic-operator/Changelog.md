@@ -2,6 +2,15 @@
 
 All notable changes to this chart will be documented in this file.
 
+## [9.5.7] - 2026-11-19
+
+### Security
+- Mitigate CVE-2026-114938 (Java4Shell) by prepending `-XX:-UseBASE64Intrinsics` to the default `ES_JAVA_OPTS` of the Elasticsearch nodes, including the voting-only node (no Elastic stack or ECK operator update, `appVersion` stays `9.5.6`)
+
+> **Note:** for an upgrade guide, refer to [UPGRADE.md](UPGRADE.md)
+
+[9.5.7]: https://github.com/iits-consulting/charts/compare/elastic-operator-9.5.6...elastic-operator-9.5.7
+
 ## [9.5.6] - 2026-11-03
 
 ### Changed

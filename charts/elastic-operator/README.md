@@ -1,6 +1,6 @@
 # elastic-operator
 
-![Version: 9.5.6](https://img.shields.io/badge/Version-9.5.6-informational?style=flat-square) ![AppVersion: 9.5.6](https://img.shields.io/badge/AppVersion-9.5.6-informational?style=flat-square)
+![Version: 9.5.7](https://img.shields.io/badge/Version-9.5.7-informational?style=flat-square) ![AppVersion: 9.5.6](https://img.shields.io/badge/AppVersion-9.5.6-informational?style=flat-square)
 
 Elasticsearch + filebeat + kibana with default common used indexes and Index Lifecycle Management.
 It comes also with a backup functionality. This is the version using ECK-operator to deploy and monitor the stack.
@@ -67,7 +67,7 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | elasticsearch.javaOpts | string | `""` |  |
 | elasticsearch.nodeCount | int | `2` |  |
 | elasticsearch.podTemplateSpec.containers[0].env[0].name | string | `"ES_JAVA_OPTS"` |  |
-| elasticsearch.podTemplateSpec.containers[0].env[0].value | string | `"{{ .Values.elasticsearch.javaOpts }}"` |  |
+| elasticsearch.podTemplateSpec.containers[0].env[0].value | string | `"-XX:-UseBASE64Intrinsics {{ .Values.elasticsearch.javaOpts }}"` |  |
 | elasticsearch.podTemplateSpec.containers[0].name | string | `"elasticsearch"` |  |
 | elasticsearch.podTemplateSpec.containers[0].resources.limits.memory | string | `"{{ .Values.elasticsearch.resources.limits.memory }}"` |  |
 | elasticsearch.podTemplateSpec.containers[0].resources.requests.cpu | string | `"{{ .Values.elasticsearch.resources.requests.cpu }}"` |  |
@@ -83,7 +83,7 @@ It comes also with a backup functionality. This is the version using ECK-operato
 | elasticsearch.votingOnly.enabled | bool | `false` |  |
 | elasticsearch.votingOnly.javaOpts | string | `""` |  |
 | elasticsearch.votingOnly.podTemplateSpec.containers[0].env[0].name | string | `"ES_JAVA_OPTS"` |  |
-| elasticsearch.votingOnly.podTemplateSpec.containers[0].env[0].value | string | `"{{ .Values.elasticsearch.votingOnly.javaOpts }}"` |  |
+| elasticsearch.votingOnly.podTemplateSpec.containers[0].env[0].value | string | `"-XX:-UseBASE64Intrinsics {{ .Values.elasticsearch.votingOnly.javaOpts }}"` |  |
 | elasticsearch.votingOnly.podTemplateSpec.containers[0].name | string | `"elasticsearch"` |  |
 | elasticsearch.votingOnly.podTemplateSpec.containers[0].resources.limits.memory | string | `"{{ .Values.elasticsearch.votingOnly.resources.limits.memory }}"` |  |
 | elasticsearch.votingOnly.podTemplateSpec.containers[0].resources.requests.cpu | string | `"{{ .Values.elasticsearch.votingOnly.resources.requests.cpu }}"` |  |
