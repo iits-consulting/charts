@@ -81,3 +81,46 @@ tests:
       - equal:
           path: spec.nodeSets[1].volumeClaimTemplates[0].spec.storageClassName
           value: csi-disk
+
+  - it: sets only the CVE mitigation flag in ES_JAVA_OPTS when backup is disabled
+    set:
+      backup.enabled: false
+    asserts:
+      - equal:
+          path: spec.nodeSets[0].podTemplate.spec.containers[0].env[0].value
+          value: "-XX:-UseBASE64Intrinsics"
+
+  - it: adds the AWS SDK checksum flags to ES_JAVA_OPTS for s3 backups, before the user javaOpts
+    set:
+      backup.enabled: true
+      elasticsearch.javaOpts: "-Xfoo"
+      elasticsearch.votingOnly.enabled: true
+    asserts:
+      - equal:
+          path: spec.nodeSets[0].podTemplate.spec.containers[0].env[0].value
+          value: "-XX:-UseBASE64Intrinsics -Daws.requestChecksumCalculation=when_required -Daws.responseChecksumValidation=when_required -Xfoo"
+      - equal:
+          path: spec.nodeSets[1].podTemplate.spec.containers[0].env[0].value
+          value: "-XX:-UseBASE64Intrinsics -Daws.requestChecksumCalculation=when_required -Daws.responseChecksumValidation=when_required"
+
+  - it: omits the AWS SDK checksum flags for azure backups
+    set:
+      backup.enabled: true
+      backup.repoType: azure
+      elasticsearch.votingOnly.enabled: true
+    asserts:
+      - equal:
+          path: spec.nodeSets[0].podTemplate.spec.containers[0].env[0].value
+          value: "-XX:-UseBASE64Intrinsics"
+      - equal:
+          path: spec.nodeSets[1].podTemplate.spec.containers[0].env[0].value
+          value: "-XX:-UseBASE64Intrinsics"
+
+  - it: omits the AWS SDK checksum flags when s3ChecksumCompatibility is disabled
+    set:
+      backup.enabled: true
+      backup.s3ChecksumCompatibility: false
+    asserts:
+      - equal:
+          path: spec.nodeSets[0].podTemplate.spec.containers[0].env[0].value
+          value: "-XX:-UseBASE64Intrinsics"

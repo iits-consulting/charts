@@ -2,6 +2,18 @@
 
 All notable changes to this chart will be documented in this file.
 
+## [9.5.8] - 2026-11-20
+
+### Added
+- New value `backup.s3ChecksumCompatibility` (default `true`) to turn the S3 checksum flags below off, e.g. for AWS S3
+
+### Fixed
+- Fix backups to S3-compatible storage (e.g. T Cloud Public OBS) by adding `-Daws.requestChecksumCalculation=when_required -Daws.responseChecksumValidation=when_required` to the default `ES_JAVA_OPTS` of the Elasticsearch nodes, including the voting-only node. Only applied when `backup.enabled` is `true` and `backup.repoType` is `s3`
+
+> **Note:** for an upgrade guide, refer to [UPGRADE.md](UPGRADE.md)
+
+[9.5.8]: https://github.com/iits-consulting/charts/compare/elastic-operator-9.5.7...elastic-operator-9.5.8
+
 ## [9.5.7] - 2026-11-19
 
 ### Security
