@@ -1,3 +1,15 @@
+# Upgrade to Version 9.5.8
+
+- No changes required
+- Hint: with `backup.enabled: true` and `backup.repoType: s3`, the Elasticsearch pods restart (rolling) because `-Daws.requestChecksumCalculation=when_required -Daws.responseChecksumValidation=when_required` is added to `ES_JAVA_OPTS` to fix backups to S3-compatible storage such as T Cloud Public OBS. Set `backup.s3ChecksumCompatibility: false` to opt out (e.g. on AWS S3); Azure (`backup.repoType: azure`) is not affected
+- Hint: if you override `elasticsearch.podTemplateSpec` or `elasticsearch.votingOnly.podTemplateSpec` with your own `ES_JAVA_OPTS`, add the flags there yourself; setting only `elasticsearch.javaOpts` keeps them
+
+# Upgrade to Version 9.5.7
+
+- No changes required
+- Hint: the Elasticsearch pods restart (rolling) because `-XX:-UseBASE64Intrinsics` is added to `ES_JAVA_OPTS` to mitigate CVE-2026-114938 (Java4Shell)
+- Hint: if you override `elasticsearch.podTemplateSpec` or `elasticsearch.votingOnly.podTemplateSpec` with your own `ES_JAVA_OPTS`, add `-XX:-UseBASE64Intrinsics` there yourself; setting only `elasticsearch.javaOpts` keeps the mitigation
+
 # Upgrade to Version 9.5.6
 
 - No changes required

@@ -150,8 +150,10 @@ elasticsearch:
             limits:
               memory: "{{ .Values.elasticsearch.votingOnly.resources.limits.memory }}"
           env:
+            # -XX:-UseBASE64Intrinsics mitigates CVE-2026-114938 (Java4Shell); temporary change until CVE is fixed in the image
+            # the s3ChecksumJavaOpts helper adds the AWS SDK checksum flags for S3 backups, see backup.s3ChecksumCompatibility
             - name: ES_JAVA_OPTS
-              value: "{{ .Values.elasticsearch.votingOnly.javaOpts }}"
+              value: '-XX:-UseBASE64Intrinsics{{ with include "elasticOperator.elasticSearch.s3ChecksumJavaOpts" . }} {{ . }}{{ end }} {{ .Values.elasticsearch.votingOnly.javaOpts }}'
   config:
     node:
       store:
@@ -178,8 +180,10 @@ elasticsearch:
           limits:
             memory: "{{ .Values.elasticsearch.resources.limits.memory }}"
         env:
+          # -XX:-UseBASE64Intrinsics mitigates CVE-2026-114938 (Java4Shell); temporary change until CVE is fixed in the image
+          # the s3ChecksumJavaOpts helper adds the AWS SDK checksum flags for S3 backups, see backup.s3ChecksumCompatibility
           - name: ES_JAVA_OPTS
-            value: "{{ .Values.elasticsearch.javaOpts }}"
+            value: '-XX:-UseBASE64Intrinsics {{ with include "elasticOperator.elasticSearch.s3ChecksumJavaOpts" . }}{{ . }}{{ end }} {{ .Values.elasticsearch.javaOpts }}'
 
 filebeat:
   enabled: true
@@ -519,6 +523,8 @@ backup:
   repoName: "elastic-backups"
   # -- for Azure blob storage use "azure"
   repoType: "s3"
+  # -- S3 only (backup.enabled and repoType "s3"): adds `-Daws.requestChecksumCalculation=when_required -Daws.responseChecksumValidation=when_required` to the default `ES_JAVA_OPTS`. Needed for S3-compatible storage such as T Cloud Public OBS, which rejects the AWS SDK default checksums. Can be disabled for AWS S3.
+  s3ChecksumCompatibility: true
 
   # -- vault path for the secure settings, used only in ESO mode (common.externalSecret.enabled).
   # The settings below are then pulled from this path instead of being inlined.

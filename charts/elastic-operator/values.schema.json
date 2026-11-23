@@ -213,6 +213,10 @@
         "nodeSelector": { "type": "object" },
         "repoName": { "type": "string" },
         "repoType": { "type": "string" },
+        "s3ChecksumCompatibility": {
+          "type": "boolean",
+          "description": "S3 only: relax the AWS SDK checksum defaults via ES_JAVA_OPTS, needed for S3-compatible storage such as T Cloud Public OBS."
+        },
         "path": {
           "type": "string",
           "description": "ESO mode: default vault path the backup secrets are pulled from. secureSettings read from here."

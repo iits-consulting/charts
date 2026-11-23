@@ -28,3 +28,13 @@ spec:
     requests:
       storage: {{ $.Values.elasticsearch.volumeSize }}
 {{- end -}}
+
+{{/*
+JVM flags relaxing the AWS SDK checksum defaults. S3-compatible storage such as T Cloud Public OBS
+rejects the default checksums, which breaks snapshots. Empty unless backups go to an S3 repository.
+*/}}
+{{- define "elasticOperator.elasticSearch.s3ChecksumJavaOpts" -}}
+{{- if and .Values.backup.enabled (eq .Values.backup.repoType "s3") .Values.backup.s3ChecksumCompatibility -}}
+-Daws.requestChecksumCalculation=when_required -Daws.responseChecksumValidation=when_required
+{{- end -}}
+{{- end }}
