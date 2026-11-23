@@ -17,6 +17,8 @@ projects: {}
 #       #   stage: ""
 #     # defaults to false
 #     serverSideApply: "false"
+#     # defaults to false. Set to true so that missing value files (e.g. values-<stage>.yaml or files from valuesSource) do not fail the sync
+#     ignoreMissingValueFiles: false
 #     # information about the git repo which should be bootstrapped
 #     git:
 #       secretType: plain # Options: plain or externalSecret, default is plain for backwards compatibility
@@ -55,6 +57,22 @@ projects: {}
 #     # list of namespaces the project is allowed to deploy to, defaults to * (all namespaces)
 #     allowedNamespaces:
 #       - my-namespace
+
+#     # cluster scoped resources the project may manage, defaults to group '*' and kind '*'. An empty list allows none
+#     clusterResourceWhitelist:
+#       - group: ""
+#         kind: Namespace
+
+#     # Optional second git source for value files. If set, the Application uses multiple sources and the
+#     # files below are appended to valueFiles as $valuesSource/<file>. The repoUrl is added to the AppProject sourceRepos.
+#     # Credentials for this repo have to exist in ArgoCD (e.g. same repo as git.repoUrl or a separate repository secret)
+#     valuesSource:
+#       repoUrl: ""
+#       # Optional, defaults to HEAD
+#       branch: ""
+#       # Paths relative to the root of the valuesSource repo
+#       valueFiles:
+#         - customers/my-customer/values.yaml
 
 #     syncWindow:
 #       - kind: deny

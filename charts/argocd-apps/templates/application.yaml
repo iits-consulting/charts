@@ -19,17 +19,16 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: {{ $.Release.Namespace }}
+  {{- $mainSource := include "argocd-apps.mainSource" (dict "projectName" $projectName "project" $project) }}
+  {{- with $project.valuesSource }}
+  sources:
+    - {{ $mainSource | indent 6 | trim }}
+    - repoURL: {{ .repoUrl | required "valuesSource.repoUrl is required when valuesSource is set" }}
+      targetRevision: {{ .branch | default "HEAD" }}
+      ref: valuesSource
+  {{- else }}
   source:
-    path: {{ $project.git.path | default $projectName }}
-    repoURL: {{ $project.git.repoUrl }}
-    targetRevision: {{ $project.git.branch | default "refs/heads/main" }}
-    helm:
-      values: |
-        {{- $project.tofuValues | toYaml | nindent 10}}
-      valueFiles:
-        - values.yaml
-      {{- if ((($project.tofuValues).projectValues).stage) }}
-        - values-{{ $project.tofuValues.projectValues.stage }}.yaml
-      {{- end }}
+    {{- $mainSource | nindent 4 }}
+  {{- end }}
 ---
 {{- end }}

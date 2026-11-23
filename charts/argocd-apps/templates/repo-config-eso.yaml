@@ -38,16 +38,25 @@ spec:
     {{- if eq $project.git.accessType "https" }}
   - secretKey: password
     remoteRef:
+      conversionStrategy: Default
+      decodingStrategy: None
+      metadataPolicy: None
       key: {{ $project.git.secretPath | required "A $project.git.secretPath entry required!" }}     # path to the secret in vault e.g. /path/to/repo-config
       property: password           # data key to retrieve from specified secret in vault - if empty, everything from the secret is fetched
   - secretKey: username
     remoteRef:
+      conversionStrategy: Default
+      decodingStrategy: None
+      metadataPolicy: None
       key: {{ $project.git.secretPath | required "A $project.git.secretPath entry required!" }}              # path to the secret in vault
       property: username           # data key to retrieve from specified secret in vault - if empty, everything from the secret is fetched
     {{- /* Only when sshPrivateKey is set */}}
     {{- else if eq $project.git.accessType "ssh" }}
   - secretKey: sshPrivateKey
     remoteRef:
+      conversionStrategy: Default
+      decodingStrategy: None
+      metadataPolicy: None
       key: {{ $project.git.secretPath | required "A $project.git.secretPath entry required!" }}              # path to the secret in vault
       property: sshPrivateKey      # data key to retrieve from specified secret in vault - if empty, everything from the secret is fetched
     {{- else }}

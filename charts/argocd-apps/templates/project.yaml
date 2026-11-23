@@ -6,6 +6,9 @@ metadata:
 spec:
   sourceRepos:
     - {{ $project.git.repoUrl }}
+    {{- if and $project.valuesSource (ne $project.valuesSource.repoUrl $project.git.repoUrl) }}
+    - {{ $project.valuesSource.repoUrl }}
+    {{- end }}
     {{- if $project.allowedUrls -}}
     {{- range $allowedUrl := $project.allowedUrls }}
     - {{ $allowedUrl }}
@@ -28,7 +31,11 @@ spec:
     - {{ (tpl (toYaml $syncWindow) $) | nindent 6 -}}
   {{ end }}
   clusterResourceWhitelist:
+    {{- if kindIs "slice" $project.clusterResourceWhitelist }}
+    {{- toYaml $project.clusterResourceWhitelist | nindent 4 }}
+    {{- else }}
     - group: '*'
       kind: '*'
+    {{- end }}
 ---
 {{- end }}
