@@ -1,29 +1,26 @@
 {{ with .Values.policyException }}
 {{ if tpl .enabled $ | toString | eq "true" }}
-apiVersion: kyverno.io/v2
+apiVersion: policies.kyverno.io/v1
 kind: PolicyException
 metadata:
   name: cert-manager-webhook
+  namespace: {{ .namespace | default $.Release.Namespace }}
+  {{- with .labels }}
+  labels:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   {{- with .annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  exceptions:
-    - policyName: require-run-as-nonroot
-      ruleNames:
-        - run-as-non-root
-    - policyName: enforce-security-context
-      ruleNames:
-        - add-pod-security-context
-  match:
-    any:
-      - resources:
-          kinds:
-            - Pod
-          names:
-            - '*cert-manager-webhook-opentelekomcloud*'
-          namespaces:
-            - {{ $.Release.Namespace }}
+  policyRefs:
+    - {name: require-run-as-nonroot, kind: ValidatingPolicy}
+    - {name: enforce-security-context, kind: MutatingPolicy}
+  matchConditions:
+    - name: cert-manager-webhook-opentelekomcloud
+      expression: >-
+        object.metadata.namespace == '{{ $.Release.Namespace }}' &&
+        (has(object.metadata.name) ? object.metadata.name : object.metadata.generateName).contains('cert-manager-webhook-opentelekomcloud')
 {{- end }}
 {{- end }}
