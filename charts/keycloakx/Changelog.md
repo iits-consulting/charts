@@ -4,6 +4,8 @@
 
 ### 7.4.0
  - Update underlying chart to 7.4.0 (appVersion 26.8.2)
+ - Explicitly set `allowPrivilegeEscalation` to `false` in `securityContext`
+ - Explicitly set `seccompProfile` to `RuntimeDefault`
 
 ### 7.3.1
  - Mitigate CVE-2026-114938 (Java4Shell) by adding `-XX:-UseBASE64Intrinsics` to the default `keycloakx.configMapEnv.JAVA_OPTS_APPEND` (no Keycloak or upstream chart update)
