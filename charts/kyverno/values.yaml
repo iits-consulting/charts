@@ -292,6 +292,10 @@ disallowUnsignedImages:
     - image: "*"
       #pullSecret:
       #ignoreTransparencyLog: true
+      # Images that match `image` but are signed with another key, e.g. a vendor's own images
+      # that get their own entry with that vendor's key. Wildcards as in `image`.
+      #skipImages:
+      #  - "registry.example.com/vendor/*"
       key: |-
         -----BEGIN PUBLIC KEY-----
         MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEXzV8f2YUEmXF176k//uSmgEEZoKb

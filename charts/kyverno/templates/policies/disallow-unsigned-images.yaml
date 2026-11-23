@@ -42,6 +42,12 @@ spec:
         - type: Cosign
           imageReferences:
             - {{ .image | quote}}
+        {{- with .skipImages }}
+          skipImageReferences:
+          {{- range . }}
+            - {{ . | quote }}
+          {{- end }}
+        {{- end }}
         {{- if .pullSecret }}
           imageRegistryCredentials:
             secrets:

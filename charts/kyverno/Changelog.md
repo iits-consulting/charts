@@ -2,6 +2,9 @@
 
 ## Chart Versions
 
+### 3.6.0
+- `disallowUnsignedImages.imagesAndPublicKeyPairs[].skipImages`: images an entry does not verify (Kyverno `skipImageReferences`), so a second entry can verify them with another key
+
 ### 3.5.1
 - Set default policyType for the kyverno-policies to ensure backwards compatibility
 
