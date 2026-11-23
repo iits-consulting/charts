@@ -1,3 +1,7 @@
+# Upgrade to Version 92.9.1
+
+No changes required
+
 # Upgrade to Version 92.9.0
 
 Bumps `kube-prometheus-stack` 88.3.0 → 92.9.0, `prometheus-blackbox-exporter`

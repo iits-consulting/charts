@@ -2,6 +2,11 @@
 
 ## Chart Versions
 
+### 92.9.1
+- Update serviceDiscoveryRole to use Endpointslices due to deprecation of Endpoints in Kubernetes v1.33 onwards
+
+📖 See [UPGRADE.md](./UPGRADE.md) for the upgrade procedure
+
 ### 92.9.0
 - Remove default alertrule for container restarts
 - Increase version of `kube-prometheus-stack` to 92.9.0 (Prometheus v3.13.2 → v3.15.0, Alertmanager v0.33.1 → v0.34.1, prometheus-operator v0.93.0 → v0.94.1, Grafana 13.1.3 → 13.2.4)
@@ -37,4 +42,3 @@
 - Updates kube-prometheus-stack to 79.8.2
 - Updates blackbox exporter to 11.5.0
 - ⚠️ Depending on from where you upgrade, you might encounter that an alert (KubeAPIErrorBudgetBurn) is triggered. This is a false positive, because of a [bug from prometheus](https://github.com/issues/created?issue=prometheus-community%7Chelm-charts%7C5274) since the underlying metric format changed. You can either silence the alert for 30d or drop old data via the prometheus admin api.
-
