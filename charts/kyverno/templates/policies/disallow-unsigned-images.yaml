@@ -1,5 +1,6 @@
 {{ with .Values.disallowUnsignedImages }}
 {{ if .enabled }}
+{{- $agent := .kumoopsAgent | default dict }}
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
@@ -42,7 +43,11 @@ spec:
         - type: Cosign
           imageReferences:
             - {{ .image | quote}}
-        {{- with .skipImages }}
+        {{- $skip := .skipImages | default list }}
+        {{- if and $agent.enabled (ne .image $agent.image) }}
+        {{- $skip = append $skip $agent.image }}
+        {{- end }}
+        {{- with $skip }}
           skipImageReferences:
           {{- range . }}
             - {{ . | quote }}
@@ -63,6 +68,24 @@ spec:
 {{ .key | indent 24 }}
                     rekor:
                       ignoreTlog: {{ .ignoreTransparencyLog | default true }}
+    {{- end }}
+    {{- if $agent.enabled }}
+        - type: Cosign
+          imageReferences:
+            - {{ $agent.image | quote }}
+          imageRegistryCredentials:
+            secrets:
+              - {{ $agent.pullSecret }}
+          required: true
+          mutateDigest: true
+          verifyDigest: true
+          attestors:
+            - entries:
+                - keys:
+                    publicKeys: |-
+{{ $agent.key | indent 24 }}
+                    rekor:
+                      ignoreTlog: true
     {{- end }}
 {{ end }}
 {{ end }}

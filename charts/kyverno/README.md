@@ -31,6 +31,7 @@ This chart wraps the upstream `kyverno` and `kyverno-policies` chart and adds a 
 | disallowUnsignedImages.excludeNamespaces | string | `nil` | Exclude the policy on the given list of namespaces Wildcards are supported. For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards |
 | disallowUnsignedImages.failurePolicy | string | `"Ignore"` |  |
 | disallowUnsignedImages.imagesAndPublicKeyPairs | list | `[{"image":"*","key":"-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEXzV8f2YUEmXF176k//uSmgEEZoKb\ng2b7+PuoKjfaYVw3HTAE2Z4ak5ZNNq5HF8G1cRt3P713MyuIXiNKP6v2Nw==\n-----END PUBLIC KEY-----"}]` | List of image definitions and the associated public key used for signing. |
+| disallowUnsignedImages.kumoopsAgent.enabled | bool | `true` | Admit the signed KumoOps Portal Customer Agent |
 | disallowUnsignedImages.name | string | `"disallow-unsigned-images"` | The name of the policy |
 | disallowUnsignedImages.timeoutSeconds | string | `"30"` |  |
 | disallowUnspecifiedDockerRegistries.allowedRegistries | list | `["mysecure-registry/common-signed-docker-images/*"]` | List of allowed registries. Wildcards are supported. For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards |
