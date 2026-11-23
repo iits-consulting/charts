@@ -2,6 +2,10 @@
 
 ## Chart Versions
 
+### 3.6.0
+- `disallowUnsignedImages.kumoopsAgent` (enabled by default): admits the signed KumoOps Portal Customer Agent with its own key and pull secret, every other entry skips its images
+- `disallowUnsignedImages.imagesAndPublicKeyPairs[].skipImages`: images an entry does not verify (Kyverno `skipImageReferences`), so a second entry can verify them with another key
+
 ### 3.5.1
 - Set default policyType for the kyverno-policies to ensure backwards compatibility
 
