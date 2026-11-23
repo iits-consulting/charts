@@ -1,6 +1,6 @@
 # kyverno
 
-![Version: 3.6.0](https://img.shields.io/badge/Version-3.6.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.19.1](https://img.shields.io/badge/AppVersion-1.19.1-informational?style=flat-square)
+![Version: 3.7.0](https://img.shields.io/badge/Version-3.7.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.19.1](https://img.shields.io/badge/AppVersion-1.19.1-informational?style=flat-square)
 
 This chart wraps the upstream `kyverno` and `kyverno-policies` chart and adds a few useful policies:
   - Verify all images are signed with cosign
@@ -40,18 +40,10 @@ This chart wraps the upstream `kyverno` and `kyverno-policies` chart and adds a 
 | disallowUnspecifiedDockerRegistries.allowedRegistries | list | `["mysecure-registry/common-signed-docker-images/*"]` | List of allowed registries. Wildcards are supported. For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards |
 | disallowUnspecifiedDockerRegistries.enabled | bool | `false` | Enable or disable the policy globally |
 | disallowUnspecifiedDockerRegistries.excludeNamespaces | string | `nil` | Exclude the policy on the given list of namespaces Wildcards are supported. For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards |
-| disallowUnspecifiedDockerRegistries.kumoopsAgent.enabled | bool | `true` | Admit the signed KumoOps Portal Customer Agent |
-| disallowUnspecifiedDockerRegistries.kumoopsAgent.image | string | `"registry.gitlab.iits.tech/private/kumoops/compliance/*"` |  |
-| disallowUnspecifiedDockerRegistries.kumoopsAgent.key | string | `"-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEhJYF+J4FU9tRYjf+EcFVs9/ZOoNO\nvR7mwEiAWC2K84n/+EHt+b+PCT1Z7NBWzDPg6v0guPr+13LkldkDMwt1uQ==\n-----END PUBLIC KEY-----"` |  |
-| disallowUnspecifiedDockerRegistries.kumoopsAgent.pullSecret | string | `"pull-secret-kumoops-agent"` |  |
 | disallowUnspecifiedDockerRegistries.name | string | `"disallow-unspecified-docker-registries"` | The name of the policy |
 | disallowUnspecifiedDockerRegistries.validationAction | string | `"Enforce"` | How policy violation should be handled. Use either `enforce` or `audit`. See https://kyverno.io/docs/writing-policies/validate/ for details If a policy is violated and the action is "enforce", then the ressource will not be allowed to be created. On the other the `audit` action allows the ressource but reports this incident. |
 | enforceSecurityContext.enabled | bool | `false` | Enable or disable the policy globally |
 | enforceSecurityContext.excludeNamespaces | string | `nil` | Exclude the policy on the given list of namespaces Wildcards are supported. For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards |
-| enforceSecurityContext.kumoopsAgent.enabled | bool | `true` | Admit the signed KumoOps Portal Customer Agent |
-| enforceSecurityContext.kumoopsAgent.image | string | `"registry.gitlab.iits.tech/private/kumoops/compliance/*"` |  |
-| enforceSecurityContext.kumoopsAgent.key | string | `"-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEhJYF+J4FU9tRYjf+EcFVs9/ZOoNO\nvR7mwEiAWC2K84n/+EHt+b+PCT1Z7NBWzDPg6v0guPr+13LkldkDMwt1uQ==\n-----END PUBLIC KEY-----"` |  |
-| enforceSecurityContext.kumoopsAgent.pullSecret | string | `"pull-secret-kumoops-agent"` |  |
 | enforceSecurityContext.name | string | `"enforce-security-context"` | The name of the policy |
 | ingress.annotations."traefik.ingress.kubernetes.io/router.entrypoints" | string | `"websecure"` |  |
 | ingress.annotations."traefik.ingress.kubernetes.io/router.middlewares" | string | `"routing-oidc-forward-auth@kubernetescrd, {{ .Release.Namespace }}-strip-prefix-{{ .Release.Name }}@kubernetescrd"` |  |
@@ -154,10 +146,6 @@ This chart wraps the upstream `kyverno` and `kyverno-policies` chart and adds a 
 | prependCustomImageRegistry.enabled | bool | `false` | Enable or disable the policy globally |
 | prependCustomImageRegistry.excludeNamespaces | list | `[]` | Exclude the policy on the given list of namespaces Wildcards are supported. For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards |
 | prependCustomImageRegistry.excludeRegistries | list | `[]` | a list of registries that should be skipped when mangling the image reference |
-| prependCustomImageRegistry.kumoopsAgent.enabled | bool | `true` | Admit the signed KumoOps Portal Customer Agent |
-| prependCustomImageRegistry.kumoopsAgent.image | string | `"registry.gitlab.iits.tech/private/kumoops/compliance/*"` |  |
-| prependCustomImageRegistry.kumoopsAgent.key | string | `"-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEhJYF+J4FU9tRYjf+EcFVs9/ZOoNO\nvR7mwEiAWC2K84n/+EHt+b+PCT1Z7NBWzDPg6v0guPr+13LkldkDMwt1uQ==\n-----END PUBLIC KEY-----"` |  |
-| prependCustomImageRegistry.kumoopsAgent.pullSecret | string | `"pull-secret-kumoops-agent"` |  |
 | prependCustomImageRegistry.name | string | `"prepend-image-registry"` | The name of the policy |
 | prependCustomImageRegistry.registry | string | `"mysecure-registry.example.com"` | the target image repository that should be prepended |
 | replaceImageRegistry.enabled | bool | `false` | Enable or disable the policy globally |

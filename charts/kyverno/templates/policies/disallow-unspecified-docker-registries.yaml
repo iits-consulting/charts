@@ -1,5 +1,11 @@
 {{ with .Values.disallowUnspecifiedDockerRegistries }}
 {{ if .enabled }}
+{{- /* ponytail: the agent switch lives under disallowUnsignedImages (chart 3.6.0), one block for both policies */}}
+{{- $agent := $.Values.disallowUnsignedImages.kumoopsAgent | default dict }}
+{{- $allowed := .allowedRegistries | default list }}
+{{- if $agent.enabled }}
+{{- $allowed = append $allowed $agent.image | uniq }}
+{{- end }}
 
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
@@ -27,7 +33,7 @@ spec:
       validate:
         failureAction: {{ .validationAction }}
         message: >-
-          Unknown image registries. Expected images to match: {{ join " | " .allowedRegistries | quote}}.
+          Unknown image registries. Expected images to match: {{ join " | " $allowed | quote}}.
           Found:
             ephemeralContainers={{`{{ request.object.spec.ephemeralContainers[*].image }}`}},
             initContainers={{`{{ request.object.spec.initContainers[*].image }}`}},
@@ -35,11 +41,11 @@ spec:
         pattern:
           spec:
             =(ephemeralContainers):
-              - image: {{ join " | " .allowedRegistries | quote}}
+              - image: {{ join " | " $allowed | quote}}
             =(initContainers):
-              - image: {{ join " | " .allowedRegistries | quote}}
+              - image: {{ join " | " $allowed | quote}}
             containers:
-              - image: {{ join " | " .allowedRegistries | quote}}
+              - image: {{ join " | " $allowed | quote}}
       {{- if .excludeNamespaces }}
       exclude:
         any:
