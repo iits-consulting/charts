@@ -1,6 +1,6 @@
 suite: ESO ExternalSecret via common sub-chart
 templates:
-  - charts/common/templates/external-secrets/external-secret.yaml
+  - charts/common/templates/external-secret.yaml
 
 release:
   name: elastalert
