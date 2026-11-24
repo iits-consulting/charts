@@ -20,7 +20,7 @@ Single-context repo (most repos):
 ├── docs/adr/
 │   ├── 0001-event-sourced-orders.md
 │   └── 0002-postgres-for-write-model.md
-└── src/
+└── charts/
 ```
 
 Multi-context repo (presence of `GLOSSARY-MAP.md` at the root):
@@ -29,11 +29,11 @@ Multi-context repo (presence of `GLOSSARY-MAP.md` at the root):
 /
 ├── GLOSSARY-MAP.md
 ├── docs/adr/                          ← system-wide decisions
-└── src/
-    ├── ordering/
+└── charts/
+    ├── kyverno/
     │   ├── GLOSSARY.md
     │   └── docs/adr/                  ← context-specific decisions
-    └── billing/
+    └── traefik/
         ├── GLOSSARY.md
         └── docs/adr/
 ```
