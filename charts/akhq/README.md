@@ -1,8 +1,8 @@
 # akhq
 
-![Version: 2.2.0](https://img.shields.io/badge/Version-2.2.0-informational?style=flat-square)
+![Version: 1.2.0](https://img.shields.io/badge/Version-1.2.0-informational?style=flat-square)
 
-Kafka GUI for Apache Kafka® to manage topics, topics data, consumers group, schema registry, connect and more... Test
+Kafka GUI for Apache Kafka® to manage topics, topics data, consumers group, schema registry, connect and more...
 
 ## Requirements
 
