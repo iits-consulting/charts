@@ -17,7 +17,7 @@ metadata:
 spec:
   background: false
   rules:
-    - name: disallow-empty-ingress-host
+    - name: disallow-empty-ingress-host-test
       match:
         any:
           - resources:
