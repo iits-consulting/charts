@@ -1,6 +1,7 @@
 # Checks the targeted charts of a run. Terms are defined in GLOSSARY.md.
 # - Quality checks (Trivy, lint, kubeconform): every targeted chart
 # - Chart.lock updated, Chart.yaml version increased: every changed chart, pull requests only
+# Pull requests are compared with their base branch, pushes to main with the previous main head.
 # A manual run targets all charts.
 
 name: Check Charts
@@ -22,7 +23,7 @@ jobs:
     outputs:
       comparison_base: "${{ steps.target-charts.outputs.comparison_base }}"
       changed_charts: "${{ steps.target-charts.outputs.changed_charts }}"
-      lock_charts: "${{ steps.target-charts.outputs.lock_charts }}"
+      lock_check_charts: "${{ steps.target-charts.outputs.lock_check_charts }}"
       targeted_charts: "${{ steps.target-charts.outputs.targeted_charts }}"
     steps:
       - uses: actions/checkout@v4
@@ -35,14 +36,15 @@ jobs:
         env:
           EVENT_NAME: ${{ github.event_name }}
           PREVIOUS_HEAD: ${{ github.event.before }}
+          PR_BASE_BRANCH: ${{ github.base_ref }}
         run: |
           case "$EVENT_NAME" in
-            workflow_dispatch) comparison_base="--all" ;;
-            push)              comparison_base="$PREVIOUS_HEAD" ;;
-            *)                 comparison_base="origin/main" ;;
+            workflow_dispatch) target_charts_arg="--all" ;;
+            push)              target_charts_arg="$PREVIOUS_HEAD" ;;
+            *)                 target_charts_arg="origin/${PR_BASE_BRANCH}" ;;
           esac
 
-          .github/scripts/target-charts.sh "$comparison_base" | tee -a "$GITHUB_OUTPUT"
+          .github/scripts/target-charts.sh "$target_charts_arg" | tee -a "$GITHUB_OUTPUT"
 
   check-charts:
     name: Check
@@ -110,11 +112,11 @@ jobs:
   check-chart-lock:
     name: Check Chart.lock
     needs: find-charts
-    if: ${{ github.event_name == 'pull_request' && needs.find-charts.outputs.lock_charts != '[]' }}
+    if: ${{ github.event_name == 'pull_request' && needs.find-charts.outputs.lock_check_charts != '[]' }}
     strategy:
       fail-fast: false
       matrix:
-        chart: ${{ fromJSON(needs.find-charts.outputs.lock_charts) }}
+        chart: ${{ fromJSON(needs.find-charts.outputs.lock_check_charts) }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

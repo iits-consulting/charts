@@ -25,3 +25,6 @@
 
 ### MacOS ###
 .DS_Store
+
+### Local issue tracker ###
+.scratch/

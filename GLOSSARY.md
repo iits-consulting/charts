@@ -19,3 +19,11 @@ _Avoid_: Global file, common file
 **Comparison base**:
 The repository state a change is measured against to decide which charts are changed charts.
 _Avoid_: Baseline, reference commit
+
+**Quality check**:
+A check that validates a chart's content and runs for every targeted chart.
+_Avoid_: Test, validation, CI check
+
+**Release guard**:
+A check that protects what gets released from a pull request and runs only for changed charts.
+_Avoid_: Quality check, PR check

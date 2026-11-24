@@ -1,4 +1,5 @@
-# Regenerates the README of the targeted charts of a branch. Terms are defined in GLOSSARY.md.
+# Regenerates the README of the changed charts of a branch, or of every chart when the README
+# template or this workflow changed. Terms are defined in GLOSSARY.md.
 
 name: Update helm chart README files
 
@@ -11,6 +12,7 @@ on:
       - 'charts/**/Chart.yaml'
       - 'README.md.gotmpl'
       - '.github/workflows/update_documentation.yaml'
+      - '.github/scripts/**'
 
 jobs:
   update-docs:
@@ -22,18 +24,19 @@ jobs:
           fetch-depth: 0
       - name: Setup helm-docs
         uses: gabe565/setup-helm-docs-action@v1
-      - name: Update README.md files of targeted charts
+      - name: Find charts whose README needs regenerating
+        id: target-charts
         shell: bash
+        run: .github/scripts/target-charts.sh origin/main | tee -a "$GITHUB_OUTPUT"
+      - name: Update README.md files
+        if: ${{ steps.target-charts.outputs.readme_charts != '[]' }}
+        shell: bash
+        env:
+          README_CHARTS: ${{ steps.target-charts.outputs.readme_charts }}
         run: |
-          targeted_charts=$(.github/scripts/target-charts.sh origin/main \
-            | sed -n 's/^targeted_charts=//p' | jq -r 'map("charts/" + .) | join(",")')
-
-          if [ -z "$targeted_charts" ]; then
-            echo "No targeted charts, nothing to update."
-            exit 0
-          fi
-
-          helm-docs -c charts -g "$targeted_charts" -l debug -t README.md.gotmpl
+          # helm-docs expects chart paths including the search root, e.g. charts/akhq.
+          chart_paths=$(jq -r 'map("charts/" + .) | join(",")' <<< "$README_CHARTS")
+          helm-docs -c charts -g "$chart_paths" -l debug -t README.md.gotmpl
       - name: Commit files
         shell: "bash {0}"
         run: |
