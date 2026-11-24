@@ -1,40 +1,28 @@
 {{ with .Values.policyException }}
 {{ if .enabled }}
-apiVersion: kyverno.io/v2
+apiVersion: policies.kyverno.io/v1
 kind: PolicyException
 metadata:
   name: prometheus-stack-prometheus-node-exporter
+  namespace: {{ .namespace | default $.Release.Namespace }}
+  {{- with .labels }}
+  labels:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .annotations }}
   annotations:
-    "helm.sh/hook": pre-install,pre-upgrade
-    "helm.sh/hook-weight": "-5"
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
-  exceptions:
-    - policyName: restrict-volume-types-strict
-      ruleNames:
-        - restricted-volumes
-        - autogen-restricted-volumes
-    - policyName: restrict-volume-types
-      ruleNames:
-        - restricted-volumes
-        - autogen-restricted-volumes
-    - policyName: disallow-host-namespaces
-      ruleNames:
-        - host-namespaces
-    - policyName: disallow-host-ports
-      ruleNames:
-        - host-ports-none
-    - policyName: disallow-host-path
-      ruleNames:
-        - host-path
-  match:
-    any:
-      - resources:
-          kinds:
-            - DaemonSet
-            - Pod
-          names:
-            - prometheus-stack-prometheus-node-exporter*
-          namespaces:
-            - {{ $.Release.Namespace }}
+  policyRefs:
+    - {name: restrict-volume-types, kind: ValidatingPolicy}
+    - {name: disallow-host-namespaces, kind: ValidatingPolicy}
+    - {name: disallow-host-ports, kind: ValidatingPolicy}
+    - {name: disallow-host-path, kind: ValidatingPolicy}
+  matchConditions:
+    - name: node-exporter-pods
+      expression: >-
+        object.metadata.namespace == '{{ $.Release.Namespace }}' &&
+        (has(object.metadata.name) ? object.metadata.name : object.metadata.generateName).startsWith('prometheus-stack-prometheus-node-exporter')
 {{- end }}
 {{- end }}
