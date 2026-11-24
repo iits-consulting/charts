@@ -1,9 +1,10 @@
 {{ with .Values.disallowUnspecifiedDockerRegistries }}
 {{ if .enabled }}
-{{- /* ponytail: the agent switch lives under disallowUnsignedImages (chart 3.6.0), one block for both policies */}}
+{{- /* ponytail: the agent switch lives under disallowUnsignedImages (chart 3.6.0), one block for both policies.
+       Only allowed when its signature is verified, otherwise the path would be admitted unsigned */}}
 {{- $agent := $.Values.disallowUnsignedImages.kumoopsAgent | default dict }}
 {{- $allowed := .allowedRegistries | default list }}
-{{- if $agent.enabled }}
+{{- if and $.Values.disallowUnsignedImages.enabled $agent.enabled }}
 {{- $allowed = append $allowed $agent.image | uniq }}
 {{- end }}
 

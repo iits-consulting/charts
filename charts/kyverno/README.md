@@ -1,6 +1,6 @@
 # kyverno
 
-![Version: 3.7.0](https://img.shields.io/badge/Version-3.7.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.19.1](https://img.shields.io/badge/AppVersion-1.19.1-informational?style=flat-square)
+![Version: 3.6.1](https://img.shields.io/badge/Version-3.6.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.19.1](https://img.shields.io/badge/AppVersion-1.19.1-informational?style=flat-square)
 
 This chart wraps the upstream `kyverno` and `kyverno-policies` chart and adds a few useful policies:
   - Verify all images are signed with cosign
@@ -31,7 +31,7 @@ This chart wraps the upstream `kyverno` and `kyverno-policies` chart and adds a 
 | disallowUnsignedImages.excludeNamespaces | string | `nil` | Exclude the policy on the given list of namespaces Wildcards are supported. For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards |
 | disallowUnsignedImages.failurePolicy | string | `"Ignore"` |  |
 | disallowUnsignedImages.imagesAndPublicKeyPairs | list | `[{"image":"*","key":"-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEXzV8f2YUEmXF176k//uSmgEEZoKb\ng2b7+PuoKjfaYVw3HTAE2Z4ak5ZNNq5HF8G1cRt3P713MyuIXiNKP6v2Nw==\n-----END PUBLIC KEY-----"}]` | List of image definitions and the associated public key used for signing. |
-| disallowUnsignedImages.kumoopsAgent.enabled | bool | `true` | Admit the signed KumoOps Portal Customer Agent |
+| disallowUnsignedImages.kumoopsAgent.enabled | bool | `false` | Admit the signed KumoOps Portal Customer Agent |
 | disallowUnsignedImages.kumoopsAgent.image | string | `"registry.gitlab.iits.tech/private/kumoops/compliance/*"` |  |
 | disallowUnsignedImages.kumoopsAgent.key | string | `"-----BEGIN PUBLIC KEY-----\nMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEhJYF+J4FU9tRYjf+EcFVs9/ZOoNO\nvR7mwEiAWC2K84n/+EHt+b+PCT1Z7NBWzDPg6v0guPr+13LkldkDMwt1uQ==\n-----END PUBLIC KEY-----"` |  |
 | disallowUnsignedImages.kumoopsAgent.pullSecret | string | `"pull-secret-kumoops-agent"` |  |

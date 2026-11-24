@@ -305,11 +305,12 @@ disallowUnsignedImages:
   # The KumoOps Portal Customer Agent (read-only compliance checks of iits-run stages). Its release
   # images are signed with the KumoOps key in their own pipeline. When enabled, this renders its own
   # verifyImages entry and every entry above skips the agent's images, so stages need no list entry.
+  # Opt-in: stages that run the agent set `kumoopsAgent.enabled: true`.
   # The same switch also adds `image` to disallowUnspecifiedDockerRegistries.allowedRegistries.
   # The pull secret comes from the agent's stage module (kyverno_pull_secret).
   kumoopsAgent:
     # -- Admit the signed KumoOps Portal Customer Agent
-    enabled: true
+    enabled: false
     image: "registry.gitlab.iits.tech/private/kumoops/compliance/*"
     pullSecret: pull-secret-kumoops-agent
     key: |-

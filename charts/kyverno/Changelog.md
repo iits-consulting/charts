@@ -2,8 +2,9 @@
 
 ## Chart Versions
 
-### 3.7.0
-- `disallowUnspecifiedDockerRegistries`: with `disallowUnsignedImages.kumoopsAgent.enabled` (default) the agent image is appended to `allowedRegistries`, also when a stage sets its own list. With the agent disabled the policy renders exactly as 3.6.0
+### 3.6.1
+- `disallowUnsignedImages.kumoopsAgent.enabled` defaults to `false` now (opt-in). Stages that run the KumoOps Portal Customer Agent set it to `true`
+- `disallowUnspecifiedDockerRegistries`: with `disallowUnsignedImages.enabled` and `disallowUnsignedImages.kumoopsAgent.enabled` the agent image is appended to `allowedRegistries`, also when a stage sets its own list. Without the signature check the path stays unlisted, so it is never admitted unsigned. With the agent disabled the policy renders exactly as 3.6.0
 - Remove the `kumoopsAgent` copies from `prependCustomImageRegistry`, `disallowUnspecifiedDockerRegistries` and `enforceSecurityContext`. No template read them, `disallowUnsignedImages.kumoopsAgent` is the one switch for both policies
 
 ### 3.6.0
