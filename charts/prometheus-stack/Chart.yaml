@@ -3,7 +3,7 @@ dependencies:
   - alias: prometheusStack
     name: kube-prometheus-stack
     repository: https://prometheus-community.github.io/helm-charts
-    version: 93.9.0
+    version: 92.9.0
   - alias: blackboxExporter
     condition: blackboxExporter.enabled
     name: prometheus-blackbox-exporter
