@@ -93,6 +93,10 @@ jobs:
           helm lint charts/${{ matrix.chart }} --strict
 
       - name: KubeConform ${{ matrix.chart }}
+        env:
+          # The plugin's install hook looks up the latest kubeconform release through the
+          # GitHub API. Unauthenticated, that call is rate limited per runner IP address.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           helm plugin install https://github.com/jtyr/kubeconform-helm
           helm -f kubeconform-values.yaml kubeconform --ignore-missing-schemas --summary charts/${{ matrix.chart }}
