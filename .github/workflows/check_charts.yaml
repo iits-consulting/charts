@@ -18,7 +18,8 @@ env:
 
 jobs:
   find-charts:
-    name: Find Targeted Charts
+    # Branch protection on main requires a check with this exact name, keep it unchanged.
+    name: Find Charts
     runs-on: ubuntu-latest
     outputs:
       comparison_base: "${{ steps.target-charts.outputs.comparison_base }}"
