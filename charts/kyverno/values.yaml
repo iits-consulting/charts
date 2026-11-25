@@ -232,21 +232,6 @@ prependCustomImageRegistry:
   # -- a list of registries that should be skipped when mangling the image reference
   excludeRegistries: [ ]
 
-  # The KumoOps Portal Customer Agent (read-only compliance checks of iits-run stages). Its release
-  # images are signed with the KumoOps key in their own pipeline. When enabled, this renders its own
-  # verifyImages entry and every entry above skips the agent's images, so stages need no list entry.
-  # The pull secret comes from the agent's stage module (kyverno_pull_secret).
-  kumoopsAgent:
-    # -- Admit the signed KumoOps Portal Customer Agent
-    enabled: true
-    image: "registry.gitlab.iits.tech/private/kumoops/compliance/*"
-    pullSecret: pull-secret-kumoops-agent
-    key: |-
-      -----BEGIN PUBLIC KEY-----
-      MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEhJYF+J4FU9tRYjf+EcFVs9/ZOoNO
-      vR7mwEiAWC2K84n/+EHt+b+PCT1Z7NBWzDPg6v0guPr+13LkldkDMwt1uQ==
-      -----END PUBLIC KEY-----
-
   # -- Exclude the policy on the given list of namespaces
   # Wildcards are supported.
   # For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards
@@ -307,30 +292,11 @@ disallowUnsignedImages:
     - image: "*"
       #pullSecret:
       #ignoreTransparencyLog: true
-      # Images that match `image` but are signed with another key, e.g. a vendor's own images
-      # that get their own entry with that vendor's key. Wildcards as in `image`.
-      #skipImages:
-      #  - "registry.example.com/vendor/*"
       key: |-
         -----BEGIN PUBLIC KEY-----
         MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEXzV8f2YUEmXF176k//uSmgEEZoKb
         g2b7+PuoKjfaYVw3HTAE2Z4ak5ZNNq5HF8G1cRt3P713MyuIXiNKP6v2Nw==
         -----END PUBLIC KEY-----
-
-  # The KumoOps Portal Customer Agent (read-only compliance checks of iits-run stages). Its release
-  # images are signed with the KumoOps key in their own pipeline. When enabled, this renders its own
-  # verifyImages entry and every entry above skips the agent's images, so stages need no list entry.
-  # The pull secret comes from the agent's stage module (kyverno_pull_secret).
-  kumoopsAgent:
-    # -- Admit the signed KumoOps Portal Customer Agent
-    enabled: true
-    image: "registry.gitlab.iits.tech/private/kumoops/compliance/*"
-    pullSecret: pull-secret-kumoops-agent
-    key: |-
-      -----BEGIN PUBLIC KEY-----
-      MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEhJYF+J4FU9tRYjf+EcFVs9/ZOoNO
-      vR7mwEiAWC2K84n/+EHt+b+PCT1Z7NBWzDPg6v0guPr+13LkldkDMwt1uQ==
-      -----END PUBLIC KEY-----
 
   # -- Exclude the policy on the given list of namespaces
   # Wildcards are supported.
@@ -356,21 +322,6 @@ disallowUnspecifiedDockerRegistries:
   # to be created. On the other the `audit` action allows the ressource but reports this incident.
   validationAction: "Enforce"
 
-  # The KumoOps Portal Customer Agent (read-only compliance checks of iits-run stages). Its release
-  # images are signed with the KumoOps key in their own pipeline. When enabled, this renders its own
-  # verifyImages entry and every entry above skips the agent's images, so stages need no list entry.
-  # The pull secret comes from the agent's stage module (kyverno_pull_secret).
-  kumoopsAgent:
-    # -- Admit the signed KumoOps Portal Customer Agent
-    enabled: true
-    image: "registry.gitlab.iits.tech/private/kumoops/compliance/*"
-    pullSecret: pull-secret-kumoops-agent
-    key: |-
-      -----BEGIN PUBLIC KEY-----
-      MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEhJYF+J4FU9tRYjf+EcFVs9/ZOoNO
-      vR7mwEiAWC2K84n/+EHt+b+PCT1Z7NBWzDPg6v0guPr+13LkldkDMwt1uQ==
-      -----END PUBLIC KEY-----
-
   # -- Exclude the policy on the given list of namespaces
   # Wildcards are supported.
   # For more information check out: https://kyverno.io/docs/writing-policies/validate/#wildcards
@@ -384,21 +335,6 @@ enforceSecurityContext:
 
   # -- The name of the policy
   name: enforce-security-context
-
-  # The KumoOps Portal Customer Agent (read-only compliance checks of iits-run stages). Its release
-  # images are signed with the KumoOps key in their own pipeline. When enabled, this renders its own
-  # verifyImages entry and every entry above skips the agent's images, so stages need no list entry.
-  # The pull secret comes from the agent's stage module (kyverno_pull_secret).
-  kumoopsAgent:
-    # -- Admit the signed KumoOps Portal Customer Agent
-    enabled: true
-    image: "registry.gitlab.iits.tech/private/kumoops/compliance/*"
-    pullSecret: pull-secret-kumoops-agent
-    key: |-
-      -----BEGIN PUBLIC KEY-----
-      MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEhJYF+J4FU9tRYjf+EcFVs9/ZOoNO
-      vR7mwEiAWC2K84n/+EHt+b+PCT1Z7NBWzDPg6v0guPr+13LkldkDMwt1uQ==
-      -----END PUBLIC KEY-----
 
   # -- Exclude the policy on the given list of namespaces
   # Wildcards are supported.
