@@ -1,39 +1,60 @@
+# Checks the targeted charts of a run. Terms are defined in GLOSSARY.md.
+# - Quality checks (Trivy, lint, kubeconform): every targeted chart
+# - Chart.lock updated, Chart.yaml version increased: every changed chart, pull requests only
+# Pull requests are compared with their base branch, pushes to main with the previous main head.
+# A manual run targets all charts.
+
 name: Check Charts
 
 on:
   pull_request:
-    branches:
-      - '**'
-      - '*'
   push:
     branches:
       - 'main'
+  workflow_dispatch:
 
 env:
   HELM_VERSION: v3.22.0
 
 jobs:
   find-charts:
+    # Branch protection on main requires a check with this exact name, keep it unchanged.
     name: Find Charts
     runs-on: ubuntu-latest
     outputs:
-      charts: "${{ steps.get-all-charts.outputs.charts }}"
+      comparison_base: "${{ steps.target-charts.outputs.comparison_base }}"
+      changed_charts: "${{ steps.target-charts.outputs.changed_charts }}"
+      lock_check_charts: "${{ steps.target-charts.outputs.lock_check_charts }}"
+      targeted_charts: "${{ steps.target-charts.outputs.targeted_charts }}"
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Echo changed files
-        id: get-all-charts
+      - name: Find changed and targeted charts
+        id: target-charts
+        shell: bash
         env:
-          ALL_CHARTS: false
+          EVENT_NAME: ${{ github.event_name }}
+          PREVIOUS_HEAD: ${{ github.event.before }}
+          PR_BASE_BRANCH: ${{ github.base_ref }}
         run: |
-          echo charts="[$(ls -w 0 -Q -m charts/)]" >> $GITHUB_OUTPUT
+          case "$EVENT_NAME" in
+            workflow_dispatch) target_charts_arg="--all" ;;
+            push)              target_charts_arg="$PREVIOUS_HEAD" ;;
+            *)                 target_charts_arg="origin/${PR_BASE_BRANCH}" ;;
+          esac
+
+          .github/scripts/target-charts.sh "$target_charts_arg" | tee -a "$GITHUB_OUTPUT"
 
   check-charts:
     name: Check
     needs: find-charts
+    if: ${{ needs.find-charts.outputs.targeted_charts != '[]' }}
     strategy:
+      fail-fast: false
       matrix:
-        chart: ${{fromJSON(needs.find-charts.outputs.charts)}}
+        chart: ${{ fromJSON(needs.find-charts.outputs.targeted_charts) }}
     permissions:
       contents: write
       security-events: write
@@ -75,6 +96,10 @@ jobs:
           helm lint charts/${{ matrix.chart }} --strict
 
       - name: KubeConform ${{ matrix.chart }}
+        env:
+          # The plugin's install hook looks up the latest kubeconform release through the
+          # GitHub API. Unauthenticated, that call is rate limited per runner IP address.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           helm plugin install https://github.com/jtyr/kubeconform-helm
           helm -f kubeconform-values.yaml kubeconform --ignore-missing-schemas --summary charts/${{ matrix.chart }}
@@ -85,3 +110,83 @@ jobs:
         with:
           sarif_file: 'trivy-results.sarif'
 
+  check-chart-lock:
+    name: Check Chart.lock
+    needs: find-charts
+    if: ${{ github.event_name == 'pull_request' && needs.find-charts.outputs.lock_check_charts != '[]' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        chart: ${{ fromJSON(needs.find-charts.outputs.lock_check_charts) }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Helm
+        uses: azure/setup-helm@v4.2.0
+        with:
+          version: ${{ env.HELM_VERSION }}
+
+      - name: Refresh Chart.lock for ${{ matrix.chart }}
+        run: helm dependency update charts/${{ matrix.chart }}
+
+      - name: Verify Chart.lock is up to date for ${{ matrix.chart }}
+        run: |
+          if ! git diff --exit-code -- charts/${{ matrix.chart }}/Chart.lock; then
+            echo "::error::charts/${{ matrix.chart }}/Chart.lock is out of date. Run 'helm dependency update charts/${{ matrix.chart }}' and commit the result."
+            exit 1
+          fi
+
+  check-chart-version:
+    name: Check Chart Version Bump
+    needs: find-charts
+    if: ${{ github.event_name == 'pull_request' && needs.find-charts.outputs.changed_charts != '[]' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        chart: ${{ fromJSON(needs.find-charts.outputs.changed_charts) }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify version bump for ${{ matrix.chart }}
+        env:
+          COMPARISON_BASE: ${{ needs.find-charts.outputs.comparison_base }}
+        run: |
+          if ! git show "${COMPARISON_BASE}:charts/${{ matrix.chart }}/Chart.yaml" > /tmp/old-chart.yaml 2>/dev/null; then
+            echo "New chart, skipping version check."
+            exit 0
+          fi
+
+          old_version=$(grep -m1 '^version:' /tmp/old-chart.yaml | awk '{print $2}')
+          new_version=$(grep -m1 '^version:' charts/${{ matrix.chart }}/Chart.yaml | awk '{print $2}')
+
+          if [ "$old_version" = "$new_version" ]; then
+            echo "::error::charts/${{ matrix.chart }} was changed but its version (${new_version}) was not bumped."
+            exit 1
+          fi
+
+          echo "Version bumped: ${old_version} -> ${new_version}"
+
+  summary:
+    name: Checks passed
+    needs:
+      - find-charts
+      - check-charts
+      - check-chart-lock
+      - check-chart-version
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fail if any check failed or was cancelled
+        if: ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}
+        run: |
+          echo "::error::At least one check failed or was cancelled."
+          exit 1
+
+      - name: All checks passed or were skipped
+        run: echo "All checks passed or were skipped."
