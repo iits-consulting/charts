@@ -1,0 +1,29 @@
+# Code owners per chart, see MAINTAINERS.md for the responsible squads.
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+#
+# The squads are not yet GitHub teams, so the rules below are commented out.
+# Once the teams exist, check the team slugs, uncomment the rules and give each
+# team write access to this repository (required for code owners).
+#
+# Charts without an entry are unassigned (see MAINTAINERS.md) and have no code owner.
+
+# Squad 1
+# /charts/cert-manager/          @iits-consulting/squad-1
+# /charts/oidc-forward-auth/     @iits-consulting/squad-1
+# /charts/prometheus-stack/      @iits-consulting/squad-1
+# /charts/traefik/               @iits-consulting/squad-1
+
+# Squad 2
+# /charts/common/                @iits-consulting/squad-2
+# /charts/elastalert/            @iits-consulting/squad-2
+# /charts/elastic-operator/      @iits-consulting/squad-2
+# /charts/iits-admin-dashboard/  @iits-consulting/squad-2
+# /charts/keycloakx/             @iits-consulting/squad-2
+# /charts/vulnerability-checks/  @iits-consulting/squad-2
+
+# Squad 3
+# /charts/argocd/                @iits-consulting/squad-3
+# /charts/argocd-apps/           @iits-consulting/squad-3
+# /charts/argocd-oidc/           @iits-consulting/squad-3
+# /charts/cce-storage-classes/   @iits-consulting/squad-3
+# /charts/kyverno/               @iits-consulting/squad-3

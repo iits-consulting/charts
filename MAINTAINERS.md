@@ -7,8 +7,8 @@ Every chart in [`charts/`](charts) has a responsible squad. The responsible squa
 - decides on breaking changes and major version bumps of its charts
 - is the first point of contact for issues concerning its charts
 
-The squads are not yet modelled as GitHub teams, so there is no `CODEOWNERS` file and squads cannot be
-mentioned or requested as reviewers directly. Until then, name the responsible squad in the description of
+The squads are not yet modelled as GitHub teams, so the rules in [`.github/CODEOWNERS`](.github/CODEOWNERS)
+are still commented out and squads cannot be mentioned or requested as reviewers directly. Until then, name the responsible squad in the description of
 your pull request or issue and reach out to its members directly.
 
 | Chart                                                      | Responsible squad |
