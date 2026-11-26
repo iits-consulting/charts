@@ -1,6 +1,6 @@
 # prometheus-stack
 
-![Version: 92.9.0](https://img.shields.io/badge/Version-92.9.0-informational?style=flat-square) ![AppVersion: 3.15.0](https://img.shields.io/badge/AppVersion-3.15.0-informational?style=flat-square)
+![Version: 92.9.1](https://img.shields.io/badge/Version-92.9.1-informational?style=flat-square) ![AppVersion: 3.15.0](https://img.shields.io/badge/AppVersion-3.15.0-informational?style=flat-square)
 
 A complete monitoring/alerting stack with Grafana, Prometheus, Alertmanager & Blackbox exporter
 
@@ -11,7 +11,7 @@ A complete monitoring/alerting stack with Grafana, Prometheus, Alertmanager & Bl
 prometheus-stack:
   namespace: monitoring
   repoURL: "https://charts.iits.tech"
-  targetRevision: "92.9.0"
+  targetRevision: "92.9.1"
   syncOptions:
     - ServerSideApply=true
   ignoreDifferences:
@@ -116,12 +116,7 @@ prometheus-stack:
 | prometheusStack.alertmanager.config.route.routes[1].matchers[0] | string | `"severity=\"critical\""` |  |
 | prometheusStack.alertmanager.config.route.routes[1].receiver | string | `"slack"` |  |
 | prometheusStack.alertmanager.config.route.routes[1].repeat_interval | string | `"30m"` |  |
-| prometheusStack.alertmanager.config.route.routes[2].group_interval | string | `"24h"` |  |
-| prometheusStack.alertmanager.config.route.routes[2].group_wait | string | `"1s"` |  |
-| prometheusStack.alertmanager.config.route.routes[2].matchers[0] | string | `"alertname=\"ContainerRestartDetected\""` |  |
 | prometheusStack.alertmanager.config.route.routes[2].receiver | string | `"slack"` |  |
-| prometheusStack.alertmanager.config.route.routes[2].repeat_interval | string | `"24h"` |  |
-| prometheusStack.alertmanager.config.route.routes[3].receiver | string | `"slack"` |  |
 | prometheusStack.alertmanager.config.templates[0] | string | `"/etc/alertmanager/config/*.tmpl"` |  |
 | prometheusStack.crds.enabled | bool | `false` |  |
 | prometheusStack.defaultRules.create | bool | `true` |  |

@@ -187,12 +187,6 @@ prometheusStack:
             matchers:
               - severity="critical"
           - receiver: 'slack'
-            group_wait: 1s
-            group_interval: 24h
-            repeat_interval: 24h
-            matchers:
-              - alertname="ContainerRestartDetected"
-          - receiver: 'slack'
       receivers:
         - name: 'null'
         - name: 'slack'
