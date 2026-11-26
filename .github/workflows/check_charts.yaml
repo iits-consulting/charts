@@ -76,9 +76,9 @@ jobs:
         with:
           version: ${{ env.HELM_VERSION }}
 
-      - name: Create default trigy ignore files
+      - name: Create default trivy ignore files
         run: |
-          ./create-trigy-ignore.sh
+          ./create-trivy-ignore.sh
 
       - name: Trivy Scan ${{ matrix.chart }}
         uses: aquasecurity/trivy-action@v0.35.0
