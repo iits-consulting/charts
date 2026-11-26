@@ -21,3 +21,7 @@ Examples:
 ```
 
 The app-version is not regulated and can be used, when it has a positive benefit for the chart
+
+## Chart ownership
+
+Each chart has a responsible squad, see [MAINTAINERS.md](MAINTAINERS.md).
