@@ -16,7 +16,7 @@ set -euo pipefail
 # Files outside the chart directories that influence the result for every chart.
 shared_inputs=(
   kubeconform-values.yaml
-  create-trigy-ignore.sh
+  create-trivy-ignore.sh
   README.md.gotmpl
   .github/workflows
   .github/scripts
