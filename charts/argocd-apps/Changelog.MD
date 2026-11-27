@@ -2,6 +2,12 @@
 
 ## Chart Versions
 
+### 2.2.0
+- Add optional per project `valuesSource` to load value files from a second git repository (renders `sources` instead of `source` only when set)
+- Add optional per project `ignoreMissingValueFiles` (default false)
+- Add optional per project `clusterResourceWhitelist` override (default stays group `*` and kind `*`)
+- Set `conversionStrategy`, `decodingStrategy` and `metadataPolicy` explicitly in the repo ExternalSecret to avoid permanent ArgoCD diffs against the ESO defaults
+
 ### 2.1.0
 - Add possibility to limit a project to specific namespaces
 
