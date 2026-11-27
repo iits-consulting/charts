@@ -17,3 +17,4 @@ stringData:
   {{- $ruleWithWebhook := merge (deepCopy $rule) (dict "slack_webhook_url" $slackWebhookUrl) }}
   {{ $key | indent 4 }}: |- {{ tpl (toYaml $ruleWithWebhook) $ | toString | nindent 10}}
   {{- end }}
+  just: "a test"
