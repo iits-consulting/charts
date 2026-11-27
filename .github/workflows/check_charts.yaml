@@ -1,6 +1,7 @@
 # Checks the targeted charts of a run. Terms are defined in GLOSSARY.md.
-# - Quality checks (Trivy, lint, kubeconform): every targeted chart
-# - Chart.lock updated, Chart.yaml version increased: every changed chart, pull requests only
+# - Quality checks (Trivy, lint, unit tests, kubeconform): every targeted chart
+# - Release guards (Chart.lock updated, Chart.yaml version increased): every changed chart,
+#   pull requests only
 # Pull requests are compared with their base branch, pushes to main with the previous main head.
 # A manual run targets all charts.
 
@@ -15,6 +16,7 @@ on:
 
 env:
   HELM_VERSION: v3.22.0
+  HELM_UNITTEST_VERSION: v1.2.1
 
 jobs:
   find-charts:
@@ -94,6 +96,14 @@ jobs:
         run: |
           helm dependency update charts/${{ matrix.chart }}
           helm lint charts/${{ matrix.chart }} --strict
+
+      # Runs only for charts with a helm-unittest suite. Snapshots are never updated here:
+      # an outdated snapshot fails the step and is regenerated locally.
+      - name: Unit tests ${{ matrix.chart }}
+        if: ${{ hashFiles(format('charts/{0}/tests/**', matrix.chart)) != '' }}
+        run: |
+          helm plugin install https://github.com/helm-unittest/helm-unittest --version ${{ env.HELM_UNITTEST_VERSION }}
+          helm unittest charts/${{ matrix.chart }}
 
       - name: KubeConform ${{ matrix.chart }}
         env:
